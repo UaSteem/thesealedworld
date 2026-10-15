@@ -37,6 +37,9 @@ class RiftResourceLoader:
     def load_dev_character_snapshot(self, snapshot_key: str = "starter_rift") -> dict[str, Any]:
         return self._load_json(f"{snapshot_key}/dev_character.json")
 
+    def load_tile_set(self, tile_set_key: str) -> dict[str, Any]:
+        return self._load_json(f"tile_sets/{tile_set_key}/tileset_data.json")
+
     def _load_json(self, filename: str) -> dict[str, Any]:
         path = self.resource_dir / filename
         with path.open("r", encoding="utf-8") as file:

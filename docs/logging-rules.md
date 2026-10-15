@@ -1,7 +1,7 @@
 # Logging Rules
 
 This document is the single source of truth for how every log call in TurnBasedMMORPG must be written.
-Referenced by the `turnbasedmmorpg-logging-quality` agent skill and the codebase sweep task.
+Referenced by the `turnbasedmmorpg-quality` agent skill and the codebase sweep task.
 
 ## Log Levels
 

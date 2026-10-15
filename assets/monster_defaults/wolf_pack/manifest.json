@@ -1,0 +1,98 @@
+{
+  "family_id": "wolf_pack",
+  "format_direction": "Transparent raster PNG",
+  "style_contract": "STYLE.md",
+  "members": [
+    {
+      "variant_id": "cub",
+      "role": "minion",
+      "png": "png/cub-v1.png",
+      "status": "accepted"
+    },
+    {
+      "variant_id": "runner",
+      "role": "minion",
+      "png": "png/runner-v1.png",
+      "status": "review_ready"
+    },
+    {
+      "variant_id": "mangy_biter",
+      "role": "minion",
+      "png": "png/mangy_biter-v1.png",
+      "status": "review_ready"
+    },
+    {
+      "variant_id": "stalker",
+      "role": "veteran",
+      "png": "png/stalker-v1.png",
+      "status": "review_ready"
+    },
+    {
+      "variant_id": "flanker",
+      "role": "veteran",
+      "png": "png/flanker-v1.png",
+      "status": "review_ready"
+    },
+    {
+      "variant_id": "snapper",
+      "role": "veteran",
+      "png": "png/snapper-v1.png",
+      "status": "review_ready"
+    },
+    {
+      "variant_id": "pack_leader",
+      "role": "elite",
+      "png": "png/pack_leader-v1.png",
+      "status": "review_ready"
+    },
+    {
+      "variant_id": "dire_wolf",
+      "role": "elite",
+      "png": "png/dire_wolf-v1.png",
+      "status": "review_ready"
+    },
+    {
+      "variant_id": "old_fang",
+      "role": "elite",
+      "png": "png/old_fang-v1.png",
+      "status": "review_ready"
+    },
+    {
+      "variant_id": "fenrir",
+      "role": "boss",
+      "png": "png/fenrir-v1.png",
+      "status": "accepted",
+      "display_name": "Фенрир",
+      "design_intent": "Strongest ordinary wolf boss; no elemental theme",
+      "catalog_variant_id": "alpha_prime",
+      "previous_png": "png/alpha_prime-v1.png",
+      "collection_scope": "base_family"
+    },
+    {
+      "variant_id": "winter_maw",
+      "role": "boss",
+      "png": "themed_examples/winter_maw-v1.png",
+      "status": "review_ready",
+      "collection_scope": "themed_clan_example",
+      "base_family_approval": "excluded_pending_ordinary_boss_design"
+    },
+    {
+      "variant_id": "blood_howl",
+      "role": "boss",
+      "png": "themed_examples/blood_howl-v1.png",
+      "status": "review_ready",
+      "collection_scope": "themed_clan_example",
+      "base_family_approval": "excluded_pending_ordinary_boss_design"
+    },
+    {
+      "variant_id": "pack_huntmaster",
+      "display_name": "Вожак-загонщик",
+      "role": "boss",
+      "status": "review_ready",
+      "collection_scope": "base_family",
+      "design_intent": "Cunning coordination and pursuit; no elemental theme",
+      "png": "png/pack_huntmaster-v1.png"
+    }
+  ],
+  "design_direction": "Names describe character and role; elements belong to clan variations. Runtime catalog unchanged."
+}

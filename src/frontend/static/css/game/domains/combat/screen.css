@@ -110,7 +110,7 @@
     overflow: hidden;
     color: var(--world-accent, var(--col-accent));
     font-family: var(--font-ui);
-    font-size: 12px;
+    font-size: var(--text-base);
     letter-spacing: .18em;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -120,7 +120,7 @@
     overflow: hidden;
     color: rgba(255, 230, 180, .54);
     font-family: var(--font-ui);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     font-style: normal;
     font-weight: 800;
     letter-spacing: .14em;

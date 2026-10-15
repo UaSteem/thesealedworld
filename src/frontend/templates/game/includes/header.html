@@ -37,7 +37,7 @@
              role="menu"
              aria-label="System menu">
             <a class="game-system-action"
-               href="/account"
+               href="{{ site_home_url }}account"
                target="_blank"
                rel="noopener"
                role="menuitem"
@@ -47,7 +47,7 @@
             </a>
             {% if user and user.is_superuser %}
             <a class="game-system-action"
-               href="/admin"
+               href="{{ site_home_url }}admin"
                target="_blank"
                rel="noopener"
                role="menuitem"

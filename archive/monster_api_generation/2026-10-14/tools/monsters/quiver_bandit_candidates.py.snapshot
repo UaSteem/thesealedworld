@@ -1,0 +1,40 @@
+"""One SVG generation from description and PNG reference; no retries."""
+import base64,json,os
+from pathlib import Path
+from urllib.request import Request,urlopen
+from urllib.error import HTTPError,URLError
+from datetime import datetime,timezone
+import xml.etree.ElementTree as ET
+root=Path(__file__).resolve().parents[2]
+config={}
+for line in (root/'.env').read_text(encoding='utf-8-sig').splitlines():
+    k,sep,v=line.partition('=')
+    if sep and k.strip().startswith('QUIVERAI_'):config[k.strip()]=v.strip().strip('"\'')
+config.update({k:v for k,v in os.environ.items() if k.startswith('QUIVERAI_')})
+key=config.get('QUIVERAI_API_KEY','')
+if not key:raise SystemExit('Missing Quiver key')
+family=root/'assets/monster_defaults/bandit_gang'
+import argparse
+parser=argparse.ArgumentParser();parser.add_argument('variant',choices=['bandit_kingpin', 'bandit_warlord', 'bandit_cutthroat']);args=parser.parse_args()
+source=family/'png/bandit_captain-v1.png'
+prompt=(family/'prompts'/(args.variant+'.txt')).read_text(encoding='utf-8')
+payload={'model':'arrow-2','stream':False,'n':1,'max_output_tokens':65536,'prompt':prompt,'references':[{'base64':base64.b64encode(source.read_bytes()).decode('ascii')}]}
+out=family/'generation_candidates'/datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
+out.mkdir(parents=True)
+(out/'request.json').write_text(json.dumps({**payload,'references':[{'source':'png/bandit_captain-v1.png'}]}),encoding='utf-8')
+print(args.variant, 'One Arrow 2 generation request with PNG reference, output cap 65536; no retries.',flush=True)
+req=Request('https://api.quiver.ai/v1/svgs/generations',data=json.dumps(payload).encode(),headers={'Authorization':'Bearer '+key,'Content-Type':'application/json'})
+try:
+    with urlopen(req,timeout=600) as resp:
+        raw=resp.read().decode().replace(key,'[REDACTED]');rid=resp.headers.get('X-Request-ID')
+except HTTPError as e:
+    (out/'error.json').write_text(e.read().decode(errors='replace').replace(key,'[REDACTED]'),encoding='utf-8')
+    raise SystemExit(f'HTTP {e.code}; no retry. Details: {out}')
+except (URLError,TimeoutError):raise SystemExit('Network error; no retry. Check Logs.')
+(out/'response.json').write_text(raw,encoding='utf-8')
+r=json.loads(raw);svg=r['data'][0]['svg'];tree=ET.fromstring(svg)
+assert tree.tag=='{http://www.w3.org/2000/svg}svg'
+(out/(args.variant+'.svg')).write_text(svg,encoding='utf-8')
+u=r.get('usage',{});report={'request_id':rid,'usage':u,'estimate_usd_uncached':(u.get('input_tokens',0)*4+u.get('output_tokens',0)*20)/1000000,'raster_image_elements':sum(e.tag.endswith('}image') for e in tree.iter()),'paths':sum(e.tag.endswith('}path') for e in tree.iter())}
+(out/'usage.json').write_text(json.dumps(report,indent=2),encoding='utf-8')
+print(json.dumps(report,indent=2));print('Saved:',out)

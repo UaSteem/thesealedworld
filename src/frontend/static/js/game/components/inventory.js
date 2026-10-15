@@ -438,9 +438,18 @@
             showInventoryTooltip(trigger, event);
         }, true);
 
-        document.addEventListener('htmx:beforeSwap', () => {
-            hideInventoryTooltip();
-            hideInventoryContextMenu();
+        document.addEventListener('htmx:beforeSwap', (event) => {
+            const target = event.detail?.target;
+            if (target) {
+                const isInventory = target.id === 'right-inventory-panel-body'
+                    || target.classList.contains('inventory-shell')
+                    || target.closest('.inventory-shell')
+                    || target.querySelector('.inventory-shell');
+                if (isInventory) {
+                    hideInventoryTooltip();
+                    hideInventoryContextMenu();
+                }
+            }
         });
         document.addEventListener('htmx:afterSwap', (event) => {
             if (event.detail?.target?.id !== 'right-inventory-panel-body') return;

@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any
 
 from src.backend.core.database import get_session_context
 from src.backend.features.character.runtime.combat_actor_input import CharacterCombatActorInputBuilder
-from src.backend.features.monsters.runtime.combat_actor_input import MonsterCombatActorInputBuilder
+from src.backend.features.monsters.public import MonsterCombatActorInputBuilder
 from src.backend.infrastructure.monsters import MonsterRepository
 
 if TYPE_CHECKING:

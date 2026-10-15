@@ -1,0 +1,834 @@
+{% extends "game/base_game.html" %}
+
+{% block title %}Hex Rift Phaser Test Harness{% endblock title %}
+
+{% block styles %}
+{{ super() }}
+<style>
+    /* Constraint shell max-width to align with 960px canvas + 340px side panels */
+    .shell-constrained {
+        max-width: 1660px !important;
+    }
+
+    /* Dark Space-like Theme matching game style */
+    body.game-body {
+        background: radial-gradient(circle at center, #110d21 0%, #05040a 100%) !important;
+        color: #e2e8f0;
+    }
+
+    /* Hex Grid Viewport - Widen and Scaled */
+    .hex-grid-viewport {
+        position: relative;
+        width: 960px;
+        height: 640px;
+        background: #080712;
+        border: 2px solid #2d264d;
+        border-radius: 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(88, 74, 150, 0.2);
+        overflow: hidden;
+    }
+
+    #phaser-hex-map {
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Game layout helpers */
+    .game-session-shell {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        position: relative;
+    }
+
+    .hex-reset-btn {
+        background: #251f3d;
+        border: 1px solid #4a3e75;
+        color: #a78bfa;
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.8rem;
+        transition: all 0.2s ease;
+        width: 100%;
+    }
+
+    .hex-reset-btn:hover {
+        background: #312952;
+        color: #c084fc;
+        border-color: #634f9e;
+    }
+</style>
+{% endblock styles %}
+
+{% block extra_head %}
+    <!-- Load Phaser 3 Game Engine (Local copy to comply with Content Security Policy) -->
+    <script src="/static/js/vendor/phaser.min.js"></script>
+    <!-- Load custom Hex Map Scene logic -->
+    <script src="/static/js/game/scenes/hex_map_scene.js?v={{ static_version }}"></script>
+{% endblock extra_head %}
+
+{% block content %}
+<div id="game-session-root"
+     class="game-session-shell"
+     data-game-state="rift"
+     style="display: flex; flex-direction: column; flex: 1; position: relative;">
+
+    {# Background layer #}
+    <div id="game-bg" class="game-scene-layer"
+         style="background-image: url('/static/images/scenes/forest.webp'); z-index: 0; position: absolute; inset: 0; filter: brightness(0.4);">
+    </div>
+
+    <div class="game-top-row"
+         style="flex: 1; position: relative; z-index: 1; min-height: 0;"
+         :class="{ 'left-open': leftOpen, 'right-open': rightOpen }">
+
+        {# Left Panel (Status/Build) #}
+        <aside id="game-left" class="col-left" :class="{ 'panel-open': leftOpen }">
+            <div id="game-left-content">
+                <div x-show="leftPanelView === 'status'">
+                    {% include "game/components/status/main.html" %}
+                </div>
+            </div>
+        </aside>
+
+        {# Center Viewport (Phaser Map) #}
+        <main id="game-viewport" class="col-center" style="flex: 1; display: flex; flex-direction: column;">
+            <div id="game-center" class="col-center-inner" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px 10px; gap: 16px;">
+                <div class="hex-grid-viewport" style="position: relative;">
+                    <div id="phaser-hex-map"
+                         data-rift-state="{{ rift|tojson|forceescape }}"
+                         data-instance-id="{{ instance_id }}"
+                         data-show-all-map="{{ 'true' if show_all_map else 'false' }}"
+                         data-rift-theme="void_temple">
+                    </div>
+
+                    {# Floating actions bubble above player standee #}
+                    <div id="hex-floating-actions"
+                         style="display: none; position: absolute; z-index: 10; pointer-events: auto; flex-direction: column; align-items: center; gap: 8px;">
+
+                        {# Combat Bubble Content #}
+                        <div id="bubble-combat-content" style="background: rgba(17, 13, 33, 0.95); border: 2px solid #ef4444; border-radius: 8px; padding: 8px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.7), 0 0 10px rgba(239, 68, 68, 0.3); display: flex; flex-direction: column; gap: 6px; align-items: center; min-width: 140px;">
+                            <strong style="color: #ef4444; font-size: 0.75rem; letter-spacing: 0.5px; font-family: 'JetBrains Mono', monospace; text-shadow: 0 0 4px rgba(239, 68, 68, 0.5);">⚔️ НАПАДЕНИЕ</strong>
+                            <div style="display: flex; gap: 6px;">
+                                <button type="button" id="floating-btn-escape"
+                                        style="background: #1e1b4b; border: 1px solid #4b5563; color: #cbd5e1; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace; padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: all 0.2s;">
+                                    Сбежать
+                                </button>
+                                <button type="button" id="floating-btn-fight"
+                                        style="background: #450a0a; border: 1px solid #ef4444; color: #fca5a5; font-size: 0.7rem; font-family: 'JetBrains Mono', monospace; padding: 4px 8px; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-weight: bold;">
+                                    В бой!
+                                </button>
+                            </div>
+                        </div>
+
+                        {# Transition/Portal Bubble Content #}
+                        <div id="bubble-portal-content" style="display: none; background: rgba(17, 13, 33, 0.95); border: 2px solid #8b5cf6; border-radius: 8px; padding: 8px 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.7), 0 0 10px rgba(139, 92, 246, 0.3); display: flex; flex-direction: column; gap: 6px; align-items: center; min-width: 140px;">
+                            <strong style="color: #c084fc; font-size: 0.75rem; letter-spacing: 0.5px; font-family: 'JetBrains Mono', monospace; text-shadow: 0 0 4px rgba(139, 92, 246, 0.5);">✨ ПОРТАЛ</strong>
+                            <button type="button" id="floating-btn-next-floor"
+                                    style="background: #1e1b4b; border: 1px solid #a78bfa; color: #c084fc; font-size: 0.75rem; font-family: 'JetBrains Mono', monospace; padding: 6px 12px; border-radius: 4px; cursor: pointer; transition: all 0.2s; font-weight: bold; width: 100%;">
+                                Спуститься
+                            </button>
+                        </div>
+
+                        <div id="bubble-arrow" style="width: 0; height: 0; border-left: 8px solid transparent; border-right: 8px solid transparent; border-top: 8px solid #ef4444;"></div>
+                    </div>
+                </div>
+
+                {# Bottom Action Panel #}
+                <section class="game-action-panel game-action-panel--bottom rift-action-panel" style="width: 960px; max-width: 100%;">
+                    <header class="game-action-panel__head">
+                        <span id="hex-action-header-title">Переходы</span>
+                        <strong id="hex-action-header-count">0</strong>
+                    </header>
+                    <div class="exploration-action-panel__body" id="hex-action-body-content" style="padding: 12px 16px; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; color: #cbd5e1; line-height: 1.4;">
+                        <div id="hex-normal-actions">
+                            Для перемещения по разлому нажимайте на подсвеченные соседние плиты на карте.
+                        </div>
+                        <div id="hex-encounter-actions" class="rift-combat-prompt" style="display: none; width: 100%; max-width: 100% !important;">
+                            <section class="mobile-encounter-layout" aria-label="Encounter contact report" style="width: 100%; max-width: 100% !important;">
+                                <section class="mobile-encounter-interrupt" aria-label="Encounter interrupt" style="margin-bottom: 12px;">
+                                    <header>
+                                        <span aria-hidden="true">△</span>
+                                        <div>
+                                            <strong>PRIORITY INTERRUPT</strong>
+                                            <small>ENCOUNTER DETECTED</small>
+                                        </div>
+                                    </header>
+                                    <p>
+                                        <span class="symbiote-readout-name">SYSTEM:</span>
+                                        <span id="hex-encounter-description"></span>
+                                    </p>
+                                </section>
+
+                                <section class="mobile-encounter-roster" aria-label="Enemy roster" style="margin-bottom: 12px;">
+                                    <header>
+                                        <span>CONTACT LIST</span>
+                                        <strong id="hex-encounter-count">0</strong>
+                                    </header>
+                                    <div>
+                                        <div id="hex-encounter-enemies" data-rift-combat-enemies aria-label="Rift enemy roster" style="max-height: 190px; overflow-y: auto; padding-right: 4px; display: grid; gap: 6px;"></div>
+                                    </div>
+                                </section>
+
+                                <section class="mobile-encounter-target-card" aria-label="Enemy group encounter">
+                                    <header style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #2d264d; padding-bottom: 6px; margin-bottom: 10px;">
+                                        <span id="hex-encounter-target-title" style="color: #cbd5e1; font-weight: bold; font-size: 0.85rem;"></span>
+                                        <div class="mobile-encounter-target-switcher" aria-label="Target switcher" style="display: flex; align-items: center; gap: 8px;">
+                                            <button type="button" aria-label="Previous enemy" id="hex-enemy-prev" style="background: #1e1b4b; border: 1px solid #4a3e75; color: #a78bfa; padding: 2px 8px; border-radius: 4px; cursor: pointer;">‹</button>
+                                            <strong id="hex-encounter-position" style="font-size: 0.8rem; color: #cbd5e1;">1 / 1</strong>
+                                            <button type="button" aria-label="Next enemy" id="hex-enemy-next" style="background: #1e1b4b; border: 1px solid #4a3e75; color: #a78bfa; padding: 2px 8px; border-radius: 4px; cursor: pointer;">›</button>
+                                        </div>
+                                    </header>
+                                    <div id="hex-encounter-detail" aria-label="Rift enemy detail"></div>
+                                </section>
+                            </section>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        {# Right Panel (Rift Info) #}
+        {% set ns = namespace(current_node=none) %}
+        {% for node in rift.nodes %}
+            {% if node.x == rift.current_x and node.y == rift.current_y %}
+                {% set ns.current_node = node %}
+            {% endif %}
+        {% endfor %}
+        {% set current_node = ns.current_node %}
+
+        <aside id="game-right" class="col-right" :class="{ 'panel-open': rightOpen }">
+            <div id="game-right-content">
+                <aside class="panel-dock panel-dock--framed panel-dock--scroll side-panel-drawer side-panel-drawer--right rift-info-dock is-open"
+                       data-side-panel="info"
+                       aria-label="Rift info drawer">
+                    <nav class="dock-nav dock-nav--bar dock-nav--panel rift-info-actions" aria-label="Rift info actions">
+                        <button class="dock-nav-button is-active" type="button">RIFT INFO</button>
+                    </nav>
+
+                    <section class="info-widget-section rift-info-card" aria-label="Rift identity">
+                        <header class="info-widget-title">
+                            <span id="info-title-sidebar">{{ current_node.title if current_node else 'Неизвестная плита' }}</span>
+                            <strong style="color: #f59e0b;">HEX</strong>
+                        </header>
+                        <div class="info-widget-list info-widget-kv">
+                            <div><span>Coordinates</span><strong id="info-coord-sidebar">HEX: {{ rift.current_x }}, {{ rift.current_y }}</strong></div>
+                            <div><span>Floor</span><strong id="info-floor-sidebar">{{ rift.floor }} / 3</strong></div>
+                            <div><span>Rift ID</span><strong>{{ instance_id }}</strong></div>
+                        </div>
+                    </section>
+
+                    <section class="info-widget-section rift-info-card" aria-label="Layout debug">
+                        <header class="info-widget-title">
+                            <span>LAYOUT DEBUG</span>
+                        </header>
+                        <div class="info-widget-list info-widget-kv">
+                            <div><span>Scale</span><strong id="info-scale-sidebar">{{ rift.scale_key if rift.scale_key is defined else 'NO_DATA' }}</strong></div>
+                            <div><span>Pattern</span><strong id="info-pattern-sidebar">{{ rift.pattern_key if rift.pattern_key is defined else 'NO_DATA' }}</strong></div>
+                            <div><span>Scheme</span><strong id="info-scheme-sidebar">{{ rift.scheme_key if rift.scheme_key is defined else 'NO_DATA' }}</strong></div>
+                            <div><span>Map</span><strong id="info-map-sidebar">{{ rift.layout_debug.width if rift.layout_debug is defined else '?' }}x{{ rift.layout_debug.height if rift.layout_debug is defined else '?' }}, usable {{ rift.layout_debug.usable_cells if rift.layout_debug is defined and rift.layout_debug.usable_cells is defined else 'NO_DATA' }}</strong></div>
+                            <div><span>Walkable</span><strong id="info-walkable-sidebar">{{ rift.layout_debug.walkable_nodes if rift.layout_debug is defined and rift.layout_debug.walkable_nodes is defined else 'NO_DATA' }} / {{ rift.layout_debug.usable_cells if rift.layout_debug is defined and rift.layout_debug.usable_cells is defined else '?' }} = {{ rift.layout_debug.walkable_percent if rift.layout_debug is defined and rift.layout_debug.walkable_percent is defined else '?' }}%</strong></div>
+                            <div><span>Reachable</span><strong id="info-reachable-sidebar">{{ rift.layout_debug.reachable_nodes if rift.layout_debug is defined and rift.layout_debug.reachable_nodes is defined else 'NO_DATA' }} / {{ rift.layout_debug.walkable_nodes if rift.layout_debug is defined and rift.layout_debug.walkable_nodes is defined else '?' }}{% if rift.layout_debug is defined and rift.layout_debug.unreachable_walkable_nodes is defined %}, bad {{ rift.layout_debug.unreachable_walkable_nodes }}{% endif %}</strong></div>
+                            <div><span>Main path</span><strong id="info-main-path-sidebar">{{ rift.layout_debug.main_path_nodes if rift.layout_debug is defined and rift.layout_debug.main_path_nodes is defined else 'NO_DATA' }}</strong></div>
+                            <div><span>Extras</span><strong id="info-extra-sidebar">{{ rift.layout_debug.extra_nodes if rift.layout_debug is defined and rift.layout_debug.extra_nodes is defined else 'NO_DATA' }}</strong></div>
+                            <div><span>Forks</span><strong id="info-forks-sidebar">{{ rift.layout_debug.fork_nodes if rift.layout_debug is defined and rift.layout_debug.fork_nodes is defined else 'NO_DATA' }}</strong></div>
+                            <div><span>Branches</span><strong id="info-branches-sidebar">{{ rift.layout_debug.branch_nodes if rift.layout_debug is defined and rift.layout_debug.branch_nodes is defined else 'NO_DATA' }}</strong></div>
+                        </div>
+                        <div id="info-layout-counts-sidebar" class="rift-side-copy world-text" style="padding: 8px 14px; font-size: 0.72rem; line-height: 1.35; color: #bae6fd; display: grid; gap: 4px;">
+                            {% if rift.layout_debug is defined and rift.layout_debug.layer_counts is defined %}
+                                <div><span style="color: #facc15;">layers</span>: {% for key, value in rift.layout_debug.layer_counts.items() %}{{ key }} {{ value }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+                                <div><span style="color: #facc15;">slots</span>: {% for key, value in rift.layout_debug.slot_counts.items() %}{{ key }} {{ value }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+                                <div><span style="color: #facc15;">roles</span>: {% for key, value in rift.layout_debug.role_counts.items() %}{{ key }} {{ value }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+                            {% else %}
+                                NO_DATA
+                            {% endif %}
+                        </div>
+                        <p id="info-schemes-sidebar" class="rift-side-copy world-text" style="padding: 8px 14px; font-size: 0.72rem; line-height: 1.35; color: #a78bfa; margin: 0; word-break: break-word;">
+                            {% if rift.available_pattern_keys is defined %}
+                                <a href="/rifttest?scale_key={{ selected_scale_key }}&pattern_key={{ random_scheme_key }}{% if show_all_map %}&show_all_map=true{% endif %}" style="color: {{ '#facc15' if selected_pattern_key == random_scheme_key else '#a78bfa' }}; text-decoration: none;">random</a>,
+                                {% for pattern in rift.available_pattern_keys %}
+                                    <a href="/rifttest?scale_key={{ selected_scale_key }}&pattern_key={{ pattern }}{% if show_all_map %}&show_all_map=true{% endif %}" style="color: {{ '#facc15' if pattern == rift.pattern_key else '#a78bfa' }}; text-decoration: none;">{{ pattern }}</a>{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                NO_DATA
+                            {% endif %}
+                        </p>
+                        <div id="info-template-debug-sidebar" class="rift-side-copy world-text" style="padding: 8px 14px; font-size: 0.72rem; line-height: 1.35; color: #d8b4fe; display: grid; gap: 5px;">
+                            {% if rift.layout_template_debug is defined and rift.layout_template_debug %}
+                                <div><span style="color: #facc15;">pattern</span>: {{ rift.layout_template_debug.geometry_pattern }}</div>
+                                <div><span style="color: #facc15;">status</span>: {{ rift.layout_template_debug.status }} / {{ rift.layout_template_debug.min_scale }}</div>
+                                <div><span style="color: #facc15;">does</span>: {{ rift.layout_template_debug.description }}</div>
+                                <div><span style="color: #facc15;">layers</span>: {{ rift.layout_template_debug.pipeline_layers|join(' -> ') }}</div>
+                                <div><span style="color: #facc15;">main</span>: {{ rift.layout_template_debug.rules.main_path.target_nodes }} nodes, straight {{ rift.layout_template_debug.rules.main_path.straight_run.min }}-{{ rift.layout_template_debug.rules.main_path.straight_run.max }}, triangles {{ 'off' if rift.layout_template_debug.rules.main_path.avoid_triangles else 'on' }}</div>
+                                <div><span style="color: #facc15;">spikes</span>: {{ 'on' if rift.layout_template_debug.rules.spike_spurs.enabled else 'off' }}, placed {{ rift.layout_template_debug.rules.spike_spurs.actual_count }}/{{ rift.layout_template_debug.rules.spike_spurs.target_count }}, candidates {{ rift.layout_template_debug.rules.spike_spurs.candidate_count }}, rejected {{ rift.layout_template_debug.rules.spike_spurs.rejected_candidates }}, len {{ rift.layout_template_debug.rules.spike_spurs.path_length.min|default('') }}-{{ rift.layout_template_debug.rules.spike_spurs.path_length.max|default('') }}</div>
+                                <div><span style="color: #facc15;">rings</span>: {{ 'on' if rift.layout_template_debug.rules.flower_loops.enabled else 'off' }}, target {{ rift.layout_template_debug.rules.flower_loops.target_count }}</div>
+                                <div><span style="color: #facc15;">flags</span>: {% for key, value in rift.layout_template_debug.pipeline_plan.items() if value %}{{ key }}{% if not loop.last %}, {% endif %}{% endfor %}</div>
+                            {% else %}
+                                NO_DATA
+                            {% endif %}
+                        </div>
+                        <div id="info-patterns-sidebar" class="rift-side-copy world-text" style="padding: 8px 14px; font-size: 0.72rem; line-height: 1.35; color: #c4b5fd; display: grid; gap: 4px;">
+                            {% if rift.layout_pattern_catalog is defined %}
+                                {% for pattern in rift.layout_pattern_catalog %}
+                                    <div style="display: grid; grid-template-columns: 1fr auto auto; gap: 6px; align-items: center; opacity: {{ '1' if pattern.available_for_current_scale else '0.45' }};">
+                                        <span style="color: {{ '#facc15' if pattern.status == 'implemented' or pattern.dev_enabled else '#94a3b8' }};">{{ pattern.key }}</span>
+                                        <span>{{ pattern.min_scale }}</span>
+                                        <span>{{ 'dev enabled: ' ~ pattern.active_scheme_keys|join(', ') if pattern.dev_enabled else pattern.status }}</span>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                NO_DATA
+                            {% endif %}
+                        </div>
+                    </section>
+
+                    <section class="info-widget-section rift-info-card" aria-label="Description">
+                        <header class="info-widget-title">
+                            <span>DESCRIPTION</span>
+                        </header>
+                        <p id="info-desc-sidebar" class="rift-side-copy world-text" style="padding: 10px 14px; font-size: 0.9rem; line-height: 1.4; color: #cbd5e1; margin: 0;">
+                            {{ current_node.description if current_node else 'Нет описания.' }}
+                        </p>
+                    </section>
+
+                    <section class="info-widget-section rift-info-card" aria-label="Actions" style="margin-top: auto; padding: 15px;">
+                        <form action="/rifttest" method="GET" style="width: 100%; display: grid; gap: 8px;">
+                            <input id="hex-scale-key-input" type="hidden" name="scale_key" value="{{ selected_scale_key }}">
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+                                <button type="button" data-scale-choice="solo" class="hex-reset-btn" style="{{ 'border-color: #facc15; color: #facc15;' if selected_scale_key == 'solo' else '' }}">
+                                    solo
+                                </button>
+                                <button type="button" data-scale-choice="group" class="hex-reset-btn" style="{{ 'border-color: #facc15; color: #facc15;' if selected_scale_key == 'group' else '' }}">
+                                    group
+                                </button>
+                            </div>
+                            <select id="hex-pattern-key-select" name="pattern_key" aria-label="Layout pattern" style="width: 100%; min-height: 34px; background: rgba(9, 7, 20, 0.92); color: #e9d5ff; border: 1px solid rgba(168, 85, 247, 0.5); padding: 6px 8px; font-family: inherit; font-size: 0.78rem;">
+                                <option value="{{ random_scheme_key }}" {% if selected_pattern_key == random_scheme_key %}selected{% endif %}>random</option>
+                                {% if rift.available_pattern_keys is defined %}
+                                    {% for pattern in rift.available_pattern_keys %}
+                                        <option value="{{ pattern }}" {% if selected_pattern_key == pattern %}selected{% endif %}>{{ pattern }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                            <label style="display: flex; align-items: center; gap: 8px; color: #c4b5fd; font-family: 'JetBrains Mono', monospace; font-size: 0.76rem;">
+                                <input id="hex-show-all-map" name="show_all_map" value="true" type="checkbox" {% if show_all_map %}checked{% endif %}>
+                                показать всю карту
+                            </label>
+                            <button type="button" id="hex-fit-map-btn" class="hex-reset-btn">
+                                Отдалить карту максимум
+                            </button>
+                            <button type="submit" class="hex-reset-btn">
+                                Сгенерировать новый рифт
+                            </button>
+                        </form>
+                    </section>
+                </aside>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const parent = document.getElementById("phaser-hex-map");
+        if (!parent) return;
+
+        const riftState = JSON.parse(parent.getAttribute("data-rift-state"));
+        const instanceId = parent.getAttribute("data-instance-id");
+        const clearedCombatTileIndex = 402;
+
+        // Phaser 3 configuration
+        const config = {
+            type: Phaser.AUTO,
+            width: 960,
+            height: 640,
+            parent: 'phaser-hex-map',
+            backgroundColor: '#080712',
+            scene: [HexMapScene]
+        };
+
+        // Boot Phaser Game
+        window.phaserGame = new Phaser.Game(config);
+
+        // Global bridge function called by Phaser when a tile is clicked
+        window.onPhaserHexMove = async (x, y) => {
+            const formData = new FormData();
+            formData.append("instance_id", instanceId);
+            formData.append("target_x", x);
+            formData.append("target_y", y);
+
+            // Fetch CSRF token from meta tag
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const headers = {};
+            if (csrfToken) {
+                headers['X-CSRF-Token'] = csrfToken;
+            }
+
+            try {
+                // Post movement command to frontend route
+                await fetch("/game/rift/hex-test/move", {
+                    method: "POST",
+                    headers: headers,
+                    body: formData
+                });
+
+                // Fetch updated JSON state from backend
+                const stateResponse = await fetch(`/api/dev/rift/hex-test/${instanceId}/state`);
+                if (stateResponse.ok) {
+                    const newState = await stateResponse.json();
+
+                    // Push the new state to Phaser scene for smooth standee transition
+                    if (window.updatePhaserRiftState) {
+                        window.updatePhaserRiftState(newState);
+                    }
+
+                    // Trigger sidebar update on move start/finish
+                    window.updateHexInfoCard(newState);
+                }
+            } catch (err) {
+                console.error("Hex movement failed:", err);
+            }
+        };
+
+        // Bridge function to update HTML info card after Phaser finish slide tween
+        window.updateHexInfoCard = (state) => {
+            if (!state) return;
+            // Find current active node in state
+            const currentNode = state.nodes ? state.nodes.find(n => n.x === state.current_x && n.y === state.current_y) : null;
+            if (currentNode) {
+                const title = currentNode.title;
+                const coord = `HEX: ${state.current_x}, ${state.current_y}`;
+                const desc = currentNode.description;
+
+                // Update sidebar
+                const sidebarTitle = document.getElementById("info-title-sidebar");
+                if (sidebarTitle) sidebarTitle.innerText = title;
+                const sidebarCoord = document.getElementById("info-coord-sidebar");
+                if (sidebarCoord) sidebarCoord.innerText = coord;
+                const sidebarDesc = document.getElementById("info-desc-sidebar");
+                if (sidebarDesc) sidebarDesc.innerText = desc;
+            }
+
+            // Update floor indicator
+            const sidebarFloor = document.getElementById("info-floor-sidebar");
+            if (sidebarFloor) sidebarFloor.innerText = `${state.floor} / 3`;
+            const sidebarScale = document.getElementById("info-scale-sidebar");
+            if (sidebarScale) sidebarScale.innerText = state.scale_key || "NO_DATA";
+            const sidebarPattern = document.getElementById("info-pattern-sidebar");
+            if (sidebarPattern) sidebarPattern.innerText = state.pattern_key || "NO_DATA";
+            const sidebarScheme = document.getElementById("info-scheme-sidebar");
+            if (sidebarScheme) sidebarScheme.innerText = state.scheme_key || "NO_DATA";
+            const sidebarMap = document.getElementById("info-map-sidebar");
+            if (sidebarMap) sidebarMap.innerText = `${state.layout_debug?.width ?? "?"}x${state.layout_debug?.height ?? "?"}, usable ${state.layout_debug?.usable_cells ?? "NO_DATA"}`;
+            const sidebarWalkable = document.getElementById("info-walkable-sidebar");
+            if (sidebarWalkable) sidebarWalkable.innerText = `${state.layout_debug?.walkable_nodes ?? "NO_DATA"} / ${state.layout_debug?.usable_cells ?? "?"} = ${state.layout_debug?.walkable_percent ?? "?"}%`;
+            const sidebarReachable = document.getElementById("info-reachable-sidebar");
+            if (sidebarReachable) sidebarReachable.innerText = `${state.layout_debug?.reachable_nodes ?? "NO_DATA"} / ${state.layout_debug?.walkable_nodes ?? "?"}, bad ${state.layout_debug?.unreachable_walkable_nodes ?? "?"}`;
+            const sidebarMainPath = document.getElementById("info-main-path-sidebar");
+            if (sidebarMainPath) sidebarMainPath.innerText = state.layout_debug?.main_path_nodes ?? "NO_DATA";
+            const sidebarExtra = document.getElementById("info-extra-sidebar");
+            if (sidebarExtra) sidebarExtra.innerText = state.layout_debug?.extra_nodes ?? "NO_DATA";
+            const sidebarForks = document.getElementById("info-forks-sidebar");
+            if (sidebarForks) sidebarForks.innerText = state.layout_debug?.fork_nodes ?? "NO_DATA";
+            const sidebarBranches = document.getElementById("info-branches-sidebar");
+            if (sidebarBranches) sidebarBranches.innerText = state.layout_debug?.branch_nodes ?? "NO_DATA";
+            const sidebarLayoutCounts = document.getElementById("info-layout-counts-sidebar");
+            if (sidebarLayoutCounts) sidebarLayoutCounts.innerHTML = renderLayoutCounts(state.layout_debug);
+            const sidebarSchemes = document.getElementById("info-schemes-sidebar");
+            if (sidebarSchemes) sidebarSchemes.innerHTML = renderPatternLinks(state.available_pattern_keys, state.pattern_key);
+            const sidebarTemplateDebug = document.getElementById("info-template-debug-sidebar");
+            if (sidebarTemplateDebug) {
+                sidebarTemplateDebug.innerHTML = renderTemplateDebug(state.layout_template_debug);
+            }
+            const sidebarPatterns = document.getElementById("info-patterns-sidebar");
+            if (sidebarPatterns) {
+                if (Array.isArray(state.layout_pattern_catalog)) {
+                    sidebarPatterns.innerHTML = state.layout_pattern_catalog.map((pattern) => {
+                        const opacity = pattern.available_for_current_scale ? "1" : "0.45";
+                        const color = pattern.status === "implemented" || pattern.dev_enabled ? "#facc15" : "#94a3b8";
+                        const activeSchemes = Array.isArray(pattern.active_scheme_keys) ? pattern.active_scheme_keys.join(", ") : "";
+                        const status = pattern.dev_enabled ? `dev enabled: ${activeSchemes}` : pattern.status;
+                        return `<div style="display: grid; grid-template-columns: 1fr auto auto; gap: 6px; align-items: center; opacity: ${opacity};">
+                            <span style="color: ${color};">${pattern.key}</span>
+                            <span>${pattern.min_scale}</span>
+                            <span>${status}</span>
+                        </div>`;
+                    }).join("");
+                } else {
+                    sidebarPatterns.innerText = "NO_DATA";
+                }
+            }
+
+            function renderPatternLinks(patterns, activePattern) {
+                if (!Array.isArray(patterns)) return "NO_DATA";
+                const scaleQuery = encodeURIComponent("{{ selected_scale_key }}");
+                const showAllQuery = {{ 'true' if show_all_map else 'false' }} ? "&show_all_map=true" : "";
+                const randomLink = `<a href="/rifttest?scale_key=${scaleQuery}&pattern_key={{ random_scheme_key }}${showAllQuery}" style="color: #a78bfa; text-decoration: none;">random</a>`;
+                const patternLinks = patterns.map((pattern) => {
+                    const color = pattern === activePattern ? "#facc15" : "#a78bfa";
+                    const href = `/rifttest?scale_key=${scaleQuery}&pattern_key=${encodeURIComponent(pattern)}${showAllQuery}`;
+                    return `<a href="${href}" style="color: ${color}; text-decoration: none;">${pattern}</a>`;
+                }).join(", ");
+                return `${randomLink}, ${patternLinks}`;
+            }
+
+            function renderCountMap(counts) {
+                if (!counts || typeof counts !== "object") return "NO_DATA";
+                const entries = Object.entries(counts);
+                if (entries.length === 0) return "none";
+                return entries.map(([key, value]) => `${key} ${value}`).join(", ");
+            }
+
+            function renderLayoutCounts(layoutDebug) {
+                if (!layoutDebug) return "NO_DATA";
+                return `<div><span style="color: #facc15;">layers</span>: ${renderCountMap(layoutDebug.layer_counts)}</div>
+                    <div><span style="color: #facc15;">slots</span>: ${renderCountMap(layoutDebug.slot_counts)}</div>
+                    <div><span style="color: #facc15;">roles</span>: ${renderCountMap(layoutDebug.role_counts)}</div>`;
+            }
+
+            function renderTemplateDebug(templateDebug) {
+                if (!templateDebug || !templateDebug.rules) return "NO_DATA";
+                const rules = templateDebug.rules;
+                const plan = templateDebug.pipeline_plan || {};
+                const enabledFlags = Object.keys(plan).filter((key) => plan[key]).join(", ");
+                const layers = Array.isArray(templateDebug.pipeline_layers) ? templateDebug.pipeline_layers.join(" -> ") : "NO_DATA";
+                const spikeLength = rules.spike_spurs?.path_length || {};
+                return `<div><span style="color: #facc15;">pattern</span>: ${templateDebug.geometry_pattern || "NO_DATA"}</div>
+                    <div><span style="color: #facc15;">status</span>: ${templateDebug.status || "NO_DATA"} / ${templateDebug.min_scale || "NO_DATA"}</div>
+                    <div><span style="color: #facc15;">does</span>: ${templateDebug.description || ""}</div>
+                    <div><span style="color: #facc15;">layers</span>: ${layers}</div>
+                    <div><span style="color: #facc15;">main</span>: ${rules.main_path?.target_nodes ?? "NO_DATA"} nodes, straight ${rules.main_path?.straight_run?.min ?? ""}-${rules.main_path?.straight_run?.max ?? ""}, triangles ${rules.main_path?.avoid_triangles ? "off" : "on"}</div>
+                    <div><span style="color: #facc15;">spikes</span>: ${rules.spike_spurs?.enabled ? "on" : "off"}, placed ${rules.spike_spurs?.actual_count ?? 0}/${rules.spike_spurs?.target_count ?? 0}, candidates ${rules.spike_spurs?.candidate_count ?? 0}, rejected ${rules.spike_spurs?.rejected_candidates ?? 0}, len ${spikeLength.min ?? ""}-${spikeLength.max ?? ""}</div>
+                    <div><span style="color: #facc15;">rings</span>: ${rules.flower_loops?.enabled ? "on" : "off"}, target ${rules.flower_loops?.target_count ?? 0}</div>
+                    <div><span style="color: #facc15;">flags</span>: ${enabledFlags || "none"}</div>`;
+            }
+
+            // Update bottom action panel and canvas lock
+            const normalActions = document.getElementById("hex-normal-actions");
+            const encounterActions = document.getElementById("hex-encounter-actions");
+            const headerTitle = document.getElementById("hex-action-header-title");
+            const headerCount = document.getElementById("hex-action-header-count");
+
+            const phaserScene = (window.phaserGame && window.phaserGame.scene && window.phaserGame.scene.scenes) ? window.phaserGame.scene.scenes[0] : null;
+
+            const bubbleCombat = document.getElementById("bubble-combat-content");
+            const bubblePortal = document.getElementById("bubble-portal-content");
+            const bubbleArrow = document.getElementById("bubble-arrow");
+
+            const isClearedFinish = currentNode && state.current_x === state.finish_x && state.current_y === state.finish_y && currentNode.tile_index === clearedCombatTileIndex;
+
+            if (state.combat_prompt && state.combat_prompt.enemies) {
+                // Lock Phaser scene
+                if (phaserScene && phaserScene.setLocked) {
+                    phaserScene.setLocked(true);
+                }
+
+                // Toggle bubble content
+                if (bubbleCombat) bubbleCombat.style.display = "flex";
+                if (bubblePortal) bubblePortal.style.display = "none";
+                if (bubbleArrow) bubbleArrow.style.borderTopColor = "#ef4444";
+
+                // Show encounter details at bottom
+                if (normalActions) normalActions.style.display = "none";
+                if (encounterActions) encounterActions.style.display = "block";
+
+                if (headerTitle) headerTitle.innerText = "ВСТРЕЧА С ВРАГОМ";
+                if (headerCount) headerCount.innerText = String(state.combat_prompt.enemies.length);
+
+                const encDesc = document.getElementById("hex-encounter-description");
+                if (encDesc) encDesc.innerText = state.combat_prompt.description;
+
+                // Toggle escape button visibility based on allow_escape metadata
+                const allowEscape = state.combat_prompt.metadata && state.combat_prompt.metadata.allow_escape !== false;
+                const escapeBtn = document.getElementById("floating-btn-escape");
+                if (escapeBtn) {
+                    escapeBtn.style.display = allowEscape ? "block" : "none";
+                }
+
+                // Tabbed enemy switcher implementation
+                let selectedIndex = 0;
+                const promptEnemies = state.combat_prompt.enemies;
+                if (!promptEnemies || promptEnemies.length === 0) return;
+
+                const renderEnemiesRoster = () => {
+                    const enemiesContainer = document.getElementById("hex-encounter-enemies");
+                    if (!enemiesContainer) return;
+                    enemiesContainer.innerHTML = "";
+                    promptEnemies.forEach((enemy, idx) => {
+                        const btn = document.createElement("button");
+                        btn.type = "button";
+                        btn.className = `mobile-encounter-roster-target${idx === selectedIndex ? " is-active" : ""}`;
+                        btn.style.fontFamily = "'JetBrains Mono', monospace";
+                        btn.style.fontSize = "0.75rem";
+                        btn.innerHTML = `<strong>${enemy.name || 'UNKNOWN'}</strong><small>T${enemy.member_tier || enemy.tier || 1}</small>`;
+                        btn.addEventListener("click", (e) => {
+                            e.preventDefault();
+                            selectedIndex = idx;
+                            updateSelectedEnemyView();
+                        });
+                        enemiesContainer.appendChild(btn);
+                    });
+                };
+
+                const updateSelectedEnemyView = () => {
+                    renderEnemiesRoster();
+
+                    const positionLabel = document.getElementById("hex-encounter-position");
+                    if (positionLabel) positionLabel.innerText = `${selectedIndex + 1} / ${promptEnemies.length}`;
+
+                    const targetTitle = document.getElementById("hex-encounter-target-title");
+                    if (targetTitle && promptEnemies[selectedIndex]) targetTitle.innerText = `УГРОЗА: ${promptEnemies[selectedIndex].role || 'HOSTILE'}`;
+
+                    const detailContainer = document.getElementById("hex-encounter-detail");
+                    if (detailContainer && promptEnemies[selectedIndex]) {
+                        detailContainer.innerHTML = "";
+                        const enemy = promptEnemies[selectedIndex];
+
+                        // Create structured mobile-encounter-target-view layout
+                        const view = document.createElement("div");
+                        view.className = "mobile-encounter-target-view";
+
+                        const mainPart = document.createElement("div");
+                        mainPart.className = "mobile-encounter-target-main";
+
+                        const art = document.createElement("div");
+                        art.className = "mobile-encounter-target-art";
+                        art.innerHTML = `<span>?</span>`; // Fallback placeholder
+
+                        const copy = document.createElement("div");
+                        copy.className = "mobile-encounter-target-copy";
+                        copy.innerHTML = `
+                            <div class="mobile-encounter-target-title">
+                                <strong>${enemy.name}</strong>
+                                <span>TIER ${enemy.member_tier || enemy.tier || 1}</span>
+                            </div>
+                            <div class="mobile-encounter-target-tags">
+                                <span>DETECTED</span>
+                                <span>${enemy.role || 'HOSTILE'}</span>
+                            </div>
+                            <p style="margin-top: 6px; font-size: 0.75rem; color: #cbd5e1; line-height: 1.4;">${enemy.description || 'Нет описания.'}</p>
+                        `;
+
+                        mainPart.appendChild(art);
+                        mainPart.appendChild(copy);
+
+                        const stats = document.createElement("div");
+                        stats.className = "mobile-encounter-target-stats";
+                        stats.innerHTML = `
+                            <div><span>HEALTH</span><strong>${enemy.hp_percent || 100}%</strong></div>
+                            <div><span>ENERGY</span><strong>???</strong></div>
+                            <div><span>CONC</span><strong>???</strong></div>
+                            <div><span>DANGER</span><strong>T${enemy.member_tier || enemy.tier || 1}</strong></div>
+                        `;
+
+                        view.appendChild(mainPart);
+                        view.appendChild(stats);
+                        detailContainer.appendChild(view);
+                    }
+                };
+
+                // Switchers prev/next
+                const btnPrev = document.getElementById("hex-enemy-prev");
+                const btnNext = document.getElementById("hex-enemy-next");
+                if (btnPrev) {
+                    btnPrev.onclick = (e) => {
+                        e.preventDefault();
+                        selectedIndex = (selectedIndex - 1 + promptEnemies.length) % promptEnemies.length;
+                        updateSelectedEnemyView();
+                    };
+                }
+                if (btnNext) {
+                    btnNext.onclick = (e) => {
+                        e.preventDefault();
+                        selectedIndex = (selectedIndex + 1) % promptEnemies.length;
+                        updateSelectedEnemyView();
+                    };
+                }
+
+                // Initial render of selected enemy
+                updateSelectedEnemyView();
+            } else {
+                // Unlock Phaser scene
+                if (phaserScene && phaserScene.setLocked) {
+                    phaserScene.setLocked(false);
+                }
+
+                // Toggle bubble content
+                if (isClearedFinish && state.floor < 3) {
+                    if (bubbleCombat) bubbleCombat.style.display = "none";
+                    if (bubblePortal) bubblePortal.style.display = "flex";
+                    if (bubbleArrow) bubbleArrow.style.borderTopColor = "#8b5cf6";
+
+                    const nextFloorBtn = document.getElementById("floating-btn-next-floor");
+                    if (nextFloorBtn) {
+                        nextFloorBtn.innerText = `На этаж ${state.floor + 1}`;
+                        nextFloorBtn.onclick = async (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            await triggerNextFloorTransition();
+                        };
+                    }
+                } else {
+                    if (bubbleCombat) bubbleCombat.style.display = "none";
+                    if (bubblePortal) bubblePortal.style.display = "none";
+                }
+
+                // Restore normal action panel
+                if (normalActions) {
+                    if (isClearedFinish && state.floor < 3) {
+                        normalActions.innerHTML = `
+                            <div>
+                                <span>Вы победили стража! Здесь находится переход на следующий этаж разлома. Вы можете спуститься глубже, нажав кнопку над персонажем, либо продолжить исследование текущего уровня.</span>
+                            </div>
+                        `;
+                    } else if (isClearedFinish && state.floor === 3) {
+                        normalActions.innerHTML = `
+                            <div style="color: #10b981; font-weight: bold;">
+                                🎉 Сердце Разлома очищено! Все уровни успешно пройдены.
+                            </div>
+                        `;
+                    } else {
+                        normalActions.innerHTML = `
+                            Для перемещения по разлому нажимайте на подсвеченные соседние плиты на карте.
+                        `;
+                    }
+                    normalActions.style.display = "block";
+                }
+                if (encounterActions) encounterActions.style.display = "none";
+
+                if (headerTitle) headerTitle.innerText = "Переходы";
+                if (headerCount) headerCount.innerText = "0";
+            }
+        };
+
+        // Helper to trigger explicit next floor transition
+        const triggerNextFloorTransition = async () => {
+            const formData = new FormData();
+            formData.append("instance_id", instanceId);
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const headers = {};
+            if (csrfToken) {
+                headers['X-CSRF-Token'] = csrfToken;
+            }
+
+            try {
+                await fetch("/game/rift/hex-test/next-floor", {
+                    method: "POST",
+                    headers: headers,
+                    body: formData
+                });
+
+                const stateResponse = await fetch(`/api/dev/rift/hex-test/${instanceId}/state`);
+                if (stateResponse.ok) {
+                    const newState = await stateResponse.json();
+
+                    // Update Phaser state
+                    if (window.updatePhaserRiftState) {
+                        window.updatePhaserRiftState(newState);
+                    }
+                    // Update Info Card
+                    window.updateHexInfoCard(newState);
+                }
+            } catch (err) {
+                console.error("Failed to transition to next floor:", err);
+            }
+        };
+
+        // Initial setup for loaded state
+        window.updateHexInfoCard(riftState);
+
+        const scaleInput = document.getElementById("hex-scale-key-input");
+        document.querySelectorAll("[data-scale-choice]").forEach((button) => {
+            button.addEventListener("click", (event) => {
+                event.preventDefault();
+                if (scaleInput) {
+                    scaleInput.value = button.getAttribute("data-scale-choice") || "solo";
+                }
+                const patternSelect = document.getElementById("hex-pattern-key-select");
+                if (patternSelect) {
+                    patternSelect.value = "{{ random_scheme_key }}";
+                }
+                button.closest("form")?.requestSubmit();
+            });
+        });
+
+        document.getElementById("hex-pattern-key-select")?.addEventListener("change", (event) => {
+            event.preventDefault();
+            event.target.closest("form")?.requestSubmit();
+        });
+
+        document.getElementById("hex-show-all-map")?.addEventListener("change", (event) => {
+            event.preventDefault();
+            const params = new URLSearchParams();
+            if (instanceId) {
+                params.set("instance_id", instanceId);
+            }
+            params.set("scale_key", "{{ selected_scale_key }}");
+            const selectedPattern = document.querySelector("select[name='pattern_key']")?.value || "{{ selected_pattern_key }}";
+            if (selectedPattern) {
+                params.set("pattern_key", selectedPattern);
+            }
+            if (event.target.checked) {
+                params.set("show_all_map", "true");
+            }
+            window.location.href = `/rifttest?${params.toString()}`;
+        });
+
+        document.getElementById("hex-fit-map-btn")?.addEventListener("click", (event) => {
+            event.preventDefault();
+            if (window.fitPhaserHexMap) {
+                window.fitPhaserHexMap();
+            }
+        });
+
+        // Action handlers for combat resolution
+        const resolveCombat = async (action) => {
+            const formData = new FormData();
+            formData.append("instance_id", instanceId);
+            formData.append("action", action);
+
+            const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+            const headers = {};
+            if (csrfToken) {
+                headers['X-CSRF-Token'] = csrfToken;
+            }
+
+            try {
+                await fetch("/game/rift/hex-test/resolve-combat", {
+                    method: "POST",
+                    headers: headers,
+                    body: formData
+                });
+
+                const stateResponse = await fetch(`/api/dev/rift/hex-test/${instanceId}/state`);
+                if (stateResponse.ok) {
+                    const newState = await stateResponse.json();
+
+                    // Update Phaser state
+                    if (window.updatePhaserRiftState) {
+                        window.updatePhaserRiftState(newState);
+                    }
+                    // Update Info Card
+                    window.updateHexInfoCard(newState);
+                }
+            } catch (err) {
+                console.error("Failed to resolve combat:", err);
+            }
+        };
+
+        document.getElementById("floating-btn-fight")?.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            resolveCombat("fight");
+        });
+        document.getElementById("floating-btn-escape")?.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            resolveCombat("escape");
+        });
+    });
+</script>
+{% endblock content %}

@@ -47,12 +47,12 @@
   --text-sm: 10px;
   --text-xs: 9px;
   --text-2xs: 8px;
-  --game-panel-label-size: 9px;
-  --game-panel-value-size: 10px;
-  --game-panel-meta-size: 8px;
-  --game-panel-nav-size: 9px;
-  --game-story-body-size: 14px;
-  --game-story-title-size: 30px;
+  --game-panel-label-size: var(--text-xs);
+  --game-panel-value-size: var(--text-sm);
+  --game-panel-meta-size: var(--text-2xs);
+  --game-panel-nav-size: var(--text-xs);
+  --game-story-body-size: var(--text-md);
+  --game-story-title-size: var(--text-3xl);
 
 /* Spacing scale (4pt grid) */
   --sp-1: 4px;

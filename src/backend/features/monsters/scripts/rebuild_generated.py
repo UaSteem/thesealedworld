@@ -5,8 +5,8 @@ import asyncio
 import json
 
 from src.backend.core.database import get_manual_session_context
-from src.backend.features.monsters.dto.generated_view import MonsterDataRebuildRequestDTO
-from src.backend.features.monsters.services.generated_rebuild_service import MonsterGeneratedRebuildService
+from src.backend.features.monsters.catalog.services.generated_rebuild_service import MonsterGeneratedRebuildService
+from src.backend.features.monsters.inspection.dto.generated_view import MonsterDataRebuildRequestDTO
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:

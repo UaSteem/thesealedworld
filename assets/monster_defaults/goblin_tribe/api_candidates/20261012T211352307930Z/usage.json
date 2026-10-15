@@ -1,0 +1,11 @@
+{
+  "request_id": "6a6f8277-b214-4167-8508-23ff922ca09f",
+  "usage": {
+    "input_tokens": 1456,
+    "output_tokens": 27849,
+    "total_tokens": 29305
+  },
+  "model": "arrow-2",
+  "note": "Token estimate at public uncached rates; verify settled charge in Usage. Test keys return mocks.",
+  "estimated_usd_uncached": 0.562804
+}

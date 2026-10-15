@@ -81,7 +81,7 @@
 .arena-kicker {
     display: block;
     color: var(--col-parchment-dim);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     letter-spacing: .24em;
     margin-bottom: 5px;
 }
@@ -90,7 +90,7 @@
     margin: 0;
     color: color-mix(in srgb, var(--world-accent, var(--col-accent)) 82%, #fff);
     font-family: var(--font-ui);
-    font-size: 17px;
+    font-size: var(--text-lg);
     line-height: 1.2;
     letter-spacing: .08em;
     text-transform: uppercase;
@@ -101,7 +101,7 @@
     margin: 0;
     color: color-mix(in srgb, var(--world-accent, var(--col-accent)) 82%, #fff);
     font-family: var(--font-ui);
-    font-size: 17px;
+    font-size: var(--text-lg);
     line-height: 1.2;
     letter-spacing: .08em;
     text-transform: uppercase;
@@ -121,7 +121,7 @@
     color: var(--world-accent, var(--col-accent));
     cursor: pointer;
     clip-path: var(--clip-node-sm);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     font-weight: 800;
     letter-spacing: .16em;
     text-shadow: 0 1px 0 #000, 0 0 8px rgba(255, 170, 0, .18);
@@ -168,7 +168,7 @@
     max-width: 88%;
     color: color-mix(in srgb, var(--world-accent, var(--col-accent)) 74%, white);
     font-family: var(--font-ui);
-    font-size: 10px;
+    font-size: var(--text-sm);
     letter-spacing: .32em;
     line-height: 1.8;
     text-align: center;
@@ -181,7 +181,7 @@
     margin: 0;
     color: var(--col-parchment);
     font-family: var(--font-world);
-    font-size: 18px;
+    font-size: var(--text-lg);
     line-height: 1.72;
     text-shadow: 0 1px 10px rgba(0, 0, 0, .78);
 }

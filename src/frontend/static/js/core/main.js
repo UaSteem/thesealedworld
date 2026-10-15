@@ -126,6 +126,82 @@ function initGameTooltips(root = document) {
 
 window.initGameTooltips = initGameTooltips;
 
+// ── Generic details persistence ───────────────────────────────────────────────
+// Any <details data-persist-key="..."> element gets its open/closed state
+// saved to localStorage and restored on every page load / HTMX swap.
+// Key format: tbmmorpg:ui:details:<persist-key>
+const DETAILS_PERSIST_PREFIX = 'tbmmorpg:ui:details:';
+
+function initDetailsPersistence(root = document) {
+    const nodes = Array.from(root.querySelectorAll('details[data-persist-key]'));
+    nodes.forEach((node) => {
+        const key = node.dataset.persistKey;
+        if (!key) return;
+        const storageKey = DETAILS_PERSIST_PREFIX + key;
+
+        // Restore saved state
+        try {
+            const stored = window.localStorage.getItem(storageKey);
+            if (stored !== null) {
+                node.open = stored === 'open';
+            }
+        } catch (err) { void err; }
+
+        // Bind toggle listener once
+        if (node.dataset.persistBound === '1') return;
+        node.dataset.persistBound = '1';
+        node.addEventListener('toggle', () => {
+            try {
+                window.localStorage.setItem(storageKey, node.open ? 'open' : 'closed');
+            } catch (err) { void err; }
+        });
+    });
+}
+
+window.initDetailsPersistence = initDetailsPersistence;
+
+// ── Alpine.js accordion state helper ─────────────────────────────────────────
+// Usage in template: x-data="accState('status:acc:weapon_mastery', false)"
+// The returned object exposes `open` (bool) and `toggle()` which persists.
+function accState(persistKey, defaultOpen) {
+    const storageKey = DETAILS_PERSIST_PREFIX + persistKey;
+    let isOpen = defaultOpen;
+    try {
+        const stored = window.localStorage.getItem(storageKey);
+        if (stored !== null) isOpen = stored === 'open';
+    } catch (e) { void e; }
+
+    return {
+        open: isOpen,
+        toggle() {
+            this.open = !this.open;
+            try {
+                window.localStorage.setItem(storageKey, this.open ? 'open' : 'closed');
+            } catch (e) { void e; }
+        },
+    };
+}
+
+window.accState = accState;
+
+// ── Reset all accordion/details UI state to defaults ─────────────────────────
+// Call window.resetUIAccordions() from a settings "Reset layout" button.
+function resetUIAccordions() {
+    try {
+        const keys = Object.keys(window.localStorage).filter(k => k.startsWith(DETAILS_PERSIST_PREFIX));
+        keys.forEach(k => window.localStorage.removeItem(k));
+        // Re-open all details that have a default-open attribute
+        document.querySelectorAll('details[data-persist-key]').forEach(node => {
+            node.open = node.hasAttribute('open');
+            delete node.dataset.persistBound;
+        });
+        initDetailsPersistence(document);
+    } catch (e) { void e; }
+}
+
+window.resetUIAccordions = resetUIAccordions;
+
+// ── Combat stat section persistence (legacy, combat sidebar) ─────────────────
 const COMBAT_STAT_SECTION_STORAGE_PREFIX = 'tbmmorpg:combat:stat-section:';
 
 function initCombatStatSectionPersistence(root = document) {
@@ -160,6 +236,7 @@ window.initCombatStatSectionPersistence = initCombatStatSectionPersistence;
 
 document.addEventListener('DOMContentLoaded', () => {
     initGameTooltips(document);
+    initDetailsPersistence(document);
     initCombatStatSectionPersistence(document);
 });
 
@@ -246,6 +323,7 @@ function handleSessionReplaced(event) {
 }
 
 document.addEventListener('htmx:load', function() {
+    initDetailsPersistence(document);
     initCombatStatSectionPersistence(document);
     if (window.GameCatalogCache) {
         window.GameCatalogCache.init().then(() => window.GameCatalogCache.resolveDom(document));

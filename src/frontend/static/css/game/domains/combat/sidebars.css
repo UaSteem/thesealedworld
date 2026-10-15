@@ -257,7 +257,7 @@
     overflow: hidden;
     color: rgba(210, 180, 140, .56);
     font-family: var(--font-ui);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: .14em;
     line-height: 1.2;
@@ -294,7 +294,7 @@
 .combat-target-empty span {
     color: var(--col-parchment-dim);
     font-family: var(--font-ui);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: .20em;
     line-height: 1.35;
@@ -304,7 +304,7 @@
 .combat-target-empty strong {
     color: var(--world-accent, var(--col-accent));
     font-family: var(--font-ui);
-    font-size: 13px;
+    font-size: var(--text-md);
     letter-spacing: .08em;
     line-height: 1.3;
     text-transform: uppercase;
@@ -314,7 +314,7 @@
     margin: 0;
     color: rgba(255, 231, 190, .78);
     font-family: var(--font-text);
-    font-size: 12px;
+    font-size: var(--text-base);
     line-height: 1.45;
 }
 
@@ -326,7 +326,7 @@
     gap: 6px;
     color: var(--col-parchment);
     font-family: var(--font-mono);
-    font-size: 8px;
+    font-size: var(--text-2xs);
 }
 
 .combat-roster-row {
@@ -362,7 +362,7 @@
 .combat-info-list em {
     overflow: hidden;
     font-family: var(--font-ui);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     font-style: normal;
     line-height: 1.2;
     text-overflow: ellipsis;
@@ -452,7 +452,7 @@
 .combat-belt-slot {
     aspect-ratio: 1;
     color: rgba(255, 170, 0, .34);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     display: grid;
     place-items: center;
     gap: 2px;
@@ -462,7 +462,7 @@
 .combat-belt-slot small {
     max-width: 100%;
     color: rgba(244, 225, 175, .74);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     line-height: 1;
     text-align: center;
     text-transform: uppercase;
@@ -519,7 +519,7 @@
 
 .combat-info-mark {
     color: rgba(255, 170, 0, .42);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     text-align: right;
     white-space: nowrap;
@@ -543,7 +543,7 @@
     overflow: hidden;
     color: var(--world-accent, var(--col-accent));
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--text-base);
     font-weight: 900;
     letter-spacing: .10em;
     text-overflow: ellipsis;
@@ -598,7 +598,7 @@
 .combat-result-section-title {
     color: var(--col-parchment-dim);
     font-family: var(--font-ui);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: .22em;
     text-transform: uppercase;
@@ -607,7 +607,7 @@
 .combat-wait-scene__copy strong {
     color: var(--world-accent, var(--col-accent));
     font-family: var(--font-ui);
-    font-size: 14px;
+    font-size: var(--text-md);
     letter-spacing: .10em;
     line-height: 1.25;
     text-transform: uppercase;
@@ -617,6 +617,6 @@
     margin: 0;
     color: rgba(255, 231, 190, .82);
     font-family: var(--font-text);
-    font-size: 13px;
+    font-size: var(--text-md);
     line-height: 1.5;
 }

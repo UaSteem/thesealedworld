@@ -48,7 +48,7 @@
     border: 1px solid rgba(255, 170, 0, 0.26);
     color: rgba(255, 190, 96, 0.88);
     font-family: var(--font-ui);
-    font-size: 17px;
+    font-size: var(--text-lg);
     line-height: 1;
 }
 
@@ -65,7 +65,7 @@
 .mobile-encounter-interrupt strong {
     display: block;
     color: rgba(255, 190, 96, 0.94);
-    font-size: 10px;
+    font-size: var(--text-sm);
     font-weight: 900;
     letter-spacing: 0.20em;
     line-height: 1;
@@ -75,7 +75,7 @@
     display: block;
     margin-top: 4px;
     color: rgba(230, 204, 172, 0.62);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: 0.14em;
     line-height: 1;
@@ -84,7 +84,7 @@
 
 .mobile-encounter-interrupt p {
     color: rgba(245, 232, 204, 0.80);
-    font-size: 9px;
+    font-size: var(--text-xs);
     line-height: 1.5;
 }
 
@@ -125,7 +125,7 @@
 .mobile-encounter-target-card header > span {
     color: rgba(255, 170, 0, 0.74);
     font-family: var(--font-ui);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -144,7 +144,7 @@
     background-repeat: no-repeat;
     color: rgba(255, 190, 96, 0.90);
     font-family: var(--font-ui);
-    font-size: 28px;
+    font-size: var(--text-2xl);
     font-weight: 900;
     text-shadow: 0 0 10px rgba(255, 170, 0, 0.28);
 }
@@ -173,7 +173,7 @@
     color: rgba(255, 190, 96, 0.82);
     background: rgba(0, 0, 0, 0.22);
     font-family: var(--font-ui);
-    font-size: 6px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: 0.10em;
     text-transform: uppercase;
@@ -195,7 +195,7 @@
 .mobile-encounter-target-stats span {
     color: rgba(210, 180, 140, 0.42);
     font-family: var(--font-ui);
-    font-size: 6px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -204,7 +204,7 @@
 .mobile-encounter-target-stats strong {
     color: var(--col-accent);
     font-family: var(--font-ui);
-    font-size: 10px;
+    font-size: var(--text-sm);
     font-weight: 900;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -237,14 +237,14 @@
 
 .mobile-encounter-action strong {
     color: var(--col-accent);
-    font-size: 9px;
+    font-size: var(--text-xs);
     font-weight: 900;
     letter-spacing: 0.12em;
 }
 
 .mobile-encounter-action span {
     color: rgba(210, 180, 140, 0.58);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 800;
     letter-spacing: 0.08em;
 }

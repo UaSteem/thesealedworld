@@ -1,0 +1,50 @@
+[
+  {
+    "id": "sewer_rat",
+    "transparent": true
+  },
+  {
+    "id": "scavenger_rat",
+    "transparent": true
+  },
+  {
+    "id": "swarm_rat",
+    "transparent": true
+  },
+  {
+    "id": "tunnel_rat",
+    "transparent": true
+  },
+  {
+    "id": "pack_rat",
+    "transparent": true
+  },
+  {
+    "id": "screecher",
+    "transparent": true
+  },
+  {
+    "id": "burrow_guard",
+    "transparent": true
+  },
+  {
+    "id": "ironfang",
+    "transparent": true
+  },
+  {
+    "id": "heavy_rat",
+    "transparent": true
+  },
+  {
+    "id": "rat_brute",
+    "transparent": true
+  },
+  {
+    "id": "brood_alpha",
+    "transparent": true
+  },
+  {
+    "id": "rat_king",
+    "transparent": true
+  }
+]

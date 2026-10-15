@@ -1,0 +1,55 @@
+{
+  "columns": 4,
+  "rows": 3,
+  "order": [
+    {
+      "variant_id": "goblin_sneak",
+      "role": "MINION"
+    },
+    {
+      "variant_id": "goblin_scavenger",
+      "role": "MINION"
+    },
+    {
+      "variant_id": "goblin_cutter",
+      "role": "MINION"
+    },
+    {
+      "variant_id": "goblin_sparkpick",
+      "role": "MINION"
+    },
+    {
+      "variant_id": "goblin_spearman",
+      "role": "VETERAN"
+    },
+    {
+      "variant_id": "goblin_slinger",
+      "role": "VETERAN"
+    },
+    {
+      "variant_id": "goblin_scrapguard",
+      "role": "VETERAN"
+    },
+    {
+      "variant_id": "goblin_tinkerer",
+      "role": "ELITE"
+    },
+    {
+      "variant_id": "goblin_bomber",
+      "role": "ELITE"
+    },
+    {
+      "variant_id": "goblin_trapmaster",
+      "role": "ELITE"
+    },
+    {
+      "variant_id": "goblin_chief",
+      "role": "BOSS"
+    },
+    {
+      "variant_id": "scrap_king",
+      "role": "BOSS"
+    }
+  ],
+  "scrap_king_source": "browser_candidates/scrap_king-face-priority/scrap_king.svg"
+}

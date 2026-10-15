@@ -50,7 +50,7 @@
     backdrop-filter: blur(4px);
     padding: 3px 6px;
     border: 1px solid rgba(255, 170, 0, 0.15);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     line-height: 1.2;
     pointer-events: none;
     z-index: 5;
@@ -68,7 +68,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.av-ico { font-size: 9px; }
+.av-ico { font-size: var(--text-xs); }
 
 
 .avatar-hud {
@@ -97,17 +97,17 @@
     min-width: 0;
 }
 .avatar-name {
-    font-size: 11px;
+    font-size: var(--text-base);
     letter-spacing: .09em;
     color: var(--col-accent);
     text-shadow: 0 0 10px rgba(255,170,0,0.45);
     font-weight: bold;
 }
-.avatar-sub  { font-size: 8px; color: var(--col-parchment-dim); display: block; margin-top: 1px; opacity: 0.6; }
+.avatar-sub  { font-size: var(--text-2xs); color: var(--col-parchment-dim); display: block; margin-top: 1px; opacity: 0.6; }
 
 
 .sec {
-    font-size: 8px;
+    font-size: var(--text-2xs);
     letter-spacing: .18em;
     text-transform: uppercase;
     color: var(--col-parchment-dim);

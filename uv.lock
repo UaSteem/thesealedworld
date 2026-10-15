@@ -468,21 +468,43 @@ wheels = [
 
 [[package]]
 name = "codex-ai"
-version = "0.2.4"
-source = { registry = "https://pypi.org/simple" }
+source = { directory = "../../codex_tools/codex-ai" }
 dependencies = [
     { name = "codex-core" },
     { name = "pydantic" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/3b/b5/46dd9f2b9a1bbc2ee41e0bb760a894887dee476b1d5f783cdc6033a251e8/codex_ai-0.2.4.tar.gz", hash = "sha256:68fb08d3235c364f8f1a4f8eaa175fc7bedaa62e1513ee043bafe2fde62a0434", size = 132316, upload-time = "2026-05-20T23:44:13.562Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/a2/93/b8de5a746be97bc4dfa123a03b8d0ddefb94b7f03f0a6cfebcf82f371eab/codex_ai-0.2.4-py3-none-any.whl", hash = "sha256:174fb2645df06ab33e8ded65bc6eefab48bd55df81ac63043cf9dd6684476f01", size = 19756, upload-time = "2026-05-20T23:44:11.97Z" },
 ]
 
 [package.optional-dependencies]
 gemini = [
     { name = "google-genai" },
 ]
+
+[package.metadata]
+requires-dist = [
+    { name = "bandit", marker = "extra == 'dev'", specifier = ">=1.7" },
+    { name = "codex-core", specifier = ">=0.2.2,<0.5.0" },
+    { name = "detect-secrets", marker = "extra == 'dev'", specifier = ">=1.5" },
+    { name = "google-genai", marker = "extra == 'all'", specifier = "==2.3.0" },
+    { name = "google-genai", marker = "extra == 'dev'", specifier = "==2.3.0" },
+    { name = "google-genai", marker = "extra == 'gemini'", specifier = "==2.3.0" },
+    { name = "mike", marker = "extra == 'docs'", specifier = ">=2.0" },
+    { name = "mkdocs", marker = "extra == 'docs'", specifier = ">=1.5" },
+    { name = "mkdocs-include-markdown-plugin", marker = "extra == 'docs'" },
+    { name = "mkdocs-material", marker = "extra == 'docs'", specifier = ">=9.0" },
+    { name = "mkdocstrings", extras = ["python"], marker = "extra == 'docs'", specifier = ">=0.24" },
+    { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.10" },
+    { name = "openai", marker = "extra == 'all'", specifier = ">=1.0,<2.0" },
+    { name = "openai", marker = "extra == 'dev'", specifier = ">=1.0,<2.0" },
+    { name = "openai", marker = "extra == 'openai'", specifier = ">=1.0,<2.0" },
+    { name = "pip-audit", marker = "extra == 'dev'", specifier = ">=2.7" },
+    { name = "pre-commit", marker = "extra == 'dev'", specifier = ">=3.0" },
+    { name = "pydantic", specifier = ">=2.0,<3.0" },
+    { name = "pytest", marker = "extra == 'dev'", specifier = ">=8.0" },
+    { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.23" },
+    { name = "pytest-cov", marker = "extra == 'dev'" },
+    { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.4" },
+]
+provides-extras = ["all", "dev", "docs", "gemini", "openai"]
 
 [[package]]
 name = "codex-bot"
@@ -2589,6 +2611,7 @@ dependencies = [
     { name = "alembic" },
     { name = "asyncpg" },
     { name = "authx" },
+    { name = "codex-ai" },
     { name = "codex-core" },
     { name = "codex-platform" },
     { name = "fastapi" },
@@ -2648,6 +2671,7 @@ requires-dist = [
     { name = "alembic", specifier = ">=1.18.4" },
     { name = "asyncpg", specifier = ">=0.31.0" },
     { name = "authx", specifier = "==1.6.0" },
+    { name = "codex-ai", directory = "../../codex_tools/codex-ai" },
     { name = "codex-core", specifier = ">=0.4.0" },
     { name = "codex-platform", specifier = ">=0.5.2" },
     { name = "fastapi", specifier = ">=0.136.1" },
@@ -2667,7 +2691,7 @@ requires-dist = [
 backend-runtime = [
     { name = "arq", specifier = ">=0.26.3" },
     { name = "boto3", specifier = ">=1.35.0" },
-    { name = "codex-ai", extras = ["gemini"], specifier = "==0.2.4" },
+    { name = "codex-ai", extras = ["gemini"], directory = "../../codex_tools/codex-ai" },
     { name = "google-genai", specifier = ">=0.3.0" },
     { name = "pillow", specifier = ">=12.0.0" },
     { name = "pymongo", specifier = ">=4.13" },

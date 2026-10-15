@@ -89,14 +89,28 @@
 }
 
 .exploration-screen-content.has-city-map-layout {
-    --city-map-copy-reserve: 132px;
     container-type: size;
     display: grid;
-    grid-template-rows: auto auto;
-    align-content: start;
     align-items: start;
     justify-items: center;
-    gap: 8px;
+}
+
+/* City-map screen: map gets 70%, action panel gets 30% */
+.has-city-map-screen > .exploration-screen-content {
+    flex: 70 70 0;
+    min-height: 0;
+}
+
+.has-city-map-screen > .exploration-action-panel {
+    flex: 30 30 0;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+/* In city-map mode: lift the 920px content-max so dock fills the full center column */
+.exploration-main-dock:has(.has-city-map-screen) {
+    width: 100%;
+    max-width: 100%;
 }
 
 .exploration-navigation-grid {
@@ -107,7 +121,7 @@
     --game-action-padding: 8px;
     --game-action-gap: 6px;
     min-height: 0;
-    grid-template-rows: auto auto minmax(0, auto);
+    grid-template-rows: auto auto 1fr;
     padding-top: 0;
     border-right: 0;
     border-bottom: 0;

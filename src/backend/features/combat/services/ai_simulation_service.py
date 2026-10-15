@@ -36,7 +36,7 @@ from src.backend.features.combat.runtime.simulation import (
 from src.shared.schemas.modifier_dto import CombatModifiersDTO, CombatSkillsDTO
 
 if TYPE_CHECKING:
-    from src.backend.features.monsters.dto.generation import GeneratedMonster
+    from src.backend.features.monsters.public import GeneratedMonster
     from src.backend.infrastructure.combat.models import CombatAiSimulationRun
     from src.backend.infrastructure.combat.repositories import CombatAiSimulationRunRepository
 

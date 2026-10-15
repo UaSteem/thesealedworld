@@ -21,9 +21,17 @@ try:
 except Exception:
     pass
 
-from src.backend.features.monsters.resources.spawn_config import BIOME_FAMILIES, TIER_AVAILABILITY  # noqa: E402
-from src.backend.features.monsters.runtime.hashing import compute_context_hash, normalize_tags  # noqa: E402
-from src.backend.features.monsters.services.world_population_service import WorldMonsterPopulationService  # noqa: E402
+from src.backend.features.monsters.catalog.materialization.hashing import (  # noqa: E402
+    compute_context_hash,
+    normalize_tags,
+)
+from src.backend.features.monsters.catalog.services.world_population_service import (  # noqa: E402
+    WorldMonsterPopulationService,  # noqa: E402
+)
+from src.backend.features.monsters.encounters.resources.spawn_config import (  # noqa: E402
+    BIOME_FAMILIES,
+    TIER_AVAILABILITY,
+)
 from src.backend.features.world.integrations.world_data import WorldZoneSeed  # noqa: E402
 from src.backend.features.world.runtime.node_graph import (  # noqa: E402
     RegionNodeGenerationInput,

@@ -1,0 +1,11 @@
+Build the illustration in this priority order:
+
+1. Establish the complete character silhouette, body proportions and pose.
+2. Fully resolve the uncovered face and pointed ears. The face is the highest
+   detail priority: clear eyes, nose, mouth, expression and distinct goblin features.
+3. Add the main armor shapes, weapon and throne.
+4. Add secondary shading, wear, rivets, scratches and small decorations last.
+
+If the complexity budget is limited, simplify armor decoration and the throne.
+Always preserve a complete, expressive, readable face.
+Never hide the face behind a helmet or replace facial features with vague shapes.

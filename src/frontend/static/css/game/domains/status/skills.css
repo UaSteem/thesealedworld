@@ -7,7 +7,7 @@
     padding: 7px 10px;
     cursor: pointer;
     background: rgba(255,170,0,.02);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     letter-spacing: .28em;
     text-transform: uppercase;
     color: rgba(255,170,0,.38);
@@ -21,7 +21,7 @@
     white-space: nowrap;
 }
 .acc-head:hover { background: rgba(255,170,0,.05); color: var(--col-accent); }
-.acc-arrow { font-size: 9px; transition: transform .22s; color: rgba(255,170,0,.26); }
+.acc-arrow { font-size: var(--text-xs); transition: transform .22s; color: rgba(255,170,0,.26); }
 .acc.open .acc-arrow { transform: rotate(90deg); }
 .acc-body { border-top: 1px solid rgba(255,170,0,.07); padding: 7px; background: rgba(0,0,0,0.2); min-width: 0; }
 
@@ -47,18 +47,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: var(--text-base);
 }
 .skill-info { flex: 1; min-width: 0; }
-.skill-name { font-size: 9px; color: rgba(210,180,140,.78); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.skill-desc { font-size: 7px; color: var(--col-text-dim); letter-spacing: .05em; margin-top: 1px; }
-.skill-cd { font-size: 9px; color: var(--col-text-dim); }
+.skill-name { font-size: var(--text-xs); color: rgba(210,180,140,.78); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.skill-desc { font-size: var(--text-2xs); color: var(--col-text-dim); letter-spacing: .05em; margin-top: 1px; }
+.skill-cd { font-size: var(--text-xs); color: var(--col-text-dim); }
 .skill-cd.ready { color: #44ff88; text-shadow: 0 0 5px rgba(68,255,136,.4); }
 
 
 .prof-list { display: flex; flex-direction: column; gap: 8px; }
 .prof-cat {
-    font-size: 8px;
+    font-size: var(--text-2xs);
     color: var(--col-accent);
     opacity: 0.4;
     text-transform: uppercase;
@@ -68,7 +68,7 @@
     margin-top: 4px;
 }
 .prof-row { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.prof-meta { display: flex; justify-content: space-between; gap: 8px; min-width: 0; font-size: 9px; color: var(--col-parchment); letter-spacing: 0.05em; }
+.prof-meta { display: flex; justify-content: space-between; gap: 8px; min-width: 0; font-size: var(--text-xs); color: var(--col-parchment); letter-spacing: 0.05em; }
 .prof-meta span {
     min-width: 0;
 }
@@ -86,7 +86,7 @@
 .prof-meta span:last-child { color: var(--col-accent); font-weight: bold; }
 .prof-bar { height: 3px; background: rgba(255,255,255,0.05); border-radius: 1px; overflow: hidden; }
 .prof-fill { height: 100%; background: var(--col-accent); opacity: 0.6; border-radius: 1px; }
-.prof-note { font-size: 7px; color: var(--col-text-dim); text-align: center; margin-top: 4px; font-style: italic; opacity: 0.5; }
+.prof-note { font-size: var(--text-2xs); color: var(--col-text-dim); text-align: center; margin-top: 4px; font-style: italic; opacity: 0.5; }
 
 .skill-groups-widget {
     display: flex;
@@ -125,7 +125,7 @@
     min-width: 0;
     color: rgba(255,170,0,.62);
     font-family: var(--font-mono);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     font-weight: 800;
     letter-spacing: .12em;
     line-height: 1.1;
@@ -139,7 +139,7 @@
     flex-shrink: 0;
     color: rgba(210,180,140,.42);
     font-family: var(--font-mono);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     font-weight: 800;
 }
 
@@ -160,7 +160,7 @@
     border-top: 1px solid rgba(255,170,0,.055);
     color: var(--col-parchment);
     font-family: var(--font-mono);
-    font-size: 9px;
+    font-size: var(--text-xs);
     letter-spacing: .04em;
 }
 

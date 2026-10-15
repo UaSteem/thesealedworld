@@ -10,7 +10,7 @@ from typing import Any, Literal
 from src.backend.core.calculators.stats_waterfall_calculator import StatsWaterfallCalculator
 from src.backend.features.combat.integrations import CombatCatalogIntegrator
 from src.backend.features.game_catalog.combat.resources.common.targeting import TargetType
-from src.backend.features.monsters.resources.visuals import version_generated_asset_url
+from src.backend.features.monsters.public import version_generated_asset_url
 from src.shared.schemas.combat import (
     CombatAbilityBadgeDTO,
     CombatActionOptionDTO,

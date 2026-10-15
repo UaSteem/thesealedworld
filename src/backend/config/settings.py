@@ -53,6 +53,8 @@ class BackendSettings(BaseCommonSettings):
     authx_jwt_token_locations: list[Literal["headers", "cookies", "json", "query"]] = ["headers"]
     site_to_game_service_key: str = "change-me-site-to-game-service-key"  # pragma: allowlist secret
     frontend_internal_service_key: str | None = "dev-site-to-game-service-key"  # pragma: allowlist secret
+    monster_catalog_write_key: str = ""
+    monster_catalog_read_key: str = ""
     game_access_token_expire_minutes: int = 15
     game_refresh_token_expire_minutes: int = 12 * 60
     default_symbiote_name: str = "SYSTEM"
@@ -124,7 +126,6 @@ class BackendSettings(BaseCommonSettings):
     gemini_api_key: str | None = None
     gemini_model: str = "gemini-2.5-flash"
     gemini_image_model: str = "gemini-2.5-flash-image"
-    gemini_monster_image_model: str = "gemini-2.5-flash-image"
     gemini_location_image_model: str = "gemini-2.5-flash-image"
     gemini_avatar_image_model: str = "gemini-2.5-flash-image"
     monster_clan_flavor_ai_interval_seconds: float = 30.0

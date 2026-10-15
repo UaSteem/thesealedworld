@@ -15,7 +15,7 @@ from src.backend.features.character.repositories import (
 from src.backend.features.items.integrations import ItemPersistenceIntegration
 from src.backend.features.items.repositories import ItemInstanceRepository
 from src.backend.features.items.services.generation_service import ItemGenerationService
-from src.backend.features.monsters.repositories import MonsterGenerationRepository
+from src.backend.features.monsters.public import MonsterGenerationRepository
 
 
 def get_admin_player_read_service(db_session=Depends(get_db)) -> AdminPlayerReadService:

@@ -1,0 +1,9214 @@
+{
+  "schema": "turnbasedmmorpg.rift.tileset.mongo_document.v2",
+  "document_type": "rift_tileset_metadata",
+  "tile_set_key": "void_temple",
+  "theme_key": "void_temple",
+  "asset_root": "tiles",
+  "edge_order": [
+    "NE",
+    "E",
+    "SE",
+    "SW",
+    "W",
+    "NW"
+  ],
+  "storage_contract": {
+    "postgres_owner": "rift_base_set",
+    "mongo_collection": "rift_tileset_documents",
+    "postgres_document_ref_field": "tileset_document_id",
+    "resource_fixture_path": "src/backend/features/rift/resources/json/tile_sets/void_temple/tileset_data.json",
+    "frontend_static_root": "/static/images/rift/void_temple/tiles"
+  },
+  "tiles": [
+    {
+      "id": 1,
+      "file": "tile_01.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_2_3_4_5_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_2_3_4_5_6.v01"
+    },
+    {
+      "id": 2,
+      "file": "tile_02.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_3_4_5_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_3_4_5_6.v01"
+    },
+    {
+      "id": 3,
+      "file": "tile_03.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_4_5_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_4_5_6.v01"
+    },
+    {
+      "id": 4,
+      "file": "tile_04.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        1,
+        0,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_3_5_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_3_5_6.v01"
+    },
+    {
+      "id": 5,
+      "file": "tile_05.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_3_4_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_3_4_6.v01"
+    },
+    {
+      "id": 6,
+      "file": "tile_06.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_3_4_5",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_3_4_5.v01"
+    },
+    {
+      "id": 7,
+      "file": "tile_07.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_3_4_5_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_3_4_5_6.v01"
+    },
+    {
+      "id": 8,
+      "file": "tile_08.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_4_5_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_4_5_6.v01"
+    },
+    {
+      "id": 9,
+      "file": "tile_09.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_5_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_5_6.v01"
+    },
+    {
+      "id": 10,
+      "file": "tile_10.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_3_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_3_6.v01"
+    },
+    {
+      "id": 11,
+      "file": "tile_11.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_3_4",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_3_4.v01"
+    },
+    {
+      "id": 12,
+      "file": "tile_12.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_2_3_4_5",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_2_3_4_5.v01"
+    },
+    {
+      "id": 13,
+      "file": "tile_13.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_4_5_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_4_5_6.v01"
+    },
+    {
+      "id": 14,
+      "file": "tile_14.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_5_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_5_6.v01"
+    },
+    {
+      "id": 15,
+      "file": "tile_15.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_6.v01"
+    },
+    {
+      "id": 16,
+      "file": "tile_16.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_3",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_3.v01"
+    },
+    {
+      "id": 17,
+      "file": "tile_17.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_2_3_4",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_2_3_4.v01"
+    },
+    {
+      "id": 18,
+      "file": "tile_18.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_3_4_5",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_3_4_5.v01"
+    },
+    {
+      "id": 19,
+      "file": "tile_19.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_5_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_5_6.v01"
+    },
+    {
+      "id": 20,
+      "file": "tile_20.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_6.v01"
+    },
+    {
+      "id": 21,
+      "file": "tile_21.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2.v01"
+    },
+    {
+      "id": 22,
+      "file": "tile_22.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_2_3",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_2_3.v01"
+    },
+    {
+      "id": 23,
+      "file": "tile_23.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_3_4",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_3_4.v01"
+    },
+    {
+      "id": 24,
+      "file": "tile_24.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_4_5",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_4_5.v01"
+    },
+    {
+      "id": 25,
+      "file": "tile_25.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_6.v01"
+    },
+    {
+      "id": 26,
+      "file": "tile_26.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1.v01"
+    },
+    {
+      "id": 27,
+      "file": "tile_27.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_2",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_2.v01"
+    },
+    {
+      "id": 28,
+      "file": "tile_28.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_3",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_3.v01"
+    },
+    {
+      "id": 29,
+      "file": "tile_29.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_4",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_4.v01"
+    },
+    {
+      "id": 30,
+      "file": "tile_30.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_5",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_5.v01"
+    },
+    {
+      "id": 31,
+      "file": "tile_31.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_2_3_4_5_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_2_3_4_5_6.v02"
+    },
+    {
+      "id": 32,
+      "file": "tile_32.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_3_4_5_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_3_4_5_6.v02"
+    },
+    {
+      "id": 33,
+      "file": "tile_33.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_4_5_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_4_5_6.v02"
+    },
+    {
+      "id": 34,
+      "file": "tile_34.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        1,
+        0,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_3_5_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_3_5_6.v02"
+    },
+    {
+      "id": 35,
+      "file": "tile_35.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_3_4_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_3_4_6.v02"
+    },
+    {
+      "id": 36,
+      "file": "tile_36.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_3_4_5",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_3_4_5.v02"
+    },
+    {
+      "id": 37,
+      "file": "tile_37.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_3_4_5_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_3_4_5_6.v02"
+    },
+    {
+      "id": 38,
+      "file": "tile_38.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_4_5_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_4_5_6.v02"
+    },
+    {
+      "id": 39,
+      "file": "tile_39.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_5_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_5_6.v02"
+    },
+    {
+      "id": 40,
+      "file": "tile_40.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_3_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_3_6.v02"
+    },
+    {
+      "id": 41,
+      "file": "tile_41.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_3_4",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_3_4.v02"
+    },
+    {
+      "id": 42,
+      "file": "tile_42.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_2_3_4_5",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_2_3_4_5.v02"
+    },
+    {
+      "id": 43,
+      "file": "tile_43.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_4_5_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_4_5_6.v02"
+    },
+    {
+      "id": 44,
+      "file": "tile_44.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_5_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_5_6.v02"
+    },
+    {
+      "id": 45,
+      "file": "tile_45.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_6.v02"
+    },
+    {
+      "id": 46,
+      "file": "tile_46.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2_3",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2_3.v02"
+    },
+    {
+      "id": 47,
+      "file": "tile_47.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_2_3_4",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_2_3_4.v02"
+    },
+    {
+      "id": 48,
+      "file": "tile_48.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_3_4_5",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_3_4_5.v02"
+    },
+    {
+      "id": 49,
+      "file": "tile_49.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_5_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_5_6.v02"
+    },
+    {
+      "id": 50,
+      "file": "tile_50.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_6.v02"
+    },
+    {
+      "id": 51,
+      "file": "tile_51.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1_2",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1_2.v02"
+    },
+    {
+      "id": 52,
+      "file": "tile_52.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_2_3",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_2_3.v02"
+    },
+    {
+      "id": 53,
+      "file": "tile_53.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_3_4",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_3_4.v02"
+    },
+    {
+      "id": 54,
+      "file": "tile_54.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_4_5",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_4_5.v02"
+    },
+    {
+      "id": 55,
+      "file": "tile_55.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_6.v02"
+    },
+    {
+      "id": 56,
+      "file": "tile_56.png",
+      "walkable": 0,
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_open_1",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "contour",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_open_1.v02"
+    },
+    {
+      "id": 75,
+      "file": "tile_75.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 25,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v25"
+    },
+    {
+      "id": 76,
+      "file": "tile_76.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 24,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v24"
+    },
+    {
+      "id": 77,
+      "file": "tile_77.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 23,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v23"
+    },
+    {
+      "id": 78,
+      "file": "tile_78.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 22,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v22"
+    },
+    {
+      "id": 79,
+      "file": "tile_79.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 21,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v21"
+    },
+    {
+      "id": 80,
+      "file": "tile_80.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 20,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v20"
+    },
+    {
+      "id": 81,
+      "file": "tile_81.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 19,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v19"
+    },
+    {
+      "id": 82,
+      "file": "tile_82.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 18,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v18"
+    },
+    {
+      "id": 83,
+      "file": "tile_83.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 17,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v17"
+    },
+    {
+      "id": 84,
+      "file": "tile_84.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 16,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v16"
+    },
+    {
+      "id": 85,
+      "file": "tile_85.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 15,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v15"
+    },
+    {
+      "id": 86,
+      "file": "tile_86.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 14,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v14"
+    },
+    {
+      "id": 87,
+      "file": "tile_87.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 13,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v13"
+    },
+    {
+      "id": 88,
+      "file": "tile_88.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 12,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v12"
+    },
+    {
+      "id": 89,
+      "file": "tile_89.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 11,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v11"
+    },
+    {
+      "id": 90,
+      "file": "tile_90.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 10,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v10"
+    },
+    {
+      "id": 91,
+      "file": "tile_91.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 9,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v09"
+    },
+    {
+      "id": 92,
+      "file": "tile_92.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 8,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v08"
+    },
+    {
+      "id": 93,
+      "file": "tile_93.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 7,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v07"
+    },
+    {
+      "id": 94,
+      "file": "tile_94.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 6,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v06"
+    },
+    {
+      "id": 95,
+      "file": "tile_95.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 5,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v05"
+    },
+    {
+      "id": 96,
+      "file": "tile_96.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 4,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v04"
+    },
+    {
+      "id": 97,
+      "file": "tile_97.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v03"
+    },
+    {
+      "id": 98,
+      "file": "tile_98.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v02"
+    },
+    {
+      "id": 99,
+      "file": "tile_99.png",
+      "walkable": 0,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "blocker",
+      "structure": {
+        "variant_group": "blocker_void_decor",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "void_decor",
+          "void_fill"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "blocker.blocker_void_decor.v01"
+    },
+    {
+      "id": 100,
+      "file": "tile_100.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_1_3",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_1_3.v01"
+    },
+    {
+      "id": 101,
+      "file": "tile_101.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_6_4",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_6_4.v01"
+    },
+    {
+      "id": 102,
+      "file": "tile_102.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "straight_2_5",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.straight_2_5.v01"
+    },
+    {
+      "id": 103,
+      "file": "tile_103.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_2_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_2_6.v01"
+    },
+    {
+      "id": 104,
+      "file": "tile_104.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_1_5",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_1_5.v01"
+    },
+    {
+      "id": 105,
+      "file": "tile_105.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "straight_1_4",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.straight_1_4.v01"
+    },
+    {
+      "id": 106,
+      "file": "tile_106.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_2_4",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_2_4.v01"
+    },
+    {
+      "id": 107,
+      "file": "tile_107.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "straight_1_4",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.straight_1_4.v02"
+    },
+    {
+      "id": 108,
+      "file": "tile_108.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_2_4",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_2_4.v02"
+    },
+    {
+      "id": 109,
+      "file": "tile_109.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        1
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "straight_3_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.straight_3_6.v01"
+    },
+    {
+      "id": 110,
+      "file": "tile_110.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_4_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_4_6.v01"
+    },
+    {
+      "id": 111,
+      "file": "tile_111.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        1
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "straight_3_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.straight_3_6.v02"
+    },
+    {
+      "id": 112,
+      "file": "tile_112.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_5_3",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_5_3.v01"
+    },
+    {
+      "id": 113,
+      "file": "tile_113.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "fork_1_3_5",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch",
+          "branching"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.fork_1_3_5.v01"
+    },
+    {
+      "id": 114,
+      "file": "tile_114.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "fork_2_4_6",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch",
+          "branching"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.fork_2_4_6.v01"
+    },
+    {
+      "id": 115,
+      "file": "tile_115.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "straight_1_4",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.straight_1_4.v03"
+    },
+    {
+      "id": 116,
+      "file": "tile_116.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_1_3",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_1_3.v02"
+    },
+    {
+      "id": 117,
+      "file": "tile_117.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_2_4",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_2_4.v03"
+    },
+    {
+      "id": 118,
+      "file": "tile_118.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_4_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_4_6.v02"
+    },
+    {
+      "id": 119,
+      "file": "tile_119.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_1_5",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_1_5.v02"
+    },
+    {
+      "id": 120,
+      "file": "tile_120.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        1
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "straight_3_6",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.straight_3_6.v03"
+    },
+    {
+      "id": 121,
+      "file": "tile_121.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        1
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_4_6",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_4_6.v03"
+    },
+    {
+      "id": 122,
+      "file": "tile_122.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_5_3",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_5_3.v02"
+    },
+    {
+      "id": 123,
+      "file": "tile_123.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_1_3",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_1_3.v03"
+    },
+    {
+      "id": 124,
+      "file": "tile_124.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "kind": "movement",
+      "structure": {
+        "variant_group": "turn_2_6",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "",
+        "event_tags": []
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "movement.turn_2_6.v02"
+    },
+    {
+      "id": 201,
+      "file": "tile_201.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "level_transition",
+      "structure": {
+        "variant_group": "level_entry",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "level_link"
+        ]
+      },
+      "placement": {
+        "event": "level_entry",
+        "event_tags": "level_entry",
+        "transition_pair": "stairs_spiral_01"
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "level_transition.level_entry.level_entry.v01"
+    },
+    {
+      "id": 202,
+      "file": "tile_202.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "level_transition",
+      "structure": {
+        "variant_group": "level_exit",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "level_link"
+        ]
+      },
+      "placement": {
+        "event": "level_exit",
+        "event_tags": "level_exit",
+        "transition_pair": "stairs_spiral_01"
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "level_transition.level_exit.level_exit.v01"
+    },
+    {
+      "id": 203,
+      "file": "tile_203.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "level_transition",
+      "structure": {
+        "variant_group": "level_entry",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "level_link"
+        ]
+      },
+      "placement": {
+        "event": "level_entry",
+        "event_tags": "level_entry",
+        "transition_pair": "pit_descent_01"
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "level_transition.level_entry.level_entry.v02"
+    },
+    {
+      "id": 204,
+      "file": "tile_204.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "level_transition",
+      "structure": {
+        "variant_group": "level_exit",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "level_link"
+        ]
+      },
+      "placement": {
+        "event": "level_exit",
+        "event_tags": "level_exit",
+        "transition_pair": "pit_descent_01"
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "level_transition.level_exit.level_exit.v02"
+    },
+    {
+      "id": 205,
+      "file": "tile_205.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "level_transition",
+      "structure": {
+        "variant_group": "hidden_level_drop",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "level_link"
+        ]
+      },
+      "placement": {
+        "event": "level_fall_trap",
+        "event_tags": [
+          "trap",
+          "level_transition",
+          "hidden"
+        ],
+        "transition_pair": ""
+      },
+      "runtime": {
+        "visibility_tags": "hidden_until_discovered",
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "level_transition.level_fall_trap.hidden_level_drop.v01"
+    },
+    {
+      "id": 206,
+      "file": "tile_206.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "kind": "level_transition",
+      "structure": {
+        "variant_group": "straight_1_4",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "level_link"
+        ]
+      },
+      "placement": {
+        "event": "level_transition",
+        "event_tags": "level_transition",
+        "transition_pair": ""
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "level_transition.level_transition.straight_1_4.v02"
+    },
+    {
+      "id": 207,
+      "tile_key": "level_transition.level_entry.door_stairs.v01",
+      "file": "tile_207.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "level_transition",
+      "structure": {
+        "variant_group": "level_entry",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "level_link"
+        ]
+      },
+      "placement": {
+        "event": "level_entry",
+        "event_tags": [
+          "level_entry",
+          "door",
+          "stairs",
+          "level_transition"
+        ],
+        "transition_pair": "door_stairs_01"
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 208,
+      "tile_key": "level_transition.level_exit.door_stairs.v01",
+      "file": "tile_208.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "level_transition",
+      "structure": {
+        "variant_group": "level_exit",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "main_path",
+          "level_link"
+        ]
+      },
+      "placement": {
+        "event": "level_exit",
+        "event_tags": [
+          "level_exit",
+          "stairs",
+          "door",
+          "level_transition"
+        ],
+        "transition_pair": "door_stairs_01"
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 301,
+      "file": "tile_301.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "trap",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room"
+        ]
+      },
+      "placement": {
+        "event": "trap",
+        "event_tags": [
+          "trap",
+          "floor",
+          "pool",
+          "hazard"
+        ],
+        "trap_type": "trap_pool",
+        "effect_families": [
+          "poison",
+          "acid",
+          "slow"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "trap.trap_pool.v01"
+    },
+    {
+      "id": 302,
+      "file": "tile_302.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "trap",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room"
+        ]
+      },
+      "placement": {
+        "event": "trap",
+        "event_tags": [
+          "trap",
+          "floor",
+          "spikes",
+          "physical"
+        ],
+        "trap_type": "spike_ring",
+        "effect_families": [
+          "pierce",
+          "bleed",
+          "injury"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "trap.spike_ring.v01"
+    },
+    {
+      "id": 303,
+      "file": "tile_303.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "trap",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room"
+        ]
+      },
+      "placement": {
+        "event": "trap",
+        "event_tags": [
+          "trap",
+          "floor",
+          "spikes",
+          "pit",
+          "physical"
+        ],
+        "trap_type": "spike_pit",
+        "effect_families": [
+          "pierce",
+          "bleed",
+          "fall",
+          "injury"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "trap.spike_pit.v01"
+    },
+    {
+      "id": 304,
+      "file": "tile_304.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "trap",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room"
+        ]
+      },
+      "placement": {
+        "event": "trap",
+        "event_tags": [
+          "trap",
+          "floor",
+          "frost",
+          "elemental"
+        ],
+        "trap_type": "frost_floor",
+        "effect_families": [
+          "cold",
+          "slow",
+          "fragile"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "trap.frost_floor.v01"
+    },
+    {
+      "id": 305,
+      "file": "tile_305.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "trap",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room"
+        ]
+      },
+      "placement": {
+        "event": "trap",
+        "event_tags": [
+          "trap",
+          "floor",
+          "void",
+          "magic"
+        ],
+        "trap_type": "void_cracks",
+        "effect_families": [
+          "curse",
+          "mana_drain",
+          "fear",
+          "void"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "trap.void_cracks.v01"
+    },
+    {
+      "id": 306,
+      "file": "tile_306.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "trap",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room"
+        ]
+      },
+      "placement": {
+        "event": "trap",
+        "event_tags": [
+          "trap",
+          "floor",
+          "collapse",
+          "physical"
+        ],
+        "trap_type": "cracked_floor",
+        "effect_families": [
+          "fall",
+          "stun",
+          "slow"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "trap.cracked_floor.v01"
+    },
+    {
+      "id": 307,
+      "tile_key": "trap.rune_seal.v01",
+      "file": "tile_307.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "trap",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room"
+        ]
+      },
+      "placement": {
+        "event": "trap",
+        "event_tags": [
+          "trap",
+          "floor",
+          "rune",
+          "magic",
+          "arcane"
+        ],
+        "trap_type": "rune_seal",
+        "effect_families": [
+          "curse",
+          "mana_drain",
+          "silence",
+          "stun",
+          "void"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 308,
+      "file": "tile_308.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "trap",
+        "variant_index": 8,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "trap",
+        "event_tags": [
+          "trap",
+          "floor",
+          "rune",
+          "magic",
+          "arcane",
+          "void"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "trap.rune_seal.v02"
+    },
+    {
+      "id": 320,
+      "tile_key": "event.rift_heart.v01",
+      "file": "tile_320.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "rift_heart",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "rift_objective"
+        ]
+      },
+      "placement": {
+        "event": "rift_heart",
+        "event_tags": [
+          "rift_heart",
+          "objective",
+          "crystal",
+          "pre_destroyed"
+        ],
+        "replacement_group": "rift_heart",
+        "replacement_state": "rift_heart_destroyed"
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 321,
+      "file": "tile_321.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "rift_heart",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "rift_objective"
+        ]
+      },
+      "placement": {
+        "event": "rift_heart",
+        "event_tags": [
+          "rift_heart",
+          "objective",
+          "crystal",
+          "pre_destroyed",
+          "blue_chamber"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "event.rift_heart.blue_chamber.v02"
+    },
+    {
+      "id": 322,
+      "file": "tile_322.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "rift_heart",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "rift_objective"
+        ]
+      },
+      "placement": {
+        "event": "rift_heart",
+        "event_tags": [
+          "rift_heart",
+          "objective",
+          "blue_chamber",
+          "pre_destroyed"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "event.rift_heart.blue_chamber.v03"
+    },
+    {
+      "id": 331,
+      "tile_key": "buff_shrine.plain_altar.v01",
+      "file": "tile_331.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "buff_shrine",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "boon_room"
+        ]
+      },
+      "placement": {
+        "event": "buff_shrine",
+        "event_tags": [
+          "buff",
+          "shrine",
+          "attribute_check",
+          "boon"
+        ],
+        "shrine_type": "plain_altar",
+        "floor_affinity": "any",
+        "attribute_check_contract": {
+          "mode": "single_attribute_gate",
+          "source": "rift_generator",
+          "allowed_attributes": "intellect",
+          "threshold_resolution": "runtime_instance",
+          "buff_resolution": "runtime_instance",
+          "failure_behavior": "empty_or_combat_node"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 332,
+      "tile_key": "buff_shrine.crystal_focus.v01",
+      "file": "tile_332.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "buff_shrine",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "boon_room"
+        ]
+      },
+      "placement": {
+        "event": "buff_shrine",
+        "event_tags": [
+          "buff",
+          "shrine",
+          "attribute_check",
+          "boon"
+        ],
+        "shrine_type": "crystal_focus",
+        "floor_affinity": "any",
+        "attribute_check_contract": {
+          "mode": "single_attribute_gate",
+          "source": "rift_generator",
+          "allowed_attributes": "memory",
+          "threshold_resolution": "runtime_instance",
+          "buff_resolution": "runtime_instance",
+          "failure_behavior": "empty_or_combat_node"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 333,
+      "tile_key": "buff_shrine.physical_altar.v01",
+      "file": "tile_333.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "buff_shrine",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "boon_room"
+        ]
+      },
+      "placement": {
+        "event": "buff_shrine",
+        "event_tags": [
+          "buff",
+          "shrine",
+          "attribute_check",
+          "boon"
+        ],
+        "shrine_type": "physical_altar",
+        "floor_affinity": "any",
+        "attribute_check_contract": {
+          "mode": "single_attribute_gate",
+          "source": "rift_generator",
+          "allowed_attributes": "mental",
+          "threshold_resolution": "runtime_instance",
+          "buff_resolution": "runtime_instance",
+          "failure_behavior": "empty_or_combat_node"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 334,
+      "tile_key": "buff_shrine.ritual_altar.v01",
+      "file": "tile_334.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "buff_shrine",
+        "variant_index": 4,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "boon_room"
+        ]
+      },
+      "placement": {
+        "event": "buff_shrine",
+        "event_tags": [
+          "buff",
+          "shrine",
+          "attribute_check",
+          "boon"
+        ],
+        "shrine_type": "ritual_altar",
+        "floor_affinity": "any",
+        "attribute_check_contract": {
+          "mode": "single_attribute_gate",
+          "source": "rift_generator",
+          "allowed_attributes": [
+            "intellect",
+            "memory"
+          ],
+          "threshold_resolution": "runtime_instance",
+          "buff_resolution": "runtime_instance",
+          "failure_behavior": "empty_or_combat_node"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 335,
+      "tile_key": "buff_shrine.relic_statue.v01",
+      "file": "tile_335.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "buff_shrine",
+        "variant_index": 5,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "boon_room"
+        ]
+      },
+      "placement": {
+        "event": "buff_shrine",
+        "event_tags": [
+          "buff",
+          "shrine",
+          "attribute_check",
+          "boon"
+        ],
+        "shrine_type": "relic_statue",
+        "floor_affinity": "any",
+        "attribute_check_contract": {
+          "mode": "single_attribute_gate",
+          "source": "rift_generator",
+          "allowed_attributes": [
+            "memory",
+            "mental"
+          ],
+          "threshold_resolution": "runtime_instance",
+          "buff_resolution": "runtime_instance",
+          "failure_behavior": "empty_or_combat_node"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 336,
+      "tile_key": "buff_shrine.offering_altar.v01",
+      "file": "tile_336.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "buff_shrine",
+        "variant_index": 20,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "boon_room"
+        ]
+      },
+      "placement": {
+        "event": "buff_shrine",
+        "event_tags": [
+          "buff",
+          "shrine",
+          "attribute_check",
+          "boon",
+          "altar",
+          "offering"
+        ],
+        "shrine_type": "offering_altar",
+        "attribute_check_contract": {
+          "mode": "single_attribute_gate",
+          "source": "rift_generator",
+          "allowed_attributes": [
+            "memory",
+            "mental",
+            "intellect"
+          ],
+          "threshold_resolution": "runtime_instance",
+          "buff_resolution": "runtime_instance",
+          "failure_behavior": "empty_or_combat_node"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 337,
+      "tile_key": "buff_shrine.glowing_pedestal.v01",
+      "file": "tile_337.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "buff_shrine",
+        "variant_index": 21,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "boon_room"
+        ]
+      },
+      "placement": {
+        "event": "buff_shrine",
+        "event_tags": [
+          "buff",
+          "shrine",
+          "attribute_check",
+          "boon",
+          "altar",
+          "glowing"
+        ],
+        "shrine_type": "glowing_pedestal",
+        "attribute_check_contract": {
+          "mode": "single_attribute_gate",
+          "source": "rift_generator",
+          "allowed_attributes": [
+            "intellect",
+            "mental",
+            "memory"
+          ],
+          "threshold_resolution": "runtime_instance",
+          "buff_resolution": "runtime_instance",
+          "failure_behavior": "empty_or_combat_node"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 338,
+      "tile_key": "buff_shrine.blood_rune_force.v01",
+      "file": "tile_338.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "buff_shrine",
+        "variant_index": 22,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "boon_room"
+        ]
+      },
+      "placement": {
+        "event": "buff_shrine",
+        "event_tags": [
+          "buff",
+          "shrine",
+          "attribute_check",
+          "boon",
+          "rune",
+          "force"
+        ],
+        "shrine_type": "blood_rune_force",
+        "attribute_check_contract": {
+          "mode": "single_attribute_gate",
+          "source": "rift_generator",
+          "allowed_attributes": [
+            "strength",
+            "endurance",
+            "mental"
+          ],
+          "threshold_resolution": "runtime_instance",
+          "buff_resolution": "runtime_instance",
+          "failure_behavior": "empty_or_combat_node"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 339,
+      "tile_key": "buff_shrine.blood_rune_motion.v01",
+      "file": "tile_339.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "buff_shrine",
+        "variant_index": 23,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "boon_room"
+        ]
+      },
+      "placement": {
+        "event": "buff_shrine",
+        "event_tags": [
+          "buff",
+          "shrine",
+          "attribute_check",
+          "boon",
+          "rune",
+          "motion"
+        ],
+        "shrine_type": "blood_rune_motion",
+        "attribute_check_contract": {
+          "mode": "single_attribute_gate",
+          "source": "rift_generator",
+          "allowed_attributes": [
+            "agility",
+            "strength",
+            "endurance"
+          ],
+          "threshold_resolution": "runtime_instance",
+          "buff_resolution": "runtime_instance",
+          "failure_behavior": "empty_or_combat_node"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 340,
+      "file": "tile_340.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "buff_shrine",
+        "variant_index": 10,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "boon_room",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "buff_shrine",
+        "event_tags": [
+          "buff",
+          "shrine",
+          "attribute_check",
+          "boon",
+          "altar",
+          "eye"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "buff_shrine.eye_altar.v01"
+    },
+    {
+      "id": 341,
+      "file": "tile_341.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "buff_shrine",
+        "variant_index": 11,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "boon_room",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "buff_shrine",
+        "event_tags": [
+          "buff",
+          "shrine",
+          "attribute_check",
+          "boon",
+          "crystal",
+          "glowing"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "buff_shrine.crystal_focus.v02"
+    },
+    {
+      "id": 351,
+      "tile_key": "event.resource_node.overgrown_ruins.v01",
+      "file": "tile_351.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "resource_node",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "resource_room"
+        ]
+      },
+      "placement": {
+        "event": "resource_node",
+        "event_tags": [
+          "resource",
+          "gathering",
+          "overgrown",
+          "nature",
+          "future_resource_roll"
+        ],
+        "resource_contract": {
+          "resource_resolution": "server_generation_or_gathering",
+          "allowed_resource_classes": [
+            "flowers",
+            "wood",
+            "plant_reagents"
+          ],
+          "failure_behavior": "empty_node_until_supported"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 352,
+      "tile_key": "event.resource_node.memorial_ruins.v01",
+      "file": "tile_352.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "resource_node",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "resource_room",
+          "lore_room"
+        ]
+      },
+      "placement": {
+        "event": "resource_node",
+        "event_tags": [
+          "resource",
+          "memorial",
+          "grave",
+          "lore",
+          "future_resource_roll"
+        ],
+        "resource_contract": {
+          "resource_resolution": "server_generation_or_gathering",
+          "allowed_resource_classes": [
+            "grave_relics",
+            "bone_fragments",
+            "spirit_essence",
+            "ancient_remnants"
+          ],
+          "failure_behavior": "empty_node_until_supported"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 353,
+      "tile_key": "event.resource_node.overgrown_floor_light.v01",
+      "file": "tile_353.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "resource_node",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "resource_room"
+        ]
+      },
+      "placement": {
+        "event": "resource_node",
+        "event_tags": [
+          "resource",
+          "gathering",
+          "overgrown",
+          "nature",
+          "vines",
+          "future_resource_roll"
+        ],
+        "resource_contract": {
+          "resource_resolution": "server_generation_or_gathering",
+          "allowed_resource_classes": [
+            "flowers",
+            "plant_reagents",
+            "moss",
+            "vine_fibers"
+          ],
+          "failure_behavior": "empty_node_until_supported"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 354,
+      "tile_key": "event.resource_node.overgrown_roots_heavy.v01",
+      "file": "tile_354.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "resource_node",
+        "variant_index": 4,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "resource_room",
+          "hidden_room"
+        ]
+      },
+      "placement": {
+        "event": "resource_node",
+        "event_tags": [
+          "resource",
+          "gathering",
+          "overgrown",
+          "nature",
+          "roots",
+          "rare_growth",
+          "future_resource_roll"
+        ],
+        "resource_contract": {
+          "resource_resolution": "server_generation_or_gathering",
+          "allowed_resource_classes": [
+            "wood",
+            "plant_reagents",
+            "root_fibers",
+            "rare_growth"
+          ],
+          "failure_behavior": "empty_node_until_supported"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 355,
+      "tile_key": "event.resource_node.ore_crystals_large.v01",
+      "file": "tile_355.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "resource_node",
+        "variant_index": 5,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "resource_room"
+        ]
+      },
+      "placement": {
+        "event": "resource_node",
+        "event_tags": [
+          "resource",
+          "gathering",
+          "ore",
+          "mineral",
+          "crystal",
+          "future_resource_roll"
+        ],
+        "resource_contract": {
+          "resource_resolution": "server_generation_or_gathering",
+          "allowed_resource_classes": "ore",
+          "failure_behavior": "empty_node_until_supported"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 356,
+      "tile_key": "event.resource_node.ore_crystals_veined.v01",
+      "file": "tile_356.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "resource_node",
+        "variant_index": 6,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "resource_room"
+        ]
+      },
+      "placement": {
+        "event": "resource_node",
+        "event_tags": [
+          "resource",
+          "gathering",
+          "ore",
+          "mineral",
+          "crystal",
+          "veins",
+          "future_resource_roll"
+        ],
+        "resource_contract": {
+          "resource_resolution": "server_generation_or_gathering",
+          "allowed_resource_classes": "ore",
+          "failure_behavior": "empty_node_until_supported"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 357,
+      "tile_key": "event.resource_node.ore_fragments_scattered.v01",
+      "file": "tile_357.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "resource_node",
+        "variant_index": 7,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "resource_room"
+        ]
+      },
+      "placement": {
+        "event": "resource_node",
+        "event_tags": [
+          "resource",
+          "gathering",
+          "ore",
+          "mineral",
+          "fragments",
+          "future_resource_roll"
+        ],
+        "resource_contract": {
+          "resource_resolution": "server_generation_or_gathering",
+          "allowed_resource_classes": "ore",
+          "failure_behavior": "empty_node_until_supported"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 358,
+      "file": "tile_358.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "resource_node",
+        "variant_index": 8,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "resource_room",
+          "side_branch",
+          "lore_room"
+        ]
+      },
+      "placement": {
+        "event": "resource_node",
+        "event_tags": [
+          "resource",
+          "gathering",
+          "grave",
+          "bone_fragments",
+          "ancient_remnants",
+          "future_resource_roll"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "event.resource_node.bone_relics.v02"
+    },
+    {
+      "id": 371,
+      "tile_key": "event.loot_cache.ruined_crates.v01",
+      "file": "tile_371.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "loot_cache",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "side_branch",
+          "event_room",
+          "loot_room"
+        ]
+      },
+      "placement": {
+        "event": "loot_cache",
+        "event_tags": [
+          "loot",
+          "search",
+          "cache",
+          "future_item_roll"
+        ],
+        "loot_contract": {
+          "loot_resolution": "server_generation_or_search",
+          "allowed_loot_classes": [
+            "belt_consumable",
+            "small_relic",
+            "coin_cache",
+            "scrap"
+          ],
+          "failure_behavior": "empty_node_until_supported"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 372,
+      "file": "tile_372.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "loot_cache",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "loot_room",
+          "side_branch"
+        ]
+      },
+      "placement": {
+        "event": "loot_cache",
+        "event_tags": [
+          "loot",
+          "search",
+          "cache",
+          "scrolls",
+          "future_item_roll"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "event.loot_cache.scroll_cache.v02"
+    },
+    {
+      "id": 381,
+      "tile_key": "event.switch_device.mechanism.v01",
+      "file": "tile_381.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "switch_device",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "switch_room",
+          "protected_objective"
+        ]
+      },
+      "placement": {
+        "event": "switch_device",
+        "event_tags": [
+          "switch",
+          "device",
+          "mechanism",
+          "opens_linked_node"
+        ],
+        "switch_contract": {
+          "activation": "no_check",
+          "link_resolution": "runtime_instance",
+          "effect_targets": [
+            "hidden_path",
+            "sealed_room",
+            "trap_network",
+            "level_transition"
+          ],
+          "protection_resolution": "runtime_instance"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 382,
+      "tile_key": "event.switch_device.gear_mechanism.v01",
+      "file": "tile_382.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "switch_device",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "switch_room",
+          "protected_objective"
+        ]
+      },
+      "placement": {
+        "event": "switch_device",
+        "event_tags": [
+          "switch",
+          "device",
+          "mechanism",
+          "gear",
+          "opens_linked_node"
+        ],
+        "switch_contract": {
+          "activation": "no_check",
+          "link_resolution": "runtime_instance",
+          "effect_targets": [
+            "hidden_path",
+            "sealed_room",
+            "trap_network",
+            "level_transition"
+          ],
+          "protection_resolution": "runtime_instance"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 383,
+      "tile_key": "event.switch_device.mechanism_rotated.v01",
+      "file": "tile_383.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "switch_device",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "switch_room",
+          "protected_objective"
+        ],
+        "derived_from": 65,
+        "transform": "rotate_180"
+      },
+      "placement": {
+        "event": "switch_device",
+        "event_tags": [
+          "switch",
+          "device",
+          "mechanism",
+          "opens_linked_node"
+        ],
+        "switch_contract": {
+          "activation": "no_check",
+          "link_resolution": "runtime_instance",
+          "effect_targets": [
+            "hidden_path",
+            "sealed_room",
+            "trap_network",
+            "level_transition"
+          ],
+          "protection_resolution": "runtime_instance"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 384,
+      "tile_key": "event.switch_device.gear_mechanism_rotated.v01",
+      "file": "tile_384.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "switch_device",
+        "variant_index": 4,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "switch_room",
+          "protected_objective"
+        ],
+        "transform": "rotate_180"
+      },
+      "placement": {
+        "event": "switch_device",
+        "event_tags": [
+          "switch",
+          "device",
+          "mechanism",
+          "gear",
+          "opens_linked_node"
+        ],
+        "switch_contract": {
+          "activation": "no_check",
+          "link_resolution": "runtime_instance",
+          "effect_targets": [
+            "hidden_path",
+            "sealed_room",
+            "trap_network",
+            "level_transition"
+          ],
+          "protection_resolution": "runtime_instance"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 385,
+      "file": "tile_385.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "switch_device",
+        "variant_index": 5,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "switch_room",
+          "protected_objective"
+        ]
+      },
+      "placement": {
+        "event": "switch_device",
+        "event_tags": [
+          "switch",
+          "device",
+          "mechanism",
+          "gear",
+          "opens_linked_node"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "event.switch_device.gear_workbench.v05"
+    },
+    {
+      "id": 391,
+      "tile_key": "event.guard_combat.blood_ritual_circle.v01",
+      "file": "tile_391.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "guard_combat",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "combat_room",
+          "guard_room",
+          "boss_room",
+          "gate_combat"
+        ]
+      },
+      "placement": {
+        "event": "guard_combat",
+        "event_tags": [
+          "combat",
+          "guard",
+          "boss",
+          "gate",
+          "ritual",
+          "blood_circle"
+        ],
+        "guard_contract": {
+          "encounter_resolution": "runtime_instance",
+          "allowed_guard_roles": [
+            "boss",
+            "elite_guard",
+            "guardian"
+          ],
+          "place_before": [
+            "rift_heart",
+            "level_transition",
+            "objective_dead_end"
+          ],
+          "placement_rule": "before_dead_end_objective_or_floor_transition"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": "combat"
+      }
+    },
+    {
+      "id": 392,
+      "tile_key": "event.guard_combat.dark_guard_chamber.v01",
+      "file": "tile_392.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "guard_combat",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "combat_room",
+          "guard_room",
+          "boss_room",
+          "gate_combat"
+        ]
+      },
+      "placement": {
+        "event": "guard_combat",
+        "event_tags": [
+          "combat",
+          "guard",
+          "boss",
+          "gate",
+          "dark_room"
+        ],
+        "guard_contract": {
+          "encounter_resolution": "runtime_instance",
+          "allowed_guard_roles": [
+            "boss",
+            "elite_guard",
+            "guardian"
+          ],
+          "place_before": [
+            "rift_heart",
+            "level_transition",
+            "objective_dead_end"
+          ],
+          "placement_rule": "before_dead_end_objective_or_floor_transition"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": "combat"
+      }
+    },
+    {
+      "id": 393,
+      "tile_key": "event.guard_combat.blood_seal_chamber.v01",
+      "file": "tile_393.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "guard_combat",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "combat_room",
+          "guard_room",
+          "boss_room",
+          "gate_combat"
+        ]
+      },
+      "placement": {
+        "event": "guard_combat",
+        "event_tags": [
+          "combat",
+          "guard",
+          "boss",
+          "gate",
+          "ritual",
+          "blood_seal"
+        ],
+        "guard_contract": {
+          "encounter_resolution": "runtime_instance",
+          "allowed_guard_roles": [
+            "boss",
+            "elite_guard",
+            "guardian"
+          ],
+          "place_before": [
+            "rift_heart",
+            "level_transition",
+            "objective_dead_end"
+          ],
+          "placement_rule": "before_dead_end_objective_or_floor_transition"
+        }
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": "combat"
+      }
+    },
+    {
+      "id": 394,
+      "file": "tile_394.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "guard_combat",
+        "variant_index": 4,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "combat_room",
+          "guard_room",
+          "boss_room",
+          "gate_combat"
+        ]
+      },
+      "placement": {
+        "event": "guard_combat",
+        "event_tags": [
+          "combat",
+          "guard",
+          "boss",
+          "gate",
+          "dark_room",
+          "red_cracks",
+          "trap_candidate"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "event.guard_combat.dark_red_chamber.v04"
+    },
+    {
+      "id": 395,
+      "file": "tile_395.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "guard_combat",
+        "variant_index": 5,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "combat_room",
+          "guard_room",
+          "boss_room",
+          "gate_combat"
+        ]
+      },
+      "placement": {
+        "event": "guard_combat",
+        "event_tags": [
+          "combat",
+          "guard",
+          "boss",
+          "gate",
+          "pressure_plate",
+          "blood",
+          "trap_candidate"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "event.guard_combat.pressure_plate_chamber.v05"
+    },
+    {
+      "id": 396,
+      "file": "tile_396.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "event",
+      "structure": {
+        "variant_group": "guard_combat",
+        "variant_index": 6,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "combat_room",
+          "guard_room",
+          "boss_room",
+          "gate_combat"
+        ]
+      },
+      "placement": {
+        "event": "guard_combat",
+        "event_tags": [
+          "combat",
+          "guard",
+          "boss",
+          "gate",
+          "ritual",
+          "blood",
+          "obelisk"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "event.guard_combat.blood_obelisk.v06"
+    },
+    {
+      "id": 401,
+      "tile_key": "state.rift_heart_destroyed.v01",
+      "file": "tile_401.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "state",
+      "structure": {
+        "variant_group": "rift_heart_destroyed",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "post_event_replacement"
+        ]
+      },
+      "placement": {
+        "event": "rift_heart_destroyed",
+        "event_tags": [
+          "rift_heart",
+          "destroyed",
+          "post_event",
+          "replacement"
+        ],
+        "state_key": "rift_heart_destroyed",
+        "replaces_event": "rift_heart"
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": "rift_heart"
+      }
+    },
+    {
+      "id": 402,
+      "tile_key": "state.combat_cleared_blood.v01",
+      "file": "tile_402.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "state",
+      "structure": {
+        "variant_group": "combat_cleared",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "post_event_replacement",
+          "combat_history"
+        ]
+      },
+      "placement": {
+        "event": "combat_cleared",
+        "event_tags": [
+          "combat",
+          "cleared",
+          "post_event",
+          "replacement",
+          "blood"
+        ],
+        "state_key": "combat_cleared_blood",
+        "replaces_event": "combat",
+        "history_tags": [
+          "blood",
+          "light_blood"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": "combat"
+      }
+    },
+    {
+      "id": 403,
+      "tile_key": "state.combat_cleared_blood_heavy.v01",
+      "file": "tile_403.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "state",
+      "structure": {
+        "variant_group": "combat_cleared",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "post_event_replacement",
+          "combat_history"
+        ]
+      },
+      "placement": {
+        "event": "combat_cleared",
+        "event_tags": [
+          "combat",
+          "cleared",
+          "post_event",
+          "replacement",
+          "blood",
+          "heavy_blood"
+        ],
+        "state_key": "combat_cleared_blood_heavy",
+        "replaces_event": "combat",
+        "history_tags": [
+          "blood",
+          "heavy_blood",
+          "elite_combat"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": "combat"
+      }
+    },
+    {
+      "id": 404,
+      "tile_key": "state.combat_cleared_blood.v02",
+      "file": "tile_404.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "state",
+      "structure": {
+        "variant_group": "combat_cleared",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "post_event_replacement",
+          "combat_history"
+        ]
+      },
+      "placement": {
+        "event": "combat_cleared",
+        "event_tags": [
+          "combat",
+          "cleared",
+          "post_event",
+          "replacement",
+          "blood"
+        ],
+        "state_key": "combat_cleared_blood",
+        "replaces_event": "combat",
+        "history_tags": [
+          "blood",
+          "light_blood",
+          "ritual_blood"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": "combat"
+      }
+    },
+    {
+      "id": 405,
+      "file": "tile_405.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "state",
+      "structure": {
+        "variant_group": "combat_cleared",
+        "variant_index": 4,
+        "hidden_edges": [],
+        "path_roles": [
+          "event_room",
+          "post_event_replacement",
+          "combat_history"
+        ]
+      },
+      "placement": {
+        "event": "combat_cleared",
+        "event_tags": [
+          "combat",
+          "cleared",
+          "post_event",
+          "replacement",
+          "blood"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "state.combat_cleared_blood.v03"
+    },
+    {
+      "id": 501,
+      "tile_key": "empty.cracked_floor.v01",
+      "file": "tile_501.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "empty",
+      "structure": {
+        "variant_group": "empty_room",
+        "variant_index": 1,
+        "hidden_edges": [],
+        "path_roles": [
+          "empty_room",
+          "filler_room"
+        ]
+      },
+      "placement": {
+        "event": "empty_room",
+        "event_tags": [
+          "empty",
+          "filler",
+          "cracked_floor"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 502,
+      "tile_key": "empty.ritual_circle.v01",
+      "file": "tile_502.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "empty",
+      "structure": {
+        "variant_group": "empty_room",
+        "variant_index": 2,
+        "hidden_edges": [],
+        "path_roles": [
+          "empty_room",
+          "filler_room"
+        ]
+      },
+      "placement": {
+        "event": "empty_room",
+        "event_tags": [
+          "empty",
+          "filler",
+          "ritual_circle"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 503,
+      "tile_key": "empty.plain_chamber.v01",
+      "file": "tile_503.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "empty",
+      "structure": {
+        "variant_group": "empty_room",
+        "variant_index": 3,
+        "hidden_edges": [],
+        "path_roles": [
+          "empty_room",
+          "filler_room"
+        ]
+      },
+      "placement": {
+        "event": "empty_room",
+        "event_tags": [
+          "empty",
+          "filler",
+          "plain_chamber"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 504,
+      "tile_key": "empty.rocky_chamber.v01",
+      "file": "tile_504.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "empty",
+      "structure": {
+        "variant_group": "empty_room",
+        "variant_index": 4,
+        "hidden_edges": [],
+        "path_roles": [
+          "empty_room",
+          "filler_room",
+          "rocky_room"
+        ]
+      },
+      "placement": {
+        "event": "empty_room",
+        "event_tags": [
+          "empty",
+          "filler",
+          "rocky_chamber"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 505,
+      "tile_key": "empty.rubble_chamber.v01",
+      "file": "tile_505.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "empty",
+      "structure": {
+        "variant_group": "empty_room",
+        "variant_index": 5,
+        "hidden_edges": [],
+        "path_roles": [
+          "empty_room",
+          "filler_room",
+          "rocky_room"
+        ]
+      },
+      "placement": {
+        "event": "empty_room",
+        "event_tags": [
+          "empty",
+          "filler",
+          "rubble",
+          "collapsed",
+          "ruins"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      }
+    },
+    {
+      "id": 506,
+      "file": "tile_506.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "empty",
+      "structure": {
+        "variant_group": "empty_room",
+        "variant_index": 6,
+        "hidden_edges": [],
+        "path_roles": [
+          "empty_room",
+          "filler_room"
+        ]
+      },
+      "placement": {
+        "event": "empty_room",
+        "event_tags": [
+          "empty",
+          "filler",
+          "dark_room",
+          "arena_candidate"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "empty.dark_arena_chamber.v02"
+    },
+    {
+      "id": 507,
+      "file": "tile_507.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "empty",
+      "structure": {
+        "variant_group": "empty_room",
+        "variant_index": 7,
+        "hidden_edges": [],
+        "path_roles": [
+          "empty_room",
+          "filler_room"
+        ]
+      },
+      "placement": {
+        "event": "empty_room",
+        "event_tags": [
+          "empty",
+          "filler",
+          "stone_floor"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "empty.stone_floor.v03"
+    },
+    {
+      "id": 508,
+      "file": "tile_508.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "empty",
+      "structure": {
+        "variant_group": "empty_room",
+        "variant_index": 8,
+        "hidden_edges": [],
+        "path_roles": [
+          "empty_room",
+          "filler_room"
+        ]
+      },
+      "placement": {
+        "event": "empty_room",
+        "event_tags": [
+          "empty",
+          "filler",
+          "overgrown",
+          "nature"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "empty.overgrown_chamber.v03"
+    },
+    {
+      "id": 509,
+      "file": "tile_509.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "empty",
+      "structure": {
+        "variant_group": "empty_room",
+        "variant_index": 9,
+        "hidden_edges": [],
+        "path_roles": [
+          "empty_room",
+          "filler_room",
+          "rocky_room"
+        ]
+      },
+      "placement": {
+        "event": "empty_room",
+        "event_tags": [
+          "empty",
+          "filler",
+          "cracked_floor",
+          "collapsed"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "empty.cracked_floor.v02"
+    },
+    {
+      "id": 510,
+      "file": "tile_510.png",
+      "walkable": 1,
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "kind": "empty",
+      "structure": {
+        "variant_group": "empty_room",
+        "variant_index": 10,
+        "hidden_edges": [],
+        "path_roles": [
+          "empty_room",
+          "filler_room"
+        ]
+      },
+      "placement": {
+        "event": "empty_room",
+        "event_tags": [
+          "empty",
+          "filler",
+          "dark_room"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": [],
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "empty.dark_chamber.v03"
+    },
+    {
+      "id": 511,
+      "file": "tile_511.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "kind": "empty",
+      "structure": {
+        "variant_group": "hidden_dead_end_2",
+        "variant_index": 1,
+        "hidden_edges": 2,
+        "path_roles": [
+          "empty_room",
+          "filler_room",
+          "hidden_room",
+          "dead_end"
+        ]
+      },
+      "placement": {
+        "event": "empty_room",
+        "event_tags": [
+          "empty",
+          "filler",
+          "hidden",
+          "dead_end",
+          "hidden_room",
+          "collapsed_right_entry"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": "hidden",
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "empty.hidden_dead_end_2.v01"
+    },
+    {
+      "id": 512,
+      "file": "tile_512.png",
+      "walkable": 1,
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "kind": "empty",
+      "structure": {
+        "variant_group": "hidden_dead_end_5",
+        "variant_index": 1,
+        "hidden_edges": 5,
+        "path_roles": [
+          "empty_room",
+          "filler_room",
+          "hidden_room",
+          "dead_end"
+        ]
+      },
+      "placement": {
+        "event": "empty_room",
+        "event_tags": [
+          "empty",
+          "filler",
+          "hidden",
+          "dead_end",
+          "hidden_room",
+          "ruined_left_entry"
+        ]
+      },
+      "runtime": {
+        "visibility_tags": "hidden",
+        "cleared_replacement_group": ""
+      },
+      "tile_key": "empty.hidden_dead_end_5.v01"
+    }
+  ],
+  "indexes": {
+    "by_kind": {
+      "blocker": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99
+      ],
+      "movement": [
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124
+      ],
+      "level_transition": [
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208
+      ],
+      "event": [
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        320,
+        321,
+        322,
+        331,
+        332,
+        333,
+        334,
+        335,
+        336,
+        337,
+        338,
+        339,
+        340,
+        341,
+        351,
+        352,
+        353,
+        354,
+        355,
+        356,
+        357,
+        358,
+        371,
+        372,
+        381,
+        382,
+        383,
+        384,
+        385,
+        391,
+        392,
+        393,
+        394,
+        395,
+        396
+      ],
+      "state": [
+        401,
+        402,
+        403,
+        404,
+        405
+      ],
+      "empty": [
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512
+      ]
+    },
+    "by_variant_group": {
+      "blocker_open_2_3_4_5_6": 1,
+      "blocker_open_1_3_4_5_6": 2,
+      "blocker_open_1_2_4_5_6": 3,
+      "blocker_open_1_2_3_5_6": 4,
+      "blocker_open_1_2_3_4_6": 5,
+      "blocker_open_1_2_3_4_5": 6,
+      "blocker_open_3_4_5_6": 7,
+      "blocker_open_1_4_5_6": 8,
+      "blocker_open_1_2_5_6": 9,
+      "blocker_open_1_2_3_6": 10,
+      "blocker_open_1_2_3_4": 11,
+      "blocker_open_2_3_4_5": 12,
+      "blocker_open_4_5_6": 13,
+      "blocker_open_1_5_6": 14,
+      "blocker_open_1_2_6": 15,
+      "blocker_open_1_2_3": 16,
+      "blocker_open_2_3_4": 17,
+      "blocker_open_3_4_5": 18,
+      "blocker_open_5_6": 19,
+      "blocker_open_1_6": 20,
+      "blocker_open_1_2": 21,
+      "blocker_open_2_3": 22,
+      "blocker_open_3_4": 23,
+      "blocker_open_4_5": 24,
+      "blocker_open_6": 25,
+      "blocker_open_1": 26,
+      "blocker_open_2": 27,
+      "blocker_open_3": 28,
+      "blocker_open_4": 29,
+      "blocker_open_5": 30,
+      "dead_end_5": [
+        31,
+        38
+      ],
+      "turn_6_4": 32,
+      "turn_1_3": [
+        33,
+        116,
+        123
+      ],
+      "straight_5_2": [
+        34,
+        35
+      ],
+      "fork_even_1_3_5": 36,
+      "dead_end_2": 37,
+      "fork_odd_2_4_6": 39,
+      "level_entry": [
+        40,
+        42,
+        63
+      ],
+      "level_exit": [
+        41,
+        43,
+        64
+      ],
+      "hidden_level_drop": 44,
+      "straight_1_4": [
+        45,
+        115
+      ],
+      "trap": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        57,
+        308
+      ],
+      "rift_heart_destroyed": 52,
+      "rift_heart": [
+        53,
+        321,
+        322
+      ],
+      "combat_cleared": [
+        54,
+        55,
+        56,
+        405
+      ],
+      "buff_shrine": [
+        58,
+        59,
+        60,
+        61,
+        62,
+        77,
+        78,
+        79,
+        80,
+        340,
+        341
+      ],
+      "switch_device": [
+        65,
+        385
+      ],
+      "resource_node": [
+        66,
+        81,
+        82,
+        83,
+        84,
+        85,
+        358
+      ],
+      "empty_room": [
+        67,
+        68,
+        75,
+        76,
+        88,
+        506,
+        507,
+        508,
+        509,
+        510
+      ],
+      "loot_cache": [
+        69,
+        372
+      ],
+      "guard_combat": [
+        86,
+        87,
+        394,
+        395,
+        396
+      ],
+      "fork_1_3_5": 113,
+      "fork_2_4_6": 114,
+      "turn_2_4": 117,
+      "turn_4_6": [
+        118,
+        121
+      ],
+      "turn_1_5": 119,
+      "straight_3_6": 120,
+      "turn_5_3": 122,
+      "turn_2_6": 124,
+      "blocker_void_decor": [
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99
+      ],
+      "hidden_dead_end_2": 511,
+      "hidden_dead_end_5": 512
+    },
+    "by_event_tag": {
+      "level_entry": [
+        40,
+        42,
+        63
+      ],
+      "level_exit": [
+        41,
+        43,
+        64
+      ],
+      "trap": [
+        44,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        57,
+        308
+      ],
+      "level_transition": [
+        44,
+        45,
+        63,
+        64
+      ],
+      "hidden": [
+        44,
+        511,
+        512
+      ],
+      "floor": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        57,
+        308
+      ],
+      "pool": 46,
+      "hazard": 46,
+      "spikes": [
+        47,
+        48
+      ],
+      "physical": [
+        47,
+        48,
+        51
+      ],
+      "pit": 48,
+      "frost": 49,
+      "elemental": 49,
+      "void": [
+        50,
+        308
+      ],
+      "magic": [
+        50,
+        57,
+        308
+      ],
+      "collapse": 51,
+      "rift_heart": [
+        52,
+        53,
+        321,
+        322
+      ],
+      "destroyed": 52,
+      "post_event": [
+        52,
+        54,
+        55,
+        56,
+        405
+      ],
+      "replacement": [
+        52,
+        54,
+        55,
+        56,
+        405
+      ],
+      "objective": [
+        53,
+        321,
+        322
+      ],
+      "crystal": [
+        53,
+        83,
+        84,
+        321,
+        341
+      ],
+      "pre_destroyed": [
+        53,
+        321,
+        322
+      ],
+      "combat": [
+        54,
+        55,
+        56,
+        86,
+        87,
+        394,
+        395,
+        396,
+        405
+      ],
+      "cleared": [
+        54,
+        55,
+        56,
+        405
+      ],
+      "blood": [
+        54,
+        55,
+        56,
+        395,
+        396,
+        405
+      ],
+      "heavy_blood": 55,
+      "rune": [
+        57,
+        79,
+        80,
+        308
+      ],
+      "arcane": [
+        57,
+        308
+      ],
+      "buff": [
+        58,
+        59,
+        60,
+        61,
+        62,
+        77,
+        78,
+        79,
+        80,
+        340,
+        341
+      ],
+      "shrine": [
+        58,
+        59,
+        60,
+        61,
+        62,
+        77,
+        78,
+        79,
+        80,
+        340,
+        341
+      ],
+      "attribute_check": [
+        58,
+        59,
+        60,
+        61,
+        62,
+        77,
+        78,
+        79,
+        80,
+        340,
+        341
+      ],
+      "boon": [
+        58,
+        59,
+        60,
+        61,
+        62,
+        77,
+        78,
+        79,
+        80,
+        340,
+        341
+      ],
+      "door": [
+        63,
+        64
+      ],
+      "stairs": [
+        63,
+        64
+      ],
+      "switch": [
+        65,
+        385
+      ],
+      "device": [
+        65,
+        385
+      ],
+      "mechanism": [
+        65,
+        385
+      ],
+      "opens_linked_node": [
+        65,
+        385
+      ],
+      "resource": [
+        66,
+        81,
+        82,
+        83,
+        84,
+        85,
+        358
+      ],
+      "gathering": [
+        66,
+        81,
+        82,
+        83,
+        84,
+        85,
+        358
+      ],
+      "overgrown": [
+        66,
+        81,
+        82,
+        508
+      ],
+      "nature": [
+        66,
+        81,
+        82,
+        508
+      ],
+      "future_resource_roll": [
+        66,
+        81,
+        82,
+        83,
+        84,
+        85,
+        358
+      ],
+      "empty": [
+        67,
+        68,
+        75,
+        76,
+        88,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512
+      ],
+      "filler": [
+        67,
+        68,
+        75,
+        76,
+        88,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512
+      ],
+      "cracked_floor": [
+        67,
+        509
+      ],
+      "ritual_circle": 68,
+      "loot": [
+        69,
+        372
+      ],
+      "search": [
+        69,
+        372
+      ],
+      "cache": [
+        69,
+        372
+      ],
+      "future_item_roll": [
+        69,
+        372
+      ],
+      "memorial": [],
+      "grave": 358,
+      "lore": [],
+      "guard": [
+        86,
+        87,
+        394,
+        395,
+        396
+      ],
+      "boss": [
+        86,
+        87,
+        394,
+        395,
+        396
+      ],
+      "gate": [
+        86,
+        87,
+        394,
+        395,
+        396
+      ],
+      "ritual": [
+        87,
+        396
+      ],
+      "blood_circle": [],
+      "gear": 385,
+      "plain_chamber": 75,
+      "rocky_chamber": 76,
+      "altar": [
+        77,
+        78,
+        340
+      ],
+      "offering": 77,
+      "glowing": [
+        78,
+        341
+      ],
+      "force": 79,
+      "motion": 80,
+      "vines": 81,
+      "roots": 82,
+      "rare_growth": 82,
+      "ore": [
+        83,
+        84,
+        85
+      ],
+      "mineral": [
+        83,
+        84,
+        85
+      ],
+      "veins": 84,
+      "fragments": 85,
+      "dark_room": [
+        86,
+        394,
+        506,
+        510
+      ],
+      "blood_seal": 87,
+      "rubble": 88,
+      "collapsed": [
+        88,
+        509
+      ],
+      "ruins": 88,
+      "blue_chamber": [
+        321,
+        322
+      ],
+      "red_cracks": 394,
+      "trap_candidate": [
+        394,
+        395
+      ],
+      "arena_candidate": 506,
+      "eye": 340,
+      "bone_fragments": 358,
+      "ancient_remnants": 358,
+      "scrolls": 372,
+      "pressure_plate": 395,
+      "obelisk": 396,
+      "stone_floor": 507,
+      "dead_end": [
+        511,
+        512
+      ],
+      "hidden_room": [
+        511,
+        512
+      ],
+      "collapsed_right_entry": 511,
+      "ruined_left_entry": 512
+    },
+    "by_transition_pair": {
+      "stairs_spiral_01": [
+        40,
+        41
+      ],
+      "pit_descent_01": [
+        42,
+        43
+      ],
+      "door_stairs_01": [
+        63,
+        64
+      ]
+    },
+    "by_path_role": {
+      "contour": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "void_fill": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "side_branch": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        66,
+        69,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85
+      ],
+      "dead_end": [
+        31,
+        37,
+        38
+      ],
+      "main_path": [
+        32,
+        33,
+        34,
+        35,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        63,
+        64
+      ],
+      "branching": [
+        36,
+        39
+      ],
+      "level_link": [
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        63,
+        64
+      ],
+      "event_room": [
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        65,
+        66,
+        69,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87
+      ],
+      "post_event_replacement": [
+        52,
+        54,
+        55,
+        56
+      ],
+      "rift_objective": 53,
+      "combat_history": [
+        54,
+        55,
+        56
+      ],
+      "boon_room": [
+        58,
+        59,
+        60,
+        61,
+        62,
+        77,
+        78,
+        79,
+        80
+      ],
+      "switch_room": 65,
+      "protected_objective": 65,
+      "resource_room": [
+        66,
+        81,
+        82,
+        83,
+        84,
+        85
+      ],
+      "empty_room": [
+        67,
+        68,
+        75,
+        76,
+        88
+      ],
+      "filler_room": [
+        67,
+        68,
+        75,
+        76,
+        88
+      ],
+      "loot_room": 69,
+      "lore_room": [],
+      "combat_room": [
+        86,
+        87
+      ],
+      "guard_room": [
+        86,
+        87
+      ],
+      "boss_room": [
+        86,
+        87
+      ],
+      "gate_combat": [
+        86,
+        87
+      ],
+      "rocky_room": [
+        76,
+        88
+      ],
+      "hidden_room": 82
+    },
+    "by_effect_family": {
+      "poison": 46,
+      "acid": 46,
+      "slow": [
+        46,
+        49,
+        51
+      ],
+      "pierce": [
+        47,
+        48
+      ],
+      "bleed": [
+        47,
+        48
+      ],
+      "injury": [
+        47,
+        48
+      ],
+      "fall": [
+        48,
+        51
+      ],
+      "cold": 49,
+      "fragile": 49,
+      "curse": [
+        50,
+        57
+      ],
+      "mana_drain": [
+        50,
+        57
+      ],
+      "fear": 50,
+      "void": [
+        50,
+        57
+      ],
+      "stun": [
+        51,
+        57
+      ],
+      "silence": 57
+    },
+    "by_state_key": {
+      "rift_heart_destroyed": 52,
+      "combat_cleared_blood": [
+        54,
+        56
+      ],
+      "combat_cleared_blood_heavy": 55
+    },
+    "by_replaces_event": {
+      "rift_heart": 52,
+      "combat": [
+        54,
+        55,
+        56
+      ]
+    },
+    "by_replacement_group": {
+      "rift_heart": [
+        52,
+        53
+      ],
+      "combat": [
+        54,
+        55,
+        56
+      ]
+    },
+    "by_history_tag": {
+      "blood": [
+        54,
+        55,
+        56
+      ],
+      "light_blood": [
+        54,
+        56
+      ],
+      "heavy_blood": 55,
+      "elite_combat": 55,
+      "ritual_blood": 56
+    },
+    "by_attribute": {
+      "intellect": [
+        58,
+        61,
+        77,
+        78
+      ],
+      "memory": [
+        59,
+        61,
+        62,
+        77,
+        78
+      ],
+      "mental": [
+        60,
+        62,
+        77,
+        78,
+        79
+      ],
+      "strength": [
+        79,
+        80
+      ],
+      "endurance": [
+        79,
+        80
+      ],
+      "agility": 80
+    },
+    "by_shrine_type": {
+      "plain_altar": 58,
+      "crystal_focus": 59,
+      "physical_altar": 60,
+      "ritual_altar": 61,
+      "relic_statue": 62,
+      "offering_altar": 77,
+      "glowing_pedestal": 78,
+      "blood_rune_force": 79,
+      "blood_rune_motion": 80
+    },
+    "by_resource_class": {
+      "flowers": [
+        66,
+        81
+      ],
+      "wood": [
+        66,
+        82
+      ],
+      "plant_reagents": [
+        66,
+        81,
+        82
+      ],
+      "grave_relics": [],
+      "bone_fragments": [],
+      "spirit_essence": [],
+      "ancient_remnants": [],
+      "moss": 81,
+      "vine_fibers": 81,
+      "root_fibers": 82,
+      "rare_growth": 82,
+      "ore": [
+        83,
+        84,
+        85
+      ]
+    },
+    "by_switch_target": {
+      "hidden_path": 65,
+      "sealed_room": 65,
+      "trap_network": 65,
+      "level_transition": 65
+    },
+    "by_loot_class": {
+      "belt_consumable": 69,
+      "small_relic": 69,
+      "coin_cache": 69,
+      "scrap": 69
+    },
+    "by_guard_role": {
+      "boss": [
+        86,
+        87
+      ],
+      "elite_guard": [
+        86,
+        87
+      ],
+      "guardian": [
+        86,
+        87
+      ]
+    },
+    "by_guard_target": {
+      "rift_heart": [
+        86,
+        87
+      ],
+      "level_transition": [
+        86,
+        87
+      ],
+      "objective_dead_end": [
+        86,
+        87
+      ]
+    }
+  },
+  "index_ref": "local_tile_id",
+  "catalog": {
+    "catalog_ref": "local_tile_id",
+    "blockers": {
+      "all": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99
+      ],
+      "contour_void_fill": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "by_variant_group": {
+        "blocker_open_2_3_4_5_6": 1,
+        "blocker_open_1_3_4_5_6": 2,
+        "blocker_open_1_2_4_5_6": 3,
+        "blocker_open_1_2_3_5_6": 4,
+        "blocker_open_1_2_3_4_6": 5,
+        "blocker_open_1_2_3_4_5": 6,
+        "blocker_open_3_4_5_6": 7,
+        "blocker_open_1_4_5_6": 8,
+        "blocker_open_1_2_5_6": 9,
+        "blocker_open_1_2_3_6": 10,
+        "blocker_open_1_2_3_4": 11,
+        "blocker_open_2_3_4_5": 12,
+        "blocker_open_4_5_6": 13,
+        "blocker_open_1_5_6": 14,
+        "blocker_open_1_2_6": 15,
+        "blocker_open_1_2_3": 16,
+        "blocker_open_2_3_4": 17,
+        "blocker_open_3_4_5": 18,
+        "blocker_open_5_6": 19,
+        "blocker_open_1_6": 20,
+        "blocker_open_1_2": 21,
+        "blocker_open_2_3": 22,
+        "blocker_open_3_4": 23,
+        "blocker_open_4_5": 24,
+        "blocker_open_6": 25,
+        "blocker_open_1": 26,
+        "blocker_open_2": 27,
+        "blocker_open_3": 28,
+        "blocker_open_4": 29,
+        "blocker_open_5": 30,
+        "blocker_void_decor": [
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ]
+      },
+      "void_decor": [
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99
+      ]
+    },
+    "movement": {
+      "all": [
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124
+      ],
+      "dead_end": [],
+      "turn": [
+        100,
+        101,
+        103,
+        104,
+        106,
+        108,
+        110,
+        112,
+        116,
+        117,
+        118,
+        119,
+        121,
+        122,
+        123,
+        124
+      ],
+      "straight": [
+        102,
+        105,
+        107,
+        109,
+        111,
+        115,
+        120
+      ],
+      "fork": [
+        113,
+        114
+      ],
+      "by_variant_group": {
+        "turn_1_3": [
+          100,
+          116,
+          123
+        ],
+        "turn_6_4": 101,
+        "straight_2_5": 102,
+        "turn_2_6": [
+          103,
+          124
+        ],
+        "turn_1_5": [
+          104,
+          119
+        ],
+        "straight_1_4": [
+          105,
+          107,
+          115
+        ],
+        "turn_2_4": [
+          106,
+          108,
+          117
+        ],
+        "straight_3_6": [
+          109,
+          111,
+          120
+        ],
+        "turn_4_6": [
+          110,
+          118,
+          121
+        ],
+        "turn_5_3": [
+          112,
+          122
+        ],
+        "fork_1_3_5": 113,
+        "fork_2_4_6": 114
+      }
+    },
+    "level_transitions": {
+      "all": [
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208
+      ],
+      "entry": [
+        201,
+        203,
+        207
+      ],
+      "exit": [
+        202,
+        204,
+        208
+      ],
+      "generic": 206,
+      "hidden_drop": 205,
+      "pairs": {
+        "stairs_spiral_01": {
+          "all": [
+            201,
+            202
+          ],
+          "entry": 201,
+          "exit": 202
+        },
+        "pit_descent_01": {
+          "all": [
+            203,
+            204
+          ],
+          "entry": 203,
+          "exit": 204
+        },
+        "door_stairs_01": {
+          "all": [
+            207,
+            208
+          ],
+          "entry": 207,
+          "exit": 208
+        }
+      },
+      "by_variant_group": {
+        "level_entry": [
+          201,
+          203,
+          207
+        ],
+        "level_exit": [
+          202,
+          204,
+          208
+        ],
+        "hidden_level_drop": 205,
+        "straight_1_4": 206
+      }
+    },
+    "traps": {
+      "all": [
+        205,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308
+      ],
+      "visual_room_traps": [
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308
+      ],
+      "level_transition_traps": 205,
+      "by_trap_type": {
+        "trap_pool": 301,
+        "spike_ring": 302,
+        "spike_pit": 303,
+        "frost_floor": 304,
+        "void_cracks": 305,
+        "cracked_floor": 306,
+        "rune_seal": [
+          307,
+          308
+        ]
+      },
+      "by_effect_family": {
+        "poison": 301,
+        "acid": 301,
+        "slow": [
+          301,
+          304,
+          306
+        ],
+        "pierce": [
+          302,
+          303
+        ],
+        "bleed": [
+          302,
+          303
+        ],
+        "injury": [
+          302,
+          303
+        ],
+        "fall": [
+          303,
+          306
+        ],
+        "cold": 304,
+        "fragile": 304,
+        "curse": [
+          305,
+          307,
+          308
+        ],
+        "mana_drain": [
+          305,
+          307,
+          308
+        ],
+        "fear": 305,
+        "void": [
+          305,
+          307,
+          308
+        ],
+        "stun": [
+          306,
+          307,
+          308
+        ],
+        "silence": [
+          307,
+          308
+        ]
+      }
+    },
+    "buff_shrines": {
+      "all": [
+        331,
+        332,
+        333,
+        334,
+        335,
+        336,
+        337,
+        338,
+        339,
+        340,
+        341
+      ],
+      "by_shrine_type": {
+        "plain_altar": 331,
+        "crystal_focus": [
+          332,
+          341
+        ],
+        "physical_altar": 333,
+        "ritual_altar": 334,
+        "relic_statue": 335,
+        "offering_altar": 336,
+        "glowing_pedestal": 337,
+        "blood_rune_force": 338,
+        "blood_rune_motion": 339,
+        "eye_altar": 340
+      },
+      "by_attribute": {
+        "intellect": [
+          331,
+          334,
+          336,
+          337,
+          340,
+          341
+        ],
+        "memory": [
+          332,
+          334,
+          335,
+          336,
+          337,
+          340,
+          341
+        ],
+        "mental": [
+          333,
+          335,
+          336,
+          337,
+          338,
+          340,
+          341
+        ],
+        "strength": [
+          338,
+          339
+        ],
+        "endurance": [
+          338,
+          339
+        ],
+        "agility": 339
+      },
+      "available_attributes": [
+        "agility",
+        "endurance",
+        "intellect",
+        "memory",
+        "mental",
+        "perception",
+        "prediction",
+        "projection",
+        "strength"
+      ],
+      "default_check_contract": {
+        "mode": "single_attribute_gate",
+        "threshold_resolution": "runtime_instance",
+        "buff_resolution": "runtime_instance",
+        "failure_behavior": "empty_or_combat_node"
+      }
+    },
+    "resource_nodes": {
+      "all": [
+        351,
+        352,
+        353,
+        354,
+        355,
+        356,
+        357,
+        358
+      ],
+      "by_resource_class": {
+        "flowers": [
+          351,
+          353
+        ],
+        "wood": [
+          351,
+          354
+        ],
+        "plant_reagents": [
+          351,
+          353,
+          354
+        ],
+        "grave_relics": [
+          352,
+          358
+        ],
+        "bone_fragments": [
+          352,
+          358
+        ],
+        "spirit_essence": 352,
+        "ancient_remnants": [
+          352,
+          358
+        ],
+        "moss": 353,
+        "vine_fibers": 353,
+        "root_fibers": 354,
+        "rare_growth": 354,
+        "ore": [
+          355,
+          356,
+          357
+        ]
+      },
+      "default_contract": {
+        "resource_resolution": "server_generation_or_gathering",
+        "failure_behavior": "empty_node_until_supported"
+      }
+    },
+    "loot_nodes": {
+      "all": [
+        371,
+        372
+      ],
+      "by_loot_class": {
+        "belt_consumable": [
+          371,
+          372
+        ],
+        "small_relic": [
+          371,
+          372
+        ],
+        "coin_cache": [
+          371,
+          372
+        ],
+        "scrap": [
+          371,
+          372
+        ]
+      },
+      "default_contract": {
+        "loot_resolution": "server_generation_or_search",
+        "failure_behavior": "empty_node_until_supported"
+      }
+    },
+    "empty_rooms": {
+      "all": [
+        501,
+        502,
+        503,
+        504,
+        505,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512
+      ],
+      "by_variant_group": {
+        "empty_room": [
+          501,
+          502,
+          503,
+          504,
+          505,
+          506,
+          507,
+          508,
+          509,
+          510
+        ],
+        "hidden_dead_end_2": 511,
+        "hidden_dead_end_5": 512
+      }
+    },
+    "switch_devices": {
+      "all": [
+        381,
+        382,
+        383,
+        384,
+        385
+      ],
+      "by_switch_target": {
+        "hidden_path": [
+          381,
+          382,
+          383,
+          384,
+          385
+        ],
+        "sealed_room": [
+          381,
+          382,
+          383,
+          384,
+          385
+        ],
+        "trap_network": [
+          381,
+          382,
+          383,
+          384,
+          385
+        ],
+        "level_transition": [
+          381,
+          382,
+          383,
+          384,
+          385
+        ]
+      },
+      "default_contract": {
+        "activation": "no_check",
+        "link_resolution": "runtime_instance",
+        "protection_resolution": "runtime_instance"
+      }
+    },
+    "guard_rooms": {
+      "all": [
+        391,
+        392,
+        393,
+        394,
+        395,
+        396
+      ],
+      "by_guard_role": {
+        "boss": [
+          391,
+          392,
+          393,
+          394,
+          395,
+          396
+        ],
+        "elite_guard": [
+          391,
+          392,
+          393,
+          394,
+          395,
+          396
+        ],
+        "guardian": [
+          391,
+          392,
+          393,
+          394,
+          395,
+          396
+        ]
+      },
+      "by_guard_target": {
+        "rift_heart": [
+          391,
+          392,
+          393,
+          394,
+          395,
+          396
+        ],
+        "level_transition": [
+          391,
+          392,
+          393,
+          394,
+          395,
+          396
+        ],
+        "objective_dead_end": [
+          391,
+          392,
+          393,
+          394,
+          395,
+          396
+        ]
+      },
+      "default_contract": {
+        "encounter_resolution": "runtime_instance",
+        "placement_rule": "before_dead_end_objective_or_floor_transition"
+      }
+    },
+    "states": {
+      "all": [
+        401,
+        402,
+        403,
+        404,
+        405
+      ],
+      "by_state_key": {
+        "rift_heart_destroyed": 401,
+        "combat_cleared_blood": [
+          402,
+          404,
+          405
+        ],
+        "combat_cleared_blood_heavy": 403
+      },
+      "by_replaces_event": {
+        "rift_heart": 401,
+        "combat": [
+          402,
+          403,
+          404,
+          405
+        ]
+      },
+      "post_event_replacement": [
+        401,
+        402,
+        403,
+        404,
+        405
+      ],
+      "combat_cleared": [
+        402,
+        403,
+        404,
+        405
+      ],
+      "by_history_tag": {
+        "blood": [
+          402,
+          403,
+          404,
+          405
+        ],
+        "light_blood": [
+          402,
+          404,
+          405
+        ],
+        "heavy_blood": 403,
+        "elite_combat": 403,
+        "ritual_blood": 404
+      }
+    },
+    "objectives": {
+      "all": [
+        320,
+        321,
+        322
+      ],
+      "rift_heart": [
+        320,
+        321,
+        322
+      ],
+      "by_replacement_group": {
+        "rift_heart": [
+          320,
+          321,
+          322,
+          401
+        ],
+        "combat": [
+          402,
+          403,
+          404,
+          391
+        ]
+      }
+    },
+    "events": {
+      "by_event_tag": {
+        "level_entry": [
+          201,
+          203,
+          207
+        ],
+        "level_exit": [
+          202,
+          204,
+          208
+        ],
+        "trap": [
+          205,
+          301,
+          302,
+          303,
+          304,
+          305,
+          306,
+          307,
+          308
+        ],
+        "level_transition": [
+          205,
+          206,
+          207,
+          208
+        ],
+        "hidden": [
+          205,
+          511,
+          512
+        ],
+        "floor": [
+          301,
+          302,
+          303,
+          304,
+          305,
+          306,
+          307,
+          308
+        ],
+        "pool": 301,
+        "hazard": 301,
+        "spikes": [
+          302,
+          303
+        ],
+        "physical": [
+          302,
+          303,
+          306
+        ],
+        "pit": 303,
+        "frost": 304,
+        "elemental": 304,
+        "void": [
+          305,
+          308
+        ],
+        "magic": [
+          305,
+          307,
+          308
+        ],
+        "collapse": 306,
+        "rift_heart": [
+          320,
+          321,
+          322,
+          401
+        ],
+        "destroyed": 401,
+        "post_event": [
+          401,
+          402,
+          403,
+          404,
+          405
+        ],
+        "replacement": [
+          401,
+          402,
+          403,
+          404,
+          405
+        ],
+        "objective": [
+          320,
+          321,
+          322
+        ],
+        "crystal": [
+          320,
+          321,
+          341
+        ],
+        "pre_destroyed": [
+          320,
+          321,
+          322
+        ],
+        "combat": [
+          391,
+          394,
+          395,
+          396,
+          402,
+          403,
+          404,
+          405
+        ],
+        "cleared": [
+          402,
+          403,
+          404,
+          405
+        ],
+        "blood": [
+          395,
+          396,
+          402,
+          403,
+          404,
+          405
+        ],
+        "heavy_blood": 403,
+        "rune": [
+          307,
+          308,
+          338,
+          339
+        ],
+        "arcane": [
+          307,
+          308
+        ],
+        "buff": [
+          331,
+          332,
+          333,
+          334,
+          335,
+          336,
+          337,
+          338,
+          339,
+          340,
+          341
+        ],
+        "shrine": [
+          331,
+          332,
+          333,
+          334,
+          335,
+          336,
+          337,
+          338,
+          339,
+          340,
+          341
+        ],
+        "attribute_check": [
+          331,
+          332,
+          333,
+          334,
+          335,
+          336,
+          337,
+          338,
+          339,
+          340,
+          341
+        ],
+        "boon": [
+          331,
+          332,
+          333,
+          334,
+          335,
+          336,
+          337,
+          338,
+          339,
+          340,
+          341
+        ],
+        "door": [
+          207,
+          208
+        ],
+        "stairs": [
+          207,
+          208
+        ],
+        "switch": [
+          381,
+          382,
+          383,
+          384,
+          385
+        ],
+        "device": [
+          381,
+          382,
+          383,
+          384,
+          385
+        ],
+        "mechanism": [
+          381,
+          382,
+          383,
+          384,
+          385
+        ],
+        "opens_linked_node": [
+          381,
+          382,
+          383,
+          384,
+          385
+        ],
+        "resource": [
+          351,
+          352,
+          358
+        ],
+        "gathering": [
+          351,
+          358
+        ],
+        "overgrown": [
+          351,
+          508
+        ],
+        "nature": [
+          351,
+          508
+        ],
+        "future_resource_roll": [
+          351,
+          352,
+          358
+        ],
+        "empty": [
+          501,
+          502,
+          503,
+          504,
+          506,
+          507,
+          508,
+          509,
+          510,
+          511,
+          512
+        ],
+        "filler": [
+          501,
+          502,
+          503,
+          504,
+          506,
+          507,
+          508,
+          509,
+          510,
+          511,
+          512
+        ],
+        "cracked_floor": [
+          501,
+          509
+        ],
+        "ritual_circle": 502,
+        "loot": [
+          371,
+          372
+        ],
+        "search": [
+          371,
+          372
+        ],
+        "cache": [
+          371,
+          372
+        ],
+        "future_item_roll": [
+          371,
+          372
+        ],
+        "memorial": 352,
+        "grave": [
+          352,
+          358
+        ],
+        "lore": 352,
+        "guard": [
+          391,
+          394,
+          395,
+          396
+        ],
+        "boss": [
+          391,
+          394,
+          395,
+          396
+        ],
+        "gate": [
+          391,
+          394,
+          395,
+          396
+        ],
+        "ritual": [
+          391,
+          396
+        ],
+        "blood_circle": 391,
+        "gear": [
+          382,
+          384,
+          385
+        ],
+        "plain_chamber": 503,
+        "rocky_chamber": 504,
+        "altar": [
+          336,
+          337,
+          340
+        ],
+        "offering": 336,
+        "glowing": [
+          337,
+          341
+        ],
+        "force": 338,
+        "motion": 339,
+        "blue_chamber": [
+          321,
+          322
+        ],
+        "dark_room": [
+          394,
+          506,
+          510
+        ],
+        "red_cracks": 394,
+        "trap_candidate": [
+          394,
+          395
+        ],
+        "arena_candidate": 506,
+        "eye": 340,
+        "bone_fragments": 358,
+        "ancient_remnants": 358,
+        "scrolls": 372,
+        "pressure_plate": 395,
+        "obelisk": 396,
+        "stone_floor": 507,
+        "collapsed": 509,
+        "dead_end": [
+          511,
+          512
+        ],
+        "hidden_room": [
+          511,
+          512
+        ],
+        "collapsed_right_entry": 511,
+        "ruined_left_entry": 512
+      }
+    },
+    "path_roles": {
+      "contour": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30
+      ],
+      "void_fill": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99
+      ],
+      "side_branch": [
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        331,
+        332,
+        333,
+        334,
+        335,
+        336,
+        337,
+        338,
+        339,
+        340,
+        341,
+        351,
+        352,
+        358,
+        371,
+        372
+      ],
+      "dead_end": [
+        511,
+        512
+      ],
+      "main_path": [
+        100,
+        101,
+        102,
+        103,
+        104,
+        105,
+        106,
+        107,
+        108,
+        109,
+        110,
+        111,
+        112,
+        113,
+        114,
+        115,
+        116,
+        117,
+        118,
+        119,
+        120,
+        121,
+        122,
+        123,
+        124,
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208
+      ],
+      "branching": [
+        113,
+        114
+      ],
+      "level_link": [
+        201,
+        202,
+        203,
+        204,
+        205,
+        206,
+        207,
+        208
+      ],
+      "event_room": [
+        301,
+        302,
+        303,
+        304,
+        305,
+        306,
+        307,
+        308,
+        320,
+        321,
+        322,
+        331,
+        332,
+        333,
+        334,
+        335,
+        336,
+        337,
+        338,
+        339,
+        340,
+        341,
+        351,
+        352,
+        358,
+        371,
+        372,
+        381,
+        382,
+        383,
+        384,
+        385,
+        391,
+        394,
+        395,
+        396,
+        401,
+        402,
+        403,
+        404,
+        405
+      ],
+      "post_event_replacement": [
+        401,
+        402,
+        403,
+        404,
+        405
+      ],
+      "rift_objective": [
+        320,
+        321,
+        322
+      ],
+      "combat_history": [
+        402,
+        403,
+        404,
+        405
+      ],
+      "boon_room": [
+        331,
+        332,
+        333,
+        334,
+        335,
+        336,
+        337,
+        338,
+        339,
+        340,
+        341
+      ],
+      "switch_room": [
+        381,
+        382,
+        383,
+        384,
+        385
+      ],
+      "protected_objective": [
+        381,
+        382,
+        383,
+        384,
+        385
+      ],
+      "resource_room": [
+        351,
+        352,
+        358
+      ],
+      "empty_room": [
+        501,
+        502,
+        503,
+        504,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512
+      ],
+      "filler_room": [
+        501,
+        502,
+        503,
+        504,
+        506,
+        507,
+        508,
+        509,
+        510,
+        511,
+        512
+      ],
+      "loot_room": [
+        371,
+        372
+      ],
+      "lore_room": [
+        352,
+        358
+      ],
+      "combat_room": [
+        391,
+        394,
+        395,
+        396
+      ],
+      "guard_room": [
+        391,
+        394,
+        395,
+        396
+      ],
+      "boss_room": [
+        391,
+        394,
+        395,
+        396
+      ],
+      "gate_combat": [
+        391,
+        394,
+        395,
+        396
+      ],
+      "rocky_room": [
+        504,
+        509
+      ],
+      "void_decor": [
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99
+      ],
+      "hidden_room": [
+        511,
+        512
+      ]
+    }
+  },
+  "id_ranges": {
+    "blocker": {
+      "min": 1,
+      "max": 99
+    },
+    "movement": {
+      "min": 100,
+      "max": 199
+    },
+    "level_transition": {
+      "min": 200,
+      "max": 299
+    },
+    "event": {
+      "min": 300,
+      "max": 399
+    },
+    "state": {
+      "min": 400,
+      "max": 499
+    },
+    "empty": {
+      "min": 500,
+      "max": 599
+    }
+  }
+}

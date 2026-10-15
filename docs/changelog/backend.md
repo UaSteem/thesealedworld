@@ -4,6 +4,9 @@ Detailed milestone history for the `src/backend` game runtime layer.
 
 ## [Unreleased]
 
+- Rift backend now includes a hex-world runtime slice with tile-set loading,
+  layout presets, Redis persistence, and focused service/API coverage.
+
 ## [v0.5.1] - Alpha 0.5.1
 
 - Removed legacy combat chat events and channel managers, routing combat messages to world/zone channels and combat notices directly to the player.

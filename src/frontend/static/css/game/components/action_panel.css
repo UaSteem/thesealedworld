@@ -50,7 +50,7 @@
     overflow: hidden;
     color: rgba(210, 180, 140, 0.62);
     font-family: var(--font-ui);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: 0.14em;
     line-height: 1;
@@ -89,7 +89,7 @@
     color: rgba(210, 180, 140, 0.72);
     cursor: pointer;
     font-family: var(--font-ui);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: 0.08em;
     line-height: 1.05;
@@ -125,7 +125,7 @@
     min-height: var(--game-action-primary-height, 36px);
     border-color: rgba(255, 170, 0, 0.54);
     color: var(--col-accent);
-    font-size: 12px;
+    font-size: var(--text-base);
     letter-spacing: 0.16em;
 }
 
@@ -165,7 +165,7 @@
     color: rgba(255, 170, 0, 0.72);
     cursor: help;
     font-family: var(--font-ui);
-    font-size: 10px;
+    font-size: var(--text-sm);
     font-weight: 900;
     line-height: 1;
 }

@@ -2,7 +2,7 @@
 
 `src/backend/core/bus/` — тонкий адаптер над `codex_platform.streams`. Весь межфичевый обмен событиями идёт через `app.state.events` — экземпляр `GameEventProducer`.
 
-Подробная документация по паттернам publish/request/reply: см. `docs/agent-skills/turnbasedmmorpg-redis-streams/SKILL.md`.
+Подробная документация по паттернам publish/request/reply: см. `.agents/skills/turnbasedmmorpg-backend/references/event-bus.md`.
 
 ## Два режима
 

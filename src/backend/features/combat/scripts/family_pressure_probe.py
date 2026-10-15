@@ -13,7 +13,7 @@ from src.backend.features.combat.runtime.simulation import (
     FamilyPressureSimulator,
     format_family_pressure_report,
 )
-from src.backend.features.monsters.repositories.monster_generation_repository import MonsterGenerationRepository
+from src.backend.features.monsters.public import MonsterGenerationRepository
 
 
 def parse_args() -> argparse.Namespace:

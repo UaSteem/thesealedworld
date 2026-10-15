@@ -22,18 +22,18 @@ from src.backend.features.combat.runtime.simulation.starting_imprint_actors impo
     StartingImprintSimulationActorBuilder,
 )
 from src.backend.features.combat.runtime.simulation.state import InMemoryBattleLimits
-from src.backend.features.monsters.runtime.combat_actor_input import MonsterCombatActorInputBuilder
-from src.backend.features.monsters.runtime.encounter_profiles import (
+from src.backend.features.monsters.public import (
+    GROUP_ASSEMBLY_CONFIG,
     MONSTER_ENCOUNTER_PROFILES,
     EncounterDifficulty,
     EncounterKind,
+    MonsterCombatActorInputBuilder,
     MonsterEncounterProfile,
+    MonsterGearScoreService,
 )
-from src.backend.features.monsters.runtime.group_assembler import GROUP_ASSEMBLY_CONFIG
-from src.backend.features.monsters.services.gear_score_service import MonsterGearScoreService
 
 if TYPE_CHECKING:
-    from src.backend.features.monsters.dto.generation import GeneratedMonster
+    from src.backend.features.monsters.public import GeneratedMonster
 
 ROLE_ORDER = ("minion", "veteran", "elite", "boss")
 ENCOUNTER_PROFILE_KIND_ORDER: tuple[EncounterKind, ...] = ("ordinary", "guard", "boss")

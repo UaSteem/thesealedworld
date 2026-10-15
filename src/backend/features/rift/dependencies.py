@@ -11,20 +11,18 @@ from src.backend.features.combat.integrations import CombatSessionIntegration, C
 from src.backend.features.combat.orchestrators import CombatCreationOrchestrator
 from src.backend.features.combat.services.lifecycle_service import CombatLifecycleService
 from src.backend.features.combat.services.loot_preorder_service import CombatLootPreorderService
-from src.backend.features.generation_ai.bootstrap import build_generation_ai_registry
-from src.backend.features.generation_ai.repositories import AIGenerationTaskRepository
-from src.backend.features.generation_ai.services import GenerationAIService
 from src.backend.features.items.integrations import ItemPersistenceIntegration
 from src.backend.features.items.repositories import ItemInstanceRepository
 from src.backend.features.items.services import ItemGenerationService
 from src.backend.features.loot.integrations import LootOrderStreamClient
-from src.backend.features.monsters.integrations import (
+from src.backend.features.monsters.public import (
+    ClanFactory,
     MonsterActorCommitmentIntegration,
+    MonsterClanGenerationBuilder,
+    MonsterGenerationRepository,
+    MonsterGroupService,
     MonsterLocationContextIntegration,
 )
-from src.backend.features.monsters.repositories import MonsterGenerationRepository
-from src.backend.features.monsters.runtime import ClanFactory, MonsterClanGenerationBuilder
-from src.backend.features.monsters.services import MonsterGroupService
 from src.backend.features.rift.integrations import RiftRuntimeIntegration
 from src.backend.features.rift.services import RiftDevService, RiftEncounterService, RiftEntryService, RiftPlayerService
 from src.backend.infrastructure.monsters.managers import MonsterGroupCacheManager
@@ -115,12 +113,6 @@ def _rift_encounter_service(
     item_generation = ItemGenerationService(
         ItemPersistenceIntegration(ItemInstanceRepository(db_session)),
     )
-    generation_ai = GenerationAIService(
-        repository=AIGenerationTaskRepository(db_session),
-        registry=build_generation_ai_registry(session=db_session),
-        arq=getattr(request.app.state, "generation_ai_arq", None),
-        auto_schedule=False,
-    )
     monster_groups = MonsterGroupService(  # type: ignore
         repository=monster_repository,
         location_context=MonsterLocationContextIntegration(request.app.state.world_locations),
@@ -130,7 +122,6 @@ def _rift_encounter_service(
             MonsterClanGenerationBuilder(  # type: ignore
                 repository=monster_repository,
                 item_generation=item_generation,
-                generation_ai=generation_ai,
             ),
         ),
     )

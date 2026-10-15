@@ -6,6 +6,7 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
+        exclude: ^(assets/monster_defaults/|src/frontend/static/images/monsters/catalog/)
       - id: check-yaml
         args: ['--unsafe']
       - id: check-json
@@ -65,7 +66,8 @@ repos:
     rev: v1.5.0
     hooks:
       - id: detect-secrets
-        exclude: ^(src/lily_backend/system/fixtures/catalog/|src/backend/alembic/)
+        args: ["--baseline", ".secrets.baseline"]
+        exclude: ^(src/lily_backend/system/fixtures/catalog/|src/backend/alembic/|src/frontend/static/js/vendor/phaser\.min\.js$)
 
   # 3. Листинг и проверка Docker-файлов (Linter)
   - repo: local

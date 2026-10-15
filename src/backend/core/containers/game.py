@@ -14,15 +14,14 @@ from src.backend.features.generation_ai.services import GenerationAIService
 from src.backend.features.items.integrations import ItemPersistenceIntegration
 from src.backend.features.items.repositories import ItemInstanceRepository
 from src.backend.features.items.services import ItemGenerationService
-from src.backend.features.monsters.repositories import MonsterGenerationRepository
-from src.backend.features.monsters.runtime import ClanFactory, MonsterClanGenerationBuilder
-from src.backend.features.monsters.services import (
+from src.backend.features.monsters.public import (
     AnchorProjectionBootstrapService,
+    ClanFactory,
     EncounterMonsterService,
-)
-from src.backend.features.monsters.services.habitat_clan_pool_materialization_service import (
     HabitatClanPoolMaterializationResult,
     HabitatClanPoolMaterializationService,
+    MonsterClanGenerationBuilder,
+    MonsterGenerationRepository,
     habitat_scope_config_from_population_profile,
 )
 from src.backend.features.rift.resources.loader import RiftResourceLoader
@@ -81,7 +80,6 @@ class GameFeatureContainer:
                         item_generation=ItemGenerationService(
                             ItemPersistenceIntegration(ItemInstanceRepository(session)),
                         ),
-                        generation_ai=generation_ai,
                     ),
                 ),
             )

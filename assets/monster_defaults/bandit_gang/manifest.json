@@ -1,0 +1,72 @@
+{
+  "family_id": "bandit_gang",
+  "members": [
+    {
+      "variant_id": "bandit_thug",
+      "png": "png/bandit_thug-v1.png",
+      "status": "accepted"
+    },
+    {
+      "variant_id": "bandit_poacher",
+      "png": "png/bandit_poacher-v1.png",
+      "status": "accepted"
+    },
+    {
+      "variant_id": "bandit_lookout",
+      "png": "png/bandit_lookout-v1.png",
+      "status": "accepted"
+    },
+    {
+      "variant_id": "bandit_knife_rat",
+      "png": "png/bandit_knife_rat-v1.png",
+      "status": "accepted"
+    },
+    {
+      "variant_id": "bandit_raider",
+      "png": "png/bandit_raider-v1.png",
+      "status": "accepted",
+      "display_mirror": true
+    },
+    {
+      "variant_id": "bandit_billhook",
+      "png": "png/bandit_billhook-v1.png",
+      "status": "accepted"
+    },
+    {
+      "variant_id": "bandit_hedge_wizard",
+      "png": "png/bandit_hedge_wizard-v1.png",
+      "status": "accepted"
+    },
+    {
+      "variant_id": "bandit_captain",
+      "png": "png/bandit_captain-v1.png",
+      "status": "accepted",
+      "display_mirror": true
+    },
+    {
+      "variant_id": "bandit_kingpin",
+      "png": "png/bandit_kingpin-v1.png",
+      "status": "accepted",
+      "display_mirror": true
+    },
+    {
+      "variant_id": "bandit_warlord",
+      "png": "png/bandit_warlord-v1.png",
+      "status": "accepted"
+    },
+    {
+      "variant_id": "bandit_cutthroat",
+      "png": "png/bandit_cutthroat-v1.png",
+      "status": "accepted"
+    },
+    {
+      "variant_id": "bandit_blackguard",
+      "png": "png/bandit_blackguard-v1.png",
+      "status": "accepted",
+      "display_mirror": true
+    }
+  ],
+  "direction": "Human outlaws; no settler origin. Equipment quality increases with rank.",
+  "format_direction": "Transparent raster PNG; preserve STYLE.md and canonical accepted references",
+  "style_contract": "STYLE.md"
+}

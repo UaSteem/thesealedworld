@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+BANDIT_CUTTHROAT = MemberBaseDTO(
+    id="bandit_cutthroat",
+    role="boss",
+    stats=BaseStatsDTO(
+        strength=21,
+        agility=22,
+        endurance=20,
+        intellect=16,
+        memory=15,
+        mental=17,
+        perception=18,
+        projection=14,
+        prediction=19,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand="dagger",
+        off_hand="dagger",
+        two_hand=None,
+        head_armor=None,
+        chest_armor="leather_armor",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="amulet",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver=None,
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=600,
+)

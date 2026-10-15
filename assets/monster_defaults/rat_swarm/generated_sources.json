@@ -1,0 +1,79 @@
+[
+  {
+    "id": "scavenger_rat",
+    "name": "Крыса-собиратель",
+    "role": "minion",
+    "catalog": "scavenger_rat",
+    "source": "C:\\Users\\prime\\.codex\\generated_images\\01a13182-9827-72f0-bba1-a86469e19343\\exec-c923d771-8624-4376-9191-f4865a908dff.png"
+  },
+  {
+    "id": "swarm_rat",
+    "name": "Стайная крыса",
+    "role": "minion",
+    "catalog": "swarm_rat",
+    "source": "C:\\Users\\prime\\.codex\\generated_images\\01a13182-9827-72f0-bba1-a86469e19343\\exec-3e2b679a-d1ca-4127-8582-473f7c912b5a.png"
+  },
+  {
+    "id": "tunnel_rat",
+    "name": "Крыса-землекоп",
+    "role": "veteran",
+    "catalog": "tunnel_rat",
+    "source": "C:\\Users\\prime\\.codex\\generated_images\\01a13182-9827-72f0-bba1-a86469e19343\\exec-79cd729c-006d-4012-b561-8ac083065e79.png"
+  },
+  {
+    "id": "pack_rat",
+    "name": "Крыса-загонщик",
+    "role": "veteran",
+    "catalog": "pack_rat",
+    "source": "C:\\Users\\prime\\.codex\\generated_images\\01a13182-9827-72f0-bba1-a86469e19343\\exec-43696d50-f437-47c9-8aa0-46c8a951784c.png"
+  },
+  {
+    "id": "screecher",
+    "name": "Крыса-крикун",
+    "role": "veteran",
+    "catalog": "screecher",
+    "source": "C:\\Users\\prime\\.codex\\generated_images\\01a13182-9827-72f0-bba1-a86469e19343\\exec-e2684eec-89e3-435f-9c26-7455a8dc3a3a.png"
+  },
+  {
+    "id": "burrow_guard",
+    "name": "Страж норы",
+    "role": "elite",
+    "catalog": "plague_rat",
+    "source": "C:\\Users\\prime\\.codex\\generated_images\\01a13182-9827-72f0-bba1-a86469e19343\\exec-ce31da9f-ca1f-4389-a98b-42749b1d30ff.png"
+  },
+  {
+    "id": "ironfang",
+    "name": "Железный клык",
+    "role": "elite",
+    "catalog": "rotfang",
+    "source": "C:\\Users\\prime\\.codex\\generated_images\\01a13182-9827-72f0-bba1-a86469e19343\\exec-e5ad5fad-456f-4e2e-ad02-e2a0e3c97dd0.png"
+  },
+  {
+    "id": "heavy_rat",
+    "name": "Крыса-тяжеловес",
+    "role": "elite",
+    "catalog": "blight_carrier",
+    "source": "C:\\Users\\prime\\.codex\\generated_images\\01a13182-9827-72f0-bba1-a86469e19343\\exec-81bc7166-df56-4e1e-a190-4e6b8834b89a.png"
+  },
+  {
+    "id": "rat_brute",
+    "name": "Крыса-громила",
+    "role": "boss",
+    "catalog": "rat_brute",
+    "source": "C:\\Users\\prime\\.codex\\generated_images\\01a13182-9827-72f0-bba1-a86469e19343\\exec-f85aa51b-10ce-4f56-baa9-d0063f12c41a.png"
+  },
+  {
+    "id": "brood_alpha",
+    "name": "Вожак выводка",
+    "role": "boss",
+    "catalog": "brood_alpha",
+    "source": "C:\\Users\\prime\\.codex\\generated_images\\01a13182-9827-72f0-bba1-a86469e19343\\exec-70f85229-35b3-42cc-8739-ec59d035f8fa.png"
+  },
+  {
+    "id": "rat_king",
+    "name": "Крысиный король",
+    "role": "boss",
+    "catalog": "rat_king",
+    "source": "C:\\Users\\prime\\.codex\\generated_images\\01a13182-9827-72f0-bba1-a86469e19343\\exec-8224d8f7-94f0-4e6f-bba2-46de153fbd4c.png"
+  }
+]

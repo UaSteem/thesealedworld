@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+SCREECHER = MemberBaseDTO(
+    id="screecher",
+    role="veteran",
+    stats=BaseStatsDTO(
+        strength=11,
+        agility=14,
+        endurance=12,
+        intellect=9,
+        memory=7,
+        mental=10,
+        perception=13,
+        projection=6,
+        prediction=8,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand=None,
+        off_hand=None,
+        two_hand="rat_poison_spit",
+        head_armor=None,
+        chest_armor="rat_medium_hide",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="rat_plague_gland",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver="rat_poison_glands",
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=50,
+)

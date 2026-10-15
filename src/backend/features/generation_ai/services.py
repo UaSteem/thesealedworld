@@ -19,6 +19,8 @@ if TYPE_CHECKING:
     from src.backend.features.generation_ai.repositories import AIGenerationTaskRepository
 
 GENERATION_AI_ARQ_TASK = "generation_ai_process_task"
+# Exact retired types only: other generators retain their existing retry policy.
+RETIRED_MONSTER_TASK_TYPES = frozenset({"monster.clan_flavor", "monster.clan_image", "monster.member_image"})
 
 
 class GenerationAIService:
@@ -90,6 +92,16 @@ class GenerationAIService:
         return await self._execute_claimed_task(task)
 
     async def _execute_claimed_task(self, task: Any) -> AIGenerationTaskResultDTO | None:
+        if task.task_type in RETIRED_MONSTER_TASK_TYPES:
+            await self.repository.mark_failed(
+                task.id,
+                {
+                    "type": "RetiredTaskType",
+                    "message": "Monster API generation has been archived; use prepared catalog content.",
+                },
+            )
+            logger.bind(task_id=task.id, task_type=task.task_type).info("GenerationAiRetiredTaskSkipped")
+            return None
         try:
             handler = self.registry.resolve(task.task_type)
             if self.executor is None:

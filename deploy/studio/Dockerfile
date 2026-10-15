@@ -16,7 +16,7 @@ RUN pip install --no-cache-dir uv==0.11.8
 COPY pyproject.toml uv.lock ./
 # Reuses the frontend-runtime dep group — studio uses the same FastAPI / Jinja /
 # Alpine stack, plus asyncpg/redis which are already in that group.
-RUN uv export --frozen --no-dev --group frontend-runtime --no-emit-project --format requirements-txt -o requirements.txt
+RUN uv export --no-dev --group frontend-runtime --no-emit-project --no-sources --format requirements-txt -o requirements.txt
 
 RUN python -m venv /venv && \
     /venv/bin/pip install --no-cache-dir -r requirements.txt

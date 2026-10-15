@@ -68,7 +68,7 @@
 
 .arena-plan-kicker {
     color: var(--col-parchment-dim);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 800;
     letter-spacing: .24em;
 }
@@ -76,7 +76,7 @@
 .arena-plan-title {
     color: color-mix(in srgb, var(--world-accent, var(--col-accent)) 86%, #fff);
     font-family: var(--font-ui);
-    font-size: 13px;
+    font-size: var(--text-md);
     font-weight: 900;
     letter-spacing: .12em;
     line-height: 1.25;
@@ -86,13 +86,13 @@
 .arena-plan-description {
     color: var(--col-parchment);
     font-family: var(--font-world);
-    font-size: 15px;
+    font-size: var(--text-md);
     line-height: 1.45;
 }
 
 .arena-plan-meta {
     color: var(--world-accent, var(--col-accent));
-    font-size: 8px;
+    font-size: var(--text-2xs);
     font-weight: 800;
     letter-spacing: .16em;
 }

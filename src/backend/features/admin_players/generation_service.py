@@ -16,18 +16,19 @@ from src.backend.features.admin_players.dto import (
 from src.backend.features.admin_players.services import _character_summary
 from src.backend.features.items.dto.instance import ItemOriginRefDTO, ItemPlacementRefDTO
 from src.backend.features.moderation import CharacterNamePolicy
-from src.backend.features.monsters.integrations.item_generation import (
+from src.backend.features.monsters.public import (
     build_monster_item_request,
+    get_available_variants_for_tier_window,
+    get_family_config,
+    get_natural_equipment_mapping,
     to_item_generation_request,
 )
-from src.backend.features.monsters.resources import get_available_variants_for_tier_window, get_family_config
-from src.backend.features.monsters.resources.equipment_mapping import get_natural_equipment_mapping
 from src.shared.enums import CoreDomain
 from src.shared.enums.skill_enums import SkillProgressState
 from src.shared.utils.character_name import CharacterNameError
 
 if TYPE_CHECKING:
-    from src.backend.features.monsters.resources.item_affix_profiles import MonsterItemAffixKind
+    from src.backend.features.monsters.public import MonsterItemAffixKind
 
 _ATTRIBUTE_KEYS = (
     "strength",

@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+SCRAP_KING = MemberBaseDTO(
+    id="scrap_king",
+    role="boss",
+    stats=BaseStatsDTO(
+        strength=21,
+        agility=15,
+        endurance=22,
+        intellect=20,
+        memory=17,
+        mental=19,
+        perception=16,
+        projection=18,
+        prediction=14,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand=None,
+        off_hand=None,
+        two_hand="warhammer",
+        head_armor=None,
+        chest_armor="plate_chest",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="amulet",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver=None,
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=600,
+)

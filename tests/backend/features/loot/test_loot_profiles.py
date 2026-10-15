@@ -7,7 +7,7 @@ from src.backend.features.loot.resources.equipment_pool import all_equipment_poo
 from src.backend.features.loot.resources.profiles import LOOT_PROFILES
 from src.backend.features.loot.resources.resolver import resolve_resource
 from src.backend.features.loot.resources.types import ResourceEntry
-from src.backend.features.monsters.resources import get_starter_family_ids
+from src.backend.features.monsters.catalog.registry import get_starter_family_ids
 
 
 @pytest.mark.unit

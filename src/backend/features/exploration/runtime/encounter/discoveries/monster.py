@@ -3,7 +3,7 @@ from __future__ import annotations
 import uuid
 from typing import TYPE_CHECKING, Any
 
-from src.backend.features.monsters.intel_projector import MonsterIntelProjector
+from src.backend.features.monsters.public import MonsterIntelProjector
 from src.backend.infrastructure.actor_commitments import ActorCommitmentManager
 from src.shared.schemas.exploration import (
     DetectionStatus,
@@ -15,7 +15,7 @@ from src.shared.schemas.exploration import (
 
 if TYPE_CHECKING:
     from src.backend.features.exploration.integrations.encounter_integration import EncounterIntegration
-    from src.backend.features.monsters.dto import MonsterGroupResult
+    from src.backend.features.monsters.public import MonsterGroupResult
 
 
 class MonsterDiscoveryBuilder:

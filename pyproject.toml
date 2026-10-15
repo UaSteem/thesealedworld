@@ -25,10 +25,14 @@ dependencies = [
     "authx==1.6.0",
     "mako>=1.3.12",
     "urllib3>=2.7.0",
+    "codex-ai==0.2.4",
 ]
 
 [tool.uv]
 default-groups = ["dev", "backend-runtime", "frontend-runtime", "tg-bot"]
+
+[tool.uv.sources]
+codex-ai = { path = "../../codex_tools/codex-ai" }
 
 
 [tool.hatch.version]
@@ -121,16 +125,16 @@ module = [
     "src.backend.features.scenario.handlers.dialogue_handler",
     "src.backend.features.combat.runtime.analytics.ingestion",
     "src.backend.features.expedition.service",
-    "src.backend.features.monsters.services.anchor_projection_bootstrap",
+    "src.backend.features.monsters.catalog.services.anchor_projection_bootstrap",
     "tools.monsters.backfill_gear_score",
-    "src.backend.features.monsters.services.generated_view_service",
+    "src.backend.features.monsters.inspection.services.generated_view_service",
     "src.backend.features.game_catalog.services.catalog_service",
     "src.backend.features.combat.integrations.session_integration",
     "src.backend.features.loot.services.loot_service",
     "src.backend.features.combat.services.post_battle_router",
     "src.backend.features.exploration.services.navigation_service",
     "src.backend.features.combat.workers.tasks.victory_finalizer_task",
-    "src.backend.features.monsters.services.monster_group_service",
+    "src.backend.features.monsters.encounters.services.monster_group_service",
     "src.backend.features.combat.services.view_service",
     "src.backend.features.combat.services.analytics_dashboard_service",
     "src.backend.features.combat.runtime.support.log_builder",

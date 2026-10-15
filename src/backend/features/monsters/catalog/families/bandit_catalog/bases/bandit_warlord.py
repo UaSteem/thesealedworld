@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+BANDIT_WARLORD = MemberBaseDTO(
+    id="bandit_warlord",
+    role="elite",
+    stats=BaseStatsDTO(
+        strength=15,
+        agility=18,
+        endurance=16,
+        intellect=13,
+        memory=11,
+        mental=14,
+        perception=17,
+        projection=10,
+        prediction=12,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand=None,
+        off_hand=None,
+        two_hand="longbow",
+        head_armor=None,
+        chest_armor="leather_armor",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="amulet",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver="quiver_bodkin",
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=150,
+)

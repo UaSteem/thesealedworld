@@ -11,7 +11,7 @@ from src.backend.features.character.repositories import (
 )
 from src.backend.features.expedition import CharacterExpeditionRepository
 from src.backend.features.items.repositories import ItemInstanceRepository
-from src.backend.features.monsters.repositories import MonsterGenerationRepository
+from src.backend.features.monsters.public import MonsterGenerationRepository
 from src.backend.infrastructure.inventory import InventoryRepository, WalletRepository
 from src.backend.infrastructure.monsters import MonsterRepository
 from src.backend.infrastructure.scenario.repositories import ScenarioRepository

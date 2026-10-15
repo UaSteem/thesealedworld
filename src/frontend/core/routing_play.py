@@ -11,6 +11,7 @@ from src.frontend.game_features.game_catalog.routes.bootstrap import router as g
 from src.frontend.game_features.game_lobby.routes.pages import router as game_lobby_router
 from src.frontend.game_features.inventory.routes.fragments import router as inventory_router
 from src.frontend.game_features.rift.routes.pages import router as rift_router
+from src.frontend.game_features.rift.routes.test_hex_pages import router as hex_test_router
 from src.frontend.game_features.scenario.routes.pages import router as scenario_router
 from src.frontend.game_features.session.routes.pages import router as game_session_router
 
@@ -24,6 +25,7 @@ PLAY_ROUTERS: Sequence[APIRouter] = (
     game_lobby_router,
     inventory_router,
     rift_router,
+    hex_test_router,
     scenario_router,
     game_session_router,
 )

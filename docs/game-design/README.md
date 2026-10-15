@@ -29,7 +29,7 @@ Do not treat this directory as current implementation architecture.
   backend/frontend feature code, current code wins unless the task is explicitly
   to redesign the contract.
 - When building UI, use these files for intent and current frontend CSS/templates
-  plus `turnbasedmmorpg-design-system` for visual implementation rules.
+  plus `turnbasedmmorpg-frontend` for visual implementation rules.
 
 ## Most Useful Entry Points
 

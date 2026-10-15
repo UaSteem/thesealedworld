@@ -80,7 +80,7 @@
         </section>
 
         {% if attrs %}
-        <details class="status-widget-section scenario-status-section" open>
+        <details class="status-widget-section scenario-status-section" open data-persist-key="status:section:attributes">
             <summary class="status-widget-section-title">
                 <span data-tippy-content="Базовые атрибуты персонажа. Сценарий может использовать их как будущие требования выбора."
                       data-tippy-theme="game-hint">ATTRIBUTES</span>
@@ -106,7 +106,7 @@
         {% endif %}
 
         {% if gear_score is not none %}
-        <details class="status-widget-section scenario-status-section status-widget-metrics" open>
+        <details class="status-widget-section scenario-status-section status-widget-metrics" open data-persist-key="status:section:power">
             <summary class="status-widget-section-title">
                 <span data-tippy-content="Сводная оценка боевой готовности персонажа по текущим предметам, атрибутам и навыкам."
                       data-tippy-theme="game-hint">POWER</span>
@@ -124,7 +124,7 @@
         {% endif %}
 
         {% if skills %}
-        <details class="status-widget-section scenario-status-section" open>
+        <details class="status-widget-section scenario-status-section" open data-persist-key="status:section:skills">
             <summary class="status-widget-section-title">
                 <span data-tippy-content="Навыки персонажа. Сценарные проверки и диалоговые условия будут подключаться к этому слою позже."
                       data-tippy-theme="game-hint">SKILLS</span>
@@ -139,7 +139,7 @@
                         {% endif %}
                     {% endfor %}
                     {% if skill_group_count.value %}
-                    <details class="status-widget-skill-group" open>
+                    <details class="status-widget-skill-group" open data-persist-key="status:skill-group:{{ group_title|lower|replace(' ', '-') }}">
                         <summary class="status-widget-skill-group-title">
                             <span>{{ group_title }}</span>
                             <strong>{{ skill_group_count.value }}</strong>
@@ -170,7 +170,7 @@
                     {% endif %}
                 {% endfor %}
                 {% if other_skill_count.value %}
-                <details class="status-widget-skill-group">
+                <details class="status-widget-skill-group" data-persist-key="status:skill-group:other">
                     <summary class="status-widget-skill-group-title">
                         <span>OTHER</span>
                         <strong>{{ other_skill_count.value }}</strong>

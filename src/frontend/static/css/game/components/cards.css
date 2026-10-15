@@ -204,7 +204,7 @@
 
 .ic-name {
   font-family: var(--font-world);
-  font-size: 16px;
+  font-size: var(--text-lg);
   margin-bottom: 4px;
 }
 
@@ -337,7 +337,7 @@
   padding: 8px 14px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   font-family: var(--font-world);
-  font-size: 12px;
+  font-size: var(--text-base);
   font-style: italic;
   line-height: 1.6;
   color: rgba(210, 180, 140, 0.42);

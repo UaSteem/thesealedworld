@@ -12,9 +12,7 @@ from src.backend.features.combat.dto.actor import ActorMetaDTO, ActorRawDTO
 from src.backend.features.combat.dto.ids import normalize_actor_id
 from src.backend.features.combat.integrations import CombatSessionIntegration
 from src.backend.features.combat.services.lifecycle_service import CombatLifecycleService
-from src.backend.features.monsters.resources import get_family_config
-from src.backend.features.monsters.runtime.ai_archetype import resolve_monster_ai_archetype
-from src.backend.features.monsters.runtime.generation_fields import build_scaled_skills
+from src.backend.features.monsters.public import build_scaled_skills, get_family_config, resolve_monster_ai_archetype
 
 ANCHOR_FAMILY_ID = "anchor_sovereigns"
 ANCHOR_FORCE_TEAM = "anchor_force"

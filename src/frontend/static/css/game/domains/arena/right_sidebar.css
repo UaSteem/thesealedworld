@@ -19,6 +19,27 @@
     background-size: cover;
     clip-path: var(--clip-node-sm);
 }
+.arena-view-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+}
+
+.arena-view-stat {
+    min-height: 58px;
+    display: grid;
+    align-content: center;
+    gap: 4px;
+    padding: 9px;
+    border: 1px solid rgba(255, 170, 0, .14);
+    background:
+        linear-gradient(180deg, rgba(255, 170, 0, .045), transparent),
+        linear-gradient(rgba(2, 2, 2, .58), rgba(2, 2, 2, .76)),
+        url("/static/images/ui/textures/button-candidates/button-surface-02-blackened-metal.webp");
+    background-position: center;
+    background-size: cover;
+    clip-path: var(--clip-node-sm);
+}
 
 .arena-view-stat--wide {
     grid-column: 1 / -1;
@@ -28,14 +49,14 @@
 .arena-view-stat span,
 .arena-view-row span {
     color: var(--col-parchment-dim);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 800;
     letter-spacing: .18em;
 }
 
 .arena-view-stat strong {
     color: var(--world-accent, var(--col-accent));
-    font-size: 18px;
+    font-size: var(--text-lg);
     font-weight: 900;
     letter-spacing: .08em;
     line-height: 1.1;
@@ -43,7 +64,7 @@
 }
 
 .arena-view-stat--wide strong {
-    font-size: 28px;
+    font-size: var(--text-2xl);
 }
 
 .arena-view-section {
@@ -68,7 +89,7 @@
 
 .arena-view-row strong {
     color: var(--world-accent, var(--col-accent));
-    font-size: 8px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: .14em;
     text-align: right;
@@ -123,7 +144,7 @@
     color: var(--col-parchment);
     cursor: pointer;
     clip-path: var(--clip-node-sm);
-    font-size: 10px;
+    font-size: var(--text-sm);
     letter-spacing: .08em;
     text-shadow: 0 1px 0 #000;
     box-shadow:
@@ -159,7 +180,7 @@
     }
 
     .arena-lobby-copy {
-        font-size: 16px;
+        font-size: var(--text-lg);
     }
 
     .arena-mode-grid {
@@ -183,7 +204,7 @@
 
     .arena-mode-readout,
     .arena-search-copy {
-        font-size: 16px;
+        font-size: var(--text-lg);
     }
 
     .arena-mode-actions {

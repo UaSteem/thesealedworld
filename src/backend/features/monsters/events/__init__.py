@@ -8,19 +8,15 @@ from codex_platform.streams import StreamRouter
 from loguru import logger
 
 from src.backend.core.database.session import get_manual_session_context
-from src.backend.features.generation_ai.bootstrap import build_generation_ai_registry
-from src.backend.features.generation_ai.repositories import AIGenerationTaskRepository
-from src.backend.features.generation_ai.services import GenerationAIService
 from src.backend.features.items.integrations import ItemPersistenceIntegration
 from src.backend.features.items.repositories import ItemInstanceRepository
 from src.backend.features.items.services import ItemGenerationService
-from src.backend.features.monsters.integrations import (
-    MonsterActorCommitmentIntegration,
-    MonsterLocationContextIntegration,
-)
-from src.backend.features.monsters.repositories import MonsterGenerationRepository
-from src.backend.features.monsters.runtime import ClanFactory, MonsterClanGenerationBuilder
-from src.backend.features.monsters.services import MonsterGroupService
+from src.backend.features.monsters.catalog.materialization.clan_factory import ClanFactory
+from src.backend.features.monsters.catalog.materialization.generation_builder import MonsterClanGenerationBuilder
+from src.backend.features.monsters.catalog.repositories.monster_generation_repository import MonsterGenerationRepository
+from src.backend.features.monsters.encounters.integrations.location_context import MonsterLocationContextIntegration
+from src.backend.features.monsters.encounters.services.monster_group_service import MonsterGroupService
+from src.backend.features.monsters.instances.integrations.actor_commitments import MonsterActorCommitmentIntegration
 from src.backend.infrastructure.monsters.managers import MonsterGroupCacheManager
 
 if TYPE_CHECKING:
@@ -75,12 +71,6 @@ async def on_group_prepare_requested(payload: dict[str, Any]) -> None:
             item_generation = ItemGenerationService(
                 ItemPersistenceIntegration(ItemInstanceRepository(session)),
             )
-            generation_ai = GenerationAIService(
-                repository=AIGenerationTaskRepository(session),
-                registry=build_generation_ai_registry(session=session),
-                arq=getattr(_app.state, "generation_ai_arq", None),
-                auto_schedule=False,
-            )
             service = MonsterGroupService(  # type: ignore
                 repository=monster_repository,
                 location_context=MonsterLocationContextIntegration(_app.state.world_locations),
@@ -90,7 +80,6 @@ async def on_group_prepare_requested(payload: dict[str, Any]) -> None:
                     MonsterClanGenerationBuilder(  # type: ignore
                         repository=monster_repository,
                         item_generation=item_generation,
-                        generation_ai=generation_ai,
                     ),
                 ),
             )
@@ -103,7 +92,6 @@ async def on_group_prepare_requested(payload: dict[str, Any]) -> None:
                 ttl=ttl,
             )
             await session.commit()
-            await generation_ai.schedule_pending_task_ids()
 
         ack: dict[str, Any] = {"status": "ok", "payload": result.model_dump(mode="json")}
         await _app.state.events.publish(MonsterEvents.GROUP_PREPARED, ack, correlation_id=cid)

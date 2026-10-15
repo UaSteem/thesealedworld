@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+TUNNEL_RAT = MemberBaseDTO(
+    id="tunnel_rat",
+    role="veteran",
+    stats=BaseStatsDTO(
+        strength=12,
+        agility=14,
+        endurance=13,
+        intellect=8,
+        memory=7,
+        mental=10,
+        perception=11,
+        projection=6,
+        prediction=9,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand="rat_veteran_claws",
+        off_hand="rat_offhand_bite",
+        two_hand=None,
+        head_armor=None,
+        chest_armor="rat_medium_hide",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="rat_plague_gland",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver=None,
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=50,
+)

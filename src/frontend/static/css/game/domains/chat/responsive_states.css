@@ -80,7 +80,7 @@
 }
 
 .chat-mini-preview .msg {
-    font-size: 10px;
+    font-size: var(--text-sm);
     opacity: 0.55;
     white-space: nowrap;
     overflow: hidden;

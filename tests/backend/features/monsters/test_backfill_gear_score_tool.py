@@ -1,5 +1,4 @@
 import pytest
-
 from tools.monsters import backfill_gear_score
 
 

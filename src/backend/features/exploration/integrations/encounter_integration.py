@@ -8,7 +8,7 @@ from loguru import logger
 
 from src.backend.features.exploration.game_config import ExplorationConfig
 from src.backend.features.exploration.runtime.experience import flat_attribute_snapshot
-from src.backend.features.monsters.dto import MonsterGroupResult
+from src.backend.features.monsters.public import MonsterGroupResult
 from src.backend.infrastructure.exploration.managers import ExplorationEncounterRuntimeManager
 
 if TYPE_CHECKING:

@@ -1,6 +1,6 @@
 import pytest
 
-from src.backend.features.monsters.services.habitat_clan_pool_materialization_service import (
+from src.backend.features.monsters.encounters.services.habitat_clan_pool_materialization_service import (
     HabitatClanPoolMaterializationResult,
     HabitatScopeConfig,
 )

@@ -111,6 +111,7 @@ def _static_version() -> str:
         settings.static_dir / "css" / "game.css",
         settings.static_dir / "js" / "game.js",
         settings.static_dir / "js" / "game" / "states" / "rift.js",
+        settings.static_dir / "js" / "game" / "scenes" / "hex_map_scene.js",
         settings.static_dir / "css" / "account.css",
         settings.static_dir / "css" / "admin.css",
     )

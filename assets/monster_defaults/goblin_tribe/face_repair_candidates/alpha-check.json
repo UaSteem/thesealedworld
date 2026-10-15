@@ -1,0 +1,42 @@
+[
+  {
+    "id": "goblin_sneak",
+    "transparent": true
+  },
+  {
+    "id": "goblin_scavenger",
+    "transparent": true
+  },
+  {
+    "id": "goblin_cutter",
+    "transparent": true
+  },
+  {
+    "id": "goblin_sparkpick",
+    "transparent": true
+  },
+  {
+    "id": "goblin_spearman",
+    "transparent": true
+  },
+  {
+    "id": "goblin_scrapguard",
+    "transparent": true
+  },
+  {
+    "id": "goblin_tinkerer",
+    "transparent": true
+  },
+  {
+    "id": "goblin_bomber",
+    "transparent": true
+  },
+  {
+    "id": "goblin_trapmaster",
+    "transparent": true
+  },
+  {
+    "id": "goblin_chief",
+    "transparent": true
+  }
+]

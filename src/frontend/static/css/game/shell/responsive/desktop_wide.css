@@ -1,0 +1,61 @@
+/* Wide-desktop tiers.
+ * Two-step font scale + a panel widening on the top tier. Every selector that
+ * uses var(--text-*) grows automatically. Hardcoded px font-sizes are
+ * unaffected (those are being migrated to tokens in a separate pass).
+ *
+ * 1440-1599: gentle font bump (+1-2px). Panels stay narrow (320 from the
+ * existing max-width:1599 tier) so we don't widen and shrink content at once.
+ *
+ * 1600+: full font bump + side panels widen to 400/340. Center max stays at
+ * its 920 baseline; combat keeps its own 1040 override.
+ */
+@media (min-width: 1440px) {
+    #game-left-content,
+    #game-right-content {
+        padding: 10px 10px 36px;
+    }
+
+    #app-viewport {
+        --side-panel-width: 360px;
+        --text-3xl: 35px;
+        --text-2xl: 27px;
+        --text-xl: 23px;
+        --text-lg: 19px;
+        --text-md: 16px;
+        --text-base: 14px;
+        --text-sm: 12px;
+        --text-xs: 11px;
+    }
+}
+
+@media (min-width: 1600px) {
+    #center-screens.exploration-center-screens {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    /* Navigation mode: narrow the action panel so it doesn't stretch */
+    .has-city-map-screen > .exploration-action-panel {
+        width: 70%;
+        align-self: center;
+    }
+
+    /* Encounter mode: full width — PRIORITY INTERRUPT + contacts need space */
+    .mobile-rift--encounter .has-city-map-screen > .exploration-action-panel {
+        width: 100%;
+        align-self: stretch;
+    }
+
+    #app-viewport {
+        --side-panel-width: 370px;
+        --text-3xl: 37px;
+        --text-2xl: 29px;
+        --text-xl: 24px;
+        --text-lg: 20px;
+        --text-md: 17px;
+        --text-base: 15px;
+        --text-sm: 13px;
+        --text-xs: 12px;
+        --text-2xs: 9px;
+    }
+}

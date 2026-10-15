@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from src.backend.features.monsters.dto import MonsterGroupMemberPreview, MonsterGroupResult
+from src.backend.features.monsters.public import MonsterGroupMemberPreview, MonsterGroupResult
 from src.backend.features.rift.dto import (
     RiftCombatPromptActionDTO,
     RiftCombatPromptDTO,

@@ -22,7 +22,7 @@
 #chat-prompt {
     flex: 0 0 auto;
     color: var(--chat-accent);
-    font-size: 14px;
+    font-size: var(--text-md);
     font-family: var(--font-mono);
 }
 
@@ -36,7 +36,7 @@
     box-shadow: inset 0 0 12px rgba(0, 0, 0, .36);
     color: var(--col-parchment);
     caret-color: var(--chat-accent);
-    font-size: 12px;
+    font-size: var(--text-base);
     font-family: var(--font-mono);
 }
 
@@ -88,7 +88,7 @@
 
     .chat-tab-select {
         height: 26px;
-        font-size: 8px;
+        font-size: var(--text-2xs);
     }
 
     #chat-input {

@@ -1,0 +1,14 @@
+[
+  {
+    "source": "src/studio/features/cabinet/modules/content_ops/cabinet.py",
+    "sha256": "2b37dc67b7c9c1c6eb692501d1bb7dafa27d9cfd5f7dcd444d43bbacdd5c99a3"
+  },
+  {
+    "source": "src/studio/integrations/backend_api/admin_monsters.py",
+    "sha256": "a1dff98ed8afe30bbdaca69c8ed2fefbc3b18743e011dcf010b98f7bfe383ce0"
+  },
+  {
+    "source": "src/fastapi_cabinet/templates/cabinet/content_ops_monster_maintenance.html",
+    "sha256": "718124741c817880a8921e57e870c69060c87b107b55beb774f48e493622944d"
+  }
+]

@@ -323,7 +323,7 @@
         {% set is_safe = location_view.hud is defined and location_view.hud and location_view.hud.is_safe_zone %}
         {% set is_danger = active_encounter %}
         {% set city_map = location_view.city_map if location_view.city_map is defined and location_view.city_map.rows is defined and location_view.city_map.rows else none %}
-        {% set city_map_layout = city_map and not active_encounter %}
+        {% set city_map_layout = city_map is not none %}
 
         <section class="panel-dock panel-dock--framed exploration-main-dock {{ 'mobile-rift--encounter' if active_encounter else '' }}" aria-label="Exploration main dock">
             <nav class="dock-nav dock-nav--bar dock-nav--five mobile-center-menu" aria-label="Game sections">
@@ -334,9 +334,9 @@
                 {{ mobile_nav_item(nav.r2 if nav else none, 'INFO') }}
             </nav>
 
-            <section class="mobile-screen game-screen-area game-screen-area--vertical is-active" data-screen="explore">
-                <div class="game-screen-content exploration-screen-content {{ 'has-city-map-layout' if city_map_layout else '' }}">
-                    <section class="mobile-scene parchment {{ 'is-danger' if is_danger else 'is-safe' if is_safe else '' }} {{ 'has-city-map-scene' if city_map_layout else '' }}"
+            <section class="mobile-screen game-screen-area game-screen-area--vertical is-active {{ 'has-city-map-screen' if city_map else '' }}" data-screen="explore">
+                <div class="game-screen-content exploration-screen-content {{ 'has-city-map-layout' if city_map else '' }}">
+                    <section class="mobile-scene parchment {{ 'is-danger' if is_danger else 'is-safe' if is_safe else '' }} {{ 'has-city-map-scene' if city_map else '' }}"
                              data-risk-frame
                              data-safe-zone="{{ 'true' if is_safe else 'false' }}"
                              data-threat="{{ threat }}"
@@ -380,6 +380,8 @@
                             <span class="mobile-scene-title">{{ location_view.title if location_view.title is defined else active_encounter.title if active_encounter else 'LOCATION' }}</span>
                             <span class="mobile-scene-coordinates" aria-label="Location coordinates">
                                 {% if loc_parts|length >= 2 %}X {{ loc_parts[0] }} · Y {{ loc_parts[1] }}{% else %}{{ location_view.loc_id if location_view.loc_id is defined else 'NO_DATA' }}{% endif %}
+                                {% set _tier = location_view.hud.threat_tier if location_view.hud is defined and location_view.hud and location_view.hud.threat_tier is defined else location_view.threat_tier if location_view.threat_tier is defined else none %}
+                                {% if _tier is not none %} · T{{ _tier }}{% endif %}
                             </span>
                             <span class="mobile-scene-signal" data-signals="{{ location_view.players_nearby if location_view.players_nearby is defined else 0 }}">
                                 {{ 'INTERRUPT' if active_encounter else 'SIGNALS: ' ~ (location_view.players_nearby if location_view.players_nearby is defined else 0) }}
@@ -388,7 +390,7 @@
                                 {{ 'SERVICES: ' ~ service_count if service_count else 'NO SERVICES' }}
                             </span>
                         </div>
-                        {% if not city_map_layout %}
+                        {% if not city_map_layout and not active_encounter %}
                             <div class="mobile-scene-copy" data-collapsible-text>
                                 <p class="world-text">
                                     <span class="symbiote-readout-name">{{ symbiote_name }}:</span>
@@ -402,23 +404,7 @@
                             </div>
                         {% endif %}
                     </section>
-                    {% if city_map_layout %}
-                        <div class="mobile-scene-copy mobile-scene-copy--map" data-collapsible-text>
-                            <p class="world-text">
-                                <span class="symbiote-readout-name">{{ symbiote_name }}:</span>
-                                {{ location_view.description if location_view.description is defined else active_encounter.description if active_encounter else '' }}
-                            </p>
-                            <button class="mobile-more-button"
-                                    type="button"
-                                    data-tooltip="{{ location_view.description if location_view.description is defined else active_encounter.description if active_encounter else '' }}">
-                                ... MORE
-                            </button>
-                        </div>
-                    {% endif %}
 
-                    {% if active_encounter %}
-                        {{ encounter_surfaces(active_encounter, symbiote_name) }}
-                    {% endif %}
                     <script>
                         (function() {
                             const bgUrl = '{{ location_view.background_url if location_view.background_url is defined else "" }}';
@@ -479,11 +465,7 @@
                                 </section>
                             </div>
                         {% else %}
-                            <div class="mobile-bottom-rule" aria-hidden="true"></div>
-                            <div class="mobile-move-cooldown" data-cooldown-state="ready" style="--move-cooldown-progress: 1;">
-                                <span class="mobile-move-cooldown-bar"></span>
-                                <span class="exploration-move-cooldown-label sr-only">READY</span>
-                            </div>
+                            {{ encounter_surfaces(active_encounter, symbiote_name) }}
                             {{ encounter_actions(active_encounter) }}
                         {% endif %}
                     </section>

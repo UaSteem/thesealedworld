@@ -5,14 +5,13 @@ from typing import TYPE_CHECKING, Any
 
 from loguru import logger
 
-from src.backend.features.monsters.intel_projector import MonsterIntelProjector
+from src.backend.features.monsters.public import MonsterIntelProjector
 from src.backend.features.rift.dto.screen import RiftCombatPromptDTO, RiftCombatPromptEnemyDTO
 from src.backend.features.rift.runtime.encounter import composition_policy_for_encounter_kind
 
 if TYPE_CHECKING:
     from src.backend.features.combat.orchestrators import CombatCreationOrchestrator
-    from src.backend.features.monsters.dto import MonsterGroupResult
-    from src.backend.features.monsters.services import MonsterGroupService
+    from src.backend.features.monsters.public import MonsterGroupResult, MonsterGroupService
     from src.backend.features.rift.dto import RiftZoneRuntimeDTO
     from src.backend.features.rift.integrations import RiftRuntimeIntegration
     from src.backend.infrastructure.actor_state.managers import CharacterSessionManager

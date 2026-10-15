@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+BANDIT_POACHER = MemberBaseDTO(
+    id="bandit_poacher",
+    role="minion",
+    stats=BaseStatsDTO(
+        strength=14,
+        agility=16,
+        endurance=13,
+        intellect=10,
+        memory=9,
+        mental=12,
+        perception=15,
+        projection=8,
+        prediction=11,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand=None,
+        off_hand=None,
+        two_hand="shortbow",
+        head_armor=None,
+        chest_armor="leather_armor",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="amulet",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver="quiver_training",
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=20,
+)

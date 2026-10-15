@@ -46,20 +46,20 @@
 
 .arena-repair-banner strong {
     color: var(--col-accent);
-    font-size: 10px;
+    font-size: var(--text-sm);
     letter-spacing: 0.16em;
 }
 
 .arena-repair-banner span {
     color: rgba(210, 180, 140, 0.58);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     letter-spacing: 0.14em;
 }
 
 .arena-repair-banner p {
     color: rgba(245, 232, 204, 0.82);
     font-family: var(--font-world);
-    font-size: 15px;
+    font-size: var(--text-md);
     line-height: 1.55;
 }
 

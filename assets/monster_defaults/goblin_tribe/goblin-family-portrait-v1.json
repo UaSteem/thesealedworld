@@ -1,0 +1,91 @@
+{
+  "width": 2300,
+  "height": 1160,
+  "layout": [
+    {
+      "variant_id": "scrap_king",
+      "x": 890,
+      "y": 75,
+      "width": 460,
+      "height": 660
+    },
+    {
+      "variant_id": "goblin_chief",
+      "x": 1380,
+      "y": 160,
+      "width": 400,
+      "height": 605
+    },
+    {
+      "variant_id": "goblin_spearman",
+      "x": 140,
+      "y": 70,
+      "width": 365,
+      "height": 700
+    },
+    {
+      "variant_id": "goblin_scavenger",
+      "x": 450,
+      "y": 170,
+      "width": 400,
+      "height": 615
+    },
+    {
+      "variant_id": "goblin_bomber",
+      "x": 1710,
+      "y": 175,
+      "width": 400,
+      "height": 625
+    },
+    {
+      "variant_id": "goblin_tinkerer",
+      "x": 690,
+      "y": 395,
+      "width": 320,
+      "height": 460
+    },
+    {
+      "variant_id": "goblin_trapmaster",
+      "x": 1270,
+      "y": 405,
+      "width": 330,
+      "height": 465
+    },
+    {
+      "variant_id": "goblin_scrapguard",
+      "x": 1590,
+      "y": 415,
+      "width": 350,
+      "height": 485
+    },
+    {
+      "variant_id": "goblin_slinger",
+      "x": 315,
+      "y": 425,
+      "width": 310,
+      "height": 470
+    },
+    {
+      "variant_id": "goblin_cutter",
+      "x": 610,
+      "y": 610,
+      "width": 340,
+      "height": 410
+    },
+    {
+      "variant_id": "goblin_sneak",
+      "x": 990,
+      "y": 635,
+      "width": 330,
+      "height": 415
+    },
+    {
+      "variant_id": "goblin_sparkpick",
+      "x": 1830,
+      "y": 560,
+      "width": 320,
+      "height": 460
+    }
+  ],
+  "note": "Composition of existing accepted assets; no new character generation."
+}

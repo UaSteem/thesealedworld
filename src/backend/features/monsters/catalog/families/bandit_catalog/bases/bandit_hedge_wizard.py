@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+BANDIT_HEDGE_WIZARD = MemberBaseDTO(
+    id="bandit_hedge_wizard",
+    role="veteran",
+    stats=BaseStatsDTO(
+        strength=11,
+        agility=14,
+        endurance=13,
+        intellect=17,
+        memory=15,
+        mental=16,
+        perception=12,
+        projection=10,
+        prediction=9,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand=None,
+        off_hand=None,
+        two_hand="quarterstaff",
+        head_armor=None,
+        chest_armor="leather_armor",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="amulet",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver=None,
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=50,
+)

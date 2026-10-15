@@ -133,6 +133,82 @@ function initGameTooltips(root = document) {
 
 window.initGameTooltips = initGameTooltips;
 
+
+
+
+
+const DETAILS_PERSIST_PREFIX = 'tbmmorpg:ui:details:';
+
+function initDetailsPersistence(root = document) {
+    const nodes = Array.from(root.querySelectorAll('details[data-persist-key]'));
+    nodes.forEach((node) => {
+        const key = node.dataset.persistKey;
+        if (!key) return;
+        const storageKey = DETAILS_PERSIST_PREFIX + key;
+
+
+        try {
+            const stored = window.localStorage.getItem(storageKey);
+            if (stored !== null) {
+                node.open = stored === 'open';
+            }
+        } catch (err) { void err; }
+
+
+        if (node.dataset.persistBound === '1') return;
+        node.dataset.persistBound = '1';
+        node.addEventListener('toggle', () => {
+            try {
+                window.localStorage.setItem(storageKey, node.open ? 'open' : 'closed');
+            } catch (err) { void err; }
+        });
+    });
+}
+
+window.initDetailsPersistence = initDetailsPersistence;
+
+
+
+
+function accState(persistKey, defaultOpen) {
+    const storageKey = DETAILS_PERSIST_PREFIX + persistKey;
+    let isOpen = defaultOpen;
+    try {
+        const stored = window.localStorage.getItem(storageKey);
+        if (stored !== null) isOpen = stored === 'open';
+    } catch (e) { void e; }
+
+    return {
+        open: isOpen,
+        toggle() {
+            this.open = !this.open;
+            try {
+                window.localStorage.setItem(storageKey, this.open ? 'open' : 'closed');
+            } catch (e) { void e; }
+        },
+    };
+}
+
+window.accState = accState;
+
+
+
+function resetUIAccordions() {
+    try {
+        const keys = Object.keys(window.localStorage).filter(k => k.startsWith(DETAILS_PERSIST_PREFIX));
+        keys.forEach(k => window.localStorage.removeItem(k));
+
+        document.querySelectorAll('details[data-persist-key]').forEach(node => {
+            node.open = node.hasAttribute('open');
+            delete node.dataset.persistBound;
+        });
+        initDetailsPersistence(document);
+    } catch (e) { void e; }
+}
+
+window.resetUIAccordions = resetUIAccordions;
+
+
 const COMBAT_STAT_SECTION_STORAGE_PREFIX = 'tbmmorpg:combat:stat-section:';
 
 function initCombatStatSectionPersistence(root = document) {
@@ -167,6 +243,7 @@ window.initCombatStatSectionPersistence = initCombatStatSectionPersistence;
 
 document.addEventListener('DOMContentLoaded', () => {
     initGameTooltips(document);
+    initDetailsPersistence(document);
     initCombatStatSectionPersistence(document);
 });
 
@@ -253,6 +330,7 @@ function handleSessionReplaced(event) {
 }
 
 document.addEventListener('htmx:load', function() {
+    initDetailsPersistence(document);
     initCombatStatSectionPersistence(document);
     if (window.GameCatalogCache) {
         window.GameCatalogCache.init().then(() => window.GameCatalogCache.resolveDom(document));

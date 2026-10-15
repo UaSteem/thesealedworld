@@ -49,13 +49,13 @@ The migration should copy files, not regenerate images.
 ## Handoff Prompt
 
 ```text
-We are working in C:\install\projects\pets\TurnBasedMMORPG.
+We are working in the current TurnBasedMMORPG checkout.
 
 Read first:
-- docs/agent-skills/turnbasedmmorpg-project/SKILL.md
-- docs/agent-skills/turnbasedmmorpg-backend/SKILL.md
-- docs/agent-skills/turnbasedmmorpg-deployment-management/SKILL.md
-- docs/agent-skills/turnbasedmmorpg-testing-strategy/SKILL.md
+- .agents/skills/turnbasedmmorpg-project/references/repository-operations.md
+- .agents/skills/turnbasedmmorpg-backend/references/feature-architecture.md
+- .agents/skills/turnbasedmmorpg-release/references/deployment.md
+- .agents/skills/turnbasedmmorpg-quality/references/testing.md
 
 Task:
 Add a production asset backfill script that copies existing generated asset

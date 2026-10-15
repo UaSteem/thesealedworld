@@ -1,0 +1,7 @@
+{
+  "original_sha256": "8faf47b2169b1030da4f2b86a3a05b46964826122627413b1fdc7e09a88d148c",
+  "changes": [
+    "Removed stray triangle path m44.31 34.82...",
+    "Replaced ear path out-and-back excursion with identical net displacement 0.04 0.08"
+  ]
+}

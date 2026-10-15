@@ -10,7 +10,7 @@ from src.backend.infrastructure.actor_state.managers import CharacterSessionMana
 from src.backend.infrastructure.expedition.managers import ExpeditionRedisManager
 from src.backend.infrastructure.game_lobby.managers import StartingImprintDistributionManager
 from src.backend.infrastructure.inventory.managers import InventorySessionManager
-from src.backend.infrastructure.rift.managers import RiftPortalStore
+from src.backend.infrastructure.rift.managers import HexRiftWorldStore, RiftPortalStore
 from src.backend.infrastructure.scenario.managers.content_manager import ScenarioContentManager
 from src.backend.infrastructure.scenario.managers.session_manager import ScenarioSessionManager
 from src.backend.infrastructure.world import WorldLocationStore
@@ -30,6 +30,7 @@ class RedisManagers:
     world_locations: WorldLocationStore
     expeditions: ExpeditionRedisManager
     inventory_sessions: InventorySessionManager
+    hex_rift_worlds: HexRiftWorldStore
     rift_portals: RiftPortalStore
     starting_imprints: StartingImprintDistributionManager
 
@@ -48,6 +49,7 @@ def build_redis_managers(
         world_locations=WorldLocationStore(redis),
         expeditions=ExpeditionRedisManager(redis),
         inventory_sessions=InventorySessionManager(redis),
+        hex_rift_worlds=HexRiftWorldStore(redis),
         rift_portals=RiftPortalStore(redis),
         starting_imprints=StartingImprintDistributionManager(redis),
     )

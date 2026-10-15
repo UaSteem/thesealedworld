@@ -1,0 +1,50 @@
+[
+  {
+    "id": "cub",
+    "transparent": true
+  },
+  {
+    "id": "runner",
+    "transparent": true
+  },
+  {
+    "id": "mangy_biter",
+    "transparent": true
+  },
+  {
+    "id": "stalker",
+    "transparent": true
+  },
+  {
+    "id": "flanker",
+    "transparent": true
+  },
+  {
+    "id": "snapper",
+    "transparent": true
+  },
+  {
+    "id": "pack_leader",
+    "transparent": true
+  },
+  {
+    "id": "dire_wolf",
+    "transparent": true
+  },
+  {
+    "id": "old_fang",
+    "transparent": true
+  },
+  {
+    "id": "alpha_prime",
+    "transparent": true
+  },
+  {
+    "id": "winter_maw",
+    "transparent": true
+  },
+  {
+    "id": "blood_howl",
+    "transparent": true
+  }
+]

@@ -49,14 +49,14 @@ storage contract so production can store approved covers in S3.
 ## Handoff Prompt
 
 ```text
-We are working in C:\install\projects\pets\TurnBasedMMORPG.
+We are working in the current TurnBasedMMORPG checkout.
 
 Read first:
-- docs/agent-skills/turnbasedmmorpg-project/SKILL.md
-- docs/agent-skills/turnbasedmmorpg-frontend/SKILL.md
-- docs/agent-skills/turnbasedmmorpg-cabinet-design/SKILL.md
-- docs/agent-skills/turnbasedmmorpg-backend/SKILL.md
-- docs/agent-skills/turnbasedmmorpg-testing-strategy/SKILL.md
+- .agents/skills/turnbasedmmorpg-project/references/repository-operations.md
+- .agents/skills/turnbasedmmorpg-frontend/references/feature-architecture.md
+- .agents/skills/turnbasedmmorpg-frontend/references/cabinet-design.md
+- .agents/skills/turnbasedmmorpg-backend/references/feature-architecture.md
+- .agents/skills/turnbasedmmorpg-quality/references/testing.md
 
 Task:
 Add an admin news cover generation workflow. Admins should generate an image

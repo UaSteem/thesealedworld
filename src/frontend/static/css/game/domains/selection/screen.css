@@ -34,14 +34,14 @@
 }
 
 .char-name {
-    font-size: 13px;
+    font-size: var(--text-md);
     color: var(--col-parchment);
     margin-bottom: 4px;
     letter-spacing: 0.05em;
 }
 
 .char-meta {
-    font-size: 8px;
+    font-size: var(--text-2xs);
     color: var(--col-text-dim);
     line-height: 1.6;
     text-transform: uppercase;
@@ -51,7 +51,7 @@
     position: absolute;
     top: 8px;
     right: 10px;
-    font-size: 7px;
+    font-size: var(--text-2xs);
     letter-spacing: 0.1em;
     padding: 2px 6px;
     background: rgba(255, 170, 0, 0.08);

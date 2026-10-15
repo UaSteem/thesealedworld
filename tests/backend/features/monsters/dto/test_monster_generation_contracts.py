@@ -1,9 +1,9 @@
 import pytest
 from pydantic import ValidationError
 
+from src.backend.features.monsters.catalog.contracts import MonsterFamilyDTO
+from src.backend.features.monsters.catalog.registry import get_family_config
 from src.backend.features.monsters.dto.generation import GeneratedMonsterTemplateDTO
-from src.backend.features.monsters.dto.resources import MonsterFamilyDTO
-from src.backend.features.monsters.resources import get_family_config
 
 
 def test_generated_monster_template_accepts_target_json_contract() -> None:

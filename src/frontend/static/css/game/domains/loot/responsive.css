@@ -7,7 +7,7 @@
 
     .loot-screen-copy strong,
     .death-screen-copy strong {
-        font-size: 28px;
+        font-size: var(--text-2xl);
     }
 
     .loot-row {

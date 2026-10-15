@@ -1,0 +1,11 @@
+{
+  "request_id": "ea24d1a9-b45d-447e-9175-7a7309a1d978",
+  "usage": {
+    "input_tokens": 1648,
+    "output_tokens": 27843,
+    "total_tokens": 29491
+  },
+  "estimate_usd_uncached": 0.563452,
+  "raster_image_elements": 0,
+  "paths": 254
+}

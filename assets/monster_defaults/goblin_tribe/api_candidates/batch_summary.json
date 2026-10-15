@@ -1,0 +1,52 @@
+{
+  "requests": 4,
+  "cost_estimate_usd": 2.41492,
+  "average_estimate_usd": 0.60373,
+  "members": {
+    "goblin_bomber": {
+      "request_id": "899728f4-d2b3-43ea-b8d0-763baeefd028",
+      "usage": {
+        "input_tokens": 1456,
+        "output_tokens": 28900,
+        "total_tokens": 30356
+      },
+      "model": "arrow-2",
+      "note": "Token estimate at public uncached rates; verify settled charge in Usage. Test keys return mocks.",
+      "estimated_usd_uncached": 0.583824
+    },
+    "goblin_trapmaster": {
+      "request_id": "6a6f8277-b214-4167-8508-23ff922ca09f",
+      "usage": {
+        "input_tokens": 1456,
+        "output_tokens": 27849,
+        "total_tokens": 29305
+      },
+      "model": "arrow-2",
+      "note": "Token estimate at public uncached rates; verify settled charge in Usage. Test keys return mocks.",
+      "estimated_usd_uncached": 0.562804
+    },
+    "goblin_chief": {
+      "request_id": "836a4ddc-1a06-401e-b643-c179c7b83786",
+      "usage": {
+        "input_tokens": 1456,
+        "output_tokens": 28586,
+        "total_tokens": 30042
+      },
+      "model": "arrow-2",
+      "note": "Token estimate at public uncached rates; verify settled charge in Usage. Test keys return mocks.",
+      "estimated_usd_uncached": 0.577544
+    },
+    "scrap_king": {
+      "request_id": "9523a1bc-48db-420c-b0fb-9e1a88abe656",
+      "usage": {
+        "input_tokens": 1457,
+        "output_tokens": 34246,
+        "total_tokens": 35703
+      },
+      "model": "arrow-2",
+      "note": "Token estimate at public uncached rates; verify settled charge in Usage. Test keys return mocks.",
+      "estimated_usd_uncached": 0.690748
+    }
+  },
+  "note": "Public-rate token estimates, not verified settled charges."
+}

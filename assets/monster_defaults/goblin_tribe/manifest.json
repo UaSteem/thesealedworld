@@ -1,0 +1,106 @@
+{
+  "family_id": "goblin_tribe",
+  "catalog_source": "src/backend/features/monsters/resources/families/goblins.py",
+  "style_reference": "svg/goblin_sneak.svg",
+  "members": [
+    {
+      "variant_id": "goblin_sneak",
+      "prompt": "prompts/goblin_sneak.txt",
+      "svg": "svg/goblin_sneak.svg",
+      "status": "accepted",
+      "approved_raster": "face_repair_candidates/goblin_sneak-face-v1.png"
+    },
+    {
+      "variant_id": "goblin_scavenger",
+      "prompt": "prompts/goblin_scavenger.txt",
+      "svg": "svg/goblin_scavenger.svg",
+      "status": "accepted",
+      "approved_raster": "face_repair_candidates/goblin_scavenger-face-v1.png"
+    },
+    {
+      "variant_id": "goblin_cutter",
+      "prompt": "prompts/goblin_cutter.txt",
+      "svg": "svg/goblin_cutter.svg",
+      "status": "accepted",
+      "approved_raster": "face_repair_candidates/goblin_cutter-face-v1.png",
+      "raster_status": "accepted"
+    },
+    {
+      "variant_id": "goblin_sparkpick",
+      "prompt": "prompts/goblin_sparkpick.txt",
+      "svg": "svg/goblin_sparkpick.svg",
+      "status": "accepted",
+      "approved_raster": "face_repair_candidates/goblin_sparkpick-face-v1.png",
+      "raster_status": "accepted"
+    },
+    {
+      "variant_id": "goblin_spearman",
+      "prompt": "prompts/goblin_spearman.txt",
+      "svg": "svg/goblin_spearman.svg",
+      "status": "accepted",
+      "approved_raster": "face_repair_candidates/goblin_spearman-face-v1.png",
+      "raster_status": "accepted"
+    },
+    {
+      "variant_id": "goblin_slinger",
+      "prompt": "prompts/goblin_slinger.txt",
+      "svg": "svg/goblin_slinger.svg",
+      "status": "accepted"
+    },
+    {
+      "variant_id": "goblin_scrapguard",
+      "prompt": "prompts/goblin_scrapguard.txt",
+      "svg": "svg/goblin_scrapguard.svg",
+      "status": "accepted",
+      "approved_raster": "face_repair_candidates/goblin_scrapguard-face-v1.png",
+      "raster_status": "accepted"
+    },
+    {
+      "variant_id": "goblin_tinkerer",
+      "prompt": "prompts/goblin_tinkerer.txt",
+      "svg": "svg/goblin_tinkerer.svg",
+      "status": "accepted",
+      "source_candidate": "api_candidates/20261012T210503106469Z/goblin_tinkerer-clean.svg",
+      "approved_raster": "face_repair_candidates/goblin_tinkerer-face-v1.png",
+      "raster_status": "accepted"
+    },
+    {
+      "variant_id": "goblin_bomber",
+      "prompt": "prompts/goblin_bomber.txt",
+      "svg": "svg/goblin_bomber.svg",
+      "status": "review_ready",
+      "source_candidate": "api_candidates/20261012T211134248207Z/goblin_bomber-clean.svg",
+      "approved_raster": "face_repair_candidates/goblin_bomber-face-v1.png",
+      "raster_status": "accepted"
+    },
+    {
+      "variant_id": "goblin_trapmaster",
+      "prompt": "prompts/goblin_trapmaster.txt",
+      "svg": "svg/goblin_trapmaster.svg",
+      "status": "review_ready",
+      "source_candidate": "api_candidates/20261012T211352307930Z/goblin_trapmaster-clean.svg",
+      "approved_raster": "face_repair_candidates/goblin_trapmaster-face-v1.png",
+      "raster_status": "accepted"
+    },
+    {
+      "variant_id": "goblin_chief",
+      "prompt": "prompts/goblin_chief.txt",
+      "svg": "svg/goblin_chief.svg",
+      "status": "review_ready",
+      "source_candidate": "api_candidates/20261012T211543320073Z/goblin_chief-clean.svg",
+      "approved_raster": "face_repair_candidates/goblin_chief-face-v1.png",
+      "raster_status": "accepted"
+    },
+    {
+      "variant_id": "scrap_king",
+      "prompt": "prompts/scrap_king.txt",
+      "svg": "svg/scrap_king.svg",
+      "status": "review_ready",
+      "source_candidate": "api_candidates/20261012T211735658849Z/scrap_king-clean.svg",
+      "approved_raster": "face_repair_candidates/scrap_king-standing-v1.png",
+      "raster_status": "accepted",
+      "visual_note": "Standing combat-ready boss with two-handed warhammer; throne variant archived as an alternative."
+    }
+  ],
+  "intended_usage": "Complete simplest base goblin family; future themed variants derive from these assets. Database integration pending."
+}

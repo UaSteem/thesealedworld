@@ -5,6 +5,10 @@ Detailed milestone history for browser-facing gameplay surfaces inside
 
 ## [Unreleased]
 
+- Rift gameplay now has a test hex-map surface with Phaser scene wiring,
+  void-temple tile assets, responsive shell adjustments, and updated exploration
+  panel templates.
+
 ## [v0.5.1] - Alpha 0.5.1
 
 - Realtime keepalive now refreshes stale existing game-token cookies before reconnecting the chat WebSocket.

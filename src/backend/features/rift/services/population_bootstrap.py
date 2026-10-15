@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from loguru import logger as log
 
-from src.backend.features.monsters.services.habitat_clan_pool_materialization_service import (
+from src.backend.features.monsters.public import (
     HabitatClanPoolMaterializationService,
     habitat_scope_config_from_population_profile,
 )

@@ -33,7 +33,7 @@
 .status-widget-avatar span {
     color: var(--col-accent);
     font-family: var(--font-ui);
-    font-size: 22px;
+    font-size: var(--text-xl);
     font-weight: 900;
     letter-spacing: 0;
     line-height: 1;

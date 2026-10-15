@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+GOBLIN_SPARKPICK = MemberBaseDTO(
+    id="goblin_sparkpick",
+    role="minion",
+    stats=BaseStatsDTO(
+        strength=12,
+        agility=14,
+        endurance=13,
+        intellect=11,
+        memory=8,
+        mental=9,
+        perception=10,
+        projection=7,
+        prediction=6,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand="hatchet",
+        off_hand="buckler",
+        two_hand=None,
+        head_armor=None,
+        chest_armor="leather_armor",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="amulet",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver=None,
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=20,
+)

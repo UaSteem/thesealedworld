@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+PACK_RAT = MemberBaseDTO(
+    id="pack_rat",
+    role="veteran",
+    stats=BaseStatsDTO(
+        strength=13,
+        agility=12,
+        endurance=14,
+        intellect=9,
+        memory=7,
+        mental=10,
+        perception=11,
+        projection=6,
+        prediction=8,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand="rat_veteran_claws",
+        off_hand="rat_bone_growth",
+        two_hand=None,
+        head_armor=None,
+        chest_armor="rat_light_hide",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="rat_plague_gland",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver=None,
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=50,
+)

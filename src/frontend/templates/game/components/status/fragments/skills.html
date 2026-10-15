@@ -2,8 +2,8 @@
     <div class="sec">SKILLS & MASTERY</div>
 
     <div style="display: flex; flex-direction: column; gap: 4px;">
-        <div class="acc" x-data="{ open: true }" :class="{ 'open': open }">
-            <div class="acc-head" @click="open = !open" style="border-left: 2px solid var(--col-psi);">
+        <div class="acc" x-data="accState('status:acc:system', true)" :class="{ 'open': open }">
+            <div class="acc-head" @click="toggle()" style="border-left: 2px solid var(--col-psi);">
                 <span style="color: var(--col-psi);" x-text="agents[selectedAgentId].symbiote_name || 'SYSTEM'">SYSTEM</span>
                 <span class="acc-arrow">›</span>
             </div>
@@ -31,8 +31,8 @@
         ] %}
 
         {% for cat in categories %}
-        <div class="acc" x-data="{ open: false }" :class="{ 'open': open }">
-            <div class="acc-head" @click="open = !open">
+        <div class="acc" x-data="accState('status:acc:{{ cat }}', false)" :class="{ 'open': open }">
+            <div class="acc-head" @click="toggle()">
                 <span>{{ cat.replace('_', ' ').upper() }}</span>
                 <span class="acc-arrow">›</span>
             </div>

@@ -113,7 +113,7 @@
 .status-section-toggle-icon {
     flex: 0 0 auto;
     color: rgba(255,170,0,.48);
-    font-size: 11px;
+    font-size: var(--text-base);
     line-height: 1;
     transition: transform .18s ease, color .18s ease;
 }
@@ -132,7 +132,7 @@
 
 
 .sec {
-    font-size: 8px;
+    font-size: var(--text-2xs);
     letter-spacing: .18em;
     text-transform: uppercase;
     color: var(--col-accent);

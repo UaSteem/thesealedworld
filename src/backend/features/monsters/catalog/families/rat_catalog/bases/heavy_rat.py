@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+HEAVY_RAT = MemberBaseDTO(
+    id="heavy_rat",
+    role="elite",
+    stats=BaseStatsDTO(
+        strength=14,
+        agility=12,
+        endurance=15,
+        intellect=10,
+        memory=9,
+        mental=13,
+        perception=11,
+        projection=8,
+        prediction=7,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand="rat_elite_claws",
+        off_hand="rat_spiked_growth",
+        two_hand=None,
+        head_armor=None,
+        chest_armor="rat_medium_hide",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="rat_plague_gland",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver=None,
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=150,
+)

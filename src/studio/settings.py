@@ -49,6 +49,7 @@ class Source:
 
 
 class StudioSettings(BaseCommonSettings):
+    monster_catalog_read_key: str = ""
     """Studio-specific settings inheriting from codex-core base."""
 
     # Server

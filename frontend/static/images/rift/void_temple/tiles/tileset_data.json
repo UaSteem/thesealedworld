@@ -1,0 +1,900 @@
+{
+  "tiles": [
+    {
+      "id": 1,
+      "file": "tile_01.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 2,
+      "file": "tile_02.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 3,
+      "file": "tile_03.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 4,
+      "file": "tile_04.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "file": "tile_05.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 6,
+      "file": "tile_06.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 7,
+      "file": "tile_07.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 8,
+      "file": "tile_08.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 9,
+      "file": "tile_09.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 10,
+      "file": "tile_10.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 11,
+      "file": "tile_11.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 12,
+      "file": "tile_12.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "file": "tile_13.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 14,
+      "file": "tile_14.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 15,
+      "file": "tile_15.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 16,
+      "file": "tile_16.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 17,
+      "file": "tile_17.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 18,
+      "file": "tile_18.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 19,
+      "file": "tile_19.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 20,
+      "file": "tile_20.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 21,
+      "file": "tile_21.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 22,
+      "file": "tile_22.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 23,
+      "file": "tile_23.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 24,
+      "file": "tile_24.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 25,
+      "file": "tile_25.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 26,
+      "file": "tile_26.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 27,
+      "file": "tile_27.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 28,
+      "file": "tile_28.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 29,
+      "file": "tile_29.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 30,
+      "file": "tile_30.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 31,
+      "file": "tile_31.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 32,
+      "file": "tile_32.png",
+      "walkable": 0,
+      "biome": "void_temple",
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 33,
+      "file": "tile_33.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 34,
+      "file": "tile_34.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 35,
+      "file": "tile_35.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 36,
+      "file": "tile_36.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 37,
+      "file": "tile_37.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 38,
+      "file": "tile_38.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 39,
+      "file": "tile_39.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 40,
+      "file": "tile_40.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 41,
+      "file": "tile_41.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 42,
+      "file": "tile_42.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 43,
+      "file": "tile_43.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 44,
+      "file": "tile_44.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 45,
+      "file": "tile_45.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 46,
+      "file": "tile_46.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 47,
+      "file": "tile_47.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 48,
+      "file": "tile_48.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 49,
+      "file": "tile_49.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 50,
+      "file": "tile_50.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 51,
+      "file": "tile_51.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 52,
+      "file": "tile_52.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 53,
+      "file": "tile_53.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 54,
+      "file": "tile_54.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 55,
+      "file": "tile_55.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 56,
+      "file": "tile_56.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 57,
+      "file": "tile_57.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 58,
+      "file": "tile_58.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 59,
+      "file": "tile_59.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 60,
+      "file": "tile_60.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 61,
+      "file": "tile_61.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 62,
+      "file": "tile_62.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 63,
+      "file": "tile_63.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 64,
+      "file": "tile_64.png",
+      "walkable": 1,
+      "biome": "void_temple",
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  ]
+}

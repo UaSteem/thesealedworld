@@ -22,7 +22,7 @@ from src.backend.features.combat.services.ai_simulation_service import (
     execute_battle_training,
     execute_synthetic_training,
 )
-from src.backend.features.monsters.repositories.monster_generation_repository import MonsterGenerationRepository
+from src.backend.features.monsters.public import MonsterGenerationRepository
 from src.backend.infrastructure.combat.managers import CombatAiSimulationProgressManager
 from src.backend.infrastructure.combat.repositories import CombatAiSimulationRunRepository
 from src.shared.infrastructure.log_task_wrapper import logged_task

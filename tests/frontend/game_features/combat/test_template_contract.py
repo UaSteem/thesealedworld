@@ -683,8 +683,8 @@ def test_combat_css_contains_texture_surfaces_without_shell_overrides():
     assert ".combat-log-panel--embedded" in source
     assert ".combat-battle-log {\n    min-width: 0;\n    min-height: 0;\n    height: 100%;" in source
     assert ".combat-log-panel--embedded .combat-log-list {\n    height: 100%;\n    max-height: none;" in source
-    assert "font-size: 10px;" in logs
-    assert "font-size: 9px;" in logs
+    assert "font-size: var(--text-base);" in logs
+    assert "font-size: var(--text-sm);" in logs
     assert "@media (min-width: 768px)" in source
     assert "@media (min-width: 1025px)" in source
     assert ".combat-field > .combat-field-actor--hero" in source

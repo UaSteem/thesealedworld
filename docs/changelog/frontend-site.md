@@ -4,6 +4,9 @@ Detailed milestone history for the `src/frontend` site-web layer.
 
 ## [Unreleased]
 
+- Shared frontend routing/static bootstrap now supports the refreshed play
+  surface assets used by the rift hex-map prototype.
+
 ## [v0.5.1] - Alpha 0.5.1
 
 - Site static surfaces now share the refreshed realtime bootstrap and local Nginx test routing for the split site/play hosts.

@@ -5,7 +5,7 @@ import pytest
 
 from src.backend.features.exploration.runtime.encounter import EncounterEngine
 from src.backend.features.exploration.runtime.encounter.policy import EncounterPolicy
-from src.backend.features.monsters.dto import MonsterGroupMemberPreview, MonsterGroupResult
+from src.backend.features.monsters.public import MonsterGroupMemberPreview, MonsterGroupResult
 from src.shared.schemas.exploration import DetectionStatus, EncounterType
 
 

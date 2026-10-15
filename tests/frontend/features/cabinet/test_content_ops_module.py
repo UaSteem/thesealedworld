@@ -1,469 +1,167 @@
-from __future__ import annotations
-
 from types import SimpleNamespace
 
+import httpx
 import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 import src.studio.features.cabinet.modules.content_ops.cabinet as content_ops
 from fastapi_cabinet import include_cabinet
-from src.frontend.cabinet import CABINET_MODULES
-from src.studio.features.cabinet.modules.content_ops.cabinet import (
-    ContentOpsAdmin,
-    _filter_monster_clans,
-    _find_member,
-    _load_monster_browser_context,
-    _monster_browser_redirect_url,
-)
-from src.studio.integrations.backend_api.admin_monsters import (
-    AdminAIGenerationTask,
-    AdminGeneratedMonsterClan,
-    AdminGeneratedMonsterMember,
-    AdminMonsterVisual,
-)
+from src.studio.integrations.backend_api.catalog_monsters import CatalogClan, CatalogMonstersApi
+
+MODULES = ("src.studio.features.cabinet.modules.content_ops.cabinet",)
 
 
-def test_content_ops_admin_declares_operational_sections() -> None:
-    assert ContentOpsAdmin.key == "content_ops"
-    assert ContentOpsAdmin.path == "/admin/content-ops"
-    assert ContentOpsAdmin.label == "Монстры"
-    assert ContentOpsAdmin.group_label == "Контент"
-    assert [item.key for item in ContentOpsAdmin.sidebar] == ["overview", "monsters", "monster_maintenance"]
-    assert [item.label for item in ContentOpsAdmin.sidebar] == [
-        "Обзор",
-        "Сгенерированные монстры",
-        "Обслуживание монстров",
-    ]
-    assert [item.path for item in ContentOpsAdmin.sidebar] == [
-        "/admin/content-ops",
-        "/admin/content-ops/monster-browser",
-        "/admin/content-ops/monster-maintenance",
-    ]
-    assert "monster-browser" in ContentOpsAdmin.action_routes
-    assert "monster-detail" in ContentOpsAdmin.action_routes
-    assert "monster-member-detail" in ContentOpsAdmin.action_routes
-    assert "monster-maintenance" in ContentOpsAdmin.action_routes
-    assert "monster-rebuild-plan" in ContentOpsAdmin.action_routes
-    assert "monster-rebuild-apply" in ContentOpsAdmin.action_routes
-    assert "regenerate-clan-flavor" in ContentOpsAdmin.action_routes
-    assert "regenerate-clan-member-images" in ContentOpsAdmin.action_routes
-    assert "regenerate-visible-member-images" in ContentOpsAdmin.action_routes
-
-
-def test_content_ops_filters_monsters_by_domain_safe_fields() -> None:
-    rat = _clan("rat-clan", family="rats", tier=1, storage="s3", roles=("scout", "brute"), missing_member=False)
-    spider = _clan("spider-clan", family="spiders", tier=2, storage="local", roles=("caster",), missing_member=True)
-
-    filtered = _filter_monster_clans(
-        [rat, spider],
-        {"family_id": "spiders", "tier": "", "storage_backend": "", "missing_image": ""},
-    )
-    assert [clan.clan_id for clan in filtered] == ["spider-clan"]
-
-    filtered = _filter_monster_clans(
-        [rat, spider],
-        {"family_id": "", "tier": "1", "storage_backend": "s3", "missing_image": ""},
-    )
-    assert [clan.clan_id for clan in filtered] == ["rat-clan"]
-
-    filtered = _filter_monster_clans(
-        [rat, spider],
-        {"family_id": "", "tier": "", "storage_backend": "", "missing_image": "1"},
-    )
-    assert [clan.clan_id for clan in filtered] == ["spider-clan"]
-
-
-def test_content_ops_custom_pages_render_operational_surfaces() -> None:
-    app = FastAPI()
-    include_cabinet(app, modules=CABINET_MODULES, mount_path="/admin")
-    client = TestClient(app)
-
-    monsters = client.get("/admin/content-ops/monster-browser")
-    assert monsters.status_code == 200
-    assert "Сгенерированные монстры" in monsters.text
-    assert "Тир семьи" in monsters.text
-    assert "Без изображения" in monsters.text
-    assert "Перегенерировать картинки участников" in monsters.text
-
-    maintenance = client.get("/admin/content-ops/monster-maintenance")
-    assert maintenance.status_code == 200
-    assert "Обслуживание монстров" in maintenance.text
-    assert "Проверить расхождения" in maintenance.text
-    assert "Пересобрать" in maintenance.text
-
-
-def test_content_ops_rebuild_plan_renders_result_items(monkeypatch: pytest.MonkeyPatch) -> None:
-    class FakeAdminMonstersApi:
-        async def list_generated(self, *, limit: int, **kwargs):
-            assert limit == 100
-            assert kwargs["light"] is True
-            return [_clan("rat-clan", family="rats", storage="local", roles=("scout",), missing_member=False)]
-
-        async def plan_generated_rebuild(self, **kwargs):
-            assert kwargs["family_id"] == "rats"
-            return {
-                "dry_run": True,
-                "status": "ok",
-                "scanned": 1,
-                "stale": 1,
-                "rebuilt": 0,
-                "skipped": 0,
-                "errors": [],
-                "items": [
-                    {
-                        "clan_id": "rat-clan",
-                        "family_id": "rats",
-                        "status": "stale",
-                        "members_expected": 12,
-                        "members_changed": 2,
-                        "members_created": 0,
-                        "members_removed": 0,
-                        "reason": "changed=2",
-                    }
-                ],
-            }
-
-    monkeypatch.setattr(content_ops, "_api", lambda request: FakeAdminMonstersApi())
-    app = FastAPI()
-    include_cabinet(app, modules=CABINET_MODULES, mount_path="/admin")
-    client = TestClient(app)
-
-    response = client.post(
-        "/admin/content-ops/monster-rebuild-plan",
-        data={"family_id": "rats", "limit": "100", "remove_obsolete_members": "1"},
-    )
-
-    assert response.status_code == 200
-    assert "План пересборки" in response.text
-    assert "rat-clan" in response.text
-    assert "changed=2" in response.text
-
-
-def test_content_ops_detail_pages_render_domain_summary_instead_of_raw_json(monkeypatch: pytest.MonkeyPatch) -> None:
-    clan = _clan("rat-clan", family="rats", storage="local", roles=("scout",), missing_member=False)
-
-    class FakeAdminMonstersApi:
-        async def get_generated_clan(self, clan_id: str):
-            assert clan_id == "rat-clan"
-            return clan
-
-    monkeypatch.setattr(content_ops, "_api", lambda request: FakeAdminMonstersApi())
-    app = FastAPI()
-    include_cabinet(app, modules=CABINET_MODULES, mount_path="/admin")
-    client = TestClient(app)
-
-    clan_response = client.get("/admin/content-ops/monster-detail?id=rat-clan")
-    assert clan_response.status_code == 200
-    assert "Профиль сгенерированной семьи" in clan_response.text
-    assert "Перезаказать описания" in clan_response.text
-    assert "Перезаказать картинки участников" in clan_response.text
-    assert "Перегенерировать изображение семьи" not in clan_response.text
-    assert "city_ruins" in clan_response.text
-    assert "mid" in clan_response.text
-    assert "combat-v2" in clan_response.text
-    assert "Тексты встреч" in clan_response.text
-    assert "Патруль" in clan_response.text
-    assert "Крысы идут по следу." in clan_response.text
-    assert "Засада" in clan_response.text
-    assert "Крысы бросаются из щелей." in clan_response.text
-    assert "переделка городского лома" in clan_response.text
-    assert "Состав шаблона" in clan_response.text
-    assert "0..7" in clan_response.text
-    assert "scout" in clan_response.text
-    assert "Persisted JSON" not in clan_response.text
-    assert "raw_tags" not in clan_response.text
-
-    member_response = client.get("/admin/content-ops/monster-member-detail?clan_id=rat-clan&member_id=rat-clan-scout")
-    assert member_response.status_code == 200
-    assert "Боевой профиль" in member_response.text
-    assert "Атрибуты" in member_response.text
-    assert "Мечи" in member_response.text
-    assert "Физическая защита" in member_response.text
-    assert "+4.0%" in member_response.text
-    assert "Предметы и аффиксы" in member_response.text
-    assert "Правая рука" in member_response.text
-    assert "Ржавый топор" in member_response.text
-    assert "Power 2.4" in member_response.text
-    assert "Кровоточащий край" in member_response.text
-    assert "Урон кровотечения +6.0%" in member_response.text
-    assert "skill_swords" not in member_response.text
-    assert "physical_resistance" not in member_response.text
-    assert "base " not in member_response.text
-    assert "per tier" not in member_response.text
-    assert "Persisted JSON" not in member_response.text
-    assert "generation_meta" not in member_response.text
-
-
-def test_content_ops_regeneration_redirects_to_visible_task_status(monkeypatch: pytest.MonkeyPatch) -> None:
-    clan = _clan("rat-clan", family="rats", storage="local", roles=("scout",), missing_member=False)
-
-    class FakeAdminMonstersApi:
-        async def regenerate_clan_flavor(self, clan_id: str):
-            assert clan_id == "rat-clan"
-            return {"task_id": "task-flavor", "status": "pending", "requested": 1}
-
-        async def get_generated_clan(self, clan_id: str):
-            assert clan_id == "rat-clan"
-            return clan
-
-        async def get_generation_task(self, task_id: str):
-            assert task_id == "task-flavor"
-            return AdminAIGenerationTask(
-                task_id="task-flavor",
-                task_type="monster.clan_flavor",
-                entity_type="monster_clan",
-                entity_id="rat-clan",
-                output_kind="json",
-                status="pending",
-            )
-
-    monkeypatch.setattr(content_ops, "_api", lambda request: FakeAdminMonstersApi())
-    app = FastAPI()
-    include_cabinet(app, modules=CABINET_MODULES, mount_path="/admin")
-    client = TestClient(app)
-
-    response = client.post(
-        "/admin/content-ops/regenerate-clan-flavor",
-        data={"clan_id": "rat-clan"},
-        follow_redirects=False,
-    )
-
-    assert response.status_code == 303
-    location = response.headers["location"]
-    assert "ai_kind=clan_flavor" in location
-    assert "ai_task_ids=task-flavor" in location
-
-    detail = client.get(location)
-
-    assert detail.status_code == 200
-    assert "Описания семьи" in detail.text
-    assert "Задача поставлена в очередь." in detail.text
-    assert "task-flavor" in detail.text
-    assert "очередь" in detail.text or "pending" in detail.text
-    assert 'http-equiv="refresh"' in detail.text
-
-
-def test_content_ops_task_notice_renders_done_and_failed_states(monkeypatch: pytest.MonkeyPatch) -> None:
-    clan = _clan("rat-clan", family="rats", storage="local", roles=("scout",), missing_member=False)
-    task_statuses = {"task-done": "done", "task-failed": "failed"}
-
-    class FakeAdminMonstersApi:
-        async def get_generated_clan(self, clan_id: str):
-            assert clan_id == "rat-clan"
-            return clan
-
-        async def get_generation_task(self, task_id: str):
-            return AdminAIGenerationTask(
-                task_id=task_id,
-                task_type="monster.member_visual",
-                entity_type="monster_member",
-                entity_id="rat-clan-scout",
-                output_kind="image",
-                status=task_statuses[task_id],
-                error={"message": "provider rejected prompt"} if task_id == "task-failed" else {},
-            )
-
-    monkeypatch.setattr(content_ops, "_api", lambda request: FakeAdminMonstersApi())
-    app = FastAPI()
-    include_cabinet(app, modules=CABINET_MODULES, mount_path="/admin")
-    client = TestClient(app)
-
-    done = client.get("/admin/content-ops/monster-detail?id=rat-clan&ai_kind=member_image&ai_task_ids=task-done")
-    failed = client.get("/admin/content-ops/monster-detail?id=rat-clan&ai_kind=member_image&ai_task_ids=task-failed")
-
-    assert "Задача закончилась успешно." in done.text
-    assert "готово" in done.text
-    assert 'http-equiv="refresh"' not in done.text
-    assert "Одна или несколько задач завершились ошибкой." in failed.text
-    assert "provider rejected prompt" in failed.text
-    assert "ошибка" in failed.text
-
-
-def test_monster_browser_redirect_preserves_bulk_filters() -> None:
-    form = {
-        "family_id": "rat_swarm",
-        "tier": "1",
-        "storage_backend": "s3",
-        "missing_image": "1",
+def clan_payload(index=0):
+    return {
+        "clan_id": f"base-{index}",
+        "family_id": "goblins",
+        "family_name": "Гоблины",
+        "name": "Обычные гоблины",
+        "description": "Готовый клан",
+        "tags": ["forest"],
+        "features": [],
+        "normal_spawn": True,
+        "member_count": 2,
+        "missing_images": 1,
+        "members": [
+            {
+                "member_id": f"scout-{index}",
+                "clan_id": f"base-{index}",
+                "family_id": "goblins",
+                "variant_id": "scout",
+                "name": "Разведчик",
+                "description": "Хитрый разведчик",
+                "role": "minion",
+                "tags": [],
+                "min_tier": 0,
+                "max_tier": 7,
+                "base_stats": {"strength": 10},
+                "skills": ["skill_swords"],
+                "fixed_loadout": {"main_hand": "hatchet"},
+                "member_model": None,
+                "image": {
+                    "asset_id": "scout",
+                    "image_url": "/static/images/monsters/catalog/scout.png",
+                    "review_status": "accepted",
+                    "display_mirror": True,
+                },
+            },
+            {
+                "member_id": f"boss-{index}",
+                "clan_id": f"base-{index}",
+                "family_id": "goblins",
+                "variant_id": "boss",
+                "name": "Главарь",
+                "role": "boss",
+                "min_tier": 4,
+                "max_tier": 7,
+            },
+        ],
     }
 
-    assert (
-        _monster_browser_redirect_url(form)
-        == "/admin/content-ops/monster-browser?family_id=rat_swarm&tier=1&storage_backend=s3&missing_image=1"
-    )
+
+class FakeApi:
+    async def list_all(self):
+        return [CatalogClan.model_validate(clan_payload())]
+
+    async def get_clan(self, clan_id):
+        return CatalogClan.model_validate(clan_payload()) if clan_id == "base-0" else None
+
+    async def get_summary(self):
+        return SimpleNamespace(families=5, clans=5, members=52, missing_images=6)
 
 
-def test_content_ops_finds_member_for_detail_page() -> None:
-    clan = _clan("rat-clan", family="rats", storage="local", roles=("scout",), missing_member=False)
-
-    member = _find_member(clan, "rat-clan-scout")
-
-    assert member is not None
-    assert member.description == "scout description"
-    assert member.text_content == {"appearance_ru": "scout appearance"}
-    assert member.items["layout"] == {"equipment": {"main_hand": "hatchet"}}
-    assert member.scaled_attributes == {"strength": 10}
+def test_member_filters_use_tier_window_and_count_missing_members():
+    clan = CatalogClan.model_validate(clan_payload())
+    filtered = content_ops._filter_monster_clans([clan], {"tier": "3", "role": "minion"})
+    assert filtered[0].member_count == 1
+    assert filtered[0].missing_images == 0
+    missing = content_ops._filter_monster_clans([clan], {"missing_image": "1"})
+    assert [member.member_id for member in missing[0].members] == ["boss-0"]
+    assert clan.member_count == 2  # Filtering must not mutate shared definitions.
 
 
 @pytest.mark.asyncio
-async def test_monster_count_provider_uses_summary_contract(monkeypatch: pytest.MonkeyPatch) -> None:
-    class FakeAdminMonstersApi:
-        async def get_generated_summary(self):
-            return SimpleNamespace(clans=6, members=72, missing_images=1)
-
-        async def list_generated(self, **kwargs):
-            raise AssertionError(f"overview metric must not load generated list: {kwargs}")
-
-    monkeypatch.setattr(content_ops, "_api", lambda request: FakeAdminMonstersApi())
-
+async def test_summary_and_browser_use_authored_contract(monkeypatch):
+    monkeypatch.setattr(content_ops, "_api", lambda request: FakeApi())
+    browser = await content_ops._load_monster_browser_context(SimpleNamespace(query_params={}))
+    assert (browser.total_families, browser.total_clans, browser.total_members, browser.missing_images) == (1, 1, 2, 1)
+    assert browser.tier_options == list(range(8))
     metric = await content_ops._monster_count_provider(SimpleNamespace())
+    assert metric.value == "5"
+    assert "бойцов 52" in metric.subtitle
 
-    assert metric.value == "6"
-    assert metric.subtitle == "участников 72 / без изображения 1"
+
+@pytest.mark.parametrize("source", ["local", "prod"])
+def test_pages_render_catalog_and_never_call_writes_or_generation(monkeypatch, source):
+    monkeypatch.setattr(content_ops, "_api", lambda request: FakeApi())
+    app = FastAPI()
+    include_cabinet(app, modules=MODULES, mount_path="/admin")
+    with TestClient(app) as client:
+        client.cookies.set("studio_source", source)
+        browser = client.get("/admin/content-ops/monster-browser")
+        assert "Каталог монстров" in browser.text
+        assert "Гоблины" in browser.text
+        detail = client.get("/admin/content-ops/monster-detail?id=base-0&ai_task_ids=obsolete&ai_kind=member_image")
+        assert "Готовый клан" in detail.text
+        assert "/static/images/monsters/catalog/scout.png" in detail.text
+        assert "нет изображения" in detail.text
+        assert "AI-задача" not in detail.text
+        member = client.get("/admin/content-ops/monster-member-detail?clan_id=base-0&member_id=scout-0")
+        assert "Базовые характеристики" in member.text
+        assert "Сила" in member.text
+        assert "scaleX(-1)" in member.text
+        assert "accepted" in member.text
+        assert "Фиксированное снаряжение" in member.text
+        assert "hatchet" in member.text
+        assert "Gear score" not in member.text
+        for action in ["monster-rebuild-plan", "monster-rebuild-apply", "regenerate-member-image"]:
+            assert client.post(f"/admin/content-ops/{action}").status_code in (404, 405)
+        assert client.get("/admin/content-ops/monster-detail?id=missing").status_code == 200
+    assert all(method == "GET" for method, _ in content_ops.ContentOpsAdmin.action_routes.values())
 
 
 @pytest.mark.asyncio
-async def test_monster_browser_uses_backend_contract_limit(monkeypatch: pytest.MonkeyPatch) -> None:
-    class FakeAdminMonstersApi:
-        async def list_generated(self, *, limit: int, **kwargs):
-            assert limit == 100
-            assert kwargs["light"] is True
-            return [_clan("rat-clan", family="rats", storage="local", roles=("scout",), missing_member=False)]
+async def test_catalog_client_paginates_using_selected_backend_and_service_headers():
+    calls = []
 
-    monkeypatch.setattr(content_ops, "_api", lambda request: FakeAdminMonstersApi())
-
-    browser = await _load_monster_browser_context(SimpleNamespace(query_params={}))
-
-    assert browser.error == ""
-    assert browser.total_clans == 1
-    assert browser.total_members == 1
-    assert browser.tier_options == [1]
-
-
-def _clan(
-    clan_id: str,
-    *,
-    family: str,
-    tier: int = 1,
-    storage: str,
-    roles: tuple[str, ...],
-    missing_member: bool,
-) -> AdminGeneratedMonsterClan:
-    return AdminGeneratedMonsterClan(
-        clan_id=clan_id,
-        family_id=family,
-        tier=tier,
-        zone_id="zone",
-        context_hash="context",
-        unique_hash="unique",
-        raw_tags={
-            "biome_id": "city_ruins",
-            "difficulty": "mid",
-            "family_resource_version": "family-v1",
-            "combat_math_version": "combat-v2",
-            "tags": ["rift", "roadside"],
-            "context_meta": {"source": "test"},
-            "gear_score_summary": {"count": len(roles), "avg": 12, "min": 9, "max": 15},
-            "variant_window": {"min_tier": 0, "max_tier": 7},
-            "composition": list(roles),
-        },
-        flavor_content={
-            "visual": {},
-            "loot_culture": {
-                "craft_style": "переделка городского лома",
-                "tone_hints": ["ржавчина", "ремни"],
+    def handler(request):
+        calls.append(request)
+        assert request.method == "GET"
+        assert request.url.host == "selected-backend"
+        assert request.headers["X-Service-Key"] == "inspection-secret"
+        assert request.url.path == "/api/admin/monsters/catalog"
+        offset = int(request.url.params["offset"])
+        total = 103
+        items = [clan_payload(index) for index in range(offset, min(offset + 100, total))]
+        return httpx.Response(
+            200,
+            json={
+                "items": items,
+                "pagination": {"limit": 100, "offset": offset, "total": total, "has_more": offset + len(items) < total},
             },
-        },
-        encounter_texts={
-            "patrol": "Крысы идут по следу.",
-            "ambush": "Крысы бросаются из щелей.",
-            "lair": "Крысы держат гнездо.",
-            "random_meeting": "Крысы выходят на дорогу.",
-        },
-        name_ru=clan_id,
-        localized={},
-        description="",
-        metadata_={},
-        context={},
-        source_context={},
-        lifecycle_status="active",
-        archived_at="",
-        expires_at="",
-        schema_version=1,
-        created_at="",
-        updated_at="",
-        visual=AdminMonsterVisual(image_url="/static/generated-assets/clan.webp", storage_backend=storage),
-        selected_traits=[
-            {
-                "key": "scarred_hide",
-                "label": "Scarred Hide",
-                "flavor": "Clan hides carry old wounds.",
-                "modifiers": [
-                    {
-                        "target": "physical_resistance",
-                        "base": 0.03,
-                        "per_tier": 0.01,
-                    }
-                ],
-            }
-        ],
-        members=[
-            AdminGeneratedMonsterMember(
-                monster_id=f"{clan_id}-{role}",
-                variant_key=role,
-                role=role,
-                member_tier=1,
-                name_ru=role,
-                localized={},
-                description=f"{role} description",
-                text_content={"appearance_ru": f"{role} appearance"},
-                scaled_attributes={"strength": 10},
-                scaled_skills={"skill_swords": 0.2},
-                items={
-                    "layout": {"equipment": {"main_hand": "hatchet"}},
-                    "by_id": {
-                        "hatchet": {
-                            "name_ru": "Ржавый топор",
-                            "base_id": "hatchet",
-                            "item_type": "weapon",
-                            "combat": {
-                                "power": 2.4,
-                                "related_skill": "skill_swords",
-                                "tags": ["axe", "rusty"],
-                                "bonuses": {"physical_damage_bonus": "+0.0300"},
-                            },
-                            "generation": {
-                                "affixes": [
-                                    {
-                                        "name_ru": "Кровоточащий край",
-                                        "bonuses": {"bleed_damage_bonus": 0.06},
-                                    }
-                                ]
-                            },
-                        }
-                    },
-                },
-                vitals={"hp": {"max": 50}},
-                ai_profile={"profile": "aggressive"},
-                generation_meta={"balance": {"gear_score": 1}},
-                combat_actor_snapshot={"meta": {}},
-                metadata_={},
-                context={},
-                source_context={},
-                lifecycle_status="active",
-                archived_at="",
-                expires_at="",
-                schema_version=1,
-                created_at="",
-                updated_at="",
-                threat_rating=1,
-                gear_score=1,
-                visual=AdminMonsterVisual(
-                    image_url="" if missing_member and index == 0 else "/static/generated-assets/member.webp",
-                    storage_backend=storage,
-                ),
-            )
-            for index, role in enumerate(roles)
-        ],
-    )
+        )
+
+    async with httpx.AsyncClient(transport=httpx.MockTransport(handler)) as client:
+        api = CatalogMonstersApi(
+            client,
+            "http://selected-backend",
+            internal_service_key="inspection-secret",
+            internal_service_header="X-Service-Key",
+        )
+        clans = await api.list_all()
+    assert len(clans) == 103
+    assert [request.url.params["offset"] for request in calls] == ["0", "100"]
+
+
+@pytest.mark.asyncio
+async def test_browser_backend_unavailable_returns_inspection_error(monkeypatch):
+    class Unavailable:
+        async def list_all(self):
+            raise httpx.ConnectError("unavailable")
+
+    monkeypatch.setattr(content_ops, "_api", lambda request: Unavailable())
+    browser = await content_ops._load_monster_browser_context(SimpleNamespace(query_params={}))
+    assert browser.error.startswith("backend недоступен")
+    assert browser.total_members == 0

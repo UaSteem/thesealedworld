@@ -195,3 +195,13 @@ src/frontend/static/js/app.bundle.js
 logs/
 tmp/
 pytest_output.txt
+
+# Local database retirement snapshots (potentially private context)
+/archive/data_retirement/snapshots/
+
+# Local test runs, editor backups and generated delivery bundles
+/.pytest-export-legacy/
+/.pytest_tmp_monster_archive/
+/.codex_tmp/
+/output/
+*~

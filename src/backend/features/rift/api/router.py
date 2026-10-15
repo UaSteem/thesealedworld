@@ -181,6 +181,9 @@ def build_rift_router(*, enable_dev_routes: bool = True) -> APIRouter:
     api_router.include_router(game_router)
     if enable_dev_routes:
         api_router.include_router(dev_router)
+        from src.backend.features.rift.api.hex_test_router import router as hex_test_router
+
+        api_router.include_router(hex_test_router)
     return api_router
 
 

@@ -2,50 +2,79 @@ from __future__ import annotations
 
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Query, Request
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Response
 
 from src.backend.core.database import get_db
-from src.backend.features.monsters.dto.generated_view import (
+from src.backend.features.monsters.api.access import require_monster_catalog_read, require_monster_catalog_write
+from src.backend.features.monsters.catalog.bootstrap import MonsterCatalogBootstrapService
+from src.backend.features.monsters.catalog.bootstrap_contracts import MonsterCatalogBootstrapDTO
+from src.backend.features.monsters.catalog.contracts import (
+    MonsterRole,  # noqa: TC001 - FastAPI resolves query annotations
+)
+from src.backend.features.monsters.catalog.repositories.monster_generation_repository import MonsterGenerationRepository
+from src.backend.features.monsters.catalog.services.generated_rebuild_service import MonsterGeneratedRebuildService
+from src.backend.features.monsters.inspection.dto.catalog_view import (
+    CatalogMonstersResponseDTO,
+    CatalogMonstersSummaryDTO,
+)
+from src.backend.features.monsters.inspection.dto.generated_view import (
     GeneratedMonstersResponseDTO,
     GeneratedMonstersSummaryDTO,
-    MonsterAIRegenerationResponseDTO,
     MonsterDataRebuildRequestDTO,
     MonsterDataRebuildResponseDTO,
-    MonsterImageRegenerationBatchRequestDTO,
-    MonsterImageRegenerationBatchResponseDTO,
-    MonsterImageRegenerationResponseDTO,
 )
-from src.backend.features.monsters.repositories import MonsterGenerationRepository
-from src.backend.features.monsters.services.content_regeneration_service import MonsterContentRegenerationService
-from src.backend.features.monsters.services.generated_rebuild_service import MonsterGeneratedRebuildService
-from src.backend.features.monsters.services.generated_view_service import GeneratedMonsterViewService
-from src.backend.features.monsters.services.visual_regeneration_service import MonsterVisualRegenerationService
+from src.backend.features.monsters.inspection.services.catalog_view_service import CatalogMonsterViewService
+from src.backend.features.monsters.inspection.services.generated_view_service import GeneratedMonsterViewService
 
-router = APIRouter(prefix="/api/admin/monsters", tags=["monsters-admin"])
+router = APIRouter(
+    prefix="/api/admin/monsters",
+    tags=["monsters-admin"],
+    dependencies=[Depends(require_monster_catalog_read)],
+)
+
+
+@router.get("/catalog/bootstrap", response_model=MonsterCatalogBootstrapDTO)
+async def get_monster_catalog_bootstrap(
+    response: Response,
+    include_system: bool = False,
+    if_none_match: Annotated[str | None, Header()] = None,
+):
+    payload = MonsterCatalogBootstrapService().build(include_system=include_system)
+    etag = f'"{payload.version}"'
+    headers = {"ETag": etag, "Cache-Control": "private, no-cache", "Vary": "X-Internal-Service-Key"}
+    candidates = [value.strip().removeprefix("W/") for value in (if_none_match or "").split(",")]
+    if etag in candidates or "*" in candidates:
+        return Response(status_code=304, headers=headers)
+    response.headers.update(headers)
+    return payload
+
+
+@router.get("/catalog", response_model=CatalogMonstersResponseDTO)
+async def get_monster_catalog(
+    family_id: str | None = None,
+    clan_id: str | None = None,
+    role: MonsterRole | None = None,
+    include_members: bool = True,
+    limit: Annotated[int, Query(ge=1, le=100)] = 25,
+    offset: Annotated[int, Query(ge=0)] = 0,
+) -> CatalogMonstersResponseDTO:
+    return CatalogMonsterViewService().list_catalog(
+        family_id=family_id,
+        clan_id=clan_id,
+        role=role,
+        include_members=include_members,
+        limit=limit,
+        offset=offset,
+    )
+
+
+@router.get("/catalog/summary", response_model=CatalogMonstersSummaryDTO)
+async def get_monster_catalog_summary(family_id: str | None = None) -> CatalogMonstersSummaryDTO:
+    return CatalogMonsterViewService().summary(family_id=family_id)
 
 
 def get_generated_monster_view_service(db_session=Depends(get_db)) -> GeneratedMonsterViewService:
     return GeneratedMonsterViewService(MonsterGenerationRepository(db_session))
-
-
-def get_monster_visual_regeneration_service(
-    request: Request,
-    db_session=Depends(get_db),
-) -> MonsterVisualRegenerationService:
-    return MonsterVisualRegenerationService(
-        session=db_session,
-        arq=getattr(request.app.state, "generation_ai_arq", None),
-    )
-
-
-def get_monster_content_regeneration_service(
-    request: Request,
-    db_session=Depends(get_db),
-) -> MonsterContentRegenerationService:
-    return MonsterContentRegenerationService(
-        session=db_session,
-        arq=getattr(request.app.state, "generation_ai_arq", None),
-    )
 
 
 def get_monster_generated_rebuild_service(db_session=Depends(get_db)) -> MonsterGeneratedRebuildService:
@@ -93,7 +122,11 @@ async def plan_generated_monster_rebuild(
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
-@router.post("/generated/rebuild/apply", response_model=MonsterDataRebuildResponseDTO)
+@router.post(
+    "/generated/rebuild/apply",
+    response_model=MonsterDataRebuildResponseDTO,
+    dependencies=[Depends(require_monster_catalog_write)],
+)
 async def apply_generated_monster_rebuild(
     payload: MonsterDataRebuildRequestDTO,
     service: Annotated[MonsterGeneratedRebuildService, Depends(get_monster_generated_rebuild_service)],
@@ -104,57 +137,8 @@ async def apply_generated_monster_rebuild(
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
 
-@router.post("/generated/clans/{clan_id}/regenerate-flavor", response_model=MonsterAIRegenerationResponseDTO)
-async def regenerate_generated_clan_flavor(
-    clan_id: str,
-    service: Annotated[MonsterContentRegenerationService, Depends(get_monster_content_regeneration_service)],
-) -> MonsterAIRegenerationResponseDTO:
-    try:
-        return await service.request_clan_flavor(clan_id)
-    except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
-
-
-@router.post(
-    "/generated/clans/{clan_id}/regenerate-member-images",
-    response_model=MonsterImageRegenerationBatchResponseDTO,
-)
-async def regenerate_generated_clan_member_images(
-    clan_id: str,
-    service: Annotated[MonsterVisualRegenerationService, Depends(get_monster_visual_regeneration_service)],
-) -> MonsterImageRegenerationBatchResponseDTO:
-    try:
-        return await service.request_clan_member_images(clan_id)
-    except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
-
-
-@router.post("/generated/clans/regenerate-member-images", response_model=MonsterImageRegenerationBatchResponseDTO)
-async def regenerate_generated_clan_member_images_batch(
-    payload: MonsterImageRegenerationBatchRequestDTO,
-    service: Annotated[MonsterVisualRegenerationService, Depends(get_monster_visual_regeneration_service)],
-) -> MonsterImageRegenerationBatchResponseDTO:
-    try:
-        return await service.request_clan_member_images_for_clans(payload.clan_ids)
-    except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
-
-
-@router.post("/generated/members/{member_id}/regenerate-image", response_model=MonsterImageRegenerationResponseDTO)
-async def regenerate_generated_member_image(
-    member_id: str,
-    service: Annotated[MonsterVisualRegenerationService, Depends(get_monster_visual_regeneration_service)],
-) -> MonsterImageRegenerationResponseDTO:
-    try:
-        return await service.request_member_image(member_id)
-    except ValueError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
-
-
 __all__ = [
     "get_generated_monster_view_service",
-    "get_monster_content_regeneration_service",
     "get_monster_generated_rebuild_service",
-    "get_monster_visual_regeneration_service",
     "router",
 ]

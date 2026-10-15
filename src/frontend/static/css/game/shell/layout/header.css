@@ -42,7 +42,7 @@
     display: flex;
     align-items: center;
     gap: 5px;
-    font-size: 8px;
+    font-size: var(--text-2xs);
     letter-spacing: 0.1em;
     font-family: var(--font-ui);
 }
@@ -66,7 +66,7 @@
 }
 
 .ping-val {
-    font-size: 8px;
+    font-size: var(--text-2xs);
     color: var(--col-parchment-dim);
     opacity: 0.6;
     font-family: 'JetBrains Mono', monospace;
@@ -190,7 +190,7 @@
     color: rgba(245, 210, 134, 0.82);
     cursor: pointer;
     font-family: var(--font-ui);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: 0.10em;
     line-height: 1;
@@ -274,14 +274,14 @@
 
 .game-account-glyph {
     font-family: var(--font-ui);
-    font-size: 10px;
+    font-size: var(--text-sm);
     font-weight: 800;
     text-transform: uppercase;
 }
 
 .game-account-label {
     font-family: var(--font-ui);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     font-weight: 800;
     letter-spacing: 0.12em;
     line-height: 1;
@@ -312,7 +312,7 @@
     gap: 10px;
     color: var(--col-accent);
     font-family: var(--font-ui);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     font-weight: 800;
     letter-spacing: 0.12em;
     text-decoration: none;
@@ -332,7 +332,7 @@
 .game-account-item small,
 .game-account-menu .game-exit-link small {
     color: var(--col-parchment-dim);
-    font-size: 6px;
+    font-size: var(--text-2xs);
     letter-spacing: 0.16em;
     opacity: 0.55;
 }
@@ -358,7 +358,7 @@
     color: rgba(245, 232, 204, 0.96);
     font-family: var(--font-world);
     font-weight: 700;
-    font-size: 19px;
+    font-size: var(--text-xl);
     letter-spacing: 0;
     line-height: 1;
     text-overflow: ellipsis;
@@ -366,7 +366,7 @@
 }
 
 .v-tag {
-    font-size: 7px;
+    font-size: var(--text-2xs);
     opacity: 0.2;
     font-weight: 400;
     margin-left: 5px;
@@ -379,7 +379,7 @@
     border-left: 1px solid rgba(255, 170, 0, 0.2);
     color: var(--col-accent);
     font-family: var(--font-ui);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     font-weight: 800;
     letter-spacing: 0.15em;
     opacity: 0.6;
@@ -418,7 +418,7 @@
     .game-chat-toggle-text {
         display: inline;
         font-family: var(--font-ui);
-        font-size: 8px;
+        font-size: var(--text-2xs);
         font-weight: 900;
         letter-spacing: 0.10em;
         line-height: 1;

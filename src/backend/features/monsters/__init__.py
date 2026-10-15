@@ -1,1 +1,1 @@
-"""Generated monster and encounter population feature."""
+"""Monster catalog, encounter selection, instances, and inspection."""

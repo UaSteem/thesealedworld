@@ -1,0 +1,4 @@
+interface:
+  display_name: "TurnBasedMMORPG Frontend"
+  short_description: "Frontend routes, templates, API clients, and UI rules."
+  default_prompt: "Use $turnbasedmmorpg-frontend and its relevant references for frontend routes, templates, API clients, or visual work."

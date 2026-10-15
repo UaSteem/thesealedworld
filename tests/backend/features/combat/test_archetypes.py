@@ -18,7 +18,7 @@ from src.backend.features.combat.runtime.ai.archetypes import (
 )
 from src.backend.features.combat.runtime.ai.brain import MonsterCombatBrain
 from src.backend.features.combat.runtime.ai.policy_store import PolicyStore
-from src.backend.features.monsters.runtime.ai_archetype import resolve_monster_ai_archetype
+from src.backend.features.monsters.instances.runtime.ai_archetype import resolve_monster_ai_archetype
 from src.shared.schemas.modifier_dto import CombatModifiersDTO, CombatSkillsDTO
 
 

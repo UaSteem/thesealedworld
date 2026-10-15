@@ -23,7 +23,7 @@
     color: rgba(255, 190, 64, 0.58);
     cursor: pointer;
     font-family: var(--font-ui);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     letter-spacing: 0.12em;
     line-height: 1;
     position: relative;

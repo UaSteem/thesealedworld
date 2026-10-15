@@ -1,0 +1,1795 @@
+{
+  "schema": "turnbasedmmorpg.rift.ai_master_template.v1",
+  "grid": 8,
+  "cell": 512,
+  "hex_w": 380.0,
+  "hex_h": 440.0,
+  "edge_order": [
+    "NE",
+    "E",
+    "SE",
+    "SW",
+    "W",
+    "NW"
+  ],
+  "blocker_tile_count": 30,
+  "movement_tile_count": 11,
+  "level_transition_tile_count": 4,
+  "event_tile_count": 12,
+  "mood_tile_count": 7,
+  "tiles": [
+    {
+      "id": 1,
+      "row": 0,
+      "col": 0,
+      "role": "blocker",
+      "variant": "blocker_closed_1_start_0",
+      "walkable": false,
+      "closed_edges": [
+        0
+      ],
+      "closed_edge_bits": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 2,
+      "row": 0,
+      "col": 1,
+      "role": "blocker",
+      "variant": "blocker_closed_1_start_1",
+      "walkable": false,
+      "closed_edges": [
+        1
+      ],
+      "closed_edge_bits": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 3,
+      "row": 0,
+      "col": 2,
+      "role": "blocker",
+      "variant": "blocker_closed_1_start_2",
+      "walkable": false,
+      "closed_edges": [
+        2
+      ],
+      "closed_edge_bits": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 4,
+      "row": 0,
+      "col": 3,
+      "role": "blocker",
+      "variant": "blocker_closed_1_start_3",
+      "walkable": false,
+      "closed_edges": [
+        3
+      ],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "row": 0,
+      "col": 4,
+      "role": "blocker",
+      "variant": "blocker_closed_1_start_4",
+      "walkable": false,
+      "closed_edges": [
+        4
+      ],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 6,
+      "row": 0,
+      "col": 5,
+      "role": "blocker",
+      "variant": "blocker_closed_1_start_5",
+      "walkable": false,
+      "closed_edges": [
+        5
+      ],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 7,
+      "row": 0,
+      "col": 6,
+      "role": "blocker",
+      "variant": "blocker_closed_2_start_0",
+      "walkable": false,
+      "closed_edges": [
+        0,
+        1
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 8,
+      "row": 0,
+      "col": 7,
+      "role": "blocker",
+      "variant": "blocker_closed_2_start_1",
+      "walkable": false,
+      "closed_edges": [
+        1,
+        2
+      ],
+      "closed_edge_bits": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 9,
+      "row": 1,
+      "col": 0,
+      "role": "blocker",
+      "variant": "blocker_closed_2_start_2",
+      "walkable": false,
+      "closed_edges": [
+        2,
+        3
+      ],
+      "closed_edge_bits": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 10,
+      "row": 1,
+      "col": 1,
+      "role": "blocker",
+      "variant": "blocker_closed_2_start_3",
+      "walkable": false,
+      "closed_edges": [
+        3,
+        4
+      ],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 11,
+      "row": 1,
+      "col": 2,
+      "role": "blocker",
+      "variant": "blocker_closed_2_start_4",
+      "walkable": false,
+      "closed_edges": [
+        4,
+        5
+      ],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 12,
+      "row": 1,
+      "col": 3,
+      "role": "blocker",
+      "variant": "blocker_closed_2_start_5",
+      "walkable": false,
+      "closed_edges": [
+        5,
+        0
+      ],
+      "closed_edge_bits": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ],
+      "edges": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 13,
+      "row": 1,
+      "col": 4,
+      "role": "blocker",
+      "variant": "blocker_closed_3_start_0",
+      "walkable": false,
+      "closed_edges": [
+        0,
+        1,
+        2
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 14,
+      "row": 1,
+      "col": 5,
+      "role": "blocker",
+      "variant": "blocker_closed_3_start_1",
+      "walkable": false,
+      "closed_edges": [
+        1,
+        2,
+        3
+      ],
+      "closed_edge_bits": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 15,
+      "row": 1,
+      "col": 6,
+      "role": "blocker",
+      "variant": "blocker_closed_3_start_2",
+      "walkable": false,
+      "closed_edges": [
+        2,
+        3,
+        4
+      ],
+      "closed_edge_bits": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 16,
+      "row": 1,
+      "col": 7,
+      "role": "blocker",
+      "variant": "blocker_closed_3_start_3",
+      "walkable": false,
+      "closed_edges": [
+        3,
+        4,
+        5
+      ],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 17,
+      "row": 2,
+      "col": 0,
+      "role": "blocker",
+      "variant": "blocker_closed_3_start_4",
+      "walkable": false,
+      "closed_edges": [
+        4,
+        5,
+        0
+      ],
+      "closed_edge_bits": [
+        1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "edges": [
+        0,
+        1,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 18,
+      "row": 2,
+      "col": 1,
+      "role": "blocker",
+      "variant": "blocker_closed_3_start_5",
+      "walkable": false,
+      "closed_edges": [
+        5,
+        0,
+        1
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        1
+      ],
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 19,
+      "row": 2,
+      "col": 2,
+      "role": "blocker",
+      "variant": "blocker_closed_4_start_0",
+      "walkable": false,
+      "closed_edges": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 20,
+      "row": 2,
+      "col": 3,
+      "role": "blocker",
+      "variant": "blocker_closed_4_start_1",
+      "walkable": false,
+      "closed_edges": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "closed_edge_bits": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 21,
+      "row": 2,
+      "col": 4,
+      "role": "blocker",
+      "variant": "blocker_closed_4_start_2",
+      "walkable": false,
+      "closed_edges": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "closed_edge_bits": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 22,
+      "row": 2,
+      "col": 5,
+      "role": "blocker",
+      "variant": "blocker_closed_4_start_3",
+      "walkable": false,
+      "closed_edges": [
+        3,
+        4,
+        5,
+        0
+      ],
+      "closed_edge_bits": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      "edges": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 23,
+      "row": 2,
+      "col": 6,
+      "role": "blocker",
+      "variant": "blocker_closed_4_start_4",
+      "walkable": false,
+      "closed_edges": [
+        4,
+        5,
+        0,
+        1
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 24,
+      "row": 2,
+      "col": 7,
+      "role": "blocker",
+      "variant": "blocker_closed_4_start_5",
+      "walkable": false,
+      "closed_edges": [
+        5,
+        0,
+        1,
+        2
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 25,
+      "row": 3,
+      "col": 0,
+      "role": "blocker",
+      "variant": "blocker_closed_5_start_0",
+      "walkable": false,
+      "closed_edges": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 26,
+      "row": 3,
+      "col": 1,
+      "role": "blocker",
+      "variant": "blocker_closed_5_start_1",
+      "walkable": false,
+      "closed_edges": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "closed_edge_bits": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 27,
+      "row": 3,
+      "col": 2,
+      "role": "blocker",
+      "variant": "blocker_closed_5_start_2",
+      "walkable": false,
+      "closed_edges": [
+        2,
+        3,
+        4,
+        5,
+        0
+      ],
+      "closed_edge_bits": [
+        1,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "edges": [
+        0,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 28,
+      "row": 3,
+      "col": 3,
+      "role": "blocker",
+      "variant": "blocker_closed_5_start_3",
+      "walkable": false,
+      "closed_edges": [
+        3,
+        4,
+        5,
+        0,
+        1
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        1
+      ],
+      "edges": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 29,
+      "row": 3,
+      "col": 4,
+      "role": "blocker",
+      "variant": "blocker_closed_5_start_4",
+      "walkable": false,
+      "closed_edges": [
+        4,
+        5,
+        0,
+        1,
+        2
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        1,
+        0,
+        1,
+        1
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 30,
+      "row": 3,
+      "col": 5,
+      "role": "blocker",
+      "variant": "blocker_closed_5_start_5",
+      "walkable": false,
+      "closed_edges": [
+        5,
+        0,
+        1,
+        2,
+        3
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        1
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 31,
+      "row": 3,
+      "col": 6,
+      "role": "movement",
+      "variant": "movement_1-4",
+      "walkable": true,
+      "closed_edges": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "closed_edge_bits": [
+        0,
+        1,
+        1,
+        0,
+        1,
+        1
+      ],
+      "edges": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 32,
+      "row": 3,
+      "col": 7,
+      "role": "movement",
+      "variant": "movement_2-5",
+      "walkable": true,
+      "closed_edges": [
+        0,
+        2,
+        3,
+        5
+      ],
+      "closed_edge_bits": [
+        1,
+        0,
+        1,
+        1,
+        0,
+        1
+      ],
+      "edges": [
+        0,
+        1,
+        0,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 33,
+      "row": 4,
+      "col": 0,
+      "role": "movement",
+      "variant": "movement_3-6",
+      "walkable": true,
+      "closed_edges": [
+        0,
+        1,
+        3,
+        4
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        0,
+        1,
+        1,
+        0
+      ],
+      "edges": [
+        0,
+        0,
+        1,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 34,
+      "row": 4,
+      "col": 1,
+      "role": "movement",
+      "variant": "movement_1-2",
+      "walkable": true,
+      "closed_edges": [
+        2,
+        3,
+        4,
+        5
+      ],
+      "closed_edge_bits": [
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "edges": [
+        1,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 35,
+      "row": 4,
+      "col": 2,
+      "role": "movement",
+      "variant": "movement_2-3",
+      "walkable": true,
+      "closed_edges": [
+        0,
+        3,
+        4,
+        5
+      ],
+      "closed_edge_bits": [
+        1,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      "edges": [
+        0,
+        1,
+        1,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 36,
+      "row": 4,
+      "col": 3,
+      "role": "movement",
+      "variant": "movement_3-4",
+      "walkable": true,
+      "closed_edges": [
+        0,
+        1,
+        4,
+        5
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        0,
+        0,
+        1,
+        1
+      ],
+      "edges": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 37,
+      "row": 4,
+      "col": 4,
+      "role": "movement",
+      "variant": "movement_4-5",
+      "walkable": true,
+      "closed_edges": [
+        0,
+        1,
+        2,
+        5
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        1,
+        0,
+        0,
+        1
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 38,
+      "row": 4,
+      "col": 5,
+      "role": "movement",
+      "variant": "movement_5-6",
+      "walkable": true,
+      "closed_edges": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "closed_edge_bits": [
+        1,
+        1,
+        1,
+        1,
+        0,
+        0
+      ],
+      "edges": [
+        0,
+        0,
+        0,
+        0,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 39,
+      "row": 4,
+      "col": 6,
+      "role": "movement",
+      "variant": "movement_6-1",
+      "walkable": true,
+      "closed_edges": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "closed_edge_bits": [
+        0,
+        1,
+        1,
+        1,
+        1,
+        0
+      ],
+      "edges": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 40,
+      "row": 4,
+      "col": 7,
+      "role": "movement",
+      "variant": "movement_1-3-5",
+      "walkable": true,
+      "closed_edges": [
+        1,
+        3,
+        5
+      ],
+      "closed_edge_bits": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ],
+      "edges": [
+        1,
+        0,
+        1,
+        0,
+        1,
+        0
+      ]
+    },
+    {
+      "id": 41,
+      "row": 5,
+      "col": 0,
+      "role": "movement",
+      "variant": "movement_2-4-6",
+      "walkable": true,
+      "closed_edges": [
+        0,
+        2,
+        4
+      ],
+      "closed_edge_bits": [
+        1,
+        0,
+        1,
+        0,
+        1,
+        0
+      ],
+      "edges": [
+        0,
+        1,
+        0,
+        1,
+        0,
+        1
+      ]
+    },
+    {
+      "id": 42,
+      "row": 5,
+      "col": 1,
+      "role": "level_transition",
+      "variant": "level_transition_01",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 43,
+      "row": 5,
+      "col": 2,
+      "role": "level_transition",
+      "variant": "level_transition_02",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 44,
+      "row": 5,
+      "col": 3,
+      "role": "level_transition",
+      "variant": "level_transition_03",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 45,
+      "row": 5,
+      "col": 4,
+      "role": "level_transition",
+      "variant": "level_transition_04",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 46,
+      "row": 5,
+      "col": 5,
+      "role": "event",
+      "variant": "event_placeholder_01",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 47,
+      "row": 5,
+      "col": 6,
+      "role": "event",
+      "variant": "event_placeholder_02",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 48,
+      "row": 5,
+      "col": 7,
+      "role": "event",
+      "variant": "event_placeholder_03",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 49,
+      "row": 6,
+      "col": 0,
+      "role": "event",
+      "variant": "event_placeholder_04",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 50,
+      "row": 6,
+      "col": 1,
+      "role": "event",
+      "variant": "event_placeholder_05",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 51,
+      "row": 6,
+      "col": 2,
+      "role": "event",
+      "variant": "event_placeholder_06",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 52,
+      "row": 6,
+      "col": 3,
+      "role": "event",
+      "variant": "event_placeholder_07",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 53,
+      "row": 6,
+      "col": 4,
+      "role": "event",
+      "variant": "event_placeholder_08",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 54,
+      "row": 6,
+      "col": 5,
+      "role": "event",
+      "variant": "event_placeholder_09",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 55,
+      "row": 6,
+      "col": 6,
+      "role": "event",
+      "variant": "event_placeholder_10",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 56,
+      "row": 6,
+      "col": 7,
+      "role": "event",
+      "variant": "event_placeholder_11",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 57,
+      "row": 7,
+      "col": 0,
+      "role": "event",
+      "variant": "event_placeholder_12",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 58,
+      "row": 7,
+      "col": 1,
+      "role": "mood",
+      "variant": "mood_variant_01",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 59,
+      "row": 7,
+      "col": 2,
+      "role": "mood",
+      "variant": "mood_variant_02",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 60,
+      "row": 7,
+      "col": 3,
+      "role": "mood",
+      "variant": "mood_variant_03",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 61,
+      "row": 7,
+      "col": 4,
+      "role": "mood",
+      "variant": "mood_variant_04",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 62,
+      "row": 7,
+      "col": 5,
+      "role": "mood",
+      "variant": "mood_variant_05",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 63,
+      "row": 7,
+      "col": 6,
+      "role": "mood",
+      "variant": "mood_variant_06",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 64,
+      "row": 7,
+      "col": 7,
+      "role": "mood",
+      "variant": "mood_variant_07",
+      "walkable": true,
+      "closed_edges": [],
+      "closed_edge_bits": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "edges": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  ]
+}

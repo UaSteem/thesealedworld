@@ -28,10 +28,7 @@
     height: 100%;
     min-width: 0;
     min-height: 0;
-    padding:
-        var(--game-column-gutter-top, 10px)
-        var(--game-column-gutter-x, 12px)
-        var(--game-column-gutter-bottom, 36px);
+    padding: 6px 6px 36px;
 }
 
 .col-left, .col-right {
@@ -55,7 +52,9 @@
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
-    background: var(--game-shell-surface, rgba(10, 10, 12, .56));
+    background:
+        linear-gradient(180deg, rgba(255, 170, 0, 0.03), transparent 40%),
+        rgba(6, 5, 8, 0.82);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
     border: none;

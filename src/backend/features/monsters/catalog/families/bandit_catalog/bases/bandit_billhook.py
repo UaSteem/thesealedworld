@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+BANDIT_BILLHOOK = MemberBaseDTO(
+    id="bandit_billhook",
+    role="veteran",
+    stats=BaseStatsDTO(
+        strength=17,
+        agility=15,
+        endurance=16,
+        intellect=11,
+        memory=10,
+        mental=12,
+        perception=14,
+        projection=9,
+        prediction=13,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand="spear",
+        off_hand=None,
+        two_hand=None,
+        head_armor=None,
+        chest_armor="jerkin",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="amulet",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver=None,
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=50,
+)

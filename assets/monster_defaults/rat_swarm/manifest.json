@@ -1,0 +1,117 @@
+{
+  "family_id": "rat_swarm",
+  "format_direction": "Transparent raster PNG",
+  "style_contract": "STYLE.md",
+  "runtime_catalog_changed": false,
+  "members": [
+    {
+      "variant_id": "sewer_rat",
+      "display_name": "Канализационная крыса",
+      "role": "minion",
+      "png": "png/sewer_rat-v2.png",
+      "status": "accepted",
+      "previous_png": "png/sewer_rat-v1.png"
+    },
+    {
+      "variant_id": "scavenger_rat",
+      "display_name": "Крыса-собиратель",
+      "catalog_variant_id": "scavenger_rat",
+      "role": "minion",
+      "png": "png/scavenger_rat-v2.png",
+      "status": "accepted",
+      "previous_png": "png/scavenger_rat-v1.png"
+    },
+    {
+      "variant_id": "swarm_rat",
+      "display_name": "Стайная крыса",
+      "catalog_variant_id": "swarm_rat",
+      "role": "minion",
+      "png": "png/swarm_rat-v2.png",
+      "status": "accepted",
+      "previous_png": "png/swarm_rat-v1.png"
+    },
+    {
+      "variant_id": "tunnel_rat",
+      "display_name": "Крыса-землекоп",
+      "catalog_variant_id": "tunnel_rat",
+      "role": "veteran",
+      "png": "png/tunnel_rat-v2.png",
+      "status": "accepted",
+      "previous_png": "png/tunnel_rat-v1.png"
+    },
+    {
+      "variant_id": "pack_rat",
+      "display_name": "Крыса-загонщик",
+      "catalog_variant_id": "pack_rat",
+      "role": "veteran",
+      "png": "png/pack_rat-v2.png",
+      "status": "accepted",
+      "previous_png": "png/pack_rat-v1.png"
+    },
+    {
+      "variant_id": "screecher",
+      "display_name": "Крыса-крикун",
+      "catalog_variant_id": "screecher",
+      "role": "veteran",
+      "png": "png/screecher-v2.png",
+      "status": "accepted",
+      "previous_png": "png/screecher-v1.png"
+    },
+    {
+      "variant_id": "burrow_guard",
+      "display_name": "Страж норы",
+      "catalog_variant_id": "plague_rat",
+      "role": "elite",
+      "png": "png/burrow_guard-v2.png",
+      "status": "accepted",
+      "previous_png": "png/burrow_guard-v1.png"
+    },
+    {
+      "variant_id": "ironfang",
+      "display_name": "Железный клык",
+      "catalog_variant_id": "rotfang",
+      "role": "elite",
+      "png": "png/ironfang-v2.png",
+      "status": "accepted",
+      "previous_png": "png/ironfang-v1.png"
+    },
+    {
+      "variant_id": "heavy_rat",
+      "display_name": "Крыса-тяжеловес",
+      "catalog_variant_id": "blight_carrier",
+      "role": "elite",
+      "png": "png/heavy_rat-v2.png",
+      "status": "accepted",
+      "previous_png": "png/heavy_rat-v1.png"
+    },
+    {
+      "variant_id": "rat_brute",
+      "display_name": "Крыса-громила",
+      "catalog_variant_id": "rat_brute",
+      "role": "boss",
+      "png": "png/rat_brute-v2.png",
+      "status": "accepted",
+      "previous_png": "png/rat_brute-v1.png"
+    },
+    {
+      "variant_id": "brood_alpha",
+      "display_name": "Вожак выводка",
+      "catalog_variant_id": "brood_alpha",
+      "role": "boss",
+      "png": "png/brood_alpha-v2.png",
+      "status": "accepted",
+      "previous_png": "png/brood_alpha-v1.png"
+    },
+    {
+      "variant_id": "rat_king",
+      "display_name": "Крысиный король",
+      "catalog_variant_id": "rat_king",
+      "role": "boss",
+      "png": "png/rat_king-v2.png",
+      "status": "accepted",
+      "previous_png": "png/rat_king-v1.png"
+    }
+  ],
+  "rat_king_design": "Living knot of rats with two emerging rats; summoning visual concept. Runtime ability unchanged.",
+  "accepted_set": "v2"
+}

@@ -9,7 +9,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
+  font-size: var(--text-lg);
   cursor: pointer;
   transition: all 0.18s;
 }
@@ -40,7 +40,7 @@
 }
 
 .wi-icon {
-  font-size: 11px;
+  font-size: var(--text-base);
 }
 
 .wi-val {
@@ -49,7 +49,7 @@
 }
 
 .wi-lbl {
-  font-size: 7px;
+  font-size: var(--text-2xs);
   color: var(--col-text-secondary);
   letter-spacing: .1em;
 }
@@ -222,20 +222,20 @@
 .right-inventory-panel .inventory-equip-zone--arms { grid-column: 1; grid-row: 2; }
 .right-inventory-panel .inventory-equip-zone--chest { grid-column: 3; grid-row: 2; }
 .right-inventory-panel .inventory-equip-zone--main {
-  grid-column: 1;
+  grid-column: 1 / span 2;
   grid-row: 3 / span 2;
   width: calc((var(--panel-equip-slot) * 2) + var(--panel-equip-gap));
   height: calc((var(--panel-equip-slot) * 2) + var(--panel-equip-gap));
 }
 .right-inventory-panel .inventory-equip-zone--off,
 .right-inventory-panel .inventory-equip-zone--two {
-  grid-column: 5;
+  grid-column: 4 / span 2;
   grid-row: 3 / span 2;
   width: calc((var(--panel-equip-slot) * 2) + var(--panel-equip-gap));
   height: calc((var(--panel-equip-slot) * 2) + var(--panel-equip-gap));
 }
 .right-inventory-panel .inventory-equip-zone--two-shadow {
-  grid-column: 1;
+  grid-column: 1 / span 2;
   grid-row: 3 / span 2;
   width: calc((var(--panel-equip-slot) * 2) + var(--panel-equip-gap));
   height: calc((var(--panel-equip-slot) * 2) + var(--panel-equip-gap));
@@ -266,7 +266,7 @@
 .right-inventory-panel .inventory-accessory-slot-label,
 .right-inventory-panel .inventory-slot-state,
 .right-inventory-panel .inventory-accessory-slot small {
-  font-size: 7px;
+  font-size: var(--text-2xs);
   letter-spacing: .05em;
   line-height: 1.05;
 }
@@ -332,7 +332,7 @@
   justify-content: center;
   min-width: 0;
   padding: 0 6px;
-  font-size: 8px;
+  font-size: var(--text-2xs);
 }
 
 .right-inventory-panel .inventory-search {
@@ -1074,7 +1074,7 @@
   z-index: 1;
   max-width: calc(100% - 12px);
   color: rgba(244, 223, 176, .72);
-  font-size: 7px;
+  font-size: var(--text-2xs);
   letter-spacing: 0;
   line-height: 1;
   text-align: left;
@@ -1093,7 +1093,7 @@
   right: 5px;
   bottom: 4px;
   left: 5px;
-  font-size: 8px;
+  font-size: var(--text-2xs);
   line-height: 1;
 }
 
@@ -1591,7 +1591,7 @@
 .inventory-card-qty,
 .inventory-card-rarity {
   color: var(--inventory-muted);
-  font-size: 7px;
+  font-size: var(--text-2xs);
   line-height: 1;
 }
 

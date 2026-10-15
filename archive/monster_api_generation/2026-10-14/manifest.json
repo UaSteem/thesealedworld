@@ -1,0 +1,182 @@
+[
+  {
+    "source": "src/backend/config/settings.py",
+    "snapshot": "src/backend/config/settings.py.snapshot",
+    "sha256": "8b291de36ab509a0257e41b1dc7fb7e3abe7dcc660679bc15cad2069e34f4cf2"
+  },
+  {
+    "source": "src/backend/core/containers/game.py",
+    "snapshot": "src/backend/core/containers/game.py.snapshot",
+    "sha256": "e5aae1ecc4cdf5f4a1d5018b207a68224c2bbca9d21337841f23c7d0a6092f31"
+  },
+  {
+    "source": "src/backend/features/generation_ai/bootstrap.py",
+    "snapshot": "src/backend/features/generation_ai/bootstrap.py.snapshot",
+    "sha256": "9d29c86807439db30f7c8dcb44414af6c47aa6b0072eea9c995ddecec3fdfca2"
+  },
+  {
+    "source": "src/backend/features/generation_ai/services.py",
+    "snapshot": "src/backend/features/generation_ai/services.py.snapshot",
+    "sha256": "141eb2bd0fe36528bdb08406185b17df202599f9c6163988de32b71abb6840e1"
+  },
+  {
+    "source": "src/backend/features/monsters/api/router.py",
+    "snapshot": "src/backend/features/monsters/api/router.py.snapshot",
+    "sha256": "c9510c4a14be0c498a569ba6b4ff4243755f70ac8e4e6c01748cda6cac060f74"
+  },
+  {
+    "source": "src/backend/features/monsters/dto/generated_view.py",
+    "snapshot": "src/backend/features/monsters/dto/generated_view.py.snapshot",
+    "sha256": "bc401691bbef0c08f3be02ed063506f9882afed335f2b124f72325c417467ba9"
+  },
+  {
+    "source": "src/backend/features/monsters/events/__init__.py",
+    "snapshot": "src/backend/features/monsters/events/__init__.py.snapshot",
+    "sha256": "ec95b0dd6704f5473d6c4aba90afc92304b9e5cd2dc7e8e0df654d229a574187"
+  },
+  {
+    "source": "src/backend/features/monsters/prompts/__init__.py",
+    "snapshot": "src/backend/features/monsters/prompts/__init__.py.snapshot",
+    "sha256": "d81ebada34e291f421aea71b2836320387cc58759173a975aa118f4b1776a058"
+  },
+  {
+    "source": "src/backend/features/monsters/prompts/router.py",
+    "snapshot": "src/backend/features/monsters/prompts/router.py.snapshot",
+    "sha256": "20d7f976b5f625e6ffb3707d9a7ba0af1379a831845514fd0155bf796ec61c76"
+  },
+  {
+    "source": "src/backend/features/monsters/resources/visuals.py",
+    "snapshot": "src/backend/features/monsters/resources/visuals.py.snapshot",
+    "sha256": "947832a5b512086b7a32c17319024c1657dcc9c5ed5ff56fc4967cfbb3550ef7"
+  },
+  {
+    "source": "src/backend/features/monsters/runtime/generation_builder.py",
+    "snapshot": "src/backend/features/monsters/runtime/generation_builder.py.snapshot",
+    "sha256": "dcab792222dca35be6539adf232562d5e247d0efc3cbbbd520d0b7a6a2626cba"
+  },
+  {
+    "source": "src/backend/features/monsters/scripts/regenerate_images.py",
+    "snapshot": "src/backend/features/monsters/scripts/regenerate_images.py.snapshot",
+    "sha256": "42bf45ae36141283d653863da32ff7b1937354ab38d115b51cf634a13e131648"
+  },
+  {
+    "source": "src/backend/features/monsters/services/content_regeneration_service.py",
+    "snapshot": "src/backend/features/monsters/services/content_regeneration_service.py.snapshot",
+    "sha256": "5a1bd7c4446ecc120fe3a3e55cae1e41c467fabe17dbeb04811af00e1f25b8bd"
+  },
+  {
+    "source": "src/backend/features/monsters/services/visual_regeneration_service.py",
+    "snapshot": "src/backend/features/monsters/services/visual_regeneration_service.py.snapshot",
+    "sha256": "b9af99fc8436121a29e263024dc82dbc0bf78b58e3a7cb969b9fdd90975e1191"
+  },
+  {
+    "source": "src/backend/features/monsters/tasks_ai.py",
+    "snapshot": "src/backend/features/monsters/tasks_ai.py.snapshot",
+    "sha256": "f745e0086bcd6f2cd139bd8aba6674528e253403e4e7c66b68ece7dedf26cb30"
+  },
+  {
+    "source": "src/backend/features/rift/dependencies.py",
+    "snapshot": "src/backend/features/rift/dependencies.py.snapshot",
+    "sha256": "b0bc19098b15ffad632b1e544a46962174859f890448acbbe2f1260d36fdb7ce"
+  },
+  {
+    "source": "src/fastapi_cabinet/templates/cabinet/content_ops_monster_detail.html",
+    "snapshot": "src/fastapi_cabinet/templates/cabinet/content_ops_monster_detail.html.snapshot",
+    "sha256": "507020b8068a2e029fcf65d4dd931d5a57c36c987c9bfb8da8a9c17cbe914969"
+  },
+  {
+    "source": "src/fastapi_cabinet/templates/cabinet/content_ops_monster_maintenance.html",
+    "snapshot": "src/fastapi_cabinet/templates/cabinet/content_ops_monster_maintenance.html.snapshot",
+    "sha256": "319460248d68374b42286c822bf099a79fb144b279b8b653b7ddfc926369626e"
+  },
+  {
+    "source": "src/fastapi_cabinet/templates/cabinet/content_ops_monster_member_detail.html",
+    "snapshot": "src/fastapi_cabinet/templates/cabinet/content_ops_monster_member_detail.html.snapshot",
+    "sha256": "c42d427dbe9b180a4c2ab8810aafe15d12dc6976248288375bdd6b3c54403ac4"
+  },
+  {
+    "source": "src/fastapi_cabinet/templates/cabinet/content_ops_monsters.html",
+    "snapshot": "src/fastapi_cabinet/templates/cabinet/content_ops_monsters.html.snapshot",
+    "sha256": "c058528f75022b8b97e503eea29087fb6a54cfc1b8cce77c0b8761d9f1847838"
+  },
+  {
+    "source": "src/studio/features/cabinet/modules/content_ops/cabinet.py",
+    "snapshot": "src/studio/features/cabinet/modules/content_ops/cabinet.py.snapshot",
+    "sha256": "d02ace5d1781bd7b8a54d1d62f8e4d15d746dde02d6edf5cd45cd9e914276ca6"
+  },
+  {
+    "source": "src/studio/integrations/backend_api/admin_monsters.py",
+    "snapshot": "src/studio/integrations/backend_api/admin_monsters.py.snapshot",
+    "sha256": "a848d24f3f478d22c910dd5cf7a99006c674cf32e098c1dd3e8d290d35c954ee"
+  },
+  {
+    "source": "tests/backend/features/monsters/resources/test_visuals.py",
+    "snapshot": "tests/backend/features/monsters/resources/test_visuals.py.snapshot",
+    "sha256": "c3bb6896756e5185ebbb9aa99384d98a4842222061f5e086cd470af6e252793b"
+  },
+  {
+    "source": "tests/backend/features/monsters/test_generated_api.py",
+    "snapshot": "tests/backend/features/monsters/test_generated_api.py.snapshot",
+    "sha256": "942f2bfcca5b39757f2e8485e2f39ad88f91fe45428d333303770058e90dddb6"
+  },
+  {
+    "source": "tests/backend/features/monsters/test_tasks_ai.py",
+    "snapshot": "tests/backend/features/monsters/test_tasks_ai.py.snapshot",
+    "sha256": "a6ea5f13b62559d4239be315a387da97155ab8b83895c8cfbd5d036064bbe495"
+  },
+  {
+    "source": "tests/backend/features/monsters/test_visual_regeneration_service.py",
+    "snapshot": "tests/backend/features/monsters/test_visual_regeneration_service.py.snapshot",
+    "sha256": "2c5dcb4d1b02d88a1ade69fb397d9b6db113069dec7cebf3164c0074e40413d3"
+  },
+  {
+    "source": "tests/frontend/features/cabinet/test_content_ops_module.py",
+    "snapshot": "tests/frontend/features/cabinet/test_content_ops_module.py.snapshot",
+    "sha256": "fa1a7e01a9f5a47f55a78bda091896faeae20a6e57d169c89b1e4e0c70556b12"
+  },
+  {
+    "source": "tools/dev/regenerate_monster_images.py",
+    "snapshot": "tools/dev/regenerate_monster_images.py.snapshot",
+    "sha256": "1817a19ebc0253d0f24d0390c4b74cb20a25a2c878cf502b360c5c455971f810"
+  },
+  {
+    "source": "tools/monsters/archive_api_generation.py",
+    "snapshot": "tools/monsters/archive_api_generation.py.snapshot",
+    "sha256": "38554fbbce9e697de3fd43b55afffc8b140376f47318504f6f2b044d3627b5e5"
+  },
+  {
+    "source": "tools/monsters/quiver_1024_bandit_trial.py",
+    "snapshot": "tools/monsters/quiver_1024_bandit_trial.py.snapshot",
+    "sha256": "aea23c8097ff4772d4c13bf9ce342fb03fe2a01dcd5d574437add47f4e73c4f1"
+  },
+  {
+    "source": "tools/monsters/quiver_bandit_candidates.py",
+    "snapshot": "tools/monsters/quiver_bandit_candidates.py.snapshot",
+    "sha256": "17611bb61f90fcfed6d56954231a536a2c157cb9d02ff3ac2332321284798335"
+  },
+  {
+    "source": "tools/monsters/quiver_generate_one.py",
+    "snapshot": "tools/monsters/quiver_generate_one.py.snapshot",
+    "sha256": "e98b7975d100586bb5f1a87a28e36f8b273dfe1cd658b82fe984fd8bfc43269d"
+  },
+  {
+    "source": "tools/monsters/quiver_reference_trial.py",
+    "snapshot": "tools/monsters/quiver_reference_trial.py.snapshot",
+    "sha256": "a507530311d827ab19e8c443444d0d8fb9920b249e6e9517a42f20276febb268"
+  },
+  {
+    "source": "tools/monsters/quiver_simple_bandit_trial.py",
+    "snapshot": "tools/monsters/quiver_simple_bandit_trial.py.snapshot",
+    "sha256": "3db677a5e5ff579d288e1051d20488a56323d64a263591f595b90d4d4e9444da"
+  },
+  {
+    "source": "tools/monsters/quiver_vectorize_trial.py",
+    "snapshot": "tools/monsters/quiver_vectorize_trial.py.snapshot",
+    "sha256": "7902ee9f45e621c5e7633aebed6cef3828d06f698c9704694fded9083eb15465"
+  },
+  {
+    "source": "tools/monsters/quiver_wolf_trial.py",
+    "snapshot": "tools/monsters/quiver_wolf_trial.py.snapshot",
+    "sha256": "7f21466c75f4552bb3638566ccfce9fceb33639414de3dab8783b01930c2c969"
+  }
+]

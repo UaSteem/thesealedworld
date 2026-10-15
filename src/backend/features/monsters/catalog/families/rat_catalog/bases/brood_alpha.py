@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+BROOD_ALPHA = MemberBaseDTO(
+    id="brood_alpha",
+    role="boss",
+    stats=BaseStatsDTO(
+        strength=20,
+        agility=22,
+        endurance=21,
+        intellect=17,
+        memory=15,
+        mental=18,
+        perception=19,
+        projection=16,
+        prediction=14,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand="rat_boss_claws",
+        off_hand="rat_spiked_growth",
+        two_hand=None,
+        head_armor=None,
+        chest_armor="rat_heavy_hide",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="rat_plague_gland",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver=None,
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=600,
+)

@@ -57,11 +57,11 @@
     }
 
     .rift-hud-strip span {
-        font-size: 7px;
+        font-size: var(--text-2xs);
     }
 
     .rift-hud-strip strong {
-        font-size: 9px;
+        font-size: var(--text-xs);
         line-height: 1;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -69,16 +69,16 @@
     }
 
     .rift-node-copy h2 {
-        font-size: 28px;
+        font-size: var(--text-2xl);
     }
 
     .rift-node-copy p {
-        font-size: 16px;
+        font-size: var(--text-lg);
         line-height: 1.44;
     }
 
     .rift-surrounding-line {
-        font-size: 16px;
+        font-size: var(--text-lg);
     }
 
     .rift-action-button {
@@ -108,7 +108,7 @@
     }
 
     .rift-node-copy h2 {
-        font-size: 24px;
+        font-size: var(--text-2xl);
     }
 
     .rift-map-canvas {
@@ -130,7 +130,7 @@
     }
 
     .rift-node-copy p {
-        font-size: 15px;
+        font-size: var(--text-md);
     }
 
 }

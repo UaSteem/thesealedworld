@@ -1,0 +1,275 @@
+{% extends "cabinet/base.html" %}
+
+{% block extra_head %}
+    {% if task_notice and task_notice.active %}
+        <meta http-equiv="refresh" content="5">
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if not clan or not member %}
+        <p class="fc-empty">Сгенерированный монстр не найден.</p>
+    {% else %}
+        {% include "cabinet/includes/content_ops_task_notice.html" %}
+
+        <div class="fc-page-head">
+            <div>
+                <h1 class="fc-page-title">{{ member.name_ru or member.variant_key }}</h1>
+                <p class="fc-page-subtitle">
+                    {{ clan.name_ru or clan.family_id }} / {{ member.role }} / тир монстра {{ member.member_tier }}
+                </p>
+            </div>
+            <a class="fc-action-btn" href="/admin/content-ops/monster-detail?id={{ clan.clan_id }}">К семье</a>
+        </div>
+
+        <section class="fc-widget fc-widget--wide fc-detail-grid">
+            <div class="fc-preview-box">
+                {% if member.visual.image_url %}
+                    <img src="{{ member.visual.image_url }}" alt="{{ member.name_ru or member.variant_key }}">
+                {% else %}
+                    <span>нет изображения</span>
+                {% endif %}
+            </div>
+            <div>
+                <h2>Визуал индивида</h2>
+                <table class="fc-table">
+                    <tbody>
+                        <tr><th>Изображение</th><td>{{ member.visual.image_url or "нет" }}</td></tr>
+                        <tr><th>Ключ хранения</th><td>{{ member.visual.storage_key or "—" }}</td></tr>
+                        <tr><th>Хранилище</th><td>{{ member.visual.storage_backend or "—" }}</td></tr>
+                        <tr><th>Статус</th><td>{{ member.visual.status or "—" }}</td></tr>
+                        <tr><th>Задача</th><td>{{ member.visual.task_id or member.visual.pending_task_id or "—" }}</td></tr>
+                        <tr><th>Статус задачи</th><td>{{ member.visual.task_status or "—" }}</td></tr>
+                        <tr><th>Попытки</th><td>{% if member.visual.task_max_attempts %}{{ member.visual.task_attempts }} / {{ member.visual.task_max_attempts }}{% else %}—{% endif %}</td></tr>
+                        <tr><th>Ошибка</th><td>{% if member.visual.task_error_message %}{{ member.visual.task_error_type }}: {{ member.visual.task_error_message }}{% else %}—{% endif %}</td></tr>
+                    </tbody>
+                </table>
+                <form method="post" action="/admin/content-ops/regenerate-member-image" class="fc-inline-action">
+                    <input type="hidden" name="csrf_token" value="{{ request.state.csrf_token }}">
+                    <input type="hidden" name="clan_id" value="{{ clan.clan_id }}">
+                    <input type="hidden" name="member_id" value="{{ member.monster_id }}">
+                    <input type="hidden" name="return_member_detail" value="1">
+                    <button type="submit" class="fc-action-btn fc-action-btn--approve">Перегенерировать изображение</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="fc-widget fc-widget--wide">
+            <h2>Сгенерированный текст</h2>
+            <table class="fc-table">
+                <tbody>
+                    <tr><th>Описание</th><td>{{ member.description or "—" }}</td></tr>
+                    {% for key, value in member.text_content.items() %}
+                        <tr>
+                            <th>{{ key }}</th>
+                            <td>{{ value }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <section class="fc-widget fc-widget--wide">
+            <h2>Игровые данные</h2>
+            <table class="fc-table">
+                <tbody>
+                    <tr><th>ID</th><td>{{ member.monster_id }}</td></tr>
+                    <tr><th>Clan ID</th><td>{{ clan.clan_id }}</td></tr>
+                    <tr><th>Вариант</th><td>{{ member.variant_key }}</td></tr>
+                    <tr><th>Роль</th><td>{{ member.role }}</td></tr>
+                    <tr><th>Тир монстра</th><td>{{ member.member_tier }}</td></tr>
+                    <tr><th>Threat rating</th><td>{{ member.threat_rating }}</td></tr>
+                    <tr><th>Сила</th><td>{{ member.gear_score if member.gear_score is not none else "—" }}</td></tr>
+                    <tr><th>Schema version</th><td>{{ member.schema_version }}</td></tr>
+                    <tr><th>Lifecycle</th><td>{{ member.lifecycle_status or "—" }}</td></tr>
+                    <tr><th>Created</th><td>{{ member.created_at or "—" }}</td></tr>
+                    <tr><th>Updated</th><td>{{ member.updated_at or "—" }}</td></tr>
+                    <tr><th>Экипировка</th><td>{{ member.equipment|join(", ") if member.equipment else "—" }}</td></tr>
+                    <tr><th>Аффиксы</th><td>{{ member.affixes|join(", ") if member.affixes else "—" }}</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="fc-widget fc-widget--wide">
+            <h2>Предметы и аффиксы</h2>
+            <table class="fc-table">
+                <thead>
+                    <tr>
+                        <th>Слот</th>
+                        <th>Предмет</th>
+                        <th>Power / навык</th>
+                        <th>Бонусы</th>
+                        <th>Аффиксы</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in member.equipment_items %}
+                        <tr>
+                            <td>{{ item.slot_label }}</td>
+                            <td>
+                                {{ item.name }}
+                                {% if item.base_id and item.base_id != item.name %}
+                                    <br><small>{{ item.base_id }}</small>
+                                {% endif %}
+                                {% if item.tags %}
+                                    <br><small>{{ item.tags|join(", ") }}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if item.power %}Power {{ item.power }}{% else %}—{% endif %}
+                                {% if item.related_skill %}
+                                    <br><small>{{ item.related_skill }}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% for bonus in item.bonuses %}
+                                    {{ bonus.label }} {{ bonus.value }}{% if not loop.last %}<br>{% endif %}
+                                {% endfor %}
+                                {% if item.implicit_bonuses %}
+                                    {% if item.bonuses %}<br>{% endif %}
+                                    {% for bonus in item.implicit_bonuses %}
+                                        {{ bonus.label }} {{ bonus.value }}{% if not loop.last %}<br>{% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                                {% if not item.bonuses and not item.implicit_bonuses %}—{% endif %}
+                            </td>
+                            <td>
+                                {% for affix in item.affixes %}
+                                    {{ affix.name }}
+                                    {% if affix.bonuses %}
+                                       :
+                                        {% for bonus in affix.bonuses %}
+                                            {{ bonus.label }} {{ bonus.value }}{% if not loop.last %}, {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                    {% if not loop.last %}<br>{% endif %}
+                                {% else %}
+                                    —
+                                {% endfor %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr><td colspan="5">Предметы не записаны.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <section class="fc-widget fc-widget--wide">
+            <h2>Боевой профиль</h2>
+            {% set balance = member.generation_meta.get("balance", {}) %}
+            {% set meta = member.generation_meta.get("meta", {}) %}
+            {% set hp = member.vitals.get("hp", {}) %}
+            {% set stamina = member.vitals.get("stamina", member.vitals.get("energy", {})) %}
+            <table class="fc-table">
+                <tbody>
+                    <tr><th>Архетип</th><td>{{ meta.get("archetype") or "—" }}</td></tr>
+                    <tr><th>Теги</th><td>{{ meta.get("tags")|join(", ") if meta.get("tags") else "—" }}</td></tr>
+                    <tr><th>AI поведение</th><td>{{ member.ai_profile.get("behavior") or "—" }}</td></tr>
+                    <tr><th>AI цель</th><td>{{ member.ai_profile.get("targeting") or "—" }}</td></tr>
+                    <tr><th>Дальность</th><td>{{ member.ai_profile.get("range") or "—" }}</td></tr>
+                    <tr><th>HP</th><td>{{ hp.get("cur", "—") }} / {{ hp.get("max", "—") }}; regen {{ hp.get("regen", "—") }}</td></tr>
+                    <tr><th>Выносливость</th><td>{{ stamina.get("cur", "—") }} / {{ stamina.get("max", "—") }}; regen {{ stamina.get("regen", "—") }}</td></tr>
+                    <tr><th>Assembly cost</th><td>{{ balance.get("assembly_cost") or balance.get("gear_score") or "—" }}</td></tr>
+                    <tr><th>Raw gear score</th><td>{{ balance.get("raw_gear_score") or "—" }}</td></tr>
+                    <tr><th>Делитель организации</th><td>{{ balance.get("organization_divisor") or "—" }} / {{ balance.get("organization_type") or "—" }}</td></tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="fc-widget fc-widget--wide">
+            <h2>Атрибуты</h2>
+            <table class="fc-table">
+                <tbody>
+                    {% for key, value in member.scaled_attributes|dictsort %}
+                        <tr><th>{{ key }}</th><td>{{ value }}</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <section class="fc-widget fc-widget--wide">
+            <h2>Навыки и семейные модификаторы</h2>
+            {% set skill_labels = {
+                "skill_anatomy": "Анатомия",
+                "skill_archery": "Стрельба",
+                "skill_dual_wield": "Две руки",
+                "skill_fencing": "Клинки/уколы",
+                "skill_heavy_armor": "Тяжелая броня",
+                "skill_light_armor": "Легкая броня",
+                "skill_macing": "Ударное оружие",
+                "skill_medium_armor": "Средняя броня",
+                "skill_parrying": "Парирование",
+                "skill_polearms": "Древковое оружие",
+                "skill_ranged_combat": "Дальний бой",
+                "skill_shield_mastery": "Щиты",
+                "skill_swords": "Мечи",
+                "skill_tactics": "Тактика",
+                "skill_two_handed": "Двуручное оружие"
+            } %}
+            {% set modifier_labels = {
+                "anti_dodge_chance": "Пробитие уклонения",
+                "bleed_damage_bonus": "Урон кровотечения",
+                "bleed_resistance": "Сопротивление кровотечению",
+                "control_resistance": "Сопротивление контролю",
+                "dodge_chance": "Уклонение",
+                "magical_resistance": "Магическая защита",
+                "physical_damage_bonus": "Физический урон",
+                "physical_resistance": "Физическая защита",
+                "poison_efficiency": "Эффективность яда",
+                "poison_resistance": "Сопротивление яду"
+            } %}
+            <table class="fc-table">
+                <thead>
+                    <tr>
+                        <th>Источник</th>
+                        <th>Параметр</th>
+                        <th>Итог</th>
+                        <th>Рост</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for key, value in member.scaled_skills|dictsort %}
+                        <tr>
+                            <td>Навык</td>
+                            <td>{{ skill_labels.get(key, key|replace("skill_", "")|replace("_", " ")) }}</td>
+                            <td>{{ "%.1f"|format(value * 100) }}%</td>
+                            <td>от тира монстра</td>
+                        </tr>
+                    {% else %}
+                        <tr><td>Навык</td><td>—</td><td>—</td><td>—</td></tr>
+                    {% endfor %}
+                    {% for trait in clan.selected_traits %}
+                        {% for modifier in trait.get("modifiers", []) %}
+                        {% set target = modifier.get("target") %}
+                        {% set effective = (modifier.get("base", 0)|float) + (modifier.get("per_tier", 0)|float * member.member_tier) %}
+                        {% set per_tier = modifier.get("per_tier", 0)|float %}
+                        <tr>
+                            <td>{{ trait.get("label") or trait.get("key") }}</td>
+                            <td>{{ modifier_labels.get(target, target|replace("_", " ")) }}</td>
+                            <td>
+                                {% if effective|abs <= 1 %}
+                                    {{ "%+.1f"|format(effective * 100) }}%
+                                {% else %}
+                                    {{ "%+.1f"|format(effective) }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if per_tier %}
+                                    {% if per_tier|abs <= 1 %}
+                                        {{ "%+.1f"|format(per_tier * 100) }}% за тир
+                                    {% else %}
+                                        {{ "%+.1f"|format(per_tier) }} за тир
+                                    {% endif %}
+                                {% else %}
+                                    фикс.
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    {% endif %}
+{% endblock %}

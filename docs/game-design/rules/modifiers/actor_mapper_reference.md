@@ -155,7 +155,7 @@ Responsibilities:
 Current monster raw math is built by:
 
 ```text
-src/backend/features/monsters/runtime/combat_math_model.py
+src/backend/features/monsters/instances/runtime/combat_math_model.py
 ```
 
 The monster builder starts from the character math builder, then applies:

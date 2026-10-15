@@ -65,7 +65,7 @@
     margin: 0;
     color: rgba(255, 231, 190, .82);
     font-family: var(--font-text);
-    font-size: 13px;
+    font-size: var(--text-md);
     line-height: 1.45;
 }
 
@@ -91,7 +91,7 @@
 .combat-result-reward span {
     color: var(--col-parchment-dim);
     font-family: var(--font-ui);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 800;
     letter-spacing: .22em;
     text-transform: uppercase;
@@ -121,7 +121,7 @@
     margin: 0;
     color: rgba(255, 231, 190, .88);
     font-family: var(--font-text);
-    font-size: 14px;
+    font-size: var(--text-md);
     line-height: 1.45;
 }
 
@@ -158,7 +158,7 @@
 .combat-result-field__caption strong {
     color: rgba(255, 231, 190, .92);
     font-family: var(--font-ui);
-    font-size: 11px;
+    font-size: var(--text-base);
     letter-spacing: .14em;
     text-transform: uppercase;
 }
@@ -197,7 +197,7 @@
 .combat-result-team-head strong {
     color: var(--world-accent, var(--col-accent));
     font-family: var(--font-ui);
-    font-size: 9px;
+    font-size: var(--text-xs);
     letter-spacing: .12em;
 }
 
@@ -220,7 +220,7 @@
     background: rgba(0, 0, 0, .28);
     color: rgba(255, 231, 190, .84);
     font-family: var(--font-mono);
-    font-size: 8px;
+    font-size: var(--text-2xs);
 }
 
 .combat-result-actor.is-dead {
@@ -288,14 +288,14 @@
 .combat-result-reward strong {
     color: var(--world-accent, var(--col-accent));
     font-family: var(--font-ui);
-    font-size: 9px;
+    font-size: var(--text-xs);
     letter-spacing: .08em;
 }
 
 .combat-result-reward em {
     color: var(--world-accent, var(--col-accent));
     font-family: var(--font-ui);
-    font-size: 10px;
+    font-size: var(--text-sm);
     font-style: normal;
     font-weight: 900;
     letter-spacing: .08em;
@@ -306,7 +306,7 @@
     padding: 8px;
     color: rgba(210, 180, 140, .54);
     font-family: var(--font-ui);
-    font-size: 8px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: .14em;
     text-transform: uppercase;
@@ -341,7 +341,7 @@
     overflow: hidden;
     color: var(--col-parchment-dim);
     font-family: var(--font-ui);
-    font-size: 7px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: .18em;
     line-height: 1.35;
@@ -353,7 +353,7 @@
 .combat-result-side-art figcaption strong {
     color: var(--world-accent, var(--col-accent));
     font-family: var(--font-ui);
-    font-size: 14px;
+    font-size: var(--text-md);
     letter-spacing: .08em;
     line-height: 1.25;
     text-transform: uppercase;
@@ -363,7 +363,7 @@
     margin: 0;
     color: rgba(255, 231, 190, .82);
     font-family: var(--font-text);
-    font-size: 12px;
+    font-size: var(--text-base);
     line-height: 1.45;
 }
 
@@ -388,7 +388,7 @@
 .combat-result-side-team b {
     color: var(--world-accent, var(--col-accent));
     font-family: var(--font-ui);
-    font-size: 9px;
+    font-size: var(--text-xs);
     letter-spacing: .12em;
 }
 
@@ -446,7 +446,7 @@
     overflow: hidden;
     color: color-mix(in srgb, var(--world-accent, var(--col-accent)) 82%, #fff);
     font-family: var(--font-ui);
-    font-size: 9px;
+    font-size: var(--text-xs);
     letter-spacing: .08em;
     line-height: 1.4;
     text-overflow: ellipsis;
@@ -644,7 +644,7 @@
     }
 
     .combat-result-status p {
-        font-size: 12px;
+        font-size: var(--text-base);
         line-height: 1.35;
     }
 
@@ -659,7 +659,7 @@
     }
 
     .combat-result-head p {
-        font-size: 12px;
+        font-size: var(--text-base);
         line-height: 1.35;
     }
 
@@ -732,12 +732,12 @@
     }
 
     .combat-field-title span {
-        font-size: 7px;
+        font-size: var(--text-2xs);
         line-height: 1;
     }
 
     .combat-field-title .combat-field-name {
-        font-size: 9px;
+        font-size: var(--text-xs);
         line-height: 1.1;
     }
 
@@ -779,7 +779,7 @@
     }
 
     .combat-effect b {
-        font-size: 7px;
+        font-size: var(--text-2xs);
     }
 
     .combat-effect-empty {
@@ -787,7 +787,7 @@
     }
 
     .combat-exchange-summary {
-        font-size: 13px;
+        font-size: var(--text-md);
     }
 
     .combat-exchange-wave__lines {
@@ -796,7 +796,7 @@
 
     .combat-exchange-wave__line {
         padding: 4px 6px;
-        font-size: 11px;
+        font-size: var(--text-base);
     }
 
     .combat-target-empty-card {

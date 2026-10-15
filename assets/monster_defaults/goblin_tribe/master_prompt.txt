@@ -1,0 +1,12 @@
+Create one individual SVG goblin illustration for a dark fantasy tactical RPG.
+Use the attached goblin_sneak.svg as the visual reference for the entire series.
+Preserve its angular vector shading, expressive face, oversized pointed ears,
+short wiry proportions, worn leather and moss-green / olive / brown palette.
+Change the silhouette, equipment, expression and pose to match the description.
+Make each character distinctive while clearly belonging to the same family.
+Exactly one full-body character, three-quarter view, centered on a square
+transparent canvas with generous margins. Keep ears, feet and weapons visible.
+Upper-left lighting. Strong readable silhouette at small card sizes.
+Clean editable SVG paths, solid layered shapes, restrained cel shading.
+No raster textures, blur, scenery, text, labels, borders or decorative platforms.
+Use small cyan ether accents only when explicitly requested.

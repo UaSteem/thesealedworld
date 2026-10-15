@@ -1,0 +1,121 @@
+"""One-time source migration; never reads configuration or connects to storage."""
+from pathlib import Path
+import ast
+import hashlib
+import json
+
+ROOT = Path(__file__).resolve().parents[2]
+ARCHIVE = ROOT / "archive/monster_api_generation/2026-10-14"
+records = []
+
+
+def save(path):
+    source = ROOT / path
+    target = ARCHIVE / (path + ".snapshot")
+    target.parent.mkdir(parents=True, exist_ok=True)
+    data = source.read_bytes()
+    if target.exists():
+        raise RuntimeError(f"Snapshot already exists: {target}")
+    target.write_bytes(data)
+    records.append({"source": path, "snapshot": path + ".snapshot", "sha256": hashlib.sha256(data).hexdigest()})
+    return data.decode("utf-8")
+
+
+def write(path, text):
+    (ROOT / path).write_text(text, encoding="utf-8", newline="\n")
+
+
+def remove_functions(text, predicate):
+    lines = text.splitlines(keepends=True)
+    spans = []
+    for node in ast.parse(text).body:
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)) and predicate(node.name):
+            start = min([node.lineno] + [d.lineno for d in node.decorator_list]) - 1
+            spans.append((start, node.end_lineno))
+    for start, end in reversed(spans):
+        del lines[start:end]
+    return "".join(lines)
+
+
+for path in (
+    "src/backend/features/monsters/tasks_ai.py",
+    "src/backend/features/monsters/services/content_regeneration_service.py",
+    "src/backend/features/monsters/services/visual_regeneration_service.py",
+    "src/backend/features/monsters/scripts/regenerate_images.py",
+    "src/backend/features/monsters/prompts/__init__.py",
+    "src/backend/features/monsters/prompts/router.py",
+    "tests/backend/features/monsters/test_tasks_ai.py",
+    "tests/backend/features/monsters/test_visual_regeneration_service.py",
+):
+    save(path)
+    (ROOT / path).unlink()
+
+path = "src/backend/features/generation_ai/bootstrap.py"
+text = save(path)
+text = text.replace("from src.backend.features.monsters.tasks_ai import (\n    register_generation_ai_tasks as register_monster_generation_ai_tasks,\n)\n", "")
+text = text.replace("    register_monster_generation_ai_tasks(registry, session=session)\n", "")
+write(path, text)
+
+path = "src/backend/features/monsters/runtime/generation_builder.py"
+text = save(path)
+text = text.replace("from src.backend.features.monsters.tasks_ai import build_monster_clan_flavor_task_spec\n", "")
+text = text.replace("    from src.backend.features.generation_ai import GenerationAIService\n", "")
+text = text.replace("        generation_ai: GenerationAIService | None = None,\n", "")
+text = text.replace("        self.generation_ai = generation_ai\n", "")
+text = text.replace("        await self._enqueue_ai_flavor(created)\n", "")
+start = text.index("    async def _enqueue_ai_flavor(")
+end = text.index("    ", text.index("\n\n", start) + 2)
+text = text[:start] + text[end:]
+write(path, text)
+
+for path in ("src/backend/features/monsters/events/__init__.py", "src/backend/features/rift/dependencies.py"):
+    text = save(path)
+    for line in text.splitlines(keepends=True):
+        if "from src.backend.features.generation_ai." in line or "generation_ai=generation_ai," in line or "await generation_ai.schedule_pending_task_ids()" in line:
+            text = text.replace(line, "")
+    lines = text.splitlines(keepends=True)
+    start = next(i for i, line in enumerate(lines) if "generation_ai = GenerationAIService(" in line)
+    end = next(i for i in range(start + 1, len(lines)) if lines[i].strip() == ")")
+    del lines[start:end + 1]
+    write(path, "".join(lines))
+
+path = "src/backend/core/containers/game.py"
+text = save(path)
+text = text.replace("                        generation_ai=generation_ai,\n", "")
+write(path, text)
+
+path = "src/backend/features/monsters/api/router.py"
+text = save(path)
+text = remove_functions(text, lambda name: "regenerat" in name)
+for line in text.splitlines(keepends=True):
+    if any(token in line for token in ("MonsterAIRegenerationResponseDTO", "MonsterImageRegeneration", "content_regeneration_service import", "visual_regeneration_service import")):
+        text = text.replace(line, "")
+text = text.replace("Query, Request", "Query")
+write(path, text)
+
+path = "tests/backend/features/monsters/test_generated_api.py"
+text = save(path)
+text = remove_functions(text, lambda name: "regenerat" in name)
+text = text.replace("    get_monster_content_regeneration_service,\n", "").replace("    get_monster_visual_regeneration_service,\n", "")
+text += '''\n\n@pytest.mark.unit\n@pytest.mark.parametrize("path", [\n    "/api/admin/monsters/generated/clans/example/regenerate-flavor",\n    "/api/admin/monsters/generated/clans/example/regenerate-member-images",\n    "/api/admin/monsters/generated/clans/regenerate-member-images",\n    "/api/admin/monsters/generated/members/example/regenerate-image",\n])\ndef test_monster_generation_routes_are_removed(client, path):\n    assert client.post(path).status_code == 404\n'''
+write(path, text)
+
+path = "src/backend/features/generation_ai/services.py"
+text = save(path)
+text = text.replace('GENERATION_AI_ARQ_TASK = "generation_ai_process_task"', '''GENERATION_AI_ARQ_TASK = "generation_ai_process_task"
+# Exact retired types only: other generators retain their existing retry policy.
+RETIRED_MONSTER_TASK_TYPES = frozenset({"monster.clan_flavor", "monster.clan_image", "monster.member_image"})''')
+text = text.replace("    async def _execute_claimed_task(self, task: Any) -> AIGenerationTaskResultDTO | None:\n", '''    async def _execute_claimed_task(self, task: Any) -> AIGenerationTaskResultDTO | None:
+        if task.task_type in RETIRED_MONSTER_TASK_TYPES:
+            await self.repository.mark_failed(task.id, {
+                "type": "RetiredTaskType",
+                "message": "Monster API generation has been archived; use prepared catalog content.",
+            })
+            logger.bind(task_id=task.id, task_type=task.task_type).info("GenerationAiRetiredTaskSkipped")
+            return None
+''')
+write(path, text)
+
+ARCHIVE.mkdir(parents=True, exist_ok=True)
+(ARCHIVE / "backend_manifest.json").write_text(json.dumps(records, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+print(f"Archived {len(records)} backend/source snapshots")

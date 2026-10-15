@@ -1,8 +1,6 @@
 # Testing Strategy
 
-This project follows the testing methodology recorded in MCP memory:
-`MASTER_INDEX -> SEC:Methodology`, including the nodes `Подход к тестированию Python-библиотек`
-and `Конфигурация coverage для Python-проекта`.
+This document describes the project testing approach. Use current code, tests, and `pyproject.toml` as the source for executable checks and thresholds.
 
 ## Test Pyramid
 
@@ -16,16 +14,16 @@ During active migration, new code should start with clean unit tests. Integratio
 
 ## Coverage Targets
 
-Target project coverage is 90% or higher, with an interim pre-alpha threshold set appropriately in `pyproject.toml` (e.g., `fail_under = 74`).
+The long-term coverage target is 90% or higher. The enforceable threshold is the current `fail_under` value in `pyproject.toml` (74 at this revision).
 
-### AI-Agent Development Constraints (The "AI Squad" Workflow)
+### Development and Coverage Guidance
 
 When developing with AI agents, strict rules apply to prevent technical debt:
 
-1. **Patch Coverage Strictness:** Any *new* code written by an agent must have 100% patch coverage. The agent must write tests for its own logic before declaring the task complete. Do not break existing tests, and do not lower the global coverage.
-2. **The Boy Scout Rule (Coverage Expansion):** If an agent modifies an existing feature or module (e.g., an item service) that lacks tests, the agent MUST write tests to cover the surrounding uncovered logic in the module they just touched. This organic expansion is how legacy debt is paid down.
-3. **Tech Debt Quotas (Refactoring Sessions):** For heavy legacy modules (e.g., `expedition/service.py`, `engine/resolver.py`), do not write "dummy" tests just for lines. Instead, allocate dedicated AI sessions purely to refactor and test specific edge cases or behaviors within those files.
-4. **Critical Boundaries:** Modules touching `auth/session`, `migrations`, `config parsing`, and critical state transitions must aim for strict 90%+ local coverage.
+1. **Changed behavior:** Add tests for observable behavior and meaningful edge cases introduced or modified by the task. For a tested refactor or contract migration, establish the new contract with a failing test before production edits.
+2. **Coverage scope:** Keep the configured project threshold; use patch and local coverage to find gaps that matter to the changed behavior. Do not require an arbitrary percentage or unrelated surrounding coverage expansion for every edit.
+3. **Legacy code:** Test specific behavior and edge cases; avoid dummy tests written only to increase line counts.
+4. **Critical boundaries:** Give auth/session, migrations, configuration parsing, and state transitions stronger focused tests and integration coverage where behavior crosses a real boundary.
 
 Coverage configuration lives in `pyproject.toml` under `[tool.coverage.report]`. Do not put `--cov-fail-under` in pytest `addopts`.
 

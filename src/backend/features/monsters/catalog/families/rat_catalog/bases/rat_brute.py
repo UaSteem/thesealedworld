@@ -1,0 +1,43 @@
+from src.backend.features.monsters.catalog.nested_contracts import (
+    BaseLoadoutDTO,
+    BaseStatsDTO,
+    MemberBaseDTO,
+    TierAvailabilityDTO,
+)
+
+RAT_BRUTE = MemberBaseDTO(
+    id="rat_brute",
+    role="boss",
+    stats=BaseStatsDTO(
+        strength=21,
+        agility=19,
+        endurance=22,
+        intellect=15,
+        memory=14,
+        mental=20,
+        perception=18,
+        projection=17,
+        prediction=16,
+    ),
+    loadout=BaseLoadoutDTO(
+        main_hand=None,
+        off_hand=None,
+        two_hand="rat_crushing_bite",
+        head_armor=None,
+        chest_armor="rat_heavy_hide",
+        arms_armor=None,
+        legs_armor=None,
+        feetwear=None,
+        chest_garment=None,
+        legs_garment=None,
+        outer_garment=None,
+        gloves_garment=None,
+        amulet="rat_plague_gland",
+        ring_1=None,
+        ring_2=None,
+        belt_accessory=None,
+        quiver=None,
+    ),
+    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    spawn_weight=600,
+)

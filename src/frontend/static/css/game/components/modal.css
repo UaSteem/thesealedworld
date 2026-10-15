@@ -75,6 +75,6 @@
 
 @media (max-width: 480px) {
     .game-unavailable-modal__body h2 {
-        font-size: 18px;
+        font-size: var(--text-lg);
     }
 }

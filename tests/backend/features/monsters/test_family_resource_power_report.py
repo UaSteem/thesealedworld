@@ -1,5 +1,4 @@
 import pytest
-
 from tools.monsters import family_resource_power_report
 
 

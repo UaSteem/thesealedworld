@@ -1,0 +1,63 @@
+## Known Bugs (Not Fixed Here — Track Separately)
+
+| # | Location | Bug | Fix |
+|---|---|---|---|
+| 1 | Item damage contract | Item branch exists in resolver, but item abilities still need end-to-end gameplay tuning | Add item-use balance tests and catalog examples |
+
+---
+
+## Common Mistakes Agents Make
+
+**DO NOT duplicate resolver math in mappers.**
+Wrong: computing `base = 0.60 + 0.40 * skill - 0.10` and writing it to `main_hand_accuracy.base`.
+Correct: keep hand accuracy as modifier-only and let resolver combine built-in base, skill bonus, and sources.
+
+**DO NOT pre-apply parry/block skill bonuses in mappers.**
+Parry and shield block base chances come from equipment. `CombatResolver`
+applies `skill_parrying` to parry and `skill_shield_mastery` to shield block
+during the exchange.
+
+**DO NOT write attributes into modifiers.**
+Strength, Agility, and Endurance go into `raw.attributes`. WaterfallCalculator
+derives `physical_strength_power`, `physical_agility_power`, and
+`physical_endurance_power`; `BasePowerAssembler` uses Strength/Agility for
+ordinary weapon damage and may use Endurance only for style-specific mechanics
+such as shield guard scaling. Mappers put strength directly into
+`main_hand_damage_base` only for unarmed.
+
+**DO NOT assume skills are 0..100.**
+`actor.skills["skill_swords"] = 0.75` means 75% mastery. Use directly: `1.0 + skill_val`.
+
+**DO NOT read `raw.modifiers` in resolver.**
+Resolver input is `ActorStats`, not `ActorSnapshot`. If you need a modifier in
+resolver, it must flow through: mapper → waterfall → ActorStats.mods.
+
+**DO NOT write temp state into resolver.**
+`_apply_mutation` writes to `ctx.flags` / `ctx.mods` (pipeline context), not to
+`actor.raw.modifiers`. Those go through EffectService with rollback support.
+
+---
+
+## Verification Commands
+
+Run before declaring combat contract work complete:
+
+```powershell
+# Unit tests for combat runtime
+python -m pytest tests/backend/features/combat/ -v
+
+# Character snapshot / math model
+python -m pytest tests/backend/features/character/runtime/ -v
+
+# Monster combat profile
+python -m pytest tests/backend/features/monsters/runtime/ -v
+
+# Full backend fast check
+python -m pytest tests/backend/ -x -q
+```
+
+Key test files:
+- [`tests/backend/features/combat/test_runtime_processors.py`](../../../../tests/backend/features/combat/test_runtime_processors.py) — executor, damage, death, feints
+- [`tests/backend/features/character/runtime/test_combat_math_model.py`](../../../../tests/backend/features/character/runtime/test_combat_math_model.py) — modifier keys, unarmed, shield mastery
+- [`tests/backend/features/character/runtime/test_attribute_modifiers.py`](../../../../tests/backend/features/character/runtime/test_attribute_modifiers.py) — waterfall from attributes
+- [`tests/backend/features/monsters/runtime/test_registry_and_combat_profile.py`](../../../../tests/backend/features/monsters/runtime/test_registry_and_combat_profile.py) — humanoid loadout resolution

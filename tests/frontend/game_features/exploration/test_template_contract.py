@@ -38,10 +38,9 @@ def test_exploration_center_template_has_navigation_and_encounter_surfaces():
     assert "mobile-scene parchment" in template
     assert "mobile-scene-services" in template
     assert "location_view.city_map" in template
-    assert "city_map_layout = city_map and not active_encounter" in template
+    assert "city_map_layout = city_map is not none" in template
     assert "has-city-map-layout" in template
     assert "has-city-map-scene" in template
-    assert "mobile-scene-copy mobile-scene-copy--map" in template
     assert "is-mobile-row-trim" in template
     assert "exploration-city-map" in template
     assert "exploration-city-map-tile" in template
@@ -124,12 +123,13 @@ def test_exploration_encounter_uses_visual_generated_image_when_image_field_is_e
         ],
         options=[EncounterOptionDTO(id="attack", label="Attack", style="danger")],
     )
+    encounter.grid = {"services": []}
 
     html = template.render(
         payload_type="exploration_encounter",
         exploration=encounter,
         encounter=encounter,
-        location_view={},
+        location_view={"grid": True},
         city_map=None,
         symbiote_name="SYSTEM",
         char_id=7,
@@ -300,10 +300,10 @@ def test_exploration_uses_shared_base_css_contracts():
     assert ".mobile-scene.parchment.has-city-map-scene" in scene_css
     assert ".mobile-scene-copy--map" in scene_css
     assert ".exploration-city-map" in scene_css
-    assert "width: min(100cqw, calc(100cqh - var(--city-map-copy-reserve, 132px)))" in scene_css
-    assert "height: min(100cqw, calc(100cqh - var(--city-map-copy-reserve, 132px)))" in scene_css
-    assert "grid-template-columns: repeat(var(--city-map-columns, var(--city-map-size, 5)), minmax(0, 1fr))" in scene_css
-    assert "grid-template-rows: repeat(var(--city-map-rows, var(--city-map-size, 5)), minmax(0, 1fr))" in scene_css
+    assert "width: min(100cqw, calc(100cqh * 7 / 5))" in scene_css
+    assert "height: auto" in scene_css
+    assert "grid-template-columns: repeat(var(--city-map-columns, 7), minmax(0, 1fr))" in scene_css
+    assert "grid-template-rows: repeat(var(--city-map-rows, 5), minmax(0, 1fr))" in scene_css
     assert "background-size: 100% 100%" in scene_css
     assert ".exploration-city-map-marker" in scene_css
     assert ".exploration-city-map-service-marker" in scene_css
@@ -341,9 +341,9 @@ def test_exploration_uses_shared_base_css_contracts():
     assert ".exploration-action-panel" in screen_css
     assert ".exploration-screen-content.has-city-map-layout" in screen_css
     assert "container-type: size" in screen_css
-    assert "--city-map-copy-reserve" in screen_css
     assert "--game-action-padding" in screen_css
-    assert "grid-template-rows: auto auto" in screen_css
+    assert ".has-city-map-screen > .exploration-screen-content" in screen_css
+    assert ".has-city-map-screen > .exploration-action-panel" in screen_css
     assert "grid-template-columns: minmax(220px, 0.4fr) minmax(0, 0.6fr)" in responsive_css
     assert "grid-template-rows: auto" in responsive_css
     assert ".exploration-main-dock .mobile-services" in screen_css
@@ -593,7 +593,7 @@ def test_game_shell_layout_uses_manifest_entrypoint():
     assert "--game-column-gutter-top: 10px" in base
     assert "#game-left-content" in columns
     assert "#game-right-content" in columns
-    assert "var(--game-column-gutter-top" in columns
+    assert "padding: 6px 6px 36px" in columns
     assert ".cs-content" in legacy_screen
     assert ".status-dot.pulse" in utilities
 
@@ -660,7 +660,7 @@ def test_status_main_uses_shared_compact_status_dock():
     assert "status-widget-bar" in vitals
     assert "dock-nav-button--close" in status_nav
     assert not any(path.exists() for path in obsolete_left_sidebars)
-    assert ".sec {\n    font-size: 8px;\n    letter-spacing: .18em;" in status_shell_css
+    assert ".sec {\n    font-size: var(--text-2xs);\n    letter-spacing: .18em;" in status_shell_css
     assert not status_avatar_css.lstrip().startswith("letter-spacing:")
 
 

@@ -1,4 +1,4 @@
-.tag { display: inline-block; padding: 2px 7px; font-size: 8px; letter-spacing: .12em; text-transform: uppercase; border-radius: 2px; }
+.tag { display: inline-block; padding: 2px 7px; font-size: var(--text-2xs); letter-spacing: .12em; text-transform: uppercase; border-radius: 2px; }
 .tag.burn   { background: rgba(255,100,0,.07); border: 1px solid rgba(255,100,0,.25); color: rgba(255,130,50,.85); }
 .tag.regen  { background: rgba(68,221,136,.06); border: 1px solid rgba(68,221,136,.20); color: rgba(68,221,136,.80); }
 .tag.sys    { background: rgba(255,170,0,.05); border: 1px solid rgba(255,170,0,.14); color: rgba(255,170,0,.60); }
@@ -43,12 +43,12 @@
     }
 
     .status-sidebar-surface .attribute-card-value {
-        font-size: 14px;
+        font-size: var(--text-md);
     }
 
     .status-sidebar-surface .av-corner {
         padding: 2px 5px;
-        font-size: 7px;
+        font-size: var(--text-2xs);
     }
 }
 
@@ -64,6 +64,6 @@
     .status-sidebar-surface .attribute-grid-title,
     .status-sidebar-surface .attribute-card-label,
     .status-sidebar-surface .skill-group-title {
-        font-size: 7px;
+        font-size: var(--text-2xs);
     }
 }

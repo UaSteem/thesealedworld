@@ -7,7 +7,7 @@
     }
 
     .game-footer {
-        font-size: 7px;
+        font-size: var(--text-2xs);
     }
 
     .game-account-button {

@@ -22,7 +22,7 @@ Alloy уже работает на сервере (systemd), отправляе�
 4. Alloy config update на сервере
 5. Dev Grafana + Prometheus стек
 6. AI sweep task prompt — задание для прохода по кодовой базе
-7. Agent skill — `turnbasedmmorpg-logging-quality`
+7. Agent skill — `turnbasedmmorpg-quality`
 
 ---
 
@@ -382,14 +382,14 @@ docker compose -f docker-compose.yml -f docker-compose.observability.yml up
 
 ## Phase 8: Agent Skill
 
-**Create:** `docs/agent-skills/turnbasedmmorpg-logging-quality/SKILL.md`
+**Create:** `.agents/skills/turnbasedmmorpg-quality/references/logging.md`
 
 Skill для enforcement правил логирования на новый и изменяемый код:
 
 - Trigger: когда review или пишется код с logger calls, или добавляется новый feature
 - Checks: bind vs f-string, PascalCase events, correct log level, no PII, @logged_task on workers, correlation_id in event handlers
 - References: `docs/logging-rules.md`
-- Interaction: runs before `turnbasedmmorpg-quality-gate`
+- Interaction: runs before `turnbasedmmorpg-quality`
 
 ---
 
@@ -463,4 +463,4 @@ Phase 1 + 8 можно параллельно. Phase 3 + 4 можно парал
 | `deploy/docker-compose.observability.yml` | NEW — dev Grafana + Prometheus |
 | `docs/logging-rules.md` | NEW — logging rules document |
 | `docs/planning/tasks/logging-sweep-task.md` | NEW — AI sweep task prompt |
-| `docs/agent-skills/turnbasedmmorpg-logging-quality/SKILL.md` | NEW — agent skill |
+| `.agents/skills/turnbasedmmorpg-quality/references/logging.md` | NEW — agent skill |

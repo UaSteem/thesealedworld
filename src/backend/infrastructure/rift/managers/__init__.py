@@ -1,5 +1,6 @@
 """Infrastructure managers for rift runtime storage."""
 
+from src.backend.infrastructure.rift.managers.hex_world import HexRiftWorldNotFoundError, HexRiftWorldStore
 from src.backend.infrastructure.rift.managers.instance import RiftInstanceNotFoundError, RiftInstanceStore
 from src.backend.infrastructure.rift.managers.portal import RiftPortalStore
 from src.backend.infrastructure.rift.managers.presence import RiftPresenceStore
@@ -9,6 +10,8 @@ from src.backend.infrastructure.rift.managers.session import RiftRunSessionNotFo
 __all__ = [
     "RiftInstanceNotFoundError",
     "RiftInstanceStore",
+    "HexRiftWorldNotFoundError",
+    "HexRiftWorldStore",
     "RiftPortalStore",
     "RiftPresenceStore",
     "RiftRestoreLock",

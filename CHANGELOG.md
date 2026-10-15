@@ -14,6 +14,11 @@ Full layer changelogs live in:
 
 ## [Unreleased]
 
+- Rift play now includes the first hex-map runtime slice, generated void-temple
+  tiles, and browser scene wiring for the test rift surface.
+- Development and container build tooling were refreshed for the current Python
+  and static-asset packaging flow.
+
 ## [v0.5.1] - Alpha 0.5.1
 
 ### Fixed

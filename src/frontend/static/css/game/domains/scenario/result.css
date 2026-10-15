@@ -49,14 +49,14 @@
 
 .scenario-reward-grid b {
     color: rgba(210, 180, 140, 0.48);
-    font-size: 6px;
+    font-size: var(--text-2xs);
     font-weight: 900;
     letter-spacing: 0.12em;
 }
 
 .scenario-reward-grid strong {
     color: var(--scenario-accent);
-    font-size: 10px;
+    font-size: var(--text-sm);
     font-weight: 900;
     letter-spacing: 0.08em;
 }
@@ -141,12 +141,12 @@
 @media (max-width: 1279px) {
     .scenario-copy h2,
     .scenario-result-card h2 {
-        font-size: 24px;
+        font-size: var(--text-2xl);
     }
 
     .scenario-text,
     .scenario-result-card p {
-        font-size: 12px;
+        font-size: var(--text-base);
     }
 
     .scenario-choice-list {
@@ -179,7 +179,7 @@
 
     .scenario-copy h2,
     .scenario-result-card h2 {
-        font-size: 19px;
+        font-size: var(--text-xl);
     }
 
     .scenario-title {
@@ -189,12 +189,12 @@
     .scenario-title-coords {
         gap: 3px;
         padding: 2px 4px;
-        font-size: 8px;
+        font-size: var(--text-2xs);
     }
 
     .scenario-text,
     .scenario-result-card p {
-        font-size: 10px;
+        font-size: var(--text-sm);
     }
 
     .scenario-choice-list,
@@ -219,11 +219,11 @@
 
     .scenario-statebar strong,
     .scenario-statebar span {
-        font-size: 7px;
+        font-size: var(--text-2xs);
     }
 
     .scenario-title-coords {
-        font-size: 7px;
+        font-size: var(--text-2xs);
     }
 
     .scenario-subject {
@@ -255,11 +255,11 @@
     }
 
     .scenario-choice-copy strong {
-        font-size: 8px;
+        font-size: var(--text-2xs);
     }
 
     .scenario-choice-copy small {
-        font-size: 6px;
+        font-size: var(--text-2xs);
     }
 }
 

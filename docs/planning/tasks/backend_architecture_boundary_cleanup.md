@@ -3,8 +3,8 @@
 ## Status
 
 Queued technical-debt task. This document records existing violations of the
-backend architecture rules from `docs/agent-skills/turnbasedmmorpg-backend` and
-`docs/agent-skills/turnbasedmmorpg-redis-streams`.
+backend architecture rules from `.agents/skills/turnbasedmmorpg-backend` and
+`.agents/skills/turnbasedmmorpg-backend`.
 
 ## Goal
 
