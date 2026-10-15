@@ -22,6 +22,8 @@ from src.backend.infrastructure.monsters.managers import MonsterGroupCacheManage
 if TYPE_CHECKING:
     from fastapi import FastAPI
 
+from src.backend.features.monsters.runtime_retirement import LegacyMonsterRuntimeRetired, require_legacy_monster_runtime
+
 router = StreamRouter()
 _app: FastAPI | None = None
 
@@ -59,6 +61,7 @@ async def on_group_prepare_requested(payload: dict[str, Any]) -> None:
         return
 
     try:
+        require_legacy_monster_runtime()
         loc_id = str(payload["loc_id"])
         budget = float(payload["budget"])
         preferred_family_id = _optional_str(payload.get("preferred_family_id"))
@@ -96,8 +99,15 @@ async def on_group_prepare_requested(payload: dict[str, Any]) -> None:
         ack: dict[str, Any] = {"status": "ok", "payload": result.model_dump(mode="json")}
         await _app.state.events.publish(MonsterEvents.GROUP_PREPARED, ack, correlation_id=cid)
     except Exception as exc:  # noqa: BLE001
-        logger.exception("MonsterGroupPrepareFailed")
-        ack = {"status": "error", "error": f"{exc.__class__.__name__}: {exc}"}
+        if isinstance(exc, LegacyMonsterRuntimeRetired):
+            logger.warning("LegacyMonsterGroupPrepareRetired")
+        else:
+            logger.exception("MonsterGroupPrepareFailed")
+        ack = {
+            "status": "error",
+            "error": f"{exc.__class__.__name__}: {exc}",
+            "code": getattr(exc, "code", "monster_group_prepare_failed"),
+        }
         try:
             await _app.state.events.publish(MonsterEvents.GROUP_PREPARE_FAILED, {"request": payload, **ack})
         except Exception:

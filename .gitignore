@@ -205,3 +205,8 @@ pytest_output.txt
 /.codex_tmp/
 /output/
 *~
+
+# Local retirement receipts and temporary test directories
+/archive/data_retirement/cleanup-receipts/
+/.pytest_tmp_retire/
+/.pytest_tmp_retire_final/

@@ -17,6 +17,7 @@ from src.backend.features.monsters.dto.generation import (
     MonsterGenerationContext,
     MonsterHabitatDTO,
 )
+from src.backend.features.monsters.runtime_retirement import require_legacy_monster_runtime
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
@@ -53,6 +54,7 @@ class HabitatClanPoolMaterializationService:
         self.factory = factory
 
     async def ensure_scope_pool(self, config: HabitatScopeConfig) -> HabitatClanPoolMaterializationResult:
+        require_legacy_monster_runtime()
         clans = 0
         entries = 0
         blocked = set(config.clan_pool_policy.blocked)
@@ -130,6 +132,7 @@ class HabitatClanPoolMaterializationService:
         return HabitatClanPoolMaterializationResult(scopes=1, pool_entries=entries, clans=clans)
 
     async def ensure_scope_pools(self, configs: Iterable[HabitatScopeConfig]) -> HabitatClanPoolMaterializationResult:
+        require_legacy_monster_runtime()
         scopes = 0
         entries = 0
         clans = 0

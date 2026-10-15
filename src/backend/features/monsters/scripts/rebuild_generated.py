@@ -7,6 +7,7 @@ import json
 from src.backend.core.database import get_manual_session_context
 from src.backend.features.monsters.catalog.services.generated_rebuild_service import MonsterGeneratedRebuildService
 from src.backend.features.monsters.inspection.dto.generated_view import MonsterDataRebuildRequestDTO
+from src.backend.features.monsters.runtime_retirement import require_legacy_monster_runtime
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -25,6 +26,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
 
 
 async def async_main(args: argparse.Namespace | None = None) -> None:
+    require_legacy_monster_runtime()
     options = args or parse_args()
     request = MonsterDataRebuildRequestDTO(
         family_id=options.family_id,
@@ -40,6 +42,7 @@ async def async_main(args: argparse.Namespace | None = None) -> None:
 
 
 def main() -> None:
+    require_legacy_monster_runtime()
     asyncio.run(async_main())
 
 

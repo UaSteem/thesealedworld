@@ -12,7 +12,9 @@ from src.backend.features.monsters.catalog.contracts import (
     MonsterRole,  # noqa: TC001 - FastAPI resolves query annotations
 )
 from src.backend.features.monsters.catalog.repositories.monster_generation_repository import MonsterGenerationRepository
-from src.backend.features.monsters.catalog.services.generated_rebuild_service import MonsterGeneratedRebuildService
+from src.backend.features.monsters.catalog.services.generated_rebuild_service import (
+    MonsterGeneratedRebuildService,  # noqa: TC001 - FastAPI inspects annotations
+)
 from src.backend.features.monsters.inspection.dto.catalog_view import (
     CatalogMonstersResponseDTO,
     CatalogMonstersSummaryDTO,
@@ -77,8 +79,14 @@ def get_generated_monster_view_service(db_session=Depends(get_db)) -> GeneratedM
     return GeneratedMonsterViewService(MonsterGenerationRepository(db_session))
 
 
-def get_monster_generated_rebuild_service(db_session=Depends(get_db)) -> MonsterGeneratedRebuildService:
-    return MonsterGeneratedRebuildService(session=db_session)
+def get_monster_generated_rebuild_service() -> MonsterGeneratedRebuildService:
+    raise HTTPException(
+        status_code=410,
+        detail={
+            "code": "legacy_monster_runtime_retired",
+            "message": "Persisted monster rebuild is retired; use the Python catalog.",
+        },
+    )
 
 
 @router.get("/generated", response_model=GeneratedMonstersResponseDTO)

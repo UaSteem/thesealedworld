@@ -1,0 +1,538 @@
+services:
+
+  # ── Infrastructure ────────────────────────────────────────────────────────
+
+  postgres:
+    image: postgres:17-alpine
+    container_name: tbmmorpg-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: tbmmorpg
+      POSTGRES_PASSWORD: tbmmorpg_dev  # pragma: allowlist secret
+      POSTGRES_DB: tbmmorpg_site
+    ports:
+      - "5432:5432"
+    volumes:
+      - tbmmorpg-postgres-data:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tbmmorpg -d tbmmorpg_site"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      - tbmmorpg-network
+
+  redis:
+    image: redis/redis-stack-server:7.2.0-v14
+    container_name: tbmmorpg-redis
+    restart: unless-stopped
+    environment:
+      REDIS_PASSWORD: ${REDIS_PASSWORD:-dev_redis_password}
+    command: ["redis-stack-server", "--requirepass", "${REDIS_PASSWORD:-dev_redis_password}"]
+    ports:
+      - "6380:6379"
+    volumes:
+      - tbmmorpg-redis-data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli -a \"$${REDIS_PASSWORD}\" ping | grep PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      - tbmmorpg-network
+
+  mongo:
+    image: mongo:8
+    container_name: tbmmorpg-mongo
+    restart: unless-stopped
+    command: ["mongod", "--quiet"]
+    ports:
+      - "27017:27017"
+    volumes:
+      - tbmmorpg-mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+    networks:
+      - tbmmorpg-network
+
+  mailpit:
+    image: axllent/mailpit:v1.26
+    container_name: tbmmorpg-mailpit
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - tbmmorpg-network
+
+  # ── Application ───────────────────────────────────────────────────────────
+
+  backend-migrate:
+    build:
+      context: ..
+      dockerfile: deploy/backend/Dockerfile
+    container_name: tbmmorpg-backend-migrate
+    restart: "no"
+    env_file: ../.env
+    environment:
+      SITE_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      GAME_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DATABASE: tbmmorpg_analytics
+    volumes:
+      - ../src/backend:/app/src/backend
+      - ../src/shared:/app/src/shared
+    entrypoint:
+      - sh
+      - -c
+      - python src/backend/manage.py upgrade && python src/backend/manage.py ensure-mongo-indexes && python src/backend/manage.py rebuild-monsters --apply
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - tbmmorpg-network
+
+  backend:
+    build:
+      context: ..
+      dockerfile: deploy/backend/Dockerfile
+    container_name: tbmmorpg-backend
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      SITE_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      GAME_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DATABASE: tbmmorpg_analytics
+    ports:
+      - "8001:8001"
+    volumes:
+      - ../src/backend:/app/src/backend
+      - ../src/shared:/app/src/shared
+      - ../var/generated-assets:/app/var/generated-assets
+    command: >
+      uvicorn src.backend.app:app
+      --host 0.0.0.0
+      --port 8001
+      --reload
+      --log-level info
+    depends_on:
+      backend-migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - tbmmorpg-network
+
+  site-migrate:
+    build:
+      context: ..
+      dockerfile: deploy/frontend/Dockerfile
+    container_name: tbmmorpg-site-migrate
+    restart: "no"
+    env_file: ../.env
+    environment:
+      BACKEND_BASE_URL: http://backend:8001
+      SITE_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      GAME_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      PYTHONPATH: /app:/app/src
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      SMTP_START_TLS: "False"
+      SMTP_USER: ""
+      SMTP_PASSWORD: ""
+      EMAIL_FROM: noreply@tbmmorpg.local
+      EMAIL_ADMIN: admin@tbmmorpg.local
+    volumes:
+      - ../src/frontend:/app/src/frontend
+      - ../src/fastapi_cabinet:/app/src/fastapi_cabinet
+      - ../src/shared:/app/src/shared
+    entrypoint: ["alembic", "-c", "src/frontend/alembic.ini", "upgrade", "head"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - tbmmorpg-network
+
+  frontend:
+    build:
+      context: ..
+      dockerfile: deploy/frontend/Dockerfile
+    container_name: tbmmorpg-frontend-site
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      FRONTEND_SURFACE: site
+      BACKEND_BASE_URL: http://backend:8001
+      SITE_BASE_URL: http://thesealed.localhost:8080
+      PLAY_PUBLIC_BASE_URL: http://play.thesealed.localhost:8080
+      PLAY_INTERNAL_BASE_URL: http://frontend-play:8000
+      AUTH_COOKIE_DOMAIN: .thesealed.localhost
+      SITE_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      GAME_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      PYTHONPATH: /app:/app/src
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      SMTP_START_TLS: "False"
+      SMTP_USER: ""
+      SMTP_PASSWORD: ""
+      EMAIL_FROM: noreply@tbmmorpg.local
+      EMAIL_ADMIN: admin@tbmmorpg.local
+    ports:
+      - "8000:8000"
+    volumes:
+      - ../src/frontend:/app/src/frontend
+      - ../src/fastapi_cabinet:/app/src/fastapi_cabinet
+      - ../src/shared:/app/src/shared
+      - ../var/generated-assets:/app/var/generated-assets
+    command: >
+      uvicorn src.frontend.app:app
+      --host 0.0.0.0
+      --port 8000
+      --reload
+      --log-level info
+    depends_on:
+      site-migrate:
+        condition: service_completed_successfully
+      mailpit:
+        condition: service_started
+    networks:
+      - tbmmorpg-network
+
+  frontend-play:
+    build:
+      context: ..
+      dockerfile: deploy/frontend/Dockerfile
+    container_name: tbmmorpg-frontend-play
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      FRONTEND_SURFACE: play
+      BACKEND_BASE_URL: http://backend:8001
+      SITE_BASE_URL: http://thesealed.localhost:8080
+      # WS handshake MUST use the same origin as the page so the browser
+      # sends `tbmmorpg_game_access_token` (host-only cookie) on the upgrade.
+      # nginx routes /ws/realtime on play.thesealed.localhost to chat:8002.
+      REALTIME_WS_URL: ws://play.thesealed.localhost:8080
+      AUTH_COOKIE_DOMAIN: .thesealed.localhost
+      SITE_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      GAME_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      PYTHONPATH: /app:/app/src
+      SMTP_HOST: mailpit
+      SMTP_PORT: 1025
+      SMTP_START_TLS: "False"
+      SMTP_USER: ""
+      SMTP_PASSWORD: ""
+      EMAIL_FROM: noreply@tbmmorpg.local
+      EMAIL_ADMIN: admin@tbmmorpg.local
+    ports:
+      - "8003:8000"
+    volumes:
+      - ../src/frontend:/app/src/frontend
+      - ../src/fastapi_cabinet:/app/src/fastapi_cabinet
+      - ../src/shared:/app/src/shared
+      - ../var/generated-assets:/app/var/generated-assets
+    command: >
+      uvicorn src.frontend.app:app
+      --host 0.0.0.0
+      --port 8000
+      --reload
+      --log-level info
+    depends_on:
+      site-migrate:
+        condition: service_completed_successfully
+      backend:
+        condition: service_started
+      mailpit:
+        condition: service_started
+    networks:
+      - tbmmorpg-network
+
+  # Local-only analytical cabinet. NOT included in prod compose files
+  # (compose.site.yml / compose.game.yml / compose.infra.yml). The prod
+  # Dockerfiles use whitelisted `COPY src/<dir>` and never include src/studio,
+  # so even if this service were accidentally added to prod composition the
+  # image would lack the studio code.
+  studio:
+    build:
+      context: ..
+      dockerfile: deploy/studio/Dockerfile
+    container_name: tbmmorpg-studio
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      # LOCAL source — inside docker network, reach services by container name.
+      LOCAL_PG_DSN: postgresql://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      LOCAL_REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      LOCAL_API_BASE: http://backend:8001
+      # PROD source via host SSH tunnel — Docker Desktop on Windows/macOS
+      # exposes the host's loopback at host.docker.internal.
+      PROD_PG_DSN: postgresql://studio_ro@host.docker.internal:15432/tbmmorpg_game  # pragma: allowlist secret
+      PROD_REDIS_URL: redis://host.docker.internal:16379/0
+      PROD_API_BASE: http://host.docker.internal:18001
+      STUDIO_SOURCE: ${STUDIO_SOURCE:-local}
+      PYTHONPATH: /app:/app/src
+      DEBUG: "True"
+    ports:
+      - "9100:9100"
+    volumes:
+      - ../src/studio:/app/src/studio
+      - ../src/frontend:/app/src/frontend
+      - ../src/fastapi_cabinet:/app/src/fastapi_cabinet
+      - ../src/shared:/app/src/shared
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    command: >
+      uvicorn src.studio.app:app
+      --host 0.0.0.0
+      --port 9100
+      --reload
+      --log-level info
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - tbmmorpg-network
+
+  chat:
+    build:
+      context: ..
+      dockerfile: deploy/chat/Dockerfile
+    container_name: tbmmorpg-chat
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      SITE_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      GAME_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DATABASE: tbmmorpg_analytics
+      STREAM_CONSUMER_GROUP: chat
+      WORKER_NAME: chat_worker_1
+    ports:
+      - "8002:8002"
+    volumes:
+      - ../src/backend:/app/src/backend
+      - ../src/shared:/app/src/shared
+    command: >
+      uvicorn src.backend.chat.app:app
+      --host 0.0.0.0
+      --port 8002
+      --log-level info
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - tbmmorpg-network
+
+  chat-archive-worker:
+    build:
+      context: ..
+      dockerfile: deploy/worker/Dockerfile
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      SITE_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      GAME_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DATABASE: tbmmorpg_analytics
+    volumes:
+      - ../src/backend:/app/src/backend
+      - ../src/shared:/app/src/shared
+    command: >
+      arq src.backend.chat.workers.archive.ChatArchiveWorkerSettings
+    depends_on:
+      backend-migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - tbmmorpg-network
+
+  combat-worker:
+    build:
+      context: ..
+      dockerfile: deploy/worker/Dockerfile
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      SITE_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      GAME_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DATABASE: tbmmorpg_analytics
+    volumes:
+      - ../src/backend:/app/src/backend
+      - ../src/shared:/app/src/shared
+    command: >
+      arq src.backend.features.combat.workers.arq.CombatArqSettings
+    depends_on:
+      backend-migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - tbmmorpg-network
+
+  combat-ai-simulation-worker:
+    build:
+      context: ..
+      dockerfile: deploy/worker/Dockerfile
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      SITE_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      GAME_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DATABASE: tbmmorpg_analytics
+    volumes:
+      - ../src/backend:/app/src/backend
+      - ../src/shared:/app/src/shared
+    command: >
+      arq src.backend.features.combat.workers.ai_simulation_arq.CombatAiSimulationArqSettings
+    depends_on:
+      backend-migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - tbmmorpg-network
+
+  system-worker:
+    build:
+      context: ..
+      dockerfile: deploy/worker/Dockerfile
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      SITE_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      GAME_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DATABASE: tbmmorpg_analytics
+    volumes:
+      - ../src/backend:/app/src/backend
+      - ../src/shared:/app/src/shared
+    command: >
+      arq src.backend.features.system.workers.arq.SystemArqSettings
+    depends_on:
+      backend-migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - tbmmorpg-network
+
+  generation-ai-worker:
+    build:
+      context: ..
+      dockerfile: deploy/worker/Dockerfile
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      SITE_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_site  # pragma: allowlist secret
+      GAME_DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      DATABASE_URL: postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@postgres:5432/tbmmorpg_game  # pragma: allowlist secret
+      REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      MONGO_URL: mongodb://mongo:27017
+      MONGO_DATABASE: tbmmorpg_analytics
+    volumes:
+      - ../src/backend:/app/src/backend
+      - ../src/shared:/app/src/shared
+      - ../var/generated-assets:/app/var/generated-assets
+    command: >
+      arq src.backend.features.generation_ai.workers.arq.GenerationAIArqSettings
+    depends_on:
+      backend-migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
+    networks:
+      - tbmmorpg-network
+
+  tg-bot:
+    build:
+      context: ..
+      dockerfile: deploy/tg_bot/Dockerfile
+    container_name: tbmmorpg-tg-bot
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      REDIS_URL: redis://:${REDIS_PASSWORD:-dev_redis_password}@redis:6379/0
+      BACKEND_BASE_URL: http://backend:8001
+      REDIS_STREAM_NAME: game_events
+      REDIS_CONSUMER_GROUP: tg_bot
+      DEBUG: "False"
+    depends_on:
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_started
+    networks:
+      - tbmmorpg-network
+
+  # ── Nginx (disabled — uncomment when ready to put behind reverse proxy) ──
+
+  # nginx:
+  #   build:
+  #     context: ..
+  #     dockerfile: deploy/nginx/Dockerfile
+  #   container_name: tbmmorpg-nginx
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #   depends_on:
+  #     - backend
+  #     - frontend
+  #   networks:
+  #     - tbmmorpg-network
+
+volumes:
+  tbmmorpg-postgres-data:
+  tbmmorpg-redis-data:
+  tbmmorpg-mongo-data:
+
+networks:
+  tbmmorpg-network:
+    driver: bridge

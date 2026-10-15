@@ -5,7 +5,6 @@ import pytest
 from src.backend.config.settings import settings
 from src.backend.features.monsters.api.router import (
     get_generated_monster_view_service,
-    get_monster_generated_rebuild_service,
 )
 from src.backend.features.monsters.inspection.dto.generated_view import GeneratedMonstersResponseDTO
 
@@ -14,10 +13,12 @@ from src.backend.features.monsters.inspection.dto.generated_view import Generate
 def catalog_credentials(monkeypatch, client):
     monkeypatch.setattr(settings, "frontend_internal_service_key", "test-read-secret")
     monkeypatch.setattr(settings, "monster_catalog_write_key", "test-write-secret")
-    client.headers.update({
-        "X-Internal-Service-Key": "test-read-secret",
-        "X-Monster-Catalog-Write-Key": "test-write-secret",
-    })
+    client.headers.update(
+        {
+            "X-Internal-Service-Key": "test-read-secret",
+            "X-Monster-Catalog-Write-Key": "test-write-secret",
+        }
+    )
 
 
 @pytest.mark.unit
@@ -112,95 +113,29 @@ def test_generated_monsters_summary_route_returns_aggregate_counts(client) -> No
     assert response.json() == {"clans": 6, "members": 72, "missing_images": 1}
 
 
+@pytest.mark.unit
+def test_generated_monster_rebuild_plan_route_returns_gone(client) -> None:
+    response = client.post("/api/admin/monsters/generated/rebuild/plan", json={})
+    assert response.status_code == 410
+    assert response.json()["detail"]["code"] == "legacy_monster_runtime_retired"
 
 
 @pytest.mark.unit
-def test_generated_monster_rebuild_plan_route_returns_dry_run(client) -> None:
-    class FakeService:
-        async def plan(self, payload):
-            assert payload.family_id == "bandit_gang"
-            assert payload.force is False
-            return {
-                "dry_run": True,
-                "status": "ok",
-                "scanned": 1,
-                "stale": 1,
-                "rebuilt": 0,
-                "skipped": 0,
-                "errors": [],
-                "items": [
-                    {
-                        "clan_id": "clan-1",
-                        "family_id": "bandit_gang",
-                        "status": "stale",
-                        "reason": "changed=2",
-                        "members_expected": 12,
-                        "members_changed": 2,
-                        "members_created": 0,
-                        "members_removed": 0,
-                    }
-                ],
-            }
-
-    from src.backend.app import app
-
-    app.dependency_overrides[get_monster_generated_rebuild_service] = lambda: FakeService()
-    try:
-        response = client.post(
-            "/api/admin/monsters/generated/rebuild/plan",
-            json={"family_id": "bandit_gang", "limit": 10},
-        )
-    finally:
-        app.dependency_overrides.pop(get_monster_generated_rebuild_service, None)
-
-    assert response.status_code == 200
-    assert response.json()["dry_run"] is True
-    assert response.json()["items"][0]["reason"] == "changed=2"
+def test_generated_monster_rebuild_apply_route_returns_gone(client) -> None:
+    response = client.post("/api/admin/monsters/generated/rebuild/apply", json={})
+    assert response.status_code == 410
+    assert response.json()["detail"]["code"] == "legacy_monster_runtime_retired"
 
 
 @pytest.mark.unit
-def test_generated_monster_rebuild_apply_route_returns_rebuilt_count(client) -> None:
-    class FakeService:
-        async def apply(self, payload):
-            assert payload.force is True
-            return {
-                "dry_run": False,
-                "status": "ok",
-                "scanned": 1,
-                "stale": 1,
-                "rebuilt": 1,
-                "skipped": 0,
-                "errors": [],
-                "items": [],
-            }
-
-    from src.backend.app import app
-
-    app.dependency_overrides[get_monster_generated_rebuild_service] = lambda: FakeService()
-    try:
-        response = client.post(
-            "/api/admin/monsters/generated/rebuild/apply",
-            json={"family_id": "bandit_gang", "force": True},
-        )
-    finally:
-        app.dependency_overrides.pop(get_monster_generated_rebuild_service, None)
-
-    assert response.status_code == 200
-    assert response.json()["rebuilt"] == 1
-
-
-
-
-
-
-
-
-@pytest.mark.unit
-@pytest.mark.parametrize("path", [
-    "/api/admin/monsters/generated/clans/example/regenerate-flavor",
-    "/api/admin/monsters/generated/clans/example/regenerate-member-images",
-    "/api/admin/monsters/generated/clans/regenerate-member-images",
-    "/api/admin/monsters/generated/members/example/regenerate-image",
-])
+@pytest.mark.parametrize(
+    "path",
+    [
+        "/api/admin/monsters/generated/clans/example/regenerate-flavor",
+        "/api/admin/monsters/generated/clans/example/regenerate-member-images",
+        "/api/admin/monsters/generated/clans/regenerate-member-images",
+        "/api/admin/monsters/generated/members/example/regenerate-image",
+    ],
+)
 def test_monster_generation_routes_are_removed(client, path):
     assert client.post(path).status_code == 404

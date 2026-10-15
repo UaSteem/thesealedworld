@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import inspect
 from typing import Any
 
 import pytest
@@ -58,14 +57,6 @@ async def test_rift_catalog_bootstrap_syncs_setting_and_node_pool_from_fixtures(
     assert first_node_payload["transition_text"]["enter_target"] == "к разбитой вехе"
     assert first_node_payload["generation"]["source"] == "manual"
     assert first_node_payload["generation"]["pool_order"] == 0
-
-
-@pytest.mark.unit
-def test_game_feature_bootstrap_syncs_rift_catalog_before_population() -> None:
-    source = inspect.getsource(GameFeatureContainer._bootstrap_world)
-
-    assert "RiftCatalogBootstrapService" in source
-    assert source.index("RiftCatalogBootstrapService") < source.index("RiftPopulationBootstrapService")
 
 
 class _FakeRepository:

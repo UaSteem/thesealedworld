@@ -1,17 +1,9 @@
 import uuid
 
-import pytest
-
 from src.backend.features.monsters.catalog.registry import get_all_family_configs
-from src.backend.features.monsters.encounters.services.habitat_clan_pool_materialization_service import (
-    HabitatClanPoolMaterializationService,
-    HabitatScopeConfig,
-)
 from src.backend.features.monsters.public import (
-    ClanPoolPolicyDTO,
     GeneratedClan,
     HabitatClanPoolEntryDTO,
-    MonsterHabitatDTO,
 )
 
 
@@ -67,80 +59,6 @@ def _clan_flavors(*family_ids: str) -> dict[str, dict[str, object]]:
         }
         for family_id in family_ids
     }
-
-
-async def test_materializer_creates_pool_entries_and_skips_blocked_families() -> None:
-    repository = FakeRepository()
-    factory = FakeFactory(repository)
-    service = HabitatClanPoolMaterializationService(repository=repository, factory=factory)  # type: ignore[arg-type]
-
-    result = await service.ensure_scope_pool(
-        HabitatScopeConfig(
-            scope_type="region",
-            scope_id="D4",
-            habitat=MonsterHabitatDTO(biome="city_ruins", keys=["ancient", "ruined_old_city"]),
-            clan_pool_policy=ClanPoolPolicyDTO.model_validate(
-                {
-                    "primary": [{"family_id": "goblin_tribe", "weight": 100}],
-                    "secondary": [{"family_id": "rat_swarm", "weight": 30}],
-                    "blocked": ["rat_swarm"],
-                }
-            ),
-            tier=1,
-            source_meta={"clan_flavors": _clan_flavors("goblin_tribe")},
-        )
-    )
-
-    assert result.scopes == 1
-    assert result.pool_entries == 1
-    assert len(factory.calls) == 1
-    assert [entry.family_id for entry in repository.entries] == ["goblin_tribe"]
-    assert repository.entries[0].scope_type == "region"
-    assert repository.entries[0].scope_id == "D4"
-    assert repository.entries[0].habitat.biome == "city_ruins"
-    assert repository.entries[0].habitat.keys == ["ancient", "ruined_old_city"]
-    assert factory.calls[0]["context"].context_meta["clan_flavor"]["name_ru"] == "Goblin Tribe"
-
-
-async def test_materializer_reuses_existing_clan_by_habitat_identity_hash() -> None:
-    repository = FakeRepository()
-    factory = FakeFactory(repository)
-    service = HabitatClanPoolMaterializationService(repository=repository, factory=factory)  # type: ignore[arg-type]
-    config = HabitatScopeConfig(
-        scope_type="region",
-        scope_id="D4",
-        habitat=MonsterHabitatDTO(biome="city_ruins", keys=["ancient", "ruined_old_city"]),
-        clan_pool_policy=ClanPoolPolicyDTO.model_validate({"primary": [{"family_id": "goblin_tribe", "weight": 100}]}),
-        tier=1,
-        source_meta={"clan_flavors": _clan_flavors("goblin_tribe")},
-    )
-
-    first = await service.ensure_scope_pool(config)
-    second = await service.ensure_scope_pool(config)
-
-    assert first.clans == 1
-    assert second.clans == 0
-    assert len(factory.calls) == 1
-    assert len(repository.entries) == 1
-
-
-async def test_materializer_requires_authored_clan_flavor_for_each_family() -> None:
-    repository = FakeRepository()
-    factory = FakeFactory(repository)
-    service = HabitatClanPoolMaterializationService(repository=repository, factory=factory)  # type: ignore[arg-type]
-
-    with pytest.raises(ValueError, match="requires authored clan_flavors"):
-        await service.ensure_scope_pool(
-            HabitatScopeConfig(
-                scope_type="rift",
-                scope_id="starter_rift",
-                habitat=MonsterHabitatDTO(biome="broken_road", keys=["road_tract"]),
-                clan_pool_policy=ClanPoolPolicyDTO.model_validate(
-                    {"primary": [{"family_id": "goblin_tribe", "weight": 100}]}
-                ),
-                tier=1,
-            )
-        )
 
 
 def test_old_family_tier_availability_helper_is_removed() -> None:

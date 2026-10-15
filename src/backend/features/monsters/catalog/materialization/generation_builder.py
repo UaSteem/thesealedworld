@@ -37,6 +37,7 @@ from src.backend.features.monsters.instances.integrations.item_generation import
 from src.backend.features.monsters.instances.runtime.ai_archetype import resolve_monster_ai_archetype
 from src.backend.features.monsters.instances.runtime.combat_math_model import MonsterCombatMathModelBuilder
 from src.backend.features.monsters.instances.services.gear_score_service import MonsterGearScoreService
+from src.backend.features.monsters.runtime_retirement import require_legacy_monster_runtime
 from src.backend.infrastructure.monsters.actor_documents import (
     GENERATED_MONSTER_ACTOR_KIND,
     GENERATED_MONSTER_ACTOR_SNAPSHOT_VERSION,
@@ -87,6 +88,7 @@ class MonsterClanGenerationBuilder:
         normalized_tags: Sequence[str] | None = None,
         reuse_existing: bool = True,
     ) -> GeneratedClan:
+        require_legacy_monster_runtime()
         return await self.generate_clan_template(
             context,
             family_id=family_id,
@@ -108,6 +110,7 @@ class MonsterClanGenerationBuilder:
         normalized_tags: Sequence[str] | None = None,
         reuse_existing: bool = True,
     ) -> GeneratedClan:
+        require_legacy_monster_runtime()
         if context.tier < 1:
             raise ValueError(f"Generated monster clan tier must be >= 1, got {context.tier}")
 

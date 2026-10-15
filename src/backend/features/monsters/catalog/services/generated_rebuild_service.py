@@ -31,6 +31,7 @@ from src.backend.features.monsters.inspection.dto.generated_view import (
     MonsterDataRebuildResponseDTO,
 )
 from src.backend.features.monsters.instances.services.gear_score_service import MonsterGearScoreService
+from src.backend.features.monsters.runtime_retirement import require_legacy_monster_runtime
 from src.backend.infrastructure.monsters import GeneratedClanORM, GeneratedMonsterORM
 from src.backend.infrastructure.monsters.actor_documents import GeneratedMonsterActorRepository
 
@@ -39,15 +40,18 @@ class MonsterGeneratedRebuildService:
     """Rebuilds generated monster mechanics from resource definitions without touching visuals."""
 
     def __init__(self, *, session: Any, item_generation: Any | None = None) -> None:
+        require_legacy_monster_runtime()
         self.session = session
         self.item_generation = item_generation or ItemGenerationService()
         self.gear_score_service = MonsterGearScoreService()
         self.actor_repo = GeneratedMonsterActorRepository()
 
     async def plan(self, request: MonsterDataRebuildRequestDTO) -> MonsterDataRebuildResponseDTO:
+        require_legacy_monster_runtime()
         return await self._run(request, dry_run=True)
 
     async def apply(self, request: MonsterDataRebuildRequestDTO) -> MonsterDataRebuildResponseDTO:
+        require_legacy_monster_runtime()
         result = await self._run(request, dry_run=False)
         await self.session.commit()
         return result

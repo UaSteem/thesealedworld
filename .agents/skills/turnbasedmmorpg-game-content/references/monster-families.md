@@ -22,8 +22,8 @@ The canonical read catalog uses `FamilyDefinition`, `ClanDefinition`, and `Membe
 - Clan IDs and qualified member IDs are authored constants, independent of location, habitat, and DB UUIDs. A member definition is not a spawned instance.
 - Legacy `MonsterFamilyDTO` readers use an explicit base-clan adapter returning fresh mutable DTOs. New clan-aware consumers must use qualified catalog reads.
 - Loading the prepared catalog requires no DB, provider, runtime JSON file, or S3 request. Image references carry asset IDs/source paths/review status; publishing them is a separate step.
-- The runtime encounter/materialization path still uses persisted clans until the next migration step. Do not claim monster DB writes are removed from the whole application by this catalogue addition.
-- Existing statistics, roles, skills, equipment, tiers and versions must remain unchanged unless separately authorized. Old generated DB rows are retained.
+- The old persisted-monster group/materialization/rebuild pipeline is permanently guarded by `monsters/runtime_retirement.py` in the monster-alpha branch. World/rift requests fail explicitly before accessing old data; startup does not materialize monster pools. New catalog-driven encounter runtime is not implemented yet. Catalog/Studio/bootstrap and the separate anchor projection path remain available.
+- Existing statistics, roles, skills, equipment, tiers and versions must remain unchanged unless separately authorized. Legacy local generated DB rows have been exported and removed; use `archive/data_retirement/INDEX.md` for the verified snapshot and cleanup receipt.
 
 ## Ownership
 

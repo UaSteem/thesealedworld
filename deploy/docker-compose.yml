@@ -91,7 +91,7 @@ services:
     entrypoint:
       - sh
       - -c
-      - python src/backend/manage.py upgrade && python src/backend/manage.py ensure-mongo-indexes && python src/backend/manage.py rebuild-monsters --apply
+      - python src/backend/manage.py upgrade && python src/backend/manage.py ensure-mongo-indexes
     depends_on:
       postgres:
         condition: service_healthy

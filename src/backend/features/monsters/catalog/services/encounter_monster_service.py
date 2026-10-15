@@ -11,6 +11,7 @@ from src.backend.features.monsters.catalog.resources.traits import (
     select_monster_clan_traits_for_habitat,
     serialize_selected_trait,
 )
+from src.backend.features.monsters.runtime_retirement import require_legacy_monster_runtime
 
 if TYPE_CHECKING:
     from src.backend.features.monsters.catalog.integrations.generation_storage import MonsterGenerationStorage
@@ -28,12 +29,14 @@ class EncounterMonsterService:
         self.factory = factory
 
     async def prune_generated_clans_for_zone_contexts(self, expected: dict[str, set[tuple[str, str]]]) -> int:
+        require_legacy_monster_runtime()
         delete_generated_clans = getattr(self.repository, "delete_generated_clans_outside_zone_contexts", None)
         if not callable(delete_generated_clans):
             return 0
         return int(await delete_generated_clans(expected))
 
     async def ensure_clan_for_context(self, context: MonsterGenerationContext, family_id: str) -> GeneratedClan:
+        require_legacy_monster_runtime()
         return await self._ensure_clan(context, family_id)
 
     async def _ensure_clan(

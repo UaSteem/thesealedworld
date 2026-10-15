@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from src.backend.features.monsters.runtime_retirement import require_legacy_monster_runtime
+
 if TYPE_CHECKING:
     from collections.abc import Sequence
 
@@ -30,6 +32,7 @@ class ClanFactory:
         normalized_tags: Sequence[str],
         reuse_existing: bool = False,
     ) -> GeneratedClan:
+        require_legacy_monster_runtime()
         return await self.generator.generate_clan_template(
             context,
             family_id=family_id,

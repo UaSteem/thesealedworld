@@ -20,6 +20,7 @@ from src.backend.features.monsters.encounters.policies.encounter_profiles import
 from src.backend.features.monsters.encounters.policies.group_assembler import MonsterGroupAssembler
 from src.backend.features.monsters.instances.runtime.combat_actor_input import MonsterCombatActorInputBuilder
 from src.backend.features.monsters.instances.services.gear_score_service import MonsterGearScoreService
+from src.backend.features.monsters.runtime_retirement import require_legacy_monster_runtime
 
 if TYPE_CHECKING:
     from src.backend.features.monsters.catalog.integrations.generation_storage import MonsterGenerationStorage
@@ -102,6 +103,7 @@ class MonsterGroupService:
         ttl: int = 300,
         composition_policy: dict[str, Any] | None = None,
     ) -> MonsterGroupResult:
+        require_legacy_monster_runtime()
         location = await self.location_context.get_location_context(loc_id)
         group_scope_id = scope_id
         scope_type = "region"
@@ -146,6 +148,7 @@ class MonsterGroupService:
         scope_id: str | None = None,
         ttl: int = 300,
     ) -> MonsterGroupResult:
+        require_legacy_monster_runtime()
         raise RuntimeError("Hash-context monster group preparation was replaced by habitat clan pool lookup")
 
     async def prepare_monster_group_for_scope(
@@ -165,6 +168,7 @@ class MonsterGroupService:
         group_scope_id: str | None = None,
         ttl: int = 300,
     ) -> MonsterGroupResult:
+        require_legacy_monster_runtime()
         clan, reused_existing_clan, pool_tags = await self._resolve_clan_from_pool(
             scope_type=scope_type,
             scope_id=scope_id,
