@@ -6,6 +6,7 @@ from src.backend.features.monsters.catalog.resources.visuals import (
     version_generated_asset_url,
     version_visual_image_urls,
 )
+from src.backend.features.monsters.instances.runtime.feint_loadout import build_monster_feint_loadout
 
 
 class MonsterCombatActorInputBuilder:
@@ -18,7 +19,11 @@ class MonsterCombatActorInputBuilder:
             raise ValueError(
                 f"Generated monster is missing combat_snapshot_input: {getattr(monster, 'id', '<unknown>')}"
             )
-        return dict(combat_input)
+        result = dict(combat_input)
+        meta = dict(result.get("meta") or {})
+        role = meta.get("role") or getattr(monster, "role", None)
+        result["loadout"] = build_monster_feint_loadout(dict(result.get("loadout") or {}), role=role)
+        return result
 
     def build_snapshot(self, monster: Any) -> dict[str, Any]:
         actor_input = self.build_input(monster)

@@ -1,3 +1,4 @@
+from src.backend.features.monsters.catalog.contracts import ImageAssetReference
 from src.backend.features.monsters.catalog.nested_contracts import (
     BaseLoadoutDTO,
     BaseStatsDTO,
@@ -27,4 +28,12 @@ DIRE_WOLF = MemberBaseDTO(
     ),
     tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
     spawn_weight=150,
+    default_image=ImageAssetReference(
+        **{
+            "asset_id": "wolf_pack.dire_wolf",
+            "source_path": "assets/monster_defaults/wolf_pack/png/dire_wolf-v1.png",
+            "review_status": "review_ready",
+            "display_mirror": False,
+        }
+    ),
 )

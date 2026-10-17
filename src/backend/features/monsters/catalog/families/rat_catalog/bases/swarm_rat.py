@@ -1,3 +1,4 @@
+from src.backend.features.monsters.catalog.contracts import ImageAssetReference
 from src.backend.features.monsters.catalog.nested_contracts import (
     BaseLoadoutDTO,
     BaseStatsDTO,
@@ -40,4 +41,10 @@ SWARM_RAT = MemberBaseDTO(
     ),
     tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
     spawn_weight=20,
+    default_image=ImageAssetReference(
+        asset_id="rat_swarm.swarm_rat",
+        source_path="assets/monster_defaults/rat_swarm/png/swarm_rat-v2.png",
+        review_status="accepted",
+        display_mirror=False,
+    ),
 )

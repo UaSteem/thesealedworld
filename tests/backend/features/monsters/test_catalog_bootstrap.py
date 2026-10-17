@@ -45,7 +45,7 @@ def test_bootstrap_version_tracks_content_and_is_stable():
     initial = MonsterCatalogBootstrapService(catalog).build()
     assert initial == MonsterCatalogBootstrapService(catalog).build()
     target = catalog.members["wolf_pack.base.alpha_prime"]
-    changed = replace(target, description="Updated client description")
+    changed = replace(target, text_id=None, description="Updated client description")
     other = MonsterCatalog(catalog.families, catalog.clans, {**catalog.members, target.id: changed})
     updated = MonsterCatalogBootstrapService(other).build()
     assert updated.version != initial.version

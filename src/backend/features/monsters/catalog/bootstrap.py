@@ -9,6 +9,9 @@ from src.backend.features.monsters.catalog.bootstrap_contracts import MonsterCat
 from src.backend.features.monsters.catalog.indexes import MonsterCatalog
 from src.backend.features.monsters.catalog.registry import get_catalog
 
+from .resources import texts as text_resources
+from .texts import DEFAULT_LOCALE, localized_definition, normalize_locale
+
 
 def _hash(value: object) -> str:
     raw = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode()
@@ -19,7 +22,11 @@ class MonsterCatalogBootstrapService:
     def __init__(self, catalog: MonsterCatalog | None = None):
         self.catalog = catalog if catalog is not None else get_catalog()
 
-    def build(self, *, include_system: bool = False) -> MonsterCatalogBootstrapDTO:
+    def build(self, *, include_system: bool = False, locale: str = DEFAULT_LOCALE) -> MonsterCatalogBootstrapDTO:
+        locale = normalize_locale(locale)
+        available_locales = sorted(
+            {language for translations in text_resources.MONSTER_TEXTS.values() for language in translations}
+        )
         clans = self.catalog.find_clans(include_system=include_system)
         clan_ids = {clan.id for clan in clans}
         member_ids = {mid for clan in clans for mid in clan.member_ids}
@@ -28,8 +35,7 @@ class MonsterCatalogBootstrapService:
             "families": {
                 f.id: dict(
                     id=f.id,
-                    name=f.name,
-                    description=f.description,
+                    **localized_definition(f, locale),
                     tags=sorted(f.tags),
                     clan_ids=[cid for cid in f.clan_ids if cid in clan_ids],
                 )
@@ -39,8 +45,7 @@ class MonsterCatalogBootstrapService:
             "clans": {
                 c.id: dict(
                     id=c.id,
-                    name=c.name,
-                    description=c.description,
+                    **localized_definition(c, locale),
                     tags=sorted(c.tags),
                     family_id=c.family_id,
                     member_ids=list(c.member_ids),
@@ -50,13 +55,14 @@ class MonsterCatalogBootstrapService:
             "members": {
                 m.id: dict(
                     id=m.id,
-                    name=m.name,
-                    description=m.description,
+                    **localized_definition(m, locale),
                     tags=sorted(m.tags),
                     family_id=m.family_id,
                     clan_id=m.clan_id,
                     variant_id=m.variant_id,
                     role=m.role,
+                    base_id=m.base_id,
+                    image_source=m.image_source,
                     ability_ids=list(m.ability_ids),
                     image=dict(
                         asset_id=m.image.asset_id,
@@ -71,7 +77,21 @@ class MonsterCatalogBootstrapService:
             },
         }
         hashes = {key: _hash(value) for key, value in sections.items()}
-        version = "monster-catalog:" + _hash({"schema_version": 1, **hashes})
+        version = "monster-catalog:" + _hash(
+            {
+                "schema_version": 2,
+                "locale": locale,
+                "fallback_locale": DEFAULT_LOCALE,
+                "available_locales": available_locales,
+                **hashes,
+            }
+        )
         return MonsterCatalogBootstrapDTO(
-            version=version, **sections, manifest={"version": version, "sections": hashes}
+            schema_version=2,
+            locale=locale,
+            fallback_locale=DEFAULT_LOCALE,
+            available_locales=available_locales,
+            version=version,
+            **sections,
+            manifest={"version": version, "sections": hashes},
         )

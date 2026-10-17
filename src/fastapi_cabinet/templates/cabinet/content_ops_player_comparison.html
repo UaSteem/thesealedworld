@@ -1,0 +1,33 @@
+{% set comparison = equipment.player_comparison %}
+<section class="player-comparison" aria-label="Сравнение игрока и монстра">
+  <div class="monster-stats__header"><h3>Игрок и {{ member.name }}</h3><span>Снаряжение тира {{ equipment.tier }}</span></div>
+  <p><strong>{{ comparison.label }}</strong></p>
+  <ul class="monster-stats__notes">{% for note in comparison.notes %}<li>{{ note }}</li>{% endfor %}</ul>
+  <details class="item-card__technical">
+    <summary>Настроить характеристики тестового игрока</summary>
+    <p class="fc-muted">Значения до снаряжения. Диапазон 1–500 — ограничение тестового инструмента, а не предел развития персонажа.</p>
+    <form method="get" action="/admin/content-ops/monster-member-detail">
+      <input type="hidden" name="clan_id" value="{{ clan.clan_id }}">
+      <input type="hidden" name="member_id" value="{{ member.member_id }}">
+      <input type="hidden" name="tier" value="{{ selected_tier }}">
+      <div class="player-comparison__inputs">
+        {% for key, value in comparison.input_attributes.items() %}
+        <div class="fc-filter-field"><label for="player-{{ key }}">{{ attribute_labels.get(key, key) }}</label><input class="fc-form-input" type="number" min="1" max="500" step="1" required id="player-{{ key }}" name="player_{{ key }}" value="{{ value }}"></div>
+        {% endfor %}
+      </div>
+      <button class="fc-action-btn" type="submit">Пересчитать сравнение</button>
+    </form>
+  </details>
+  <div class="player-comparison__groups">
+    {% for group in comparison.groups %}<section class="monster-stats__group">
+      <h4>{{ group.label }}</h4>
+      <table class="monster-stats__table"><thead><tr><th scope="col">Параметр</th><th scope="col">Игрок</th><th scope="col">Монстр</th></tr></thead><tbody>
+      {% for row in group.rows %}<tr><th scope="row">{{ row.label }}</th><td class="monster-stats__total">{{ row.player_value }}</td><td>{{ row.monster_value }}</td></tr>{% endfor %}
+      </tbody></table>
+    </section>{% endfor %}
+  </div>
+  <details class="item-card__technical"><summary>Снаряжение игрока · {{ comparison.item_cards|length }} предметов</summary>
+    <div class="item-card-grid">{% for card in comparison.item_cards %}{% include "components/items/card.html" %}{% endfor %}</div>
+  </details>
+  <details class="item-card__technical"><summary>Технические данные сравнения</summary><pre>{{ comparison.technical|tojson(indent=2) }}</pre></details>
+</section>

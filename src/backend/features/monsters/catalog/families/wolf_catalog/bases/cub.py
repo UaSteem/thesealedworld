@@ -1,3 +1,4 @@
+from src.backend.features.monsters.catalog.contracts import ImageAssetReference
 from src.backend.features.monsters.catalog.nested_contracts import (
     BaseLoadoutDTO,
     BaseStatsDTO,
@@ -24,4 +25,12 @@ CUB = MemberBaseDTO(
     ),
     tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
     spawn_weight=20,
+    default_image=ImageAssetReference(
+        **{
+            "asset_id": "wolf_pack.cub",
+            "source_path": "assets/monster_defaults/wolf_pack/png/cub-v1.png",
+            "review_status": "accepted",
+            "display_mirror": False,
+        }
+    ),
 )

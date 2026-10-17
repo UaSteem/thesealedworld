@@ -10,6 +10,49 @@ from src.backend.features.monsters.instances.integrations.item_generation import
 
 
 @pytest.mark.unit
+@pytest.mark.parametrize("natural_key", ["wolf_young_fangs", "wolf_hide", "wolf_bone_shoulders", "wolf_pack_mark"])
+def test_wolf_natural_description_reaches_item_without_changing_mechanics(natural_key):
+    from copy import deepcopy
+
+    from src.backend.features.items.runtime.item_factory import ItemFactory
+    from src.backend.features.monsters.catalog.resources.equipment_mapping import get_natural_equipment_mapping
+
+    mapping = get_natural_equipment_mapping(natural_key)
+    request = to_item_generation_request(
+        build_monster_item_request(
+            owner_key="wolf-description-test",
+            family_id="wolf_pack",
+            member_role="minion",
+            member_tier=1,
+            slot=mapping.default_slot,
+            natural_key=natural_key,
+            seed=f"description:{natural_key}",
+        )
+    )
+    assert request.presentation_description
+    plain = deepcopy(request)
+    plain.presentation_description = None
+    factory = ItemFactory()
+    natural = factory.generate_runtime_item(request)
+    ordinary = factory.generate_runtime_item(plain)
+    assert natural.description == request.presentation_description
+    assert natural.name == mapping.name_ru
+    assert natural.description != ordinary.description
+    assert natural.mechanics == ordinary.mechanics
+    assert natural.power == ordinary.power
+    assert natural.triggers == ordinary.triggers
+
+
+@pytest.mark.unit
+def test_all_wolf_natural_mappings_have_descriptions():
+    from src.backend.features.monsters.catalog.resources.equipment_mapping import NATURAL_EQUIPMENT_MAPPINGS
+
+    wolves = [entry for key, entry in NATURAL_EQUIPMENT_MAPPINGS.items() if key.startswith("wolf_")]
+    assert wolves
+    assert all(getattr(entry, "description_ru", None) for entry in wolves)
+
+
+@pytest.mark.unit
 def test_build_monster_item_request_for_natural_equipment_creates_item_runtime_order() -> None:
     monster_request = build_monster_item_request(
         owner_key="member_0",

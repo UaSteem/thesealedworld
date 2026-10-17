@@ -469,7 +469,6 @@ def test_item_factory_forced_bundle_smoke_by_item_family():
     factory = ItemFactory()
     cases = [
         ("rapier", "mat_cobalt_ingot", "duelist_weapon_4", {"weapon_accuracy", "armor_penetration_pct_bonus"}),
-        ("ring", "mat_cobalt_ingot", "duelist_accessory_4", {"attribute_agility", "attribute_perception"}),
         ("shield", "mat_iron_ingot", "bulwark_shield_4", {"shield_guard_power_bonus", "physical_resistance_bonus"}),
         ("plate_chest", "mat_iron_ingot", "bulwark_armor_4", {"armor_flat", "thorns_damage_bonus"}),
         ("winter_cloak", "mat_linen", "survival_garment_3", {"cold_resistance_bonus", "heat_resistance_bonus"}),

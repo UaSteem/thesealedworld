@@ -1,0 +1,32 @@
+<section class="fc-widget fc-widget--wide">
+  <h2>Комплект по тиру</h2>
+  <form method="get" action="/admin/content-ops/monster-member-detail" class="fc-filter-form">
+    <input type="hidden" name="clan_id" value="{{ clan.clan_id }}">
+    {% if equipment and equipment.player_comparison %}{% for key, value in equipment.player_comparison.input_attributes.items() %}<input type="hidden" name="player_{{ key }}" value="{{ value }}">{% endfor %}{% endif %}
+    <div class="fc-filter-field">
+      <label for="equipment-member">Боец</label>
+      <select id="equipment-member" name="member_id" class="fc-form-input">
+        {% for option in clan.members %}<option value="{{ option.member_id }}" {% if option.member_id == member.member_id %}selected{% endif %}>{{ option.name }} · {{ role_labels.get(option.role, option.role) }}</option>{% endfor %}
+      </select>
+    </div>
+    <div class="fc-filter-field">
+      <label for="equipment-tier">Тир</label>
+      <select id="equipment-tier" name="tier" class="fc-form-input">
+        {% for tier in range(member.min_tier, member.max_tier + 1) %}<option value="{{ tier }}" {% if tier == selected_tier %}selected{% endif %}>{{ tier }}</option>{% endfor %}
+      </select>
+    </div>
+    <button type="submit" class="fc-action-btn">Показать комплект</button>
+    {% if equipment %}<a class="fc-action-btn" href="/admin/content-ops/monster-random?clan_id={{ clan.clan_id|urlencode }}">Случайный боец и тир</a>{% endif %}
+  </form>
+  {% if equipment_error %}<p role="status">{{ equipment_error }}</p>{% endif %}
+  {% if equipment %}
+    <p>Тир <strong>{{ equipment.tier }}</strong> · {{ equipment.items|length }} предмета</p>
+    {% if equipment.player_comparison %}{% include "cabinet/content_ops_player_comparison.html" %}{% endif %}
+    <div class="monster-equipment-layout">
+    {% if equipment.stats_preview %}{% include "cabinet/content_ops_monster_stats.html" %}{% endif %}
+    <div class="item-card-grid">
+      {% for card in equipment.item_cards %}{% include "components/items/card.html" %}{% endfor %}
+    </div>
+    </div>
+  {% elif not equipment_error %}<p>Готовые комплекты для этой семьи пока не подготовлены.</p>{% endif %}
+</section>

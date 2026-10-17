@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query, Response
@@ -16,6 +17,7 @@ from src.backend.features.monsters.catalog.services.generated_rebuild_service im
     MonsterGeneratedRebuildService,  # noqa: TC001 - FastAPI inspects annotations
 )
 from src.backend.features.monsters.inspection.dto.catalog_view import (
+    CatalogEquipmentViewDTO,
     CatalogMonstersResponseDTO,
     CatalogMonstersSummaryDTO,
 )
@@ -27,6 +29,7 @@ from src.backend.features.monsters.inspection.dto.generated_view import (
 )
 from src.backend.features.monsters.inspection.services.catalog_view_service import CatalogMonsterViewService
 from src.backend.features.monsters.inspection.services.generated_view_service import GeneratedMonsterViewService
+from src.backend.features.monsters.inspection.services.player_comparison_service import validate_player_attributes
 
 router = APIRouter(
     prefix="/api/admin/monsters",
@@ -39,9 +42,10 @@ router = APIRouter(
 async def get_monster_catalog_bootstrap(
     response: Response,
     include_system: bool = False,
+    locale: str = "ru",
     if_none_match: Annotated[str | None, Header()] = None,
 ):
-    payload = MonsterCatalogBootstrapService().build(include_system=include_system)
+    payload = MonsterCatalogBootstrapService().build(include_system=include_system, locale=locale)
     etag = f'"{payload.version}"'
     headers = {"ETag": etag, "Cache-Control": "private, no-cache", "Vary": "X-Internal-Service-Key"}
     candidates = [value.strip().removeprefix("W/") for value in (if_none_match or "").split(",")]
@@ -57,6 +61,7 @@ async def get_monster_catalog(
     clan_id: str | None = None,
     role: MonsterRole | None = None,
     include_members: bool = True,
+    locale: str = "ru",
     limit: Annotated[int, Query(ge=1, le=100)] = 25,
     offset: Annotated[int, Query(ge=0)] = 0,
 ) -> CatalogMonstersResponseDTO:
@@ -65,6 +70,7 @@ async def get_monster_catalog(
         clan_id=clan_id,
         role=role,
         include_members=include_members,
+        locale=locale,
         limit=limit,
         offset=offset,
     )
@@ -73,6 +79,26 @@ async def get_monster_catalog(
 @router.get("/catalog/summary", response_model=CatalogMonstersSummaryDTO)
 async def get_monster_catalog_summary(family_id: str | None = None) -> CatalogMonstersSummaryDTO:
     return CatalogMonsterViewService().summary(family_id=family_id)
+
+
+@router.get("/catalog/equipment", response_model=CatalogEquipmentViewDTO)
+async def get_monster_catalog_equipment(
+    member_id: Annotated[str, Query(min_length=1)],
+    tier: Annotated[int, Query(ge=0, le=7)],
+    player_attributes: Annotated[str | None, Query(max_length=1000)] = None,
+) -> CatalogEquipmentViewDTO:
+    try:
+        return CatalogMonsterViewService().equipment(
+            member_id=member_id,
+            tier=tier,
+            player_attributes=validate_player_attributes(json.loads(player_attributes))
+            if player_attributes is not None
+            else None,
+        )
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
 
 
 def get_generated_monster_view_service(db_session=Depends(get_db)) -> GeneratedMonsterViewService:

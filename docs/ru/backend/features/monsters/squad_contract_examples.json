@@ -1,0 +1,174 @@
+{
+  "watch": {
+    "status": "selected",
+    "request": {
+      "tier": 1,
+      "count": {
+        "min_count": 3,
+        "max_count": 3
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 3,
+          "max_count": 3
+        }
+      ],
+      "filters": {
+        "family_ids": [
+          "goblin_tribe"
+        ],
+        "clan_ids": [
+          "goblin_tribe.base"
+        ],
+        "member_ids": [],
+        "required_tags": [],
+        "excluded_tags": [],
+        "include_system": false
+      },
+      "selection_mode": "random",
+      "seed": 17000,
+      "specified_members": [],
+      "same_clan": true,
+      "allow_repeated_members": false
+    },
+    "members": [
+      {
+        "member_id": "goblin_tribe.base.goblin_sneak",
+        "family_id": "goblin_tribe",
+        "clan_id": "goblin_tribe.base",
+        "variant_id": "goblin_sneak",
+        "role": "minion",
+        "tier": 1
+      },
+      {
+        "member_id": "goblin_tribe.base.goblin_scavenger",
+        "family_id": "goblin_tribe",
+        "clan_id": "goblin_tribe.base",
+        "variant_id": "goblin_scavenger",
+        "role": "minion",
+        "tier": 1
+      },
+      {
+        "member_id": "goblin_tribe.base.goblin_cutter",
+        "family_id": "goblin_tribe",
+        "clan_id": "goblin_tribe.base",
+        "variant_id": "goblin_cutter",
+        "role": "minion",
+        "tier": 1
+      }
+    ]
+  },
+  "patrol": {
+    "status": "selected",
+    "request": {
+      "tier": 1,
+      "count": {
+        "min_count": 3,
+        "max_count": 3
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 2,
+          "max_count": 2
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "filters": {
+        "family_ids": [
+          "goblin_tribe"
+        ],
+        "clan_ids": [
+          "goblin_tribe.base"
+        ],
+        "member_ids": [],
+        "required_tags": [],
+        "excluded_tags": [],
+        "include_system": false
+      },
+      "selection_mode": "random",
+      "seed": 17000,
+      "specified_members": [],
+      "same_clan": true,
+      "allow_repeated_members": false
+    },
+    "members": [
+      {
+        "member_id": "goblin_tribe.base.goblin_sneak",
+        "family_id": "goblin_tribe",
+        "clan_id": "goblin_tribe.base",
+        "variant_id": "goblin_sneak",
+        "role": "minion",
+        "tier": 1
+      },
+      {
+        "member_id": "goblin_tribe.base.goblin_scavenger",
+        "family_id": "goblin_tribe",
+        "clan_id": "goblin_tribe.base",
+        "variant_id": "goblin_scavenger",
+        "role": "minion",
+        "tier": 1
+      },
+      {
+        "member_id": "goblin_tribe.base.goblin_spearman",
+        "family_id": "goblin_tribe",
+        "clan_id": "goblin_tribe.base",
+        "variant_id": "goblin_spearman",
+        "role": "veteran",
+        "tier": 1
+      }
+    ]
+  },
+  "rejected": {
+    "status": "rejected",
+    "request": {
+      "tier": 1,
+      "count": {
+        "min_count": 3,
+        "max_count": 3
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 2,
+          "max_count": 2
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "filters": {
+        "family_ids": [
+          "goblin_tribe"
+        ],
+        "clan_ids": [
+          "goblin_tribe.base"
+        ],
+        "member_ids": [],
+        "required_tags": [],
+        "excluded_tags": [],
+        "include_system": false
+      },
+      "selection_mode": "random",
+      "seed": 17000,
+      "specified_members": [],
+      "same_clan": true,
+      "allow_repeated_members": false
+    },
+    "reasons": [
+      {
+        "code": "role_requirements_unmet",
+        "path": "roles.veteran",
+        "message": "Среди доступных кандидатов нет готового ветерана на Т1.",
+        "member_ids": []
+      }
+    ]
+  }
+}

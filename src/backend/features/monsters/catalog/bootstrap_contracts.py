@@ -8,6 +8,8 @@ class CatalogTextDTO(BaseModel):
     name: str
     description: str
     tags: list[str]
+    text_locale: str = "ru"
+    text_fallback: bool = False
 
 
 class FamilyTextDTO(CatalogTextDTO):
@@ -30,6 +32,8 @@ class MemberTextDTO(CatalogTextDTO):
     clan_id: str
     variant_id: str
     role: str
+    base_id: str | None = None
+    image_source: str | None = None
     ability_ids: list[str]
     image: CatalogArtDTO | None
 
@@ -40,7 +44,10 @@ class CatalogManifestDTO(BaseModel):
 
 
 class MonsterCatalogBootstrapDTO(BaseModel):
-    schema_version: int = 1
+    schema_version: int = 2
+    locale: str = "ru"
+    fallback_locale: str = "ru"
+    available_locales: list[str]
     version: str
     families: dict[str, FamilyTextDTO]
     clans: dict[str, ClanTextDTO]

@@ -92,7 +92,7 @@ class ItemFactory:
         tier_mult = self._resolve_tier_mult(material)
         scaled = self._scale_item_stats(base, material, tier_mult)
         item_type = self._resolve_item_type(base)
-        item_tags = self._build_item_tags(base, material)
+        item_tags = self._build_affix_tags(base)
         affixes, bundle_ids = self._roll_affix_set(
             request=request,
             item_grade=item_grade,
@@ -103,6 +103,7 @@ class ItemFactory:
             item_tier=item_tier,
             tier_mult=tier_mult,
             affix_step_count=GLOBAL_AFFIX_STEPS,
+            max_attribute_affixes=1 if slot in {"ring_1", "ring_2", "amulet", "earring"} else None,
         )
         all_tags = self._build_all_tags(base, material, bundle_ids, affixes)
         rarity = self.catalog.get_rarity(request.rarity_tier)
@@ -144,7 +145,7 @@ class ItemFactory:
         tier_mult = self._resolve_tier_mult(material)
         scaled = self._scale_item_stats(base, material, tier_mult)
         item_type = self._resolve_item_type(base)
-        item_tags = self._build_item_tags(base, material, extra_tags=request.extra_narrative_tags)
+        item_tags = self._build_affix_tags(base)
         affixes, bundle_ids = self._roll_affix_set(
             request=request,
             item_grade=item_grade,
@@ -279,9 +280,14 @@ class ItemFactory:
         )
 
     @staticmethod
-    def _build_item_tags(base, material, *, extra_tags: list[str] | None = None) -> list[str]:
-        tags = [*base.narrative_tags, *(material.narrative_tags if material else []), *(extra_tags or [])]
-        return list(dict.fromkeys(tags))
+    def _build_affix_tags(base) -> list[str]:
+        """Only the item base classifies affix eligibility.
+
+        Material and request narrative tags belong to presentation, not to the
+        item classification used by single-affix and bundle constraints. Material
+        tier and tier_mult still control availability thresholds and roll values.
+        """
+        return list(dict.fromkeys(base.narrative_tags))
 
     def _roll_affix_set(
         self,
@@ -295,6 +301,7 @@ class ItemFactory:
         item_tier: int,
         tier_mult: float,
         affix_step_count: int,
+        max_attribute_affixes: int | None = None,
     ) -> tuple[list[dict[str, object]], list[str]]:
         affix_item_type = self._affix_item_type(item_type, slot, item_tags)
         container_rules = AFFIX_CONTAINER_RULES.get(affix_profile, AFFIX_CONTAINER_RULES["no_grade"])
@@ -312,6 +319,7 @@ class ItemFactory:
             affix_count=request.affix_count,
             rng=random.Random(seed),
             affix_step_count=affix_step_count,
+            max_attribute_affixes=max_attribute_affixes,
         )
 
     @staticmethod
@@ -523,6 +531,7 @@ class ItemFactory:
         allowed_affix_ids: list[str] | None = None,
         affix_count: int | None = None,
         affix_step_count: int = GLOBAL_AFFIX_STEPS,
+        max_attribute_affixes: int | None = None,
     ) -> tuple[list[dict[str, object]], list[str]]:
         raw_max = container_rules.get("max")
         max_count = int(raw_max) if isinstance(raw_max, (int, str)) else 0
@@ -543,6 +552,14 @@ class ItemFactory:
         bundle_ids_used: list[str] = []
         chosen_affix_ids: set[str] = set()
 
+        def category_available(affix_id: str) -> bool:
+            entry = AFFIX_CATALOG.get(affix_id)
+            if max_attribute_affixes is None or entry is None or entry.group != "attributes":
+                return True
+            return (
+                sum(AFFIX_CATALOG[chosen].group == "attributes" for chosen in chosen_affix_ids) < max_attribute_affixes
+            )
+
         forced_pool = set(
             self._pool_for_item(
                 item_type,
@@ -553,8 +570,24 @@ class ItemFactory:
                 allowed_affix_ids=allowed_affix_ids,
             )
         )
+        if max_attribute_affixes is not None:
+            requested_ids = set(forced_affix_ids or [])
+            for bundle_id in forced_bundle_ids:
+                bundle = BUNDLE_CATALOG.get(bundle_id)
+                if bundle is not None:
+                    requested_ids.update(bundle.affix_ids)
+            requested_attributes = {
+                affix_id for affix_id in requested_ids & forced_pool if AFFIX_CATALOG[affix_id].group == "attributes"
+            }
+            if len(requested_attributes) > max_attribute_affixes:
+                raise ValueError("Player jewelry allows at most one primary attribute affix")
         for affix_id in forced_affix_ids or []:
-            if affix_id in chosen_affix_ids or affix_id not in forced_pool or len(filled) >= max_count:
+            if (
+                affix_id in chosen_affix_ids
+                or affix_id not in forced_pool
+                or len(filled) >= max_count
+                or not category_available(affix_id)
+            ):
                 continue
             entry = AFFIX_CATALOG.get(affix_id)
             if entry is None:
@@ -574,7 +607,7 @@ class ItemFactory:
                 continue
             added_from_bundle = False
             for affix_id in bundle.affix_ids:
-                if affix_id in chosen_affix_ids or len(filled) >= max_count:
+                if affix_id in chosen_affix_ids or len(filled) >= max_count or not category_available(affix_id):
                     continue
                 if allowed_affix_ids and affix_id not in allowed_affix_ids:
                     continue
@@ -595,12 +628,24 @@ class ItemFactory:
             candidates = [
                 b
                 for b in BUNDLE_CATALOG.values()
-                if b.size in allowed_bundle_sizes and self._bundle_matches_item(b, item_type, item_tags, item_tier)
+                if b.size in allowed_bundle_sizes
+                and self._bundle_matches_item(b, item_type, item_tags, item_tier)
+                and (
+                    max_attribute_affixes is None
+                    or (
+                        set(b.affix_ids) <= forced_pool
+                        and sum(
+                            AFFIX_CATALOG[affix_id].group == "attributes"
+                            for affix_id in chosen_affix_ids | set(b.affix_ids)
+                        )
+                        <= max_attribute_affixes
+                    )
+                )
             ]
             if candidates:
                 bundle = rng.choice(candidates)
                 for affix_id in bundle.affix_ids:
-                    if affix_id in chosen_affix_ids or len(filled) >= max_count:
+                    if affix_id in chosen_affix_ids or len(filled) >= max_count or not category_available(affix_id):
                         continue
                     if allowed_affix_ids and affix_id not in allowed_affix_ids:
                         continue
@@ -631,6 +676,7 @@ class ItemFactory:
                 chosen_affix_ids,
                 allowed_affix_ids=allowed_affix_ids,
             )
+            pool = [affix_id for affix_id in pool if category_available(affix_id)]
             if not pool:
                 break
             affix_id = rng.choice(pool)

@@ -16,8 +16,8 @@ from .bases.stalker import STALKER
 from .clans.base.clan import BASE_PACK
 
 WOLF_FAMILY = FamilyDTO(
+    text_id="wolf.family",
     id="wolf_pack",
-    name="Волки",
     bases=(
         CUB,
         RUNNER,

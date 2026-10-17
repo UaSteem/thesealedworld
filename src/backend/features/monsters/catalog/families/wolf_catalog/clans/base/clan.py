@@ -13,8 +13,8 @@ from .members.snapper import SNAPPER
 from .members.stalker import STALKER
 
 BASE_PACK = ClanDTO(
+    text_id="wolf.clan.base",
     id="wolf_pack.base",
-    name="Базовая волчья стая",
     members=(
         CUB,
         RUNNER,

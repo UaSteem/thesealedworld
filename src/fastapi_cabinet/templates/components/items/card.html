@@ -1,0 +1,26 @@
+{# Reusable item presentation. Expects `card` DTO; contains no catalog lookup or calculations. #}
+<article class="item-card">
+  <header class="item-card__header">
+    <div class="item-card__identity">
+      <p class="item-card__slot">{{ card.slot_label }}</p>
+      <h3 class="item-card__title">{{ card.title }}</h3>
+      <div class="item-card__badges"><span>{{ card.material_label }}</span><span>{{ card.rarity_label }}</span></div>
+    </div>
+    <div class="item-card__power"><strong>{{ card.power_value }}</strong><span>{{ card.power_label }}</span></div>
+  </header>
+  {% if card.description %}<p class="item-card__description">{{ card.description }}</p>{% endif %}
+  {% if card.properties %}
+  <dl class="item-card__properties">{% for row in card.properties %}<div><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div>{% endfor %}</dl>
+  {% endif %}
+  {% if card.bonuses %}
+  <div class="item-card__section"><h4>Бонусы снаряжения</h4>
+    <dl class="item-card__bonuses">{% for row in card.bonuses %}<div><dt>{{ row.label }}</dt><dd>{{ row.value }}</dd></div>{% endfor %}</dl>
+  </div>
+  {% endif %}
+  {% if card.effects %}<div class="item-card__section"><h4>Особые эффекты</h4><ul class="item-card__effects">{% for effect in card.effects %}<li>{{ effect }}</li>{% endfor %}</ul></div>{% endif %}
+  {% if card.skill_label %}<p class="item-card__skill">Навык: <strong>{{ card.skill_label }}</strong></p>{% endif %}
+  {% if card.technical %}<details class="item-card__technical">
+    <summary>Технические данные</summary>
+    <pre>{{ card.technical|tojson(indent=2) }}</pre>
+  </details>{% endif %}
+</article>

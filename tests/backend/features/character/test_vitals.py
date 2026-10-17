@@ -82,13 +82,15 @@ def test_monster_vitals_use_monster_profile_without_hp_regen():
 
     vitals = CharacterVitalsCalculator.build_initial_vitals(attributes, profile_key="monster:humanoid")
 
-    assert vitals.hp.max == _expected_hp_max(attributes.endurance)
-    assert vitals.hp.cur == _expected_hp_max(attributes.endurance)
+    assert vitals.hp.max == round(attributes.endurance * HP_PER_ENDURANCE_ATTRIBUTE)
+    assert vitals.hp.cur == round(attributes.endurance * HP_PER_ENDURANCE_ATTRIBUTE)
     assert vitals.hp.regen == 0.0
-    assert vitals.energy.max == _expected_energy_max(attributes.mental)
-    assert vitals.stamina.max == _expected_stamina_max(attributes.projection)
-    assert vitals.energy.regen == _expected_energy_regen(attributes.mental)
-    assert vitals.stamina.regen == _expected_stamina_regen(attributes.projection)
+    assert vitals.energy.max == round(attributes.mental * ENERGY_PER_CORE_ATTRIBUTE)
+    assert vitals.stamina.max == round(attributes.projection * CONCENTRATION_PER_SENSOR_ATTRIBUTE)
+    assert vitals.energy.regen == round(attributes.mental * ENERGY_REGEN_PER_CORE_ATTRIBUTE, 4)
+    assert vitals.stamina.regen == round(
+        CONCENTRATION_REGEN_BASE + attributes.projection * CONCENTRATION_REGEN_PER_SENSOR_ATTRIBUTE, 4
+    )
 
 
 def test_beast_monster_vitals_use_endurance_hp_like_other_monsters():
@@ -103,11 +105,11 @@ def test_beast_monster_vitals_use_endurance_hp_like_other_monsters():
 
     vitals = CharacterVitalsCalculator.build_initial_vitals(attributes, profile_key="monster:beast")
 
-    assert vitals.hp.max == _expected_hp_max(attributes.endurance)
-    assert vitals.hp.cur == _expected_hp_max(attributes.endurance)
+    assert vitals.hp.max == round(attributes.endurance * HP_PER_ENDURANCE_ATTRIBUTE)
+    assert vitals.hp.cur == round(attributes.endurance * HP_PER_ENDURANCE_ATTRIBUTE)
     assert vitals.hp.regen == 0.0
-    assert vitals.energy.max == _expected_energy_max(attributes.mental)
-    assert vitals.stamina.max == _expected_stamina_max(attributes.projection)
+    assert vitals.energy.max == round(attributes.mental * ENERGY_PER_CORE_ATTRIBUTE)
+    assert vitals.stamina.max == round(attributes.projection * CONCENTRATION_PER_SENSOR_ATTRIBUTE)
 
 
 def test_player_vitals_use_endurance_hp_without_armor_profile_scaling():

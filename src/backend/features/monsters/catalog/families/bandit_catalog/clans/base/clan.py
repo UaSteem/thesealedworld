@@ -14,9 +14,8 @@ from .members.bandit_thug import BANDIT_THUG
 from .members.bandit_warlord import BANDIT_WARLORD
 
 BASE_CLAN = ClanDTO(
+    text_id="bandit.clan.base",
     id="bandit_gang.base",
-    name="Базовая банда",
-    description="",
     normal_spawn=True,
     features=(),
     members=(

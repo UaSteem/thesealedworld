@@ -14,9 +14,8 @@ from .members.swarm_rat import SWARM_RAT
 from .members.tunnel_rat import TUNNEL_RAT
 
 BASE_CLAN = ClanDTO(
+    text_id="rat.clan.base",
     id="rat_swarm.base",
-    name="Базовый крысиный клан",
-    description="",
     normal_spawn=True,
     features=(),
     members=(

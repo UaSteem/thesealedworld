@@ -16,8 +16,9 @@ _OPS: dict[type[ast.AST], Callable[..., Any]] = {
     ast.UAdd: operator.pos,
 }
 
-COMBAT_MATH_VERSION = "combat-math:2026-06-01.1"
+COMBAT_MATH_VERSION = "combat-math:2026-10-17.linear-monsters"
 ATTRIBUTE_EFFECTIVE_QUADRATIC_DIVISOR = 11.0
+_LINEAR_ATTRIBUTE_PROFILES = frozenset({"monster:humanoid", "monster:beast"})
 
 
 def _simple_eval(expression: str) -> float:
@@ -52,8 +53,9 @@ class StatsWaterfallCalculator:
     _SOURCE_TO_TARGET_RULES: dict[str, dict[str, list[dict[str, Any]]]] = {}
 
     @staticmethod
-    def effective_attribute_value(value: float) -> float:
-        if value <= 0:
+    def effective_attribute_value(value: float, profile_key: str | None = None) -> float:
+        """Monsters use final attributes directly; player profiles keep their growth curve."""
+        if profile_key in _LINEAR_ATTRIBUTE_PROFILES or value <= 0:
             return value
         return value * value / ATTRIBUTE_EFFECTIVE_QUADRATIC_DIVISOR
 
@@ -174,7 +176,7 @@ class StatsWaterfallCalculator:
         rules_map = StatsWaterfallCalculator._get_rules(profile_key)
 
         for attr_name, attr_value in attributes.items():
-            effective_attr_value = StatsWaterfallCalculator.effective_attribute_value(attr_value)
+            effective_attr_value = StatsWaterfallCalculator.effective_attribute_value(attr_value, profile_key)
             rules = rules_map.get(attr_name, [])
             for rule in rules:
                 target = rule["target"]

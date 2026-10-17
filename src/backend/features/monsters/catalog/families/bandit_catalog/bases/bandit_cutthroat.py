@@ -1,3 +1,4 @@
+from src.backend.features.monsters.catalog.contracts import ImageAssetReference
 from src.backend.features.monsters.catalog.nested_contracts import (
     BaseLoadoutDTO,
     BaseStatsDTO,
@@ -40,4 +41,10 @@ BANDIT_CUTTHROAT = MemberBaseDTO(
     ),
     tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
     spawn_weight=600,
+    default_image=ImageAssetReference(
+        asset_id="bandit_gang.bandit_cutthroat",
+        source_path="assets/monster_defaults/bandit_gang/png/bandit_cutthroat-v1.png",
+        review_status="accepted",
+        display_mirror=False,
+    ),
 )

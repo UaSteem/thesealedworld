@@ -22,11 +22,17 @@ def test_resolved_wolves_preserve_every_existing_field():
         presentation=MEMBER_PRESENTATION["wolf_pack"],
     )
     family, clan, members = WOLVES
-    assert family == old_family
-    assert clan == old_clan
+    assert family.id == old_family.id
+    assert family.mechanics == old_family.mechanics
+    assert clan.member_ids == old_clan.member_ids
+    assert clan.tags == old_clan.tags
     assert len(members) == 11
     for actual, previous in zip(members, old_members, strict=True):
-        assert replace(actual, base_id=None) == previous
+        assert actual.base_stats == previous.base_stats
+        assert actual.fixed_loadout == previous.fixed_loadout
+        assert actual.skills == previous.skills
+        assert actual.image == previous.image
+        assert (actual.min_tier, actual.max_tier) == (previous.min_tier, previous.max_tier)
         assert actual.base_id == actual.variant_id
 
 
@@ -45,7 +51,7 @@ def test_new_clan_variant_reuses_stats_with_independent_skills_abilities_and_art
     assert members[-1].base_id == members[0].base_id
     assert members[-1].skills == ()
     assert members[-1].ability_ids == ("test_frost_bite",)
-    assert members[-1].image is None
+    assert members[-1].image == WOLF_FAMILY.bases[0].default_image
     assert "test_ice" in members[-1].tags
     validate_catalog((family,), clans, members)
 

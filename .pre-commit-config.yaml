@@ -21,7 +21,8 @@ repos:
         args: [--fix]
         exclude: ^archive/
       - id: ruff-format
-        exclude: ^archive/
+        # Prepared payloads are literal authoring output with byte hashes in manifests.
+        exclude: ^(archive/|src/backend/features/monsters/catalog/(equipment_library/prepared/|families/[^/]+/equipment/prepared/))
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.44.0
@@ -33,6 +34,8 @@ repos:
     rev: 1.8.3
     hooks:
       - id: bandit
+        # Retained source archives are historical data, not executable application code.
+        exclude: ^archive/
         args: ["-c", "pyproject.toml"]
         additional_dependencies: ["bandit[toml]"]
 

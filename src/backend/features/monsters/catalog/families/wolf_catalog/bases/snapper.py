@@ -1,3 +1,4 @@
+from src.backend.features.monsters.catalog.contracts import ImageAssetReference
 from src.backend.features.monsters.catalog.nested_contracts import (
     BaseLoadoutDTO,
     BaseStatsDTO,
@@ -24,4 +25,12 @@ SNAPPER = MemberBaseDTO(
     ),
     tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
     spawn_weight=50,
+    default_image=ImageAssetReference(
+        **{
+            "asset_id": "wolf_pack.snapper",
+            "source_path": "assets/monster_defaults/wolf_pack/png/snapper-v1.png",
+            "review_status": "review_ready",
+            "display_mirror": False,
+        }
+    ),
 )

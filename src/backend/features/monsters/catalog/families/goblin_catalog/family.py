@@ -15,11 +15,11 @@ from .bases.goblin_tinkerer import GOBLIN_TINKERER
 from .bases.goblin_trapmaster import GOBLIN_TRAPMASTER
 from .bases.scrap_king import SCRAP_KING
 from .clans.base.clan import BASE_CLAN
+from .equipment import GOBLIN_EQUIPMENT
 
 GOBLIN_FAMILY = FamilyDTO(
+    text_id="goblin.family",
     id="goblin_tribe",
-    name="Гоблины",
-    description="",
     bases=(
         GOBLIN_SNEAK,
         GOBLIN_SCAVENGER,
@@ -35,6 +35,7 @@ GOBLIN_FAMILY = FamilyDTO(
         SCRAP_KING,
     ),
     clans=(BASE_CLAN,),
+    equipment=GOBLIN_EQUIPMENT,
     traits=FamilyTraitsDTO(
         resource_version=1.4,
         archetype="humanoid",

@@ -1,0 +1,15 @@
+<aside class="monster-stats" aria-label="Итоговые характеристики монстра">
+  <header class="monster-stats__header"><h3>Характеристики бойца</h3><span>Тир {{ equipment.tier }}</span></header>
+  <p class="fc-muted">Характеристики основы ×{{ ('%g'|format(equipment.stats_preview.tier_multiplier))|replace('.', ',') }} для выбранного тира. Затем применяются предметы комплекта.</p>
+  {% for group in equipment.stats_preview.groups %}
+  <section class="monster-stats__group">
+    <h4>{{ group.label }}</h4>
+    <table class="monster-stats__table">
+      <thead><tr><th scope="col">Параметр</th>{% if group.key == 'attributes' %}<th scope="col">Основа</th>{% endif %}<th scope="col">{{ 'На тире' if group.key == 'attributes' else 'Без вещей' }}</th><th scope="col">Предметы</th><th scope="col">Итог</th></tr></thead>
+      <tbody>{% for row in group.rows %}<tr><th scope="row">{{ row.label }}</th>{% if group.key == 'attributes' %}<td>{{ row.catalog_value or '—' }}</td>{% endif %}<td>{{ row.base_value }}</td><td class="monster-stats__delta">{{ row.delta_value }}</td><td class="monster-stats__total">{{ row.equipped_value }}</td></tr>{% endfor %}</tbody>
+    </table>
+  </section>
+  {% endfor %}
+  {% if equipment.stats_preview.notes %}<ul class="monster-stats__notes">{% for note in equipment.stats_preview.notes %}<li>{{ note }}</li>{% endfor %}</ul>{% endif %}
+  <details class="item-card__technical"><summary>Технические данные расчёта</summary><pre>{{ equipment.stats_preview.technical|tojson(indent=2) }}</pre></details>
+</aside>

@@ -14,9 +14,8 @@ from .members.goblin_trapmaster import GOBLIN_TRAPMASTER
 from .members.scrap_king import SCRAP_KING
 
 BASE_CLAN = ClanDTO(
+    text_id="goblin.clan.base",
     id="goblin_tribe.base",
-    name="Базовый гоблинский клан",
-    description="",
     normal_spawn=True,
     features=(),
     members=(

@@ -121,3 +121,17 @@ Humanoid/item-using families should use item/equipment drop profiles. Beast and 
 `catalog/search.py` owns `CatalogSearchService` and immutable `MonsterSearchFilters`. Import from `monsters.catalog` or `monsters.public`. Search intersects ID/tag filters and returns deterministic immutable members; it does not perform random selection, party assembly or instance creation. Empty filters are unrestricted; system clans require explicit inclusion.
 
 `catalog/bootstrap.py` projects presentation-only metadata into `bootstrap_contracts.py` DTOs. The protected GET `/api/admin/monsters/catalog/bootstrap` supports content-derived version/section hashes and ETag revalidation. It omits internal source paths and numerical mechanics. This does not wire the frontend cache or replace game_catalog bootstrap. Never expose service credentials to browser code. See `docs/planning/tasks/monster_catalog_search.md`.
+
+## Authored texts and artwork inheritance
+
+Four starter families use text_id references to `catalog/resources/texts.py` and its locale-keyed LANGUAGE_TEXTS. Write new prose, never import archived generated narratives. Add translations as data keyed by locale and stable text IDs; resolve through `catalog/texts.py` with mandatory ru fallback. Inspection/bootstrap accept locale; bootstrap schema2 hashes include locale metadata. Anchors keep their historical definitions.
+
+Current accepted art is on MemberBaseDTO.default_image; MemberVariantDTO.image is optional unique artwork. resolve_family chooses variant art before basis default and exposes image_source. Do not duplicate fallback logic in clients. Do not change numeric stats, loadout, skills or tier availability while editing prose/art.
+
+Tier projection is a separate next step, not implemented by localization. Old attributes had no implicit tier growth without an explicit profile; current availability remains unchanged. See `docs/planning/tasks/monster_texts_and_art.md` and `monster_tier_projection_design.md`.
+
+## Family equipment references (goblins first)
+
+Goblins own equipment entries and reusable sets under `families/goblin_catalog/equipment/`. These are references to existing item base IDs, not duplicate item mechanics. `equipment_contracts.py` validates references and slot compatibility through the public ItemCatalogService facade.
+
+A goblin basis uses equipment_set_id instead of inline loadout. ClanDTO.equipment_overrides maps basis IDs to sets owned by the same family; this is full replacement, not layered merging. resolve_family produces the unchanged fixed_loadout plus equipment_set_id/equipment_source metadata for inspection/Studio. Other families retain inline loadouts. Do not add tier scaling, new affixes or change base stats as part of equipment organization. See `docs/planning/tasks/goblin_equipment_catalog.md`.

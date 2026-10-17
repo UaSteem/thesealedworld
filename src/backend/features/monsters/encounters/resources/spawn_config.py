@@ -3,6 +3,8 @@ spawn_config.py
 Глобальная конфигурация распределения популяций и мутаций.
 """
 
+from src.backend.features.monsters.instances.runtime.tier_scaling import TIER_SCALING_CONFIG as TIER_SCALING_CONFIG
+
 # 1. НАСЕЛЕНИЕ БИОМОВ (ОТКРЫТЫЙ МИР)
 BIOME_FAMILIES: dict[str, set[str]] = {
     "broken_road": {"bandit_gang", "goblin_tribe", "rat_swarm"},
@@ -158,16 +160,4 @@ CONTEXT_HASH_TAGS_WHITELIST: set[str] = MUTATION_TAGS_WHITELIST | {
     "wolf_pack",
     "bandit_gang",
     "goblin_tribe",
-}
-
-# 4. КОНФИГУРАЦИЯ СКАЛИРОВАНИЯ ОТ ТИРА
-TIER_SCALING_CONFIG: dict[int, dict[str, float]] = {
-    0: {"stat_mult": 1.0},
-    1: {"stat_mult": 1.2},
-    2: {"stat_mult": 1.5},
-    3: {"stat_mult": 2.0},
-    4: {"stat_mult": 3.0},
-    5: {"stat_mult": 4.5},
-    6: {"stat_mult": 6.5},
-    7: {"stat_mult": 10.0},
 }

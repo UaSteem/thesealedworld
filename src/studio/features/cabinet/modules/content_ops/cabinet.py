@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from secrets import choice
 from typing import Any, ClassVar
+from urllib.parse import urlencode
 
 import httpx
 from fastapi import Request
-from starlette.responses import Response
+from starlette.responses import RedirectResponse, Response
 
 from fastapi_cabinet import CabinetAdmin, ListWidget, MetricWidget, SidebarItem, cabinet_site
 from fastapi_cabinet.contracts.widgets import ListWidgetMap, MetricWidgetMap, TableColumnMap, TableWidgetMap
@@ -15,6 +17,7 @@ from src.studio.integrations.backend_api.catalog_monsters import CatalogClan, Ca
 from src.studio.settings import settings as studio_settings
 
 _BASE = "/admin/content-ops"
+_PREPARED_FAMILIES = frozenset({"goblin_tribe", "wolf_pack", "rat_swarm", "bandit_gang"})
 
 _ATTRIBUTE_LABELS = {
     "strength": "Сила",
@@ -190,6 +193,7 @@ class ContentOpsAdmin(CabinetAdmin):
         "monster-browser": ("GET", "handle_monster_browser"),
         "monster-detail": ("GET", "handle_monster_detail"),
         "monster-member-detail": ("GET", "handle_monster_member_detail"),
+        "monster-random": ("GET", "handle_monster_random"),
     }
     providers: ClassVar = {
         "content_ops.overview": _overview_provider,
@@ -225,6 +229,34 @@ class ContentOpsAdmin(CabinetAdmin):
     async def handle_monster_member_detail(self, request: Request) -> Response:
         clan, error = await _load_clan(request, request.query_params.get("clan_id", ""))
         member = _find_member(clan, request.query_params.get("member_id", ""))
+        equipment, equipment_error = None, ""
+        tier = member.min_tier if member else 0
+        if member:
+            try:
+                tier = int(request.query_params.get("tier", str(tier)))
+                if not member.min_tier <= tier <= member.max_tier:
+                    raise ValueError
+            except ValueError:
+                tier = member.min_tier
+                equipment_error = "Недоступный тир. Показан минимальный доступный тир."
+            if member.family_id in _PREPARED_FAMILIES:
+                try:
+                    player_attributes = None
+                    if any(f"player_{key}" in request.query_params for key in _ATTRIBUTE_LABELS):
+                        player_attributes = {
+                            key: int(request.query_params[f"player_{key}"]) for key in _ATTRIBUTE_LABELS
+                        }
+                        if any(not 1 <= value <= 500 for value in player_attributes.values()):
+                            raise ValueError("Invalid test attributes")
+                    equipment = await _api(request).get_equipment(
+                        member.member_id,
+                        tier,
+                        player_attributes=player_attributes,
+                    )
+                except (ValueError, KeyError):
+                    equipment_error = "Для тестового игрока нужны все девять характеристик: целые числа от 1 до 500."
+                except (httpx.HTTPStatusError, httpx.RequestError):
+                    equipment_error = "Комплект недоступен. Проверьте выбранный источник и доступность backend."
         return _render_custom(
             self,
             request,
@@ -235,7 +267,43 @@ class ContentOpsAdmin(CabinetAdmin):
                 "error": error,
                 "attribute_labels": _ATTRIBUTE_LABELS,
                 "slot_labels": _SLOT_LABELS,
+                "equipment": equipment,
+                "equipment_error": equipment_error,
+                "selected_tier": tier,
             },
+        )
+
+    async def handle_monster_random(self, request: Request) -> Response:
+        browser = await _load_monster_browser_context(request)
+        clan_id = request.query_params.get("clan_id")
+        members = [
+            member
+            for clan in browser.clans
+            for member in clan.members
+            if member.family_id in _PREPARED_FAMILIES and (not clan_id or member.clan_id == clan_id)
+        ]
+        if not members:
+            return _render_custom(
+                self,
+                request,
+                "cabinet/content_ops_monster_detail.html",
+                {
+                    "clan": None,
+                    "error": browser.error or "Нет монстров с готовыми комплектами для просмотра.",
+                },
+            )
+        member = choice(members)
+        tier = choice(list(range(member.min_tier, member.max_tier + 1)))
+        return RedirectResponse(
+            f"{_BASE}/monster-member-detail?"
+            + urlencode(
+                {
+                    "clan_id": member.clan_id,
+                    "member_id": member.member_id,
+                    "tier": tier,
+                }
+            ),
+            status_code=303,
         )
 
 

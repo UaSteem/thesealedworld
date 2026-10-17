@@ -1,3 +1,4 @@
+from src.backend.features.monsters.catalog.contracts import ImageAssetReference
 from src.backend.features.monsters.catalog.nested_contracts import (
     BaseLoadoutDTO,
     BaseStatsDTO,
@@ -40,4 +41,10 @@ BANDIT_CAPTAIN = MemberBaseDTO(
     ),
     tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
     spawn_weight=150,
+    default_image=ImageAssetReference(
+        asset_id="bandit_gang.bandit_captain",
+        source_path="assets/monster_defaults/bandit_gang/png/bandit_captain-v1.png",
+        review_status="accepted",
+        display_mirror=True,
+    ),
 )

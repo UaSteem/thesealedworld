@@ -110,7 +110,7 @@ def test_humanoid_monster_attribute_profile_uses_endurance_hp_without_hp_regen()
 
     calculated, _ = StatsWaterfallCalculator.calculate_waterfall(raw)
 
-    assert calculated["hp"] == _approx_effective(_effective(16) * 3.0)
+    assert calculated["hp"] == _approx_effective(16 * 3.0)
     assert calculated.get("hp_regen", 0.0) == 0.0
 
 
@@ -128,7 +128,7 @@ def test_beast_monster_attribute_profile_uses_endurance_hp_without_hp_regen() ->
 
     calculated, _ = StatsWaterfallCalculator.calculate_waterfall(raw)
 
-    assert calculated["hp"] == _approx_effective(_effective(16) * 3.0)
+    assert calculated["hp"] == _approx_effective(16 * 3.0)
     assert calculated.get("hp_regen", 0.0) == 0.0
 
 

@@ -27,6 +27,10 @@ from src.backend.features.monsters.catalog.registry import get_family_config, ge
 from src.backend.features.monsters.dto.generation import GeneratedClan, MonsterGenerationContext
 from src.backend.features.monsters.instances.runtime.combat_actor_input import MonsterCombatActorInputBuilder
 
+# Ordinary monsters cannot receive HP-healing feints; elites and bosses retain them.
+_ORDINARY_BASIC_FEINTS = [key for key in BASIC_FEINTS if key != "second_breath"]
+_ORDINARY_SHIELD_FEINTS = [key for key in SHIELD_TACTICAL_FEINTS if key != "shield_blood_mend"]
+
 
 class FakeRepository:
     async def get_clan_by_unique_hash(self, unique_hash: str):
@@ -59,9 +63,9 @@ class FakeItemGeneration:
             related_skill = {
                 "rat_bite_claws": "skill_fencing",
                 "rat_light_hide": "skill_light_armor",
-                    "wolf_bite_claws": "skill_fencing",
-                    "wolf_hide": "skill_light_armor",
-                }.get(str(natural_key))
+                "wolf_bite_claws": "skill_fencing",
+                "wolf_hide": "skill_light_armor",
+            }.get(str(natural_key))
             if related_skill is None:
                 related_skill = {
                     "knife": "skill_fencing",
@@ -99,9 +103,10 @@ class FakeItemGeneration:
                         "accessory"
                         if request.target_slot == "amulet"
                         else (
-                        "shield"
-                        if request.target_slot == "off_hand" and request.base_id in {"buckler", "shield", "kite_shield"}
-                        else ("weapon" if request.target_slot in {"main_hand", "off_hand", "two_hand"} else "armor")
+                            "shield"
+                            if request.target_slot == "off_hand"
+                            and request.base_id in {"buckler", "shield", "kite_shield"}
+                            else ("weapon" if request.target_slot in {"main_hand", "off_hand", "two_hand"} else "armor")
                         )
                     ),
                     slot=str(request.target_slot),
@@ -643,7 +648,6 @@ def test_wolf_pack_uses_natural_loadouts_for_current_pack_styles() -> None:
                 "chest_armor": "wolf_heavy_hide",
             },
         ),
-
     }
     required_skills = {
         "dual": {"skill_fencing", "skill_dual_wield"},
@@ -767,7 +771,11 @@ async def test_rat_beast_profile_builds_combat_ready_context() -> None:
     assert combat["loadout"]["equipment_layout"]["chest_armor"]
     assert combat["loadout"]["equipment_layout"]["amulet"]
     assert combat["math_model"]["modifiers"]["magic_armor"]["base"] > 0
-    assert combat["loadout"]["known_feints"] == [*BASIC_FEINTS, *FENCING_WEAPON_FEINTS, *DUAL_WIELD_TACTICAL_FEINTS]
+    assert combat["loadout"]["known_feints"] == [
+        *_ORDINARY_BASIC_FEINTS,
+        *FENCING_WEAPON_FEINTS,
+        *DUAL_WIELD_TACTICAL_FEINTS,
+    ]
     assert combat["loadout"]["known_abilities"] == []
     assert combat["skills"]["skill_fencing"] == pytest.approx(0.1429)
     assert snapshot["status"]["hp"]["max"] > 0
@@ -780,7 +788,7 @@ async def test_rat_beast_profile_builds_combat_ready_context() -> None:
         (
             "pack_rat",
             {"main_hand": "skill_fencing", "off_hand": "skill_shield_mastery"},
-            [*BASIC_FEINTS, *FENCING_WEAPON_FEINTS, *SHIELD_TACTICAL_FEINTS],
+            [*_ORDINARY_BASIC_FEINTS, *FENCING_WEAPON_FEINTS, *_ORDINARY_SHIELD_FEINTS],
         ),
         (
             "screecher",
@@ -818,7 +826,7 @@ async def test_rat_tactical_variants_build_expected_combat_layouts(
                 "off_hand": "skill_fencing",
                 "tactical_style": "skill_dual_wield",
             },
-            [*BASIC_FEINTS, *FENCING_WEAPON_FEINTS, *DUAL_WIELD_TACTICAL_FEINTS],
+            [*_ORDINARY_BASIC_FEINTS, *FENCING_WEAPON_FEINTS, *DUAL_WIELD_TACTICAL_FEINTS],
         ),
         (
             "pack_leader",
@@ -862,7 +870,11 @@ async def test_bandit_humanoid_loadout_resolves_into_modifiers_and_layout() -> N
     assert "family:bandit_gang" not in combat["math_model"]["modifiers"]["accuracy"]["source"]
     assert combat["math_model"]["modifiers"]["armor"]["base"] > 0
     assert combat["skills"]["skill_macing"] == pytest.approx(0.1429)
-    assert combat["loadout"]["known_feints"] == [*BASIC_FEINTS, *MACING_WEAPON_FEINTS, *SHIELD_TACTICAL_FEINTS]
+    assert combat["loadout"]["known_feints"] == [
+        *_ORDINARY_BASIC_FEINTS,
+        *MACING_WEAPON_FEINTS,
+        *_ORDINARY_SHIELD_FEINTS,
+    ]
 
 
 @pytest.mark.unit

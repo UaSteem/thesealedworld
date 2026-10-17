@@ -17,9 +17,8 @@ from .bases.tunnel_rat import TUNNEL_RAT
 from .clans.base.clan import BASE_CLAN
 
 RAT_FAMILY = FamilyDTO(
+    text_id="rat.family",
     id="rat_swarm",
-    name="Крысы",
-    description="",
     bases=(
         SEWER_RAT,
         SCAVENGER_RAT,

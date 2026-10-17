@@ -17,9 +17,8 @@ from .bases.bandit_warlord import BANDIT_WARLORD
 from .clans.base.clan import BASE_CLAN
 
 BANDIT_FAMILY = FamilyDTO(
+    text_id="bandit.family",
     id="bandit_gang",
-    name="Бандиты",
-    description="",
     bases=(
         BANDIT_THUG,
         BANDIT_POACHER,

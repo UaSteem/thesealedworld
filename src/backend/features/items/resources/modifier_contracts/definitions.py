@@ -105,5 +105,10 @@ MODIFIER_CONTRACT_DEFINITIONS: tuple[ModifierContractDTO, ...] = (
     _contract("endurance_add", "endurance", "attribute", default_layer="attributes", tags=("attribute",)),
     _contract("perception_add", "perception", "attribute", default_layer="attributes", tags=("attribute",)),
     _contract("agility_add", "agility", "attribute", default_layer="attributes", tags=("attribute",)),
+    _contract("intellect_add", "intellect", "attribute", default_layer="attributes", tags=("attribute",)),
+    _contract("memory_add", "memory", "attribute", default_layer="attributes", tags=("attribute",)),
+    _contract("mental_add", "mental", "attribute", default_layer="attributes", tags=("attribute",)),
+    _contract("projection_add", "projection", "attribute", default_layer="attributes", tags=("attribute",)),
+    _contract("prediction_add", "prediction", "attribute", default_layer="attributes", tags=("attribute",)),
     _contract("luck_add", "luck", "percent", default_layer="world", tags=("world", "utility", "pending")),
 )

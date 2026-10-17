@@ -235,6 +235,10 @@ class MemberDefinition:
     mechanics: Mapping[str, Any]
     ability_ids: tuple[str, ...] = ()
     base_id: str | None = None
+    text_id: str | None = None
+    image_source: Literal["default_base", "variant_override"] | None = None
+    equipment_set_id: str | None = None
+    equipment_source: Literal["base_set", "clan_override"] | None = None
 
     def __post_init__(self):
         object.__setattr__(self, "ability_ids", tuple(self.ability_ids))
@@ -264,6 +268,7 @@ class ClanDefinition:
     member_ids: tuple[str, ...]
     normal_spawn: bool
     features: tuple[str, ...] = ()
+    text_id: str | None = None
 
     def __post_init__(self):
         object.__setattr__(self, "tags", frozenset(self.tags))
@@ -279,6 +284,7 @@ class FamilyDefinition:
     tags: frozenset[str]
     clan_ids: tuple[str, ...]
     mechanics: Mapping[str, Any]
+    text_id: str | None = None
 
     def __post_init__(self):
         object.__setattr__(self, "tags", frozenset(self.tags))

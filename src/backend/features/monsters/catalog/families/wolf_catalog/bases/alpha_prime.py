@@ -1,3 +1,4 @@
+from src.backend.features.monsters.catalog.contracts import ImageAssetReference
 from src.backend.features.monsters.catalog.nested_contracts import (
     BaseLoadoutDTO,
     BaseStatsDTO,
@@ -27,4 +28,12 @@ ALPHA_PRIME = MemberBaseDTO(
     ),
     tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
     spawn_weight=600,
+    default_image=ImageAssetReference(
+        **{
+            "asset_id": "wolf_pack.fenrir",
+            "source_path": "assets/monster_defaults/wolf_pack/png/fenrir-v1.png",
+            "review_status": "accepted",
+            "display_mirror": False,
+        }
+    ),
 )

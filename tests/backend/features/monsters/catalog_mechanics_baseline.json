@@ -1,0 +1,2634 @@
+{
+  "rat_swarm.base.sewer_rat": {
+    "mechanics": {
+      "id": "sewer_rat",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [
+        "young",
+        "weak"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 11,
+        "agility": 13,
+        "endurance": 12,
+        "intellect": 7,
+        "memory": 6,
+        "mental": 9,
+        "perception": 10,
+        "projection": 5,
+        "prediction": 8
+      },
+      "fixed_loadout": {
+        "main_hand": "rat_bite_claws",
+        "off_hand": "rat_offhand_bite",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "rat_light_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "rat_plague_gland",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "rat_swarm.sewer_rat"
+  },
+  "rat_swarm.base.scavenger_rat": {
+    "mechanics": {
+      "id": "scavenger_rat",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [
+        "young",
+        "scavenger",
+        "hoarder"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 12,
+        "agility": 13,
+        "endurance": 11,
+        "intellect": 7,
+        "memory": 6,
+        "mental": 9,
+        "perception": 10,
+        "projection": 5,
+        "prediction": 8
+      },
+      "fixed_loadout": {
+        "main_hand": "rat_bite_claws",
+        "off_hand": "rat_offhand_bite",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "rat_light_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "rat_plague_gland",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "rat_swarm.scavenger_rat"
+  },
+  "rat_swarm.base.swarm_rat": {
+    "mechanics": {
+      "id": "swarm_rat",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [
+        "young",
+        "swarm"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 11,
+        "agility": 13,
+        "endurance": 12,
+        "intellect": 7,
+        "memory": 6,
+        "mental": 9,
+        "perception": 10,
+        "projection": 5,
+        "prediction": 8
+      },
+      "fixed_loadout": {
+        "main_hand": "rat_bite_claws",
+        "off_hand": "rat_offhand_bite",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "rat_light_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "rat_plague_gland",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "rat_swarm.swarm_rat"
+  },
+  "rat_swarm.base.tunnel_rat": {
+    "mechanics": {
+      "id": "tunnel_rat",
+      "role": "veteran",
+      "spawn_weight": 50,
+      "extra_tags": [
+        "digger",
+        "stealth"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 12,
+        "agility": 14,
+        "endurance": 13,
+        "intellect": 8,
+        "memory": 7,
+        "mental": 10,
+        "perception": 11,
+        "projection": 6,
+        "prediction": 9
+      },
+      "fixed_loadout": {
+        "main_hand": "rat_veteran_claws",
+        "off_hand": "rat_offhand_bite",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "rat_medium_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "rat_plague_gland",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_medium_armor"
+      ],
+      "member_model": null
+    },
+    "image": "rat_swarm.tunnel_rat"
+  },
+  "rat_swarm.base.pack_rat": {
+    "mechanics": {
+      "id": "pack_rat",
+      "role": "veteran",
+      "spawn_weight": 50,
+      "extra_tags": [
+        "pack_tactics",
+        "flanker"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 13,
+        "agility": 12,
+        "endurance": 14,
+        "intellect": 9,
+        "memory": 7,
+        "mental": 10,
+        "perception": 11,
+        "projection": 6,
+        "prediction": 8
+      },
+      "fixed_loadout": {
+        "main_hand": "rat_veteran_claws",
+        "off_hand": "rat_bone_growth",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "rat_light_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "rat_plague_gland",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_shield_mastery",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "rat_swarm.pack_rat"
+  },
+  "rat_swarm.base.screecher": {
+    "mechanics": {
+      "id": "screecher",
+      "role": "veteran",
+      "spawn_weight": 50,
+      "extra_tags": [
+        "support",
+        "alarm"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 11,
+        "agility": 14,
+        "endurance": 12,
+        "intellect": 9,
+        "memory": 7,
+        "mental": 10,
+        "perception": 13,
+        "projection": 6,
+        "prediction": 8
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "rat_poison_spit",
+        "head_armor": null,
+        "chest_armor": "rat_medium_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "rat_plague_gland",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": "rat_poison_glands"
+      },
+      "skills": [
+        "skill_archery",
+        "skill_ranged_combat",
+        "skill_medium_armor"
+      ],
+      "member_model": null
+    },
+    "image": "rat_swarm.screecher"
+  },
+  "rat_swarm.base.burrow_guard": {
+    "mechanics": {
+      "id": "burrow_guard",
+      "role": "elite",
+      "spawn_weight": 150,
+      "extra_tags": [
+        "guardian",
+        "defender"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 14,
+        "agility": 13,
+        "endurance": 15,
+        "intellect": 10,
+        "memory": 9,
+        "mental": 12,
+        "perception": 11,
+        "projection": 8,
+        "prediction": 7
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "rat_poison_spit",
+        "head_armor": null,
+        "chest_armor": "rat_medium_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "rat_plague_gland",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": "rat_poison_glands"
+      },
+      "skills": [
+        "skill_archery",
+        "skill_ranged_combat",
+        "skill_medium_armor",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "rat_swarm.burrow_guard"
+  },
+  "rat_swarm.base.ironfang": {
+    "mechanics": {
+      "id": "ironfang",
+      "role": "elite",
+      "spawn_weight": 150,
+      "extra_tags": [
+        "fangs",
+        "fighter"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 15,
+        "agility": 14,
+        "endurance": 13,
+        "intellect": 10,
+        "memory": 9,
+        "mental": 11,
+        "perception": 12,
+        "projection": 7,
+        "prediction": 8
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "rat_crushing_bite",
+        "head_armor": null,
+        "chest_armor": "rat_heavy_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "rat_plague_gland",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_macing",
+        "skill_two_handed",
+        "skill_heavy_armor",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "rat_swarm.ironfang"
+  },
+  "rat_swarm.base.heavy_rat": {
+    "mechanics": {
+      "id": "heavy_rat",
+      "role": "elite",
+      "spawn_weight": 150,
+      "extra_tags": [
+        "heavy",
+        "strong"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 14,
+        "agility": 12,
+        "endurance": 15,
+        "intellect": 10,
+        "memory": 9,
+        "mental": 13,
+        "perception": 11,
+        "projection": 8,
+        "prediction": 7
+      },
+      "fixed_loadout": {
+        "main_hand": "rat_elite_claws",
+        "off_hand": "rat_spiked_growth",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "rat_medium_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "rat_plague_gland",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_shield_mastery",
+        "skill_medium_armor",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "rat_swarm.heavy_rat"
+  },
+  "rat_swarm.base.rat_brute": {
+    "mechanics": {
+      "id": "rat_brute",
+      "role": "boss",
+      "spawn_weight": 600,
+      "extra_tags": [
+        "brute",
+        "strong"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 21,
+        "agility": 19,
+        "endurance": 22,
+        "intellect": 15,
+        "memory": 14,
+        "mental": 20,
+        "perception": 18,
+        "projection": 17,
+        "prediction": 16
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "rat_crushing_bite",
+        "head_armor": null,
+        "chest_armor": "rat_heavy_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "rat_plague_gland",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_macing",
+        "skill_two_handed",
+        "skill_heavy_armor",
+        "skill_tactics",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "rat_swarm.rat_brute"
+  },
+  "rat_swarm.base.brood_alpha": {
+    "mechanics": {
+      "id": "brood_alpha",
+      "role": "boss",
+      "spawn_weight": 600,
+      "extra_tags": [
+        "leader",
+        "alpha",
+        "tactician"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 20,
+        "agility": 22,
+        "endurance": 21,
+        "intellect": 17,
+        "memory": 15,
+        "mental": 18,
+        "perception": 19,
+        "projection": 16,
+        "prediction": 14
+      },
+      "fixed_loadout": {
+        "main_hand": "rat_boss_claws",
+        "off_hand": "rat_spiked_growth",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "rat_heavy_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "rat_plague_gland",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_shield_mastery",
+        "skill_heavy_armor",
+        "skill_tactics",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "rat_swarm.brood_alpha"
+  },
+  "rat_swarm.base.rat_king": {
+    "mechanics": {
+      "id": "rat_king",
+      "role": "boss",
+      "spawn_weight": 600,
+      "extra_tags": [
+        "king",
+        "hive_mind",
+        "summoner"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 21,
+        "agility": 15,
+        "endurance": 22,
+        "intellect": 17,
+        "memory": 16,
+        "mental": 20,
+        "perception": 19,
+        "projection": 18,
+        "prediction": 14
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "rat_poison_spit",
+        "head_armor": null,
+        "chest_armor": "rat_heavy_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "rat_plague_gland",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": "rat_poison_glands"
+      },
+      "skills": [
+        "skill_archery",
+        "skill_ranged_combat",
+        "skill_heavy_armor",
+        "skill_tactics",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "rat_swarm.rat_king"
+  },
+  "wolf_pack.base.cub": {
+    "mechanics": {
+      "id": "cub",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [
+        "young",
+        "weak"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 14,
+        "agility": 15,
+        "endurance": 13,
+        "intellect": 9,
+        "memory": 8,
+        "mental": 11,
+        "perception": 12,
+        "projection": 7,
+        "prediction": 10
+      },
+      "fixed_loadout": {
+        "main_hand": "wolf_young_fangs",
+        "off_hand": "wolf_young_claws",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "wolf_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "wolf_pack_mark",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "wolf_pack.cub"
+  },
+  "wolf_pack.base.runner": {
+    "mechanics": {
+      "id": "runner",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [
+        "fast",
+        "scout"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 14,
+        "agility": 15,
+        "endurance": 13,
+        "intellect": 10,
+        "memory": 8,
+        "mental": 11,
+        "perception": 12,
+        "projection": 7,
+        "prediction": 9
+      },
+      "fixed_loadout": {
+        "main_hand": "wolf_young_fangs",
+        "off_hand": "wolf_young_claws",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "wolf_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "wolf_pack_mark",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "wolf_pack.runner"
+  },
+  "wolf_pack.base.mangy_biter": {
+    "mechanics": {
+      "id": "mangy_biter",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [
+        "mangy",
+        "ambusher",
+        "bleeder"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 14,
+        "agility": 15,
+        "endurance": 13,
+        "intellect": 9,
+        "memory": 8,
+        "mental": 11,
+        "perception": 12,
+        "projection": 7,
+        "prediction": 10
+      },
+      "fixed_loadout": {
+        "main_hand": "wolf_young_fangs",
+        "off_hand": "wolf_locking_fangs",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "wolf_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "wolf_pack_mark",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "wolf_pack.mangy_biter"
+  },
+  "wolf_pack.base.stalker": {
+    "mechanics": {
+      "id": "stalker",
+      "role": "veteran",
+      "spawn_weight": 50,
+      "extra_tags": [
+        "stealth",
+        "hunter"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 16,
+        "agility": 15,
+        "endurance": 14,
+        "intellect": 11,
+        "memory": 10,
+        "mental": 12,
+        "perception": 13,
+        "projection": 8,
+        "prediction": 9
+      },
+      "fixed_loadout": {
+        "main_hand": "wolf_bite_claws",
+        "off_hand": "wolf_raking_claws",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "wolf_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "wolf_pack_mark",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "wolf_pack.stalker"
+  },
+  "wolf_pack.base.flanker": {
+    "mechanics": {
+      "id": "flanker",
+      "role": "veteran",
+      "spawn_weight": 50,
+      "extra_tags": [
+        "tactical",
+        "fast"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 15,
+        "agility": 16,
+        "endurance": 14,
+        "intellect": 11,
+        "memory": 10,
+        "mental": 12,
+        "perception": 13,
+        "projection": 8,
+        "prediction": 9
+      },
+      "fixed_loadout": {
+        "main_hand": "wolf_bite_claws",
+        "off_hand": "wolf_raking_claws",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "wolf_medium_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "wolf_pack_mark",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_medium_armor"
+      ],
+      "member_model": null
+    },
+    "image": "wolf_pack.flanker"
+  },
+  "wolf_pack.base.snapper": {
+    "mechanics": {
+      "id": "snapper",
+      "role": "veteran",
+      "spawn_weight": 50,
+      "extra_tags": [
+        "executioner",
+        "strong_jaw"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 16,
+        "agility": 14,
+        "endurance": 15,
+        "intellect": 10,
+        "memory": 9,
+        "mental": 12,
+        "perception": 13,
+        "projection": 8,
+        "prediction": 11
+      },
+      "fixed_loadout": {
+        "main_hand": "wolf_bite_claws",
+        "off_hand": "wolf_locking_fangs",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "wolf_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "wolf_pack_mark",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "wolf_pack.snapper"
+  },
+  "wolf_pack.base.pack_leader": {
+    "mechanics": {
+      "id": "pack_leader",
+      "role": "elite",
+      "spawn_weight": 150,
+      "extra_tags": [
+        "leader",
+        "support",
+        "alpha"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 17,
+        "agility": 15,
+        "endurance": 16,
+        "intellect": 11,
+        "memory": 10,
+        "mental": 13,
+        "perception": 14,
+        "projection": 12,
+        "prediction": 9
+      },
+      "fixed_loadout": {
+        "main_hand": "wolf_elite_fangs",
+        "off_hand": "wolf_braced_mane",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "wolf_medium_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "wolf_pack_mark",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_shield_mastery",
+        "skill_medium_armor",
+        "skill_tactics",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "wolf_pack.pack_leader"
+  },
+  "wolf_pack.base.dire_wolf": {
+    "mechanics": {
+      "id": "dire_wolf",
+      "role": "elite",
+      "spawn_weight": 150,
+      "extra_tags": [
+        "dire",
+        "heavy",
+        "brute"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 17,
+        "agility": 14,
+        "endurance": 16,
+        "intellect": 11,
+        "memory": 10,
+        "mental": 15,
+        "perception": 13,
+        "projection": 9,
+        "prediction": 12
+      },
+      "fixed_loadout": {
+        "main_hand": "wolf_elite_fangs",
+        "off_hand": "wolf_bone_shoulders",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "wolf_heavy_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "wolf_pack_mark",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_shield_mastery",
+        "skill_heavy_armor",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "wolf_pack.dire_wolf"
+  },
+  "wolf_pack.base.old_fang": {
+    "mechanics": {
+      "id": "old_fang",
+      "role": "elite",
+      "spawn_weight": 150,
+      "extra_tags": [
+        "veteran",
+        "cunning"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 17,
+        "agility": 13,
+        "endurance": 16,
+        "intellect": 12,
+        "memory": 11,
+        "mental": 14,
+        "perception": 15,
+        "projection": 9,
+        "prediction": 10
+      },
+      "fixed_loadout": {
+        "main_hand": "wolf_elite_fangs",
+        "off_hand": "wolf_locking_fangs",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "wolf_medium_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "wolf_pack_mark",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_medium_armor",
+        "skill_tactics",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "wolf_pack.old_fang"
+  },
+  "wolf_pack.base.pack_huntmaster": {
+    "mechanics": {
+      "id": "pack_huntmaster",
+      "role": "boss",
+      "spawn_weight": 600,
+      "extra_tags": [
+        "cunning",
+        "coordinator",
+        "hunter"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 21,
+        "agility": 19,
+        "endurance": 22,
+        "intellect": 16,
+        "memory": 17,
+        "mental": 20,
+        "perception": 18,
+        "projection": 15,
+        "prediction": 14
+      },
+      "fixed_loadout": {
+        "main_hand": "wolf_alpha_fangs",
+        "off_hand": "wolf_braced_mane",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "wolf_heavy_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "wolf_pack_mark",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_shield_mastery",
+        "skill_heavy_armor",
+        "skill_tactics",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "wolf_pack.pack_huntmaster"
+  },
+  "wolf_pack.base.alpha_prime": {
+    "mechanics": {
+      "id": "alpha_prime",
+      "role": "boss",
+      "spawn_weight": 600,
+      "extra_tags": [
+        "alpha",
+        "prime",
+        "legendary"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 21,
+        "agility": 20,
+        "endurance": 22,
+        "intellect": 16,
+        "memory": 15,
+        "mental": 19,
+        "perception": 18,
+        "projection": 17,
+        "prediction": 14
+      },
+      "fixed_loadout": {
+        "main_hand": "wolf_alpha_fangs",
+        "off_hand": "wolf_bone_shoulders",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "wolf_heavy_hide",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "wolf_pack_mark",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_shield_mastery",
+        "skill_heavy_armor",
+        "skill_tactics",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "wolf_pack.fenrir"
+  },
+  "bandit_gang.base.bandit_thug": {
+    "mechanics": {
+      "id": "bandit_thug",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 16,
+        "agility": 14,
+        "endurance": 15,
+        "intellect": 10,
+        "memory": 9,
+        "mental": 12,
+        "perception": 13,
+        "projection": 8,
+        "prediction": 11
+      },
+      "fixed_loadout": {
+        "main_hand": "hatchet",
+        "off_hand": "buckler",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "jerkin",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_macing",
+        "skill_medium_armor"
+      ],
+      "member_model": null
+    },
+    "image": "bandit_gang.bandit_thug"
+  },
+  "bandit_gang.base.bandit_poacher": {
+    "mechanics": {
+      "id": "bandit_poacher",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 14,
+        "agility": 16,
+        "endurance": 13,
+        "intellect": 10,
+        "memory": 9,
+        "mental": 12,
+        "perception": 15,
+        "projection": 8,
+        "prediction": 11
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "shortbow",
+        "head_armor": null,
+        "chest_armor": "leather_armor",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": "quiver_training"
+      },
+      "skills": [
+        "skill_archery",
+        "skill_light_armor",
+        "skill_ranged_combat"
+      ],
+      "member_model": null
+    },
+    "image": "bandit_gang.bandit_poacher"
+  },
+  "bandit_gang.base.bandit_lookout": {
+    "mechanics": {
+      "id": "bandit_lookout",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [
+        "watcher",
+        "spear",
+        "scout"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 14,
+        "agility": 15,
+        "endurance": 13,
+        "intellect": 11,
+        "memory": 9,
+        "mental": 10,
+        "perception": 16,
+        "projection": 8,
+        "prediction": 12
+      },
+      "fixed_loadout": {
+        "main_hand": "spear",
+        "off_hand": null,
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "leather_armor",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_polearms",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "bandit_gang.bandit_lookout"
+  },
+  "bandit_gang.base.bandit_knife_rat": {
+    "mechanics": {
+      "id": "bandit_knife_rat",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [
+        "dagger",
+        "ambusher",
+        "street"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 14,
+        "agility": 16,
+        "endurance": 13,
+        "intellect": 10,
+        "memory": 9,
+        "mental": 11,
+        "perception": 15,
+        "projection": 8,
+        "prediction": 12
+      },
+      "fixed_loadout": {
+        "main_hand": "dagger",
+        "off_hand": "dagger",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "leather_armor",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "bandit_gang.bandit_knife_rat"
+  },
+  "bandit_gang.base.bandit_cutthroat": {
+    "mechanics": {
+      "id": "bandit_cutthroat",
+      "role": "boss",
+      "spawn_weight": 600,
+      "extra_tags": [],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 21,
+        "agility": 22,
+        "endurance": 20,
+        "intellect": 16,
+        "memory": 15,
+        "mental": 17,
+        "perception": 18,
+        "projection": 14,
+        "prediction": 19
+      },
+      "fixed_loadout": {
+        "main_hand": "dagger",
+        "off_hand": "dagger",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "leather_armor",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_light_armor",
+        "skill_dual_wield",
+        "skill_tactics",
+        "skill_parrying",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "bandit_gang.bandit_cutthroat"
+  },
+  "bandit_gang.base.bandit_raider": {
+    "mechanics": {
+      "id": "bandit_raider",
+      "role": "veteran",
+      "spawn_weight": 50,
+      "extra_tags": [
+        "raider",
+        "shield",
+        "bruiser"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 17,
+        "agility": 15,
+        "endurance": 16,
+        "intellect": 11,
+        "memory": 10,
+        "mental": 14,
+        "perception": 13,
+        "projection": 9,
+        "prediction": 12
+      },
+      "fixed_loadout": {
+        "main_hand": "mace",
+        "off_hand": "shield",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "jerkin",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_macing",
+        "skill_medium_armor",
+        "skill_shield_mastery"
+      ],
+      "member_model": null
+    },
+    "image": "bandit_gang.bandit_raider"
+  },
+  "bandit_gang.base.bandit_billhook": {
+    "mechanics": {
+      "id": "bandit_billhook",
+      "role": "veteran",
+      "spawn_weight": 50,
+      "extra_tags": [
+        "polearm",
+        "disabler",
+        "roadside"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 17,
+        "agility": 15,
+        "endurance": 16,
+        "intellect": 11,
+        "memory": 10,
+        "mental": 12,
+        "perception": 14,
+        "projection": 9,
+        "prediction": 13
+      },
+      "fixed_loadout": {
+        "main_hand": "spear",
+        "off_hand": null,
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "jerkin",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_polearms",
+        "skill_medium_armor"
+      ],
+      "member_model": null
+    },
+    "image": "bandit_gang.bandit_billhook"
+  },
+  "bandit_gang.base.bandit_captain": {
+    "mechanics": {
+      "id": "bandit_captain",
+      "role": "elite",
+      "spawn_weight": 150,
+      "extra_tags": [],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 18,
+        "agility": 16,
+        "endurance": 17,
+        "intellect": 12,
+        "memory": 11,
+        "mental": 15,
+        "perception": 13,
+        "projection": 14,
+        "prediction": 10
+      },
+      "fixed_loadout": {
+        "main_hand": "sword",
+        "off_hand": "shield",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "jerkin",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_swords",
+        "skill_medium_armor",
+        "skill_shield_mastery",
+        "skill_tactics",
+        "skill_parrying"
+      ],
+      "member_model": null
+    },
+    "image": "bandit_gang.bandit_captain"
+  },
+  "bandit_gang.base.bandit_hedge_wizard": {
+    "mechanics": {
+      "id": "bandit_hedge_wizard",
+      "role": "veteran",
+      "spawn_weight": 50,
+      "extra_tags": [],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 11,
+        "agility": 14,
+        "endurance": 13,
+        "intellect": 17,
+        "memory": 15,
+        "mental": 16,
+        "perception": 12,
+        "projection": 10,
+        "prediction": 9
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "quarterstaff",
+        "head_armor": null,
+        "chest_armor": "leather_armor",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_polearms",
+        "skill_light_armor",
+        "skill_two_handed"
+      ],
+      "member_model": null
+    },
+    "image": "bandit_gang.bandit_hedge_wizard"
+  },
+  "bandit_gang.base.bandit_blackguard": {
+    "mechanics": {
+      "id": "bandit_blackguard",
+      "role": "boss",
+      "spawn_weight": 600,
+      "extra_tags": [
+        "blackguard",
+        "heavy",
+        "guard"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 21,
+        "agility": 19,
+        "endurance": 22,
+        "intellect": 15,
+        "memory": 14,
+        "mental": 20,
+        "perception": 18,
+        "projection": 17,
+        "prediction": 16
+      },
+      "fixed_loadout": {
+        "main_hand": "mace",
+        "off_hand": "shield",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "plate_chest",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_macing",
+        "skill_heavy_armor",
+        "skill_shield_mastery",
+        "skill_tactics",
+        "skill_parrying",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "bandit_gang.bandit_blackguard"
+  },
+  "bandit_gang.base.bandit_kingpin": {
+    "mechanics": {
+      "id": "bandit_kingpin",
+      "role": "elite",
+      "spawn_weight": 150,
+      "extra_tags": [],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 18,
+        "agility": 16,
+        "endurance": 17,
+        "intellect": 11,
+        "memory": 10,
+        "mental": 14,
+        "perception": 13,
+        "projection": 15,
+        "prediction": 12
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "warhammer",
+        "head_armor": null,
+        "chest_armor": "plate_chest",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_macing",
+        "skill_heavy_armor",
+        "skill_two_handed",
+        "skill_tactics",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "bandit_gang.bandit_kingpin"
+  },
+  "bandit_gang.base.bandit_warlord": {
+    "mechanics": {
+      "id": "bandit_warlord",
+      "role": "elite",
+      "spawn_weight": 150,
+      "extra_tags": [
+        "marksman",
+        "commander",
+        "ranged"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 15,
+        "agility": 18,
+        "endurance": 16,
+        "intellect": 13,
+        "memory": 11,
+        "mental": 14,
+        "perception": 17,
+        "projection": 10,
+        "prediction": 12
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "longbow",
+        "head_armor": null,
+        "chest_armor": "leather_armor",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": "quiver_bodkin"
+      },
+      "skills": [
+        "skill_archery",
+        "skill_light_armor",
+        "skill_ranged_combat",
+        "skill_tactics",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "bandit_gang.bandit_warlord"
+  },
+  "goblin_tribe.base.goblin_sneak": {
+    "mechanics": {
+      "id": "goblin_sneak",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [
+        "stealth",
+        "assassin",
+        "dual_wield",
+        "knife"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 11,
+        "agility": 14,
+        "endurance": 12,
+        "intellect": 10,
+        "memory": 7,
+        "mental": 8,
+        "perception": 13,
+        "projection": 6,
+        "prediction": 9
+      },
+      "fixed_loadout": {
+        "main_hand": "knife",
+        "off_hand": "knife",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "leather_armor",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "goblin_tribe.goblin_sneak"
+  },
+  "goblin_tribe.base.goblin_scavenger": {
+    "mechanics": {
+      "id": "goblin_scavenger",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [
+        "scavenger",
+        "hoarder",
+        "scrap",
+        "buckler"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 12,
+        "agility": 14,
+        "endurance": 13,
+        "intellect": 10,
+        "memory": 7,
+        "mental": 8,
+        "perception": 11,
+        "projection": 6,
+        "prediction": 9
+      },
+      "fixed_loadout": {
+        "main_hand": "mace",
+        "off_hand": "buckler",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "leather_armor",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_macing",
+        "skill_shield_mastery",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "goblin_tribe.goblin_scavenger"
+  },
+  "goblin_tribe.base.goblin_cutter": {
+    "mechanics": {
+      "id": "goblin_cutter",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [
+        "knife",
+        "bleeder",
+        "ambusher",
+        "dual_wield"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 11,
+        "agility": 14,
+        "endurance": 13,
+        "intellect": 10,
+        "memory": 7,
+        "mental": 9,
+        "perception": 12,
+        "projection": 6,
+        "prediction": 8
+      },
+      "fixed_loadout": {
+        "main_hand": "dagger",
+        "off_hand": "knife",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "leather_armor",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "goblin_tribe.goblin_cutter"
+  },
+  "goblin_tribe.base.goblin_sparkpick": {
+    "mechanics": {
+      "id": "goblin_sparkpick",
+      "role": "minion",
+      "spawn_weight": 20,
+      "extra_tags": [
+        "scrap",
+        "ether",
+        "reckless",
+        "buckler"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 12,
+        "agility": 14,
+        "endurance": 13,
+        "intellect": 11,
+        "memory": 8,
+        "mental": 9,
+        "perception": 10,
+        "projection": 7,
+        "prediction": 6
+      },
+      "fixed_loadout": {
+        "main_hand": "hatchet",
+        "off_hand": "buckler",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "leather_armor",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_macing",
+        "skill_shield_mastery",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "goblin_tribe.goblin_sparkpick"
+  },
+  "goblin_tribe.base.goblin_spearman": {
+    "mechanics": {
+      "id": "goblin_spearman",
+      "role": "veteran",
+      "spawn_weight": 50,
+      "extra_tags": [
+        "infantry",
+        "shield"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 13,
+        "agility": 14,
+        "endurance": 15,
+        "intellect": 11,
+        "memory": 9,
+        "mental": 10,
+        "perception": 12,
+        "projection": 8,
+        "prediction": 7
+      },
+      "fixed_loadout": {
+        "main_hand": "spear",
+        "off_hand": "shield",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "jerkin",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_polearms",
+        "skill_medium_armor",
+        "skill_shield_mastery"
+      ],
+      "member_model": null
+    },
+    "image": "goblin_tribe.goblin_spearman"
+  },
+  "goblin_tribe.base.goblin_slinger": {
+    "mechanics": {
+      "id": "goblin_slinger",
+      "role": "veteran",
+      "spawn_weight": 50,
+      "extra_tags": [
+        "ranged",
+        "archer",
+        "fast",
+        "quiver"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 12,
+        "agility": 15,
+        "endurance": 13,
+        "intellect": 11,
+        "memory": 10,
+        "mental": 9,
+        "perception": 14,
+        "projection": 7,
+        "prediction": 8
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "shortbow",
+        "head_armor": null,
+        "chest_armor": "leather_armor",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": "quiver_training"
+      },
+      "skills": [
+        "skill_archery",
+        "skill_ranged_combat",
+        "skill_light_armor"
+      ],
+      "member_model": null
+    },
+    "image": "goblin_tribe.goblin_slinger"
+  },
+  "goblin_tribe.base.goblin_scrapguard": {
+    "mechanics": {
+      "id": "goblin_scrapguard",
+      "role": "veteran",
+      "spawn_weight": 50,
+      "extra_tags": [
+        "shield",
+        "defender",
+        "scrap"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 14,
+        "agility": 13,
+        "endurance": 15,
+        "intellect": 10,
+        "memory": 9,
+        "mental": 11,
+        "perception": 12,
+        "projection": 8,
+        "prediction": 7
+      },
+      "fixed_loadout": {
+        "main_hand": "mace",
+        "off_hand": "shield",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "jerkin",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_macing",
+        "skill_medium_armor",
+        "skill_shield_mastery"
+      ],
+      "member_model": null
+    },
+    "image": "goblin_tribe.goblin_scrapguard"
+  },
+  "goblin_tribe.base.goblin_tinkerer": {
+    "mechanics": {
+      "id": "goblin_tinkerer",
+      "role": "elite",
+      "spawn_weight": 150,
+      "extra_tags": [
+        "engineer",
+        "duelist",
+        "scrap",
+        "buckler"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 11,
+        "agility": 15,
+        "endurance": 13,
+        "intellect": 16,
+        "memory": 12,
+        "mental": 10,
+        "perception": 14,
+        "projection": 9,
+        "prediction": 8
+      },
+      "fixed_loadout": {
+        "main_hand": "rapier",
+        "off_hand": "buckler",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "jerkin",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_shield_mastery",
+        "skill_medium_armor",
+        "skill_tactics"
+      ],
+      "member_model": null
+    },
+    "image": "goblin_tribe.goblin_tinkerer"
+  },
+  "goblin_tribe.base.goblin_bomber": {
+    "mechanics": {
+      "id": "goblin_bomber",
+      "role": "elite",
+      "spawn_weight": 150,
+      "extra_tags": [
+        "bomber",
+        "explosives",
+        "reckless",
+        "archer",
+        "fire_arrows"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 12,
+        "agility": 16,
+        "endurance": 15,
+        "intellect": 14,
+        "memory": 9,
+        "mental": 11,
+        "perception": 13,
+        "projection": 8,
+        "prediction": 10
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "shortbow",
+        "head_armor": null,
+        "chest_armor": "jerkin",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": "quiver_fire"
+      },
+      "skills": [
+        "skill_archery",
+        "skill_medium_armor",
+        "skill_ranged_combat",
+        "skill_tactics"
+      ],
+      "member_model": null
+    },
+    "image": "goblin_tribe.goblin_bomber"
+  },
+  "goblin_tribe.base.goblin_trapmaster": {
+    "mechanics": {
+      "id": "goblin_trapmaster",
+      "role": "elite",
+      "spawn_weight": 150,
+      "extra_tags": [
+        "trapper",
+        "engineer",
+        "controller",
+        "dual_wield",
+        "precision"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 11,
+        "agility": 14,
+        "endurance": 13,
+        "intellect": 16,
+        "memory": 12,
+        "mental": 10,
+        "perception": 15,
+        "projection": 8,
+        "prediction": 9
+      },
+      "fixed_loadout": {
+        "main_hand": "stiletto",
+        "off_hand": "main_gauche",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "jerkin",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_medium_armor",
+        "skill_tactics",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "goblin_tribe.goblin_trapmaster"
+  },
+  "goblin_tribe.base.goblin_chief": {
+    "mechanics": {
+      "id": "goblin_chief",
+      "role": "boss",
+      "spawn_weight": 600,
+      "extra_tags": [
+        "leader",
+        "commander",
+        "heavy_armor",
+        "shield"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 21,
+        "agility": 20,
+        "endurance": 22,
+        "intellect": 16,
+        "memory": 15,
+        "mental": 19,
+        "perception": 18,
+        "projection": 17,
+        "prediction": 14
+      },
+      "fixed_loadout": {
+        "main_hand": "battle_axe",
+        "off_hand": "kite_shield",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "plate_chest",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_macing",
+        "skill_shield_mastery",
+        "skill_heavy_armor",
+        "skill_tactics",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "goblin_tribe.goblin_chief"
+  },
+  "goblin_tribe.base.scrap_king": {
+    "mechanics": {
+      "id": "scrap_king",
+      "role": "boss",
+      "spawn_weight": 600,
+      "extra_tags": [
+        "king",
+        "heavy_armor",
+        "engineer",
+        "two_handed",
+        "scrap"
+      ],
+      "min_tier": 0,
+      "max_tier": 5,
+      "base_stats": {
+        "strength": 21,
+        "agility": 15,
+        "endurance": 22,
+        "intellect": 20,
+        "memory": 17,
+        "mental": 19,
+        "perception": 16,
+        "projection": 18,
+        "prediction": 14
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "warhammer",
+        "head_armor": null,
+        "chest_armor": "plate_chest",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": "amulet",
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_macing",
+        "skill_heavy_armor",
+        "skill_two_handed",
+        "skill_tactics",
+        "skill_anatomy"
+      ],
+      "member_model": null
+    },
+    "image": "goblin_tribe.scrap_king"
+  },
+  "anchor_sovereigns.base.north_stasis_sovereign": {
+    "mechanics": {
+      "id": "north_stasis_sovereign",
+      "role": "boss",
+      "spawn_weight": 2200,
+      "extra_tags": [
+        "north",
+        "stasis",
+        "frost",
+        "time_stasis",
+        "absolute_zero"
+      ],
+      "min_tier": 7,
+      "max_tier": 7,
+      "base_stats": {
+        "strength": 161,
+        "agility": 71,
+        "endurance": 221,
+        "intellect": 191,
+        "memory": 241,
+        "mental": 211,
+        "perception": 151,
+        "projection": 81,
+        "prediction": 41
+      },
+      "fixed_loadout": {
+        "main_hand": "anchor_stasis_crown_blade",
+        "off_hand": "shield",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "anchor_projection_aegis",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": null,
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_swords",
+        "skill_shield_mastery",
+        "skill_heavy_armor",
+        "skill_light_armor",
+        "skill_tactics",
+        "skill_anatomy",
+        "skill_parrying"
+      ],
+      "member_model": null
+    },
+    "image": null
+  },
+  "anchor_sovereigns.base.south_entropy_sovereign": {
+    "mechanics": {
+      "id": "south_entropy_sovereign",
+      "role": "boss",
+      "spawn_weight": 2400,
+      "extra_tags": [
+        "south",
+        "entropy",
+        "ash_storm",
+        "lava_veins",
+        "thermal_shock"
+      ],
+      "min_tier": 7,
+      "max_tier": 7,
+      "base_stats": {
+        "strength": 241,
+        "agility": 81,
+        "endurance": 231,
+        "intellect": 111,
+        "memory": 121,
+        "mental": 221,
+        "perception": 131,
+        "projection": 91,
+        "prediction": 31
+      },
+      "fixed_loadout": {
+        "main_hand": null,
+        "off_hand": null,
+        "two_hand": "anchor_entropy_cinder_maul",
+        "head_armor": null,
+        "chest_armor": "anchor_projection_aegis",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": null,
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_macing",
+        "skill_two_handed",
+        "skill_heavy_armor",
+        "skill_light_armor",
+        "skill_tactics",
+        "skill_anatomy",
+        "skill_parrying"
+      ],
+      "member_model": null
+    },
+    "image": null
+  },
+  "anchor_sovereigns.base.west_gravity_sovereign": {
+    "mechanics": {
+      "id": "west_gravity_sovereign",
+      "role": "boss",
+      "spawn_weight": 2100,
+      "extra_tags": [
+        "west",
+        "gravity",
+        "floating_islands",
+        "reverse_gravity",
+        "lightning"
+      ],
+      "min_tier": 7,
+      "max_tier": 7,
+      "base_stats": {
+        "strength": 131,
+        "agility": 211,
+        "endurance": 171,
+        "intellect": 221,
+        "memory": 161,
+        "mental": 171,
+        "perception": 241,
+        "projection": 101,
+        "prediction": 91
+      },
+      "fixed_loadout": {
+        "main_hand": "anchor_gravity_storm_lance",
+        "off_hand": null,
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "anchor_projection_aegis",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": null,
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_polearms",
+        "skill_light_armor",
+        "skill_heavy_armor",
+        "skill_tactics",
+        "skill_anatomy",
+        "skill_parrying"
+      ],
+      "member_model": null
+    },
+    "image": null
+  },
+  "anchor_sovereigns.base.east_evolution_sovereign": {
+    "mechanics": {
+      "id": "east_evolution_sovereign",
+      "role": "boss",
+      "spawn_weight": 2300,
+      "extra_tags": [
+        "east",
+        "evolution",
+        "living_jungle",
+        "toxic_spores",
+        "mutation_fog"
+      ],
+      "min_tier": 7,
+      "max_tier": 7,
+      "base_stats": {
+        "strength": 171,
+        "agility": 231,
+        "endurance": 191,
+        "intellect": 161,
+        "memory": 221,
+        "mental": 181,
+        "perception": 231,
+        "projection": 71,
+        "prediction": 121
+      },
+      "fixed_loadout": {
+        "main_hand": "anchor_evolution_bloom_talons",
+        "off_hand": "anchor_evolution_bloom_talons",
+        "two_hand": null,
+        "head_armor": null,
+        "chest_armor": "anchor_projection_aegis",
+        "arms_armor": null,
+        "legs_armor": null,
+        "feetwear": null,
+        "chest_garment": null,
+        "legs_garment": null,
+        "outer_garment": null,
+        "gloves_garment": null,
+        "amulet": null,
+        "ring_1": null,
+        "ring_2": null,
+        "belt_accessory": null,
+        "quiver": null
+      },
+      "skills": [
+        "skill_fencing",
+        "skill_dual_wield",
+        "skill_light_armor",
+        "skill_heavy_armor",
+        "skill_tactics",
+        "skill_anatomy",
+        "skill_parrying"
+      ],
+      "member_model": null
+    },
+    "image": null
+  }
+}
