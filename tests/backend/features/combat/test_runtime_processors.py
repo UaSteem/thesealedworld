@@ -4904,7 +4904,9 @@ def test_mechanics_grants_one_gift_token_to_source_for_exchange_action() -> None
     ctx = PipelineContextDTO()
     ctx.flags.meta.action_mode = "exchange"
     ctx.flags.meta.grant_exchange_gift = True
-    result = InteractionResultDTO(source_id=1, target_id=2)
+    result = InteractionResultDTO(
+        source_id=1, target_id=2, hand="main_hand", action_facts={"execution": {"origin": "primary"}}
+    )
 
     MechanicsService().apply_interaction_result(ctx, source, target, result)
 
@@ -4931,7 +4933,10 @@ def test_mechanics_does_not_grant_exchange_gift_for_unidirectional_action() -> N
     target = actor(2, "b")
     ctx = PipelineContextDTO()
     ctx.flags.meta.action_mode = "unidirectional"
-    result = InteractionResultDTO(source_id=1, target_id=2)
+    ctx.flags.meta.grant_exchange_gift = True
+    result = InteractionResultDTO(
+        source_id=1, target_id=2, hand="main_hand", action_facts={"execution": {"origin": "primary"}}
+    )
 
     MechanicsService().apply_interaction_result(ctx, source, target, result)
 

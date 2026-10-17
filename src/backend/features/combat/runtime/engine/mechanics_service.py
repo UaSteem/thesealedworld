@@ -995,13 +995,16 @@ class MechanicsService:
         actor: ActorSnapshot,
         result: InteractionResultDTO,
     ) -> None:
-        if not ctx.flags.meta.grant_exchange_gift:
+        if ctx.flags.meta.grant_exchange_gift is not True:
             return
         if ctx.flags.meta.action_mode != "exchange":
             return
-        if ctx.flags.meta.source_type != "main_hand":
+        if ctx.flags.meta.source_type != "main_hand" or result.hand != "main_hand":
             return
-        if result.is_counter:
+        execution = result.action_facts.get("execution")
+        if not isinstance(execution, dict) or execution.get("origin") != "primary":
+            return
+        if result.is_counter or result.skip_reason is not None:
             return
 
         before = actor.meta.tokens.get(GIFT_MARKER, 0)

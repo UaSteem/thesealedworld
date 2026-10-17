@@ -15,9 +15,12 @@ from src.backend.features.combat.dto import (
     CombatActionDTO,
     CombatMoveDTO,
     ExchangePayload,
+    InteractionResultDTO,
+    PipelineContextDTO,
 )
 from src.backend.features.combat.integrations import CombatCatalogIntegrator
 from src.backend.features.combat.runtime.engine.execution import StrikeExecution
+from src.backend.features.combat.runtime.engine.mechanics_service import MechanicsService
 from src.backend.features.combat.runtime.engine.pipeline import CombatPipeline
 from src.backend.features.combat.runtime.engine.resolver import CombatResolver
 from src.backend.features.combat.runtime.processors.executor import CombatExecutor
@@ -78,6 +81,23 @@ def battle(*actors: ActorSnapshot) -> BattleContext:
     )
 
 
+def assert_exchange_gift(results, *owners):
+    """Check actor state, award accounting and facts after the real commit."""
+    for owner in owners:
+        assert owner.meta.tokens.get("gift", 0) == 1
+    for result in results:
+        expected = int(
+            result["action_facts"]["execution"]["origin"] == "primary"
+            and result["skip_reason"] is None
+            and not result["is_counter"]
+        )
+        assert result["tokens_awarded_attacker"].get("gift", 0) == expected
+        facts = [fact for fact in result["token_facts"] if fact["token"] == "gift"]
+        assert len(facts) == expected
+        if facts:
+            assert (facts[0]["amount"], facts[0]["reason"], facts[0]["tags"]) == (1, "exchange", ["exchange"])
+
+
 @pytest.fixture
 def deterministic_resolver(monkeypatch):
     """Keep real resolver/effects; choose only the random outcome flags."""
@@ -122,6 +142,7 @@ async def test_partner_offhand_never_activates_players_self_preparation(determin
     assert (ctx.meta.step_counter, player.meta.exchange_counter, monster.meta.exchange_counter) == (1, 1, 1)
     assert {task["global_turn"] for task in ctx.pending_result_support_tasks} == {1}
     assert [r["action_facts"]["execution"]["origin"] for r in results] == ["primary", "primary", "offhand", "offhand"]
+    assert_exchange_gift(results, player, monster)
     assert [r["feint_activation"]["state"] for r in results if r["feint_activation"]] == ["activated"]
     assert {entry["global_turn"] for entry in ctx.pending_logs} == {1}
     strike_logs = [entry for entry in ctx.pending_logs if "execution" in entry]
@@ -189,6 +210,13 @@ async def test_real_prepared_counter_uses_reactor_ownership_without_feint_activa
     assert len(counter) == 1
     assert (counter[0]["source_id"], counter[0]["target_id"]) == ("monster", "1")
     assert counter[0]["action_facts"]["execution"]["owner_id"] == "monster"
+    # The existing resolver also marks the parried primary is_counter when it
+    # triggers a reaction. AG-01 must preserve the explicit is_counter guard.
+    assert results[0 if not swapped else 1]["is_counter"] is True
+    assert player.meta.tokens.get("gift", 0) == 0
+    assert_exchange_gift(results, *([] if forced else [monster]))
+    if forced:
+        assert monster.meta.tokens.get("gift", 0) == 0
     assert monster.meta.hp == 820
     assert monster.statuses.effects == []
     assert (ctx.meta.step_counter, player.meta.exchange_counter, monster.meta.exchange_counter) == (1, 1, 1)
@@ -228,6 +256,7 @@ async def test_aoe_projects_hit_effects_for_both_owners_without_reactivation(mon
         ("monster", "ally"),
     ]
     assert sum(e["type"] == "CAST" for r in results for e in r["events"]) == 2
+    assert_exchange_gift(results, player, monster)
     for owner in (player, monster):
         assert sum(e.effect_id == "prep_second_breath" for e in owner.statuses.effects) == 1
         assert set(owner.meta.feints.cooldowns) == {"sword_cross_arc"}
@@ -267,6 +296,15 @@ async def test_rejected_activation_never_grants_free_aoe_projection(deterministi
     results = [task["result"] for task in ctx.pending_result_support_tasks]
     assert len(results) == 1
     assert results[0]["feint_activation"]["state"] == "rejected"
+    if block == "forbidden":
+        assert results[0]["skip_reason"] is None
+        assert results[0]["is_hit"]
+        assert_exchange_gift(results, player)
+    else:
+        assert results[0]["skip_reason"] == "NO_RESOURCE"
+        assert player.meta.tokens.get("gift", 0) == 0
+        assert results[0]["tokens_awarded_attacker"].get("gift", 0) == 0
+        assert not any(f["token"] == "gift" for f in results[0]["token_facts"])
     assert not any(event["type"] == "CAST" for event in results[0]["events"])
     assert player.meta.feints.cooldowns == {}
     assert other.meta.hp == 1000
@@ -280,6 +318,30 @@ async def test_typed_boundary_revalidates_mutated_intent_owner():
     selected.char_id = "monster"
     with pytest.raises(ValueError, match="owner"):
         await CombatPipeline().calculate(player, monster, strike)
+
+
+@pytest.mark.unit
+async def test_controlled_primary_grants_no_exchange_gift(deterministic_resolver):
+    player, monster = actor("1", "a"), actor("monster", "b")
+    player.statuses.effects.append(
+        ActiveEffectDTO(
+            uid="controlled",
+            effect_id="stun",
+            source_id="monster",
+            expire_at_exchange=99,
+            control=CombatCatalogIntegrator.get_effect_catalog_entry("stun").technical.control_logic,
+        )
+    )
+    ctx = battle(player, monster)
+    await CombatExecutor()._handle_exchange(
+        ctx, CombatActionDTO(action_type="exchange", move=move("1", "monster"), is_forced=True)
+    )
+    results = [task["result"] for task in ctx.pending_result_support_tasks]
+    assert len(results) == 1
+    assert results[0]["skip_reason"] == "CONTROLLED"
+    assert player.meta.tokens.get("gift", 0) == 0
+    assert results[0]["tokens_awarded_attacker"].get("gift", 0) == 0
+    assert not any(f["token"] == "gift" for f in results[0]["token_facts"])
 
 
 @pytest.mark.unit
@@ -308,3 +370,55 @@ async def test_typed_origin_overrides_contradictory_branch_modifiers(determinist
     assert bool(result.feint_activation) is (origin == "primary")
     if origin == "primary":
         assert result.resource_changes["stamina"]["cost"] == "-15"
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize(
+    ("context_overrides", "result_overrides", "expected"),
+    [
+        ({}, {}, 1),
+        ({}, {"hand": "off_hand"}, 0),
+        ({}, {"hand": "main"}, 0),
+        ({"source_type": "off_hand"}, {}, 0),
+        ({}, {"action_facts": {"execution": {"origin": "offhand"}}}, 0),
+        ({}, {"action_facts": {"execution": {"origin": "secondary"}}}, 0),
+        ({}, {"action_facts": {"execution": {"origin": "counter"}}}, 0),
+        ({}, {"is_counter": True}, 0),
+        *[({}, {"skip_reason": reason}, 0) for reason in ("CONTROLLED", "NO_RESOURCE", "DEAD", "COOLDOWN", "")],
+        ({}, {"action_facts": {}}, 0),
+        *[({}, {"action_facts": {"execution": value}}, 0) for value in (None, "primary", [], {})],
+        *[({}, {"action_facts": {"execution": {"origin": value}}}, 0) for value in (None, "", "PRIMARY", 1)],
+        ({}, {"is_miss": True}, 1),
+        ({}, {"is_blocked": True}, 1),
+        ({}, {"is_parried": True}, 1),
+        ({"grant_exchange_gift": False}, {}, 0),
+        ({"action_mode": "unidirectional"}, {}, 0),
+    ],
+)
+def test_exchange_gift_requires_completed_primary_main_hand(context_overrides, result_overrides, expected):
+    source, target = actor("1", "a"), actor("monster", "b")
+    source.meta.tokens["gift"] = 4
+    ctx = PipelineContextDTO()
+    ctx.flags.meta.grant_exchange_gift = True
+    ctx.flags.meta.action_mode = "exchange"
+    ctx.flags.meta.source_type = "main_hand"
+    for key, value in context_overrides.items():
+        setattr(ctx.flags.meta, key, value)
+    values = {
+        "source_id": source.char_id,
+        "target_id": target.char_id,
+        "hand": "main_hand",
+        "action_facts": {"execution": {"origin": "primary"}},
+    }
+    values.update(result_overrides)
+    result = InteractionResultDTO(**values)
+
+    MechanicsService().apply_interaction_result(ctx, source, target, result)
+
+    assert source.meta.tokens["gift"] == 4 + expected
+    assert result.tokens_awarded_attacker.get("gift", 0) == expected
+    facts = [fact for fact in result.token_facts if fact.token == "gift"]
+    assert len(facts) == expected
+    if facts:
+        assert (facts[0].before, facts[0].after, facts[0].amount) == (4, 5, 1)
+        assert (facts[0].reason, facts[0].tags) == ("exchange", ["exchange"])
