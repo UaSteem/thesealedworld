@@ -15,11 +15,13 @@ from src.backend.features.combat.dto import (
     PipelineContextDTO,
 )
 from src.backend.features.combat.integrations import CombatCatalogIntegrator
+from src.backend.features.combat.runtime.engine.ability_service import AbilityService
 from src.backend.features.combat.runtime.engine.feint_service import FeintService
 from src.backend.features.combat.runtime.engine.modifier_application_service import ModifierApplicationService
 from src.backend.features.combat.runtime.engine.preparation_exclusivity import (
     effect_exclusive_channels,
 )
+from src.backend.features.combat.runtime.engine.stats_engine import StatsEngine
 
 BLOOD_TOKEN_DAMAGE_STEP = 10
 PRESSURE_TOKEN_DAMAGE_STEP = BLOOD_TOKEN_DAMAGE_STEP
@@ -175,6 +177,44 @@ class MechanicsService:
         """Commit a simultaneous exchange layer after all results were calculated."""
         for source, target, result in pairs:
             self.apply_interaction_result(ctx, source, target, result, actors_by_id=actors_by_id)
+
+    def apply_exchange_regen(self, source: ActorSnapshot, target: ActorSnapshot) -> InteractionResultDTO:
+        """Regenerate the surviving main pair after all strikes, before counters tick.
+
+        This result carries facts only; it must never be committed as another
+        interaction (which would replay costs, damage, tokens and effects).
+        """
+        result = InteractionResultDTO(
+            source_id=source.char_id,
+            target_id=target.char_id,
+            action_facts={"phase": "exchange_finalize", "outcome": "combat_regen"},
+        )
+        participants: tuple[tuple[ActorSnapshot, Literal["source", "target"]], ...] = (
+            (source, "source"),
+            (target, "target"),
+        )
+        for actor, owner in participants:
+            if not actor.is_alive:
+                continue
+            StatsEngine.ensure_stats(actor)
+            if actor.stats is None:
+                continue
+            deltas = (
+                ("hp", AbilityService._combat_regen_delta(actor.stats.mods.hp_regen)),
+                ("stamina", AbilityService._combat_stamina_regen_delta(actor.stats.mods.stamina_regen)),
+            )
+            for resource, delta in deltas:
+                if delta <= 0:
+                    continue
+                self._record_resource_fact(
+                    result,
+                    actor=actor,
+                    owner=owner,
+                    resource=resource,
+                    reason="combat_regen",
+                    applied=self._apply_resource_delta(actor, resource, [f"+{delta}"]),
+                )
+        return result
 
     # ==============================================================================
     # INTERNAL LOGIC

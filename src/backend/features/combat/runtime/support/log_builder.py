@@ -14,6 +14,50 @@ class CombatLogBuilder:
     """Builds short player-facing combat log entries from resolved public facts."""
 
     @classmethod
+    def build_exchange_regen_entry(
+        cls, *, ctx: BattleContext, result: InteractionResultDTO, wave: int, timestamp: float
+    ) -> dict[str, Any]:
+        """Render final resource facts without inventing another attack or cast."""
+        resources = [
+            {
+                "actor_id": str(fact.actor_id),
+                "resource": fact.resource,
+                "before": fact.before,
+                "after": fact.after,
+                "max": fact.max,
+                "delta": fact.delta,
+                "label": f"{fact.resource.upper()} {fact.after}/{fact.max}",
+            }
+            for fact in result.resource_facts
+            if fact.reason == "combat_regen"
+        ]
+        gains = []
+        for resource in resources:
+            actor = cls._actor_ref(ctx, resource["actor_id"])
+            name = (actor or {}).get("name") or resource["actor_id"]
+            gains.append(f"{name}: {resource['resource'].upper()} +{resource['delta']}")
+        return {
+            "id": f"{ctx.meta.step_counter + 1}:{wave}:combat_regen:{result.source_id}:{result.target_id}",
+            "type": "LOG",
+            "kind": "combat_regen",
+            "text": "Восстановление после размена. " + "; ".join(gains) + ".",
+            "timestamp": timestamp,
+            "global_turn": ctx.meta.step_counter + 1,
+            "wave": wave,
+            "source": cls._actor_ref(ctx, result.source_id),
+            "target": cls._actor_ref(ctx, result.target_id),
+            "tags": ["runtime", "exchange", "combat_regen"],
+            "outcome": "combat_regen",
+            "resources": resources,
+            "effects": [],
+            "badges": [],
+            "flags": {},
+            "result": {"resources": resources, "tokens": [], "effects": []},
+            "presentation": {"player_visible": True, "severity": "normal", "render": "inline_result"},
+            "severity": "normal",
+        }
+
+    @classmethod
     def build_result_entries(
         cls,
         *,

@@ -324,6 +324,16 @@ class CombatExecutor:
                     )
 
         # --- FINALIZE ---
+        regen_result = self.pipeline.mechanics_service.apply_exchange_regen(source, target)
+        if regen_result.resource_facts:
+            ctx.pending_logs.append(
+                CombatLogBuilder.build_exchange_regen_entry(
+                    ctx=ctx, result=regen_result, wave=wave, timestamp=time.time()
+                )
+            )
+            self._append_result_support_payload(ctx, regen_result, action=action, wave=wave)
+            self._log_result_info(ctx, regen_result, wave=wave)
+
         source.meta.exchange_counter += 1
         target.meta.exchange_counter += 1
         ctx.meta.step_counter += 1

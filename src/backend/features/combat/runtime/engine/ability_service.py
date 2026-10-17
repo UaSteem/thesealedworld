@@ -179,7 +179,7 @@ class AbilityService:
         Side Effects:
             - Removes expired temporary ability modifiers.
             - Consumes prepared reactions tied to the current outcome.
-            - Materializes queued effects and passive combat HP/concentration regeneration.
+            - Materializes queued effects and strike-local sustain.
         """
         if not ctx.result:
             return
@@ -195,10 +195,6 @@ class AbilityService:
 
         # 4. [VAMPIRIC SUSTAIN]
         self._register_vampiric_lifesteal(ctx, source)
-
-        # 5. [PASSIVE COMBAT RESOURCE REGEN]
-        self._register_combat_hp_regen(ctx, source)
-        self._register_combat_stamina_regen(ctx, source)
 
     # ==============================================================================
     # ATOMIC STEPS: STATUS EFFECTS (FLAGS & MODS)
@@ -1293,34 +1289,6 @@ class AbilityService:
         if actor.stats is None:
             return 0.0
         return sum(float(getattr(actor.stats.mods, modifier_id, 0.0) or 0.0) for modifier_id in modifier_ids)
-
-    @staticmethod
-    def _register_combat_stamina_regen(ctx: PipelineContextDTO, source: ActorSnapshot) -> None:
-        if not source.is_alive:
-            return
-
-        StatsEngine.ensure_stats(source)
-        if not source.stats:
-            return
-
-        delta = AbilityService._combat_stamina_regen_delta(source.stats.mods.stamina_regen)
-        if delta <= 0:
-            return
-        ctx.result.resource_changes.setdefault("stamina", {})["combat_regen"] = f"+{delta}"
-
-    @staticmethod
-    def _register_combat_hp_regen(ctx: PipelineContextDTO, source: ActorSnapshot) -> None:
-        if not source.is_alive:
-            return
-
-        StatsEngine.ensure_stats(source)
-        if not source.stats:
-            return
-
-        delta = AbilityService._combat_regen_delta(source.stats.mods.hp_regen)
-        if delta <= 0:
-            return
-        ctx.result.resource_changes.setdefault("hp", {})["combat_regen"] = f"+{delta}"
 
     @staticmethod
     def _register_vampiric_lifesteal(ctx: PipelineContextDTO, source: ActorSnapshot) -> None:

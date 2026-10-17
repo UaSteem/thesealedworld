@@ -5066,7 +5066,7 @@ def test_mechanics_does_not_award_blood_token_progress_to_dead_actor() -> None:
 
 
 @pytest.mark.unit
-def test_ability_post_process_registers_hp_and_stamina_combat_regen() -> None:
+def test_ability_post_process_leaves_passive_regen_to_exchange_finalization() -> None:
     source = actor(1, "a")
     source.meta.hp = 10
     source.meta.max_hp = 20
@@ -5080,19 +5080,13 @@ def test_ability_post_process_registers_hp_and_stamina_combat_regen() -> None:
 
     AbilityService().post_process(ctx, source, None, move)
 
-    assert ctx.result.resource_changes == {
-        "hp": {"combat_regen": "+1"},
-        "stamina": {"combat_regen": "+3"},
-    }
+    assert ctx.result.resource_changes == {}
 
     MechanicsService().apply_interaction_result(ctx, source, None, ctx.result)
-    assert source.meta.hp == 11
+    assert source.meta.hp == 10
     assert source.meta.en == 4
-    assert source.meta.stamina == 8
-    assert [(fact.actor_id, fact.resource, fact.reason, fact.delta) for fact in ctx.result.resource_facts] == [
-        ("1", "hp", "combat_regen", 1),
-        ("1", "stamina", "combat_regen", 3),
-    ]
+    assert source.meta.stamina == 5
+    assert ctx.result.resource_facts == []
 
 
 @pytest.mark.unit
@@ -5179,17 +5173,13 @@ async def test_executor_ticks_periodic_effects_before_exchange() -> None:
 
 
 @pytest.mark.unit
-async def test_executor_applies_explicit_combat_regen_resource_changes_to_current_exchange_actors(
+async def test_executor_finalizes_combat_regen_for_current_exchange_actors(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     async def fixed_result(self, source, target, move, exchange_count=0, external_mods=None):
         return InteractionResultDTO(
             source_id=source.char_id,
             target_id=target.char_id,
-            resource_changes={
-                "hp": {"combat_regen": "+1"},
-                "stamina": {"combat_regen": "+3"},
-            },
         )
 
     monkeypatch.setattr(CombatPipeline, "calculate", fixed_result)
