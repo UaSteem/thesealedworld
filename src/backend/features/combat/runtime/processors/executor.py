@@ -384,7 +384,6 @@ class CombatExecutor:
             return
 
         StatsEngine.sync_effect_modifiers(list(ctx.actors.values()))
-        self._process_periodic_effects(ctx, [source], action=action, wave=0)
 
         target_ids = action.move.targets or []
         if not target_ids:
