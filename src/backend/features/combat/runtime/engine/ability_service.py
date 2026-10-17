@@ -735,6 +735,8 @@ class AbilityService:
     ) -> None:
         to_remove = []
         for effect in actor.statuses.effects:
+            if not effect.active_from_exchange <= actor.meta.exchange_counter < effect.expire_at_exchange:
+                continue
             effect_entry = GameData.get_effect_catalog_entry(effect.effect_id)
             if not effect_entry:
                 continue
@@ -1136,7 +1138,19 @@ class AbilityService:
 
             if effect_id == "force_ranged_close":
                 if RangedPositionService.is_ranged_actor(effect_target):
-                    RangedPositionService.set_next_position(effect_target, "close", ctx.result)
+                    incrementing = ctx.flags.meta.incrementing_actor_ids
+                    RangedPositionService.set_next_position(
+                        effect_target,
+                        "close",
+                        ctx.result,
+                        recipient_increments=(
+                            str(effect_target.char_id) in incrementing
+                            if incrementing is not None
+                            else ctx.flags.meta.action_mode == "exchange"
+                        ),
+                        at_action_end=ctx.flags.meta.defer_queued_statuses,
+                        forced_close=True,
+                    )
                     ctx.result.effect_facts.append(
                         CombatEffectFactDTO(
                             actor_id=effect_target.char_id,
@@ -1192,7 +1206,13 @@ class AbilityService:
                 damage_ref=damage_ref,  # Передаем урон
             )
 
-            if ctx.flags.meta.action_mode == "exchange":
+            incrementing = ctx.flags.meta.incrementing_actor_ids
+            recipient_increments = (
+                str(effect_target.char_id) in incrementing
+                if incrementing is not None
+                else ctx.flags.meta.action_mode == "exchange"
+            )
+            if recipient_increments:
                 active_from_exchange = effect_target.meta.exchange_counter + 1
                 duration = max(0, active_effect.expire_at_exchange - effect_target.meta.exchange_counter)
                 active_effect.active_from_exchange = active_from_exchange
@@ -1218,7 +1238,13 @@ class AbilityService:
             active_effect.resolved_temp_commands = ModifierApplicationService.capture_commands(
                 [source, target], active_effect.modified_sources
             )
-            effect_target.statuses.effects.append(active_effect)
+            if ctx.flags.meta.defer_queued_statuses:
+                for recipient in (source, target):
+                    if recipient is not None:
+                        ModifierApplicationService.remove_temp_sources(recipient, active_effect.modified_sources)
+            else:
+                effect_target.statuses.effects.append(active_effect)
+                StatsEngine.sync_effect_modifiers([a for a in (source, target) if a is not None])
 
             ctx.result.status_applications.append(
                 CombatStatusApplicationDTO(
@@ -1226,6 +1252,7 @@ class AbilityService:
                     source_id=effect_source_id,
                     effect_id=active_effect.effect_id,
                     active_effect=active_effect.model_dump(mode="json"),
+                    at_action_end=ctx.flags.meta.defer_queued_statuses,
                     source_action_id=effect_data.get("source_action_id"),
                     source_effect_id=effect_data.get("source_effect_id"),
                     source_trigger_id=effect_data.get("source_trigger_id"),
@@ -1258,9 +1285,13 @@ class AbilityService:
             None,
         )
         if same_effect is not None:
+            if ctx is not None and ctx.flags.meta.defer_queued_statuses:
+                same_effect = same_effect.model_copy(deep=True)
             same_effect.expire_at_exchange = max(same_effect.expire_at_exchange, active_effect.expire_at_exchange)
             if ctx is not None:
-                AbilityService._stage_effect(ctx, effect_target, same_effect)
+                AbilityService._stage_effect(
+                    ctx, effect_target, same_effect, at_action_end=ctx.flags.meta.defer_queued_statuses
+                )
             return True
 
         incoming_channels = effect_exclusive_channels(active_effect.effect_id)
@@ -1457,7 +1488,7 @@ class AbilityService:
         return "counter_only" in set(getattr(config, "tags", []) or [])
 
     @staticmethod
-    def _stage_effect(ctx, actor, effect, *, mode="add_or_refresh") -> None:
+    def _stage_effect(ctx, actor, effect, *, mode="add_or_refresh", at_action_end=False) -> None:
         ctx.result.status_applications.append(
             CombatStatusApplicationDTO(
                 actor_id=actor.char_id,
@@ -1465,6 +1496,7 @@ class AbilityService:
                 effect_id=effect.effect_id,
                 active_effect=effect.model_dump(mode="json"),
                 mode=mode,
+                at_action_end=at_action_end,
             )
         )
 

@@ -179,35 +179,59 @@ class RangedPositionService:
     @staticmethod
     def update_after_exchange(
         pairs: list[tuple[ActorSnapshot, ActorSnapshot | None, InteractionResultDTO]],
+        *,
+        participants: tuple[ActorSnapshot, ActorSnapshot] | None = None,
+        final_result: InteractionResultDTO | None = None,
     ) -> None:
-        by_actor: dict[str, tuple[ActorSnapshot, ActorSnapshot | None, InteractionResultDTO]] = {}
-        incoming_damage: dict[str, int] = {}
-        incoming_melee_pressure: dict[str, int] = {}
-        for source, target, result in pairs:
-            if RangedPositionService.is_ranged_actor(source):
-                by_actor[str(source.char_id)] = (source, target, result)
-            if target and RangedPositionService.is_ranged_actor(target):
-                target_key = str(target.char_id)
-                incoming_damage[target_key] = incoming_damage.get(target_key, 0) + max(0, int(result.damage_final or 0))
-                if RangedPositionService._has_ranged_position_melee_contact(result):
-                    incoming_melee_pressure[target_key] = incoming_melee_pressure.get(target_key, 0) + 1
-
-        for actor_key, (archer, enemy, result) in by_actor.items():
-            if not enemy:
+        # Legacy direct callers provide their primary pairs; executor supplies the
+        # actual two exchange owners, including a forced defender without intent.
+        if participants is None:
+            unique = {str(a.char_id): a for source, target, _ in pairs for a in (source, target) if a is not None}
+            main = list(unique.values())
+        else:
+            main = list(participants)
+        for archer in main:
+            if not archer.is_alive or not RangedPositionService.is_ranged_actor(archer):
                 continue
-            override = result.action_facts.get("next_ranged_position_override")
+            enemy = next((a for a in main if a.char_id != archer.char_id), None)
+            if enemy is None:
+                continue
+            own_result = next(
+                (
+                    result
+                    for source, _target, result in pairs
+                    if source.char_id == archer.char_id
+                    and result.action_facts.get("execution", {}).get("origin", "primary") == "primary"
+                ),
+                None,
+            )
+            facts = own_result.action_facts if own_result else {}
+            result = final_result if final_result is not None else own_result
+            if result is None:
+                result = InteractionResultDTO(source_id=archer.char_id, target_id=enemy.char_id)
+            next_counter = archer.meta.exchange_counter + 1
+            forced = any(
+                effect.effect_id == RANGED_POSITION_EFFECT_ID
+                and effect.active_from_exchange == next_counter
+                and effect.params.get("forced_close")
+                for effect in archer.statuses.effects
+            )
+            if forced:
+                continue
+            incoming = [r for _source, target, r in pairs if target is not None and target.char_id == archer.char_id]
+            override = facts.get("next_ranged_position_override")
             position = (
                 RangedPositionService.normalize_position(override)
                 if override
                 else RangedPositionService.roll_next_position(
                     archer=archer,
                     enemy=enemy,
-                    damage_taken=incoming_damage.get(actor_key, 0),
-                    melee_pressure=incoming_melee_pressure.get(actor_key, 0),
-                    action_facts=result.action_facts,
+                    damage_taken=sum(max(0, int(r.damage_final or 0)) for r in incoming),
+                    melee_pressure=sum(RangedPositionService._has_ranged_position_melee_contact(r) for r in incoming),
+                    action_facts=facts,
                 )
             )
-            minimum = result.action_facts.get("next_ranged_position_min")
+            minimum = facts.get("next_ranged_position_min")
             if minimum:
                 position = RangedPositionService.at_least_position(
                     position, RangedPositionService.normalize_position(minimum)
@@ -311,22 +335,34 @@ class RangedPositionService:
         return PositionWeights(far=max(0.01, far), mid=max(0.01, mid), close=max(0.01, close))
 
     @staticmethod
-    def set_next_position(archer: ActorSnapshot, position: RangedPosition, result: InteractionResultDTO) -> None:
-        active_from = archer.meta.exchange_counter + 1
+    def set_next_position(
+        archer: ActorSnapshot,
+        position: RangedPosition,
+        result: InteractionResultDTO,
+        *,
+        recipient_increments: bool = True,
+        at_action_end: bool = False,
+        forced_close: bool = False,
+    ) -> None:
+        active_from = archer.meta.exchange_counter + int(recipient_increments)
         expire_at = active_from + 1
-        archer.statuses.effects = [
-            effect for effect in archer.statuses.effects if effect.effect_id != RANGED_POSITION_EFFECT_ID
-        ]
+        if not at_action_end:
+            archer.statuses.effects = [
+                effect
+                for effect in archer.statuses.effects
+                if effect.effect_id != RANGED_POSITION_EFFECT_ID or effect.active_from_exchange < active_from
+            ]
         effect = ActiveEffectDTO(
             uid=f"{RANGED_POSITION_EFFECT_ID}:{archer.char_id}:{active_from}",
             effect_id=RANGED_POSITION_EFFECT_ID,
             source_id=archer.char_id,
             active_from_exchange=active_from,
             expire_at_exchange=expire_at,
-            params={"position": position},
+            params={"position": position, "forced_close": forced_close},
         )
         effect.resolved_temp_commands = []
-        archer.statuses.effects.append(effect)
+        if not at_action_end:
+            archer.statuses.effects.append(effect)
         result.status_applications.append(
             CombatStatusApplicationDTO(
                 actor_id=archer.char_id,
@@ -334,6 +370,7 @@ class RangedPositionService:
                 effect_id=effect.effect_id,
                 active_effect=effect.model_dump(mode="json"),
                 mode="replace",
+                at_action_end=at_action_end,
             )
         )
         result.effect_facts.append(

@@ -131,7 +131,9 @@ async def test_partner_offhand_never_activates_players_self_preparation(determin
         ctx,
         CombatActionDTO(action_type="exchange", move=move("1", "monster", feint), partner_move=move("monster", "1")),
     )
-    results = [task["result"] for task in ctx.pending_result_support_tasks]
+    results = [
+        task["result"] for task in ctx.pending_result_support_tasks if "execution" in task["result"]["action_facts"]
+    ]
     casts = [(r["source_id"], e["action_id"]) for r in results for e in r["events"] if e["type"] == "CAST"]
     assert casts == [("1", feint)]
     assert [e.effect_id for e in player.statuses.effects] == [effect]
@@ -202,7 +204,9 @@ async def test_real_prepared_counter_uses_reactor_ownership_without_feint_activa
             is_forced=forced,
         ),
     )
-    results = [task["result"] for task in ctx.pending_result_support_tasks]
+    results = [
+        task["result"] for task in ctx.pending_result_support_tasks if "execution" in task["result"]["action_facts"]
+    ]
     assert [(r["source_id"], e["action_id"]) for r in results for e in r["events"] if e["type"] == "CAST"] == [
         ("1", "second_breath")
     ]
@@ -248,7 +252,9 @@ async def test_aoe_projects_hit_effects_for_both_owners_without_reactivation(mon
             partner_move=move("monster", "1", "sword_cross_arc"),
         ),
     )
-    results = [task["result"] for task in ctx.pending_result_support_tasks]
+    results = [
+        task["result"] for task in ctx.pending_result_support_tasks if "execution" in task["result"]["action_facts"]
+    ]
     assert [(r["source_id"], r["target_id"]) for r in results] == [
         ("1", "monster"),
         ("monster", "1"),
@@ -293,7 +299,9 @@ async def test_rejected_activation_never_grants_free_aoe_projection(deterministi
     await CombatExecutor()._handle_exchange(
         ctx, CombatActionDTO(action_type="exchange", move=move("1", "monster", "sword_cross_arc"), is_forced=True)
     )
-    results = [task["result"] for task in ctx.pending_result_support_tasks]
+    results = [
+        task["result"] for task in ctx.pending_result_support_tasks if "execution" in task["result"]["action_facts"]
+    ]
     assert len(results) == 1
     assert results[0]["feint_activation"]["state"] == "rejected"
     if block == "forbidden":
@@ -336,7 +344,9 @@ async def test_controlled_primary_grants_no_exchange_gift(deterministic_resolver
     await CombatExecutor()._handle_exchange(
         ctx, CombatActionDTO(action_type="exchange", move=move("1", "monster"), is_forced=True)
     )
-    results = [task["result"] for task in ctx.pending_result_support_tasks]
+    results = [
+        task["result"] for task in ctx.pending_result_support_tasks if "execution" in task["result"]["action_facts"]
+    ]
     assert len(results) == 1
     assert results[0]["skip_reason"] == "CONTROLLED"
     assert player.meta.tokens.get("gift", 0) == 0

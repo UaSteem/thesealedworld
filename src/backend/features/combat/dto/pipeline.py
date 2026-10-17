@@ -136,6 +136,8 @@ class MetaFlagsDTO(BaseModel):
     # Режим действия (Exchange / Unidirectional)
     action_mode: Literal["exchange", "unidirectional"] = "exchange"
     grant_exchange_gift: bool = False
+    incrementing_actor_ids: set[str] | None = None
+    defer_queued_statuses: bool = False
 
 
 class MechanicsFlagsDTO(BaseModel):
@@ -427,6 +429,7 @@ class CombatStatusApplicationDTO(BaseModel):
     effect_id: str
     active_effect: dict[str, Any]
     mode: Literal["add_or_refresh", "replace"] = "add_or_refresh"
+    at_action_end: bool = False
     source_action_id: str | None = None
     source_effect_id: str | None = None
     source_trigger_id: str | None = None

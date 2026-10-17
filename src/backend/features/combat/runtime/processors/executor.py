@@ -32,6 +32,8 @@ from src.backend.features.combat.runtime.support import (
 )
 from src.backend.features.game_catalog.combat.resources.common.targeting import TargetType
 
+InteractionPair = tuple[ActorSnapshot, ActorSnapshot | None, InteractionResultDTO]
+
 
 class CombatExecutor:
     """Execute runnable combat actions inside an in-memory battle context.
@@ -179,6 +181,7 @@ class CombatExecutor:
 
         if action.partner_move and action.partner_move.char_id != target.char_id:
             raise ValueError("Partner intent owner must match exchange target")
+        StatsEngine.sync_effect_modifiers(list(ctx.actors.values()))
         self._process_periodic_effects(ctx, [source, target], action=action, wave=0)
 
         # An exchange owns all strike waves; generated reactions never select
@@ -197,6 +200,9 @@ class CombatExecutor:
         max_waves = 3
         wave = 0
         used_feints: dict[tuple[str, str], ActorSnapshot] = {}
+        all_pairs: list[InteractionPair] = []
+        deferred_pairs = []
+        incrementing_ids = {str(source.char_id), str(target.char_id)}
         while pending_tasks and wave < max_waves:
             wave += 1
             runnable: list[
@@ -213,7 +219,7 @@ class CombatExecutor:
                             real_source.model_copy(deep=True),
                             real_target.model_copy(deep=True) if real_target else None,
                             strike,
-                            mods=mods,
+                            mods={**mods, "incrementing_actor_ids": incrementing_ids, "defer_queued_statuses": True},
                         ),
                         real_source,
                         real_target,
@@ -246,6 +252,8 @@ class CombatExecutor:
                                 secondary,
                                 mods={
                                     "action_mode": "unidirectional",
+                                    "incrementing_actor_ids": incrementing_ids,
+                                    "defer_queued_statuses": True,
                                     "damage_mult": damage_mult,
                                     "feint_role": "secondary",
                                     "pay_cost": False,
@@ -269,6 +277,9 @@ class CombatExecutor:
                 (real_source, real_target, result)
                 for result, (_task, real_source, real_target, _strike) in zip(results, runnable, strict=True)
             ]
+            all_pairs.extend(commit_pairs)
+            for real_source, real_target, result in commit_pairs:
+                deferred_pairs.append(self._extract_deferred_statuses(real_source, real_target, result))
             commit_ctx = PipelineContextDTO()
             commit_ctx.flags.meta.action_mode = "exchange"
             commit_ctx.flags.meta.grant_exchange_gift = True
@@ -277,7 +288,7 @@ class CombatExecutor:
                 commit_pairs,
                 actors_by_id={str(actor_id): actor for actor_id, actor in ctx.actors.items()},
             )
-            RangedPositionService.update_after_exchange(commit_pairs)
+            StatsEngine.sync_effect_modifiers(list(ctx.actors.values()))
 
             for result, (_task, real_source, real_target, strike) in zip(results, runnable, strict=True):
                 # Keep support schema stable while preserving provenance in facts.
@@ -334,9 +345,11 @@ class CombatExecutor:
             self._append_result_support_payload(ctx, regen_result, action=action, wave=wave)
             self._log_result_info(ctx, regen_result, wave=wave)
 
+        self._finalize_statuses_and_positions(ctx, action, deferred_pairs, all_pairs, (source, target), wave)
         source.meta.exchange_counter += 1
         target.meta.exchange_counter += 1
         ctx.meta.step_counter += 1
+        StatsEngine.sync_effect_modifiers(list(ctx.actors.values()))
         self._cleanup_finished_control_effects(ctx, [source, target], action=action, wave=wave)
 
         self._apply_used_feint_cooldowns(used_feints)
@@ -370,6 +383,7 @@ class CombatExecutor:
         if not source:
             return
 
+        StatsEngine.sync_effect_modifiers(list(ctx.actors.values()))
         self._process_periodic_effects(ctx, [source], action=action, wave=0)
 
         target_ids = action.move.targets or []
@@ -384,7 +398,7 @@ class CombatExecutor:
 
         tasks: list[Awaitable[InteractionResultDTO]] = []
         task_sources: list[tuple[ActorSnapshot, ActorSnapshot, CombatMoveDTO, dict[str, Any]]] = []
-        mods = self._unidirectional_mods(action)
+        mods = {**self._unidirectional_mods(action), "incrementing_actor_ids": set(), "defer_queued_statuses": True}
         for tid in target_ids:
             target = ctx.get_actor(tid)
             if target:
@@ -393,10 +407,12 @@ class CombatExecutor:
 
         if tasks:
             results = await asyncio.gather(*tasks)
+            deferred_pairs = []
             is_grouped_area_log = CombatLogBuilder._is_area_action(action) and len(results) > 1
             for result, (_source, target_snapshot, _move, _mods) in zip(results, task_sources, strict=False):
                 target = ctx.get_actor(result.target_id) if result.target_id is not None else None
                 self._append_cleave_splash(ctx, result, source, target_snapshot)
+                deferred_pairs.append(self._extract_deferred_statuses(source, target, result))
                 commit_ctx = PipelineContextDTO()
                 commit_ctx.flags.meta.action_mode = "unidirectional"
                 commit_ctx.flags.meta.grant_exchange_gift = False
@@ -413,12 +429,92 @@ class CombatExecutor:
                 self._log_result_info(ctx, result, wave=1)
             if is_grouped_area_log:
                 self._append_area_result_log(ctx, results, action=action, wave=1)
+            all_pairs: list[InteractionPair] = [
+                (source, target, result)
+                for result, (_source, target, _move, _mods) in zip(results, task_sources, strict=True)
+            ]
+            self._finalize_statuses_and_positions(ctx, action, deferred_pairs, all_pairs, None, 1)
             self._apply_unidirectional_ability_cooldown(source, action, results)
             log.bind(target_count=len(tasks)).info("ExecutorUnidirectionalCompleted")
 
     # ==========================================================================
     # 🛠️ HELPERS
     # ==========================================================================
+
+    @staticmethod
+    def _extract_deferred_statuses(
+        source: ActorSnapshot,
+        target: ActorSnapshot | None,
+        result: InteractionResultDTO,
+    ) -> InteractionPair:
+        deferred = InteractionResultDTO(
+            source_id=result.source_id, target_id=result.target_id, action_facts=dict(result.action_facts)
+        )
+        deferred.status_applications = [app for app in result.status_applications if app.at_action_end]
+        result.status_applications = [app for app in result.status_applications if not app.at_action_end]
+        # Position facts describe final persisted state, never a speculative wave roll.
+        position_ids = {"ranged_position", "force_ranged_close"}
+        deferred.effect_facts = [fact for fact in result.effect_facts if fact.effect_id in position_ids]
+        result.effect_facts = [fact for fact in result.effect_facts if fact.effect_id not in position_ids]
+        deferred.events = [event for event in result.events if event.action_id == "force_ranged_close"]
+        result.events = [event for event in result.events if event.action_id != "force_ranged_close"]
+        return source, target, deferred
+
+    def _finalize_statuses_and_positions(
+        self,
+        ctx: BattleContext,
+        action: CombatActionDTO,
+        deferred_pairs: list[InteractionPair],
+        all_pairs: list[InteractionPair],
+        participants: tuple[ActorSnapshot, ActorSnapshot] | None,
+        wave: int,
+    ) -> None:
+        commit_ctx = PipelineContextDTO()
+        commit_ctx.flags.meta.action_mode = "exchange" if participants else "unidirectional"
+        actors = {str(key): actor for key, actor in ctx.actors.items()}
+        # A status-only commit must not replay damage, cost, tokens, or hand refill.
+        mechanics = self.pipeline.mechanics_service
+        consumed = {
+            (str(removal.actor_id), removal.effect_uid)
+            for _source, _target, result in all_pairs
+            for removal in result.status_removals
+            if removal.effect_uid is not None
+        }
+        for _source, _target, result in deferred_pairs:
+            result.status_applications = [
+                app
+                for app in result.status_applications
+                if not app.active_effect.get("params", {}).get("forced_close")
+                or (actors.get(str(app.actor_id)) is not None and actors[str(app.actor_id)].is_alive)
+            ]
+        mechanics.apply_status_results(commit_ctx, deferred_pairs, actors_by_id=actors, consumed_uids=consumed)
+        final = InteractionResultDTO(
+            source_id=action.move.char_id, target_id=getattr(action.move.payload, "target_id", None)
+        )
+        final.action_facts["phase"] = "status_position_finalize"
+        for _source, _target, result in deferred_pairs:
+            accepted_positions = {
+                str(app.actor_id)
+                for app in result.status_applications
+                if app.effect_id == "ranged_position"
+                and any(
+                    effect.uid == app.active_effect.get("uid") and effect.params.get("forced_close")
+                    for effect in actors[str(app.actor_id)].statuses.effects
+                )
+            }
+            final.status_applications.extend(result.status_applications)
+            final.effect_facts.extend(fact for fact in result.effect_facts if str(fact.actor_id) in accepted_positions)
+            final.events.extend(event for event in result.events if str(event.target_id) in accepted_positions)
+        if participants:
+            RangedPositionService.update_after_exchange(all_pairs, participants=participants, final_result=final)
+        StatsEngine.sync_effect_modifiers(list(ctx.actors.values()))
+        if final.effect_facts:
+            ctx.pending_logs.extend(
+                CombatLogBuilder.build_effect_fact_entries(
+                    ctx=ctx, result=final, action=action, wave=wave, timestamp=time.time()
+                )
+            )
+            self._append_result_support_payload(ctx, final, action=action, wave=wave)
 
     def _resolve_unidirectional_targets(self, ctx: BattleContext, action: CombatActionDTO) -> list[ActorId]:
         raw_target = getattr(action.move.payload, "target_id", None)
@@ -652,7 +748,7 @@ class CombatExecutor:
         active_effect_ids = {
             effect.effect_id
             for effect in actor.statuses.effects
-            if effect.expire_at_exchange > actor.meta.exchange_counter
+            if effect.active_from_exchange <= actor.meta.exchange_counter < effect.expire_at_exchange
         }
         FeintService.reroll_hand(actor.meta, hand_size=hand_size, active_effect_ids=active_effect_ids)
 

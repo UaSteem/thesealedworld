@@ -3673,6 +3673,9 @@ def test_ability_service_applies_effect_modifier_applications_with_duration_clea
 
     effect = target.statuses.effects[0]
     source_id = effect.modified_sources["armor"][0]
+    assert source_id not in target.raw.modifiers["armor"]["temp"]
+    target.meta.exchange_counter = effect.active_from_exchange
+    StatsEngine.ensure_stats(target)
     assert target.raw.modifiers["armor"]["temp"][source_id] == "+1"
     assert source_id.startswith(f"effect:{effect.uid}:buff_armor:armor_add")
 
@@ -5323,11 +5326,17 @@ async def test_executor_resolves_aoe_feint_secondaries_as_unidirectional_hits(
         calls.append((str(source.char_id), str(target.char_id), mods))
         activation = move.activation
         return InteractionResultDTO(
-            source_id=source.char_id, target_id=target.char_id, is_hit=True,
+            source_id=source.char_id,
+            target_id=target.char_id,
+            is_hit=True,
             feint_activation=FeintActivationOutcomeDTO(
-                owner_id=activation.owner_id, intent_id=activation.intent_id,
-                feint_id=activation.feint_id, state="activated",
-            ) if activation else None,
+                owner_id=activation.owner_id,
+                intent_id=activation.intent_id,
+                feint_id=activation.feint_id,
+                state="activated",
+            )
+            if activation
+            else None,
         )
 
     def feint_entry(feint_id: str):
@@ -5369,13 +5378,15 @@ async def test_executor_resolves_aoe_feint_secondaries_as_unidirectional_hits(
     await CombatExecutor().process_batch(ctx, [action])
 
     assert calls == [
-        ("1", "2", {"action_mode": "exchange"}),
+        ("1", "2", {"action_mode": "exchange", "incrementing_actor_ids": {"1", "2"}, "defer_queued_statuses": True}),
         (
             "1",
             "3",
             {
                 "action_mode": "unidirectional",
                 "damage_mult": 0.75,
+                "incrementing_actor_ids": {"1", "2"},
+                "defer_queued_statuses": True,
                 "feint_role": "secondary",
                 "pay_cost": False,
                 "generate_feints": False,
@@ -5387,6 +5398,8 @@ async def test_executor_resolves_aoe_feint_secondaries_as_unidirectional_hits(
             {
                 "action_mode": "unidirectional",
                 "damage_mult": 0.75,
+                "incrementing_actor_ids": {"1", "2"},
+                "defer_queued_statuses": True,
                 "feint_role": "secondary",
                 "pay_cost": False,
                 "generate_feints": False,
@@ -5438,9 +5451,36 @@ async def test_executor_resolves_multi_target_instant_ability_with_damage_penalt
     await CombatExecutor().process_batch(ctx, [action])
 
     assert calls == [
-        ("1", "2", {"action_mode": "unidirectional", "damage_mult": 0.5}),
-        ("1", "3", {"action_mode": "unidirectional", "damage_mult": 0.5}),
-        ("1", "4", {"action_mode": "unidirectional", "damage_mult": 0.5}),
+        (
+            "1",
+            "2",
+            {
+                "action_mode": "unidirectional",
+                "damage_mult": 0.5,
+                "incrementing_actor_ids": set(),
+                "defer_queued_statuses": True,
+            },
+        ),
+        (
+            "1",
+            "3",
+            {
+                "action_mode": "unidirectional",
+                "damage_mult": 0.5,
+                "incrementing_actor_ids": set(),
+                "defer_queued_statuses": True,
+            },
+        ),
+        (
+            "1",
+            "4",
+            {
+                "action_mode": "unidirectional",
+                "damage_mult": 0.5,
+                "incrementing_actor_ids": set(),
+                "defer_queued_statuses": True,
+            },
+        ),
     ]
 
 
@@ -5885,6 +5925,8 @@ def test_ranged_position_service_commits_next_position_effect_from_trigger_overr
     RangedPositionService.update_after_exchange([(archer, enemy, result)])
 
     positions = [effect for effect in archer.statuses.effects if effect.effect_id == "ranged_position"]
+    assert RangedPositionService.current_position(archer) == "close"
+    positions = [effect for effect in positions if effect.active_from_exchange == 4]
     assert len(positions) == 1
     assert positions[0].params["position"] == "far"
     assert positions[0].active_from_exchange == 4

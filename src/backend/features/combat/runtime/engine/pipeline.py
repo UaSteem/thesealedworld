@@ -52,6 +52,9 @@ class CombatPipeline:
             A fully populated interaction result with checks, events, and applied
             outcome data.
         """
+        # Remove expired/future raw contributions before pre-calc can clean their owners.
+        StatsEngine.sync_effect_modifiers([actor for actor in (source, target) if actor is not None])
+
         # 0. Context Build
         # ContextBuilder создает ctx и инициализирует ctx.result (заполняет ID и hand)
         execution = normalize_execution(

@@ -55,6 +55,8 @@ class MechanicsService:
             en_effect_ids = []
 
             for effect in actor.statuses.effects:
+                if not effect.active_from_exchange <= actor.meta.exchange_counter < effect.expire_at_exchange:
+                    continue
                 if not effect.impact:
                     continue
 
@@ -184,6 +186,18 @@ class MechanicsService:
             if target:
                 actors[str(target.char_id)] = target
             self.apply_interaction_result(ctx, source, target, result, actors_by_id=actors_by_id, commit_status=False)
+        self.apply_status_results(ctx, pairs, actors_by_id=actors)
+
+    def apply_status_results(
+        self,
+        ctx: PipelineContextDTO,
+        pairs: list[tuple[ActorSnapshot, ActorSnapshot | None, InteractionResultDTO]],
+        *,
+        actors_by_id: dict[str, ActorSnapshot],
+        consumed_uids: set[tuple[str, str]] | None = None,
+    ) -> None:
+        """Commit statuses without replaying damage, resources, gifts or refill."""
+        actors = dict(actors_by_id)
         # All removals precede all applications: a dispel consumes snapshot UIDs,
         # never a preparation created concurrently in this layer.
         for source, target, result in pairs:
@@ -194,6 +208,7 @@ class MechanicsService:
             for removal in result.status_removals
             if removal.effect_uid is not None
         }
+        removed_uids.update(consumed_uids or set())
         applications = [
             (source, target, result, app)
             for source, target, result in pairs
@@ -228,6 +243,7 @@ class MechanicsService:
             effect_exclusive_channels(application.effect_id)
         )
         return (
+            not bool(raw.get("params", {}).get("forced_close")),
             not self_preparation,
             {"primary": 0, "offhand": 1, "counter": 2, "secondary": 3}.get(execution.get("origin"), 4),
             str(execution.get("intent_id") or ""),
@@ -684,9 +700,7 @@ class MechanicsService:
             ):
                 continue
 
-            if active_effect.resolved_temp_commands is not None:
-                ModifierApplicationService.apply_commands(active_effect.resolved_temp_commands, actors)
-            else:
+            if active_effect.resolved_temp_commands is None:
                 # Legacy callers may omit resolved commands only for static catalogs.
                 # Dynamic values must be frozen during calculate, never recomputed here.
                 entry = CombatCatalogIntegrator.get_effect_catalog_entry(active_effect.effect_id)
@@ -708,11 +722,16 @@ class MechanicsService:
                         list(actors.values()), applied.modified_sources
                     )
             actor.statuses.effects.append(active_effect)
+            StatsEngine.sync_effect_modifiers(list(actors.values()))
 
     @staticmethod
     def _active_effect_ids_for_feint_refill(actor: ActorSnapshot) -> set[str]:
         current_exchange = actor.meta.exchange_counter
-        return {effect.effect_id for effect in actor.statuses.effects if effect.expire_at_exchange > current_exchange}
+        return {
+            effect.effect_id
+            for effect in actor.statuses.effects
+            if effect.active_from_exchange <= current_exchange < effect.expire_at_exchange
+        }
 
     def _apply_staged_resource_applications(
         self,
