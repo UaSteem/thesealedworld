@@ -82,10 +82,15 @@ class AbilityService:
             - Spends ability or feint costs.
             - Registers triggers, temporary modifiers, and override damage rules.
         """
+        for actor in (source, target):
+            if actor is not None:
+                ctx.initial_effect_uids.setdefault(
+                    str(actor.char_id), {effect.uid for effect in actor.statuses.effects}
+                )
         # 1. [CLEANUP EXPIRED EFFECTS]
-        AbilityService._cleanup_expired_effects_pre_calc(source)
+        AbilityService._cleanup_expired_effects_pre_calc(source, ctx=ctx)
         if target:
-            AbilityService._cleanup_expired_effects_pre_calc(target)
+            AbilityService._cleanup_expired_effects_pre_calc(target, ctx=ctx)
 
         # 2. [SOURCE STATUS CHECK]
         self._apply_status_effects(ctx, source, mode="source")
@@ -455,6 +460,7 @@ class AbilityService:
 
         if duration_applications and not materialize_status_after_calc:
             AbilityService._materialize_modifier_status_effects(
+                ctx=ctx,
                 applications=duration_applications,
                 config=config,
                 source=actor,
@@ -544,6 +550,7 @@ class AbilityService:
     @staticmethod
     def _materialize_modifier_status_effects(
         *,
+        ctx: PipelineContextDTO,
         applications: list[ModifierApplicationDTO],
         config: AbilityTechnicalDTO | FeintTechnicalDTO,
         source: ActorSnapshot,
@@ -585,7 +592,11 @@ class AbilityService:
                 modified_keys=sorted(applied_modifiers.modified_keys),
                 modified_sources=applied_modifiers.modified_sources,
             )
+            active_effect.resolved_temp_commands = ModifierApplicationService.capture_commands(
+                [source, target], active_effect.modified_sources
+            )
             AbilityService._replace_modifier_status_effect(effect_target, active_effect)
+            AbilityService._stage_effect(ctx, effect_target, active_effect, mode="replace")
 
     @staticmethod
     def _modifier_status_target(
@@ -654,6 +665,7 @@ class AbilityService:
                 ability_entry = GameData.get_ability_catalog_entry(ability.ability_id)
                 if ability_entry and applications:
                     AbilityService._materialize_modifier_status_effects(
+                        ctx=ctx,
                         applications=applications,
                         config=ability_entry.technical,
                         source=source,
@@ -760,6 +772,7 @@ class AbilityService:
                 to_remove.append(effect)
 
         for effect in to_remove:
+            ModifierApplicationService.remove_temp_sources(actor, effect.modified_sources)
             actor.statuses.effects.remove(effect)
 
     @staticmethod
@@ -801,7 +814,7 @@ class AbilityService:
         if effect_id == "prep_dual_blade_loop_parry":
             if not ctx.result.chain_events.trigger_counter_attack:
                 return
-            AbilityService._append_runtime_effect(actor, "prep_dual_blade_loop_counter")
+            AbilityService._append_runtime_effect(actor, "prep_dual_blade_loop_counter", ctx=ctx)
             return
 
         if effect_id == "prep_dual_blade_loop_counter":
@@ -947,13 +960,20 @@ class AbilityService:
             return 1
 
     @staticmethod
-    def _dispel_prepared_effects(actor: ActorSnapshot) -> int:
+    def _dispel_prepared_effects(actor: ActorSnapshot, ctx: PipelineContextDTO | None = None) -> int:
         removed = 0
         keep = []
         for effect in actor.statuses.effects:
             effect_entry = GameData.get_effect_catalog_entry(effect.effect_id)
             tags = set(effect_entry.technical.tags) if effect_entry else set()
-            if "preparation" in tags:
+            initial_uids = ctx.initial_effect_uids.get(str(actor.char_id)) if ctx is not None else None
+            if "preparation" in tags and (initial_uids is None or effect.uid in initial_uids):
+                if ctx is not None:
+                    ctx.result.status_removals.append(
+                        CombatStatusRemovalDTO(
+                            actor_id=actor.char_id, effect_uid=effect.uid, effect_id=effect.effect_id
+                        )
+                    )
                 if effect.modified_sources:
                     ModifierApplicationService.remove_temp_sources(actor, effect.modified_sources)
                 removed += 1
@@ -1100,7 +1120,7 @@ class AbilityService:
                 continue
 
             if effect_id == "dispel_preparations":
-                removed = AbilityService._dispel_prepared_effects(effect_target)
+                removed = AbilityService._dispel_prepared_effects(effect_target, ctx=ctx)
                 ctx.result.effect_facts.append(
                     CombatEffectFactDTO(
                         actor_id=effect_target.char_id,
@@ -1178,10 +1198,12 @@ class AbilityService:
                 active_effect.active_from_exchange = active_from_exchange
                 active_effect.expire_at_exchange = active_from_exchange + duration
 
-            if AbilityService._skip_or_refresh_exclusive_effect(effect_target, active_effect):
+            if AbilityService._skip_or_refresh_exclusive_effect(effect_target, active_effect, ctx=ctx):
                 continue
 
             if config.modifier_applications:
+                if AbilityService._uses_source_stats(config.modifier_applications):
+                    StatsEngine.ensure_stats(source)
                 applied_modifiers = ModifierApplicationService.apply(
                     applications=config.modifier_applications,
                     owner="effect",
@@ -1193,6 +1215,9 @@ class AbilityService:
                 active_effect.modified_keys = sorted(set(active_effect.modified_keys) | applied_modifiers.modified_keys)
                 active_effect.modified_sources = applied_modifiers.modified_sources
 
+            active_effect.resolved_temp_commands = ModifierApplicationService.capture_commands(
+                [source, target], active_effect.modified_sources
+            )
             effect_target.statuses.effects.append(active_effect)
 
             ctx.result.status_applications.append(
@@ -1225,13 +1250,17 @@ class AbilityService:
             )
 
     @staticmethod
-    def _skip_or_refresh_exclusive_effect(effect_target: ActorSnapshot, active_effect: ActiveEffectDTO) -> bool:
+    def _skip_or_refresh_exclusive_effect(
+        effect_target: ActorSnapshot, active_effect: ActiveEffectDTO, ctx: PipelineContextDTO | None = None
+    ) -> bool:
         same_effect = next(
             (existing for existing in effect_target.statuses.effects if existing.effect_id == active_effect.effect_id),
             None,
         )
         if same_effect is not None:
             same_effect.expire_at_exchange = max(same_effect.expire_at_exchange, active_effect.expire_at_exchange)
+            if ctx is not None:
+                AbilityService._stage_effect(ctx, effect_target, same_effect)
             return True
 
         incoming_channels = effect_exclusive_channels(active_effect.effect_id)
@@ -1428,19 +1457,33 @@ class AbilityService:
         return "counter_only" in set(getattr(config, "tags", []) or [])
 
     @staticmethod
-    def _append_runtime_effect(actor: ActorSnapshot, effect_id: str) -> None:
+    def _stage_effect(ctx, actor, effect, *, mode="add_or_refresh") -> None:
+        ctx.result.status_applications.append(
+            CombatStatusApplicationDTO(
+                actor_id=actor.char_id,
+                source_id=effect.source_id,
+                effect_id=effect.effect_id,
+                active_effect=effect.model_dump(mode="json"),
+                mode=mode,
+            )
+        )
+
+    @staticmethod
+    def _append_runtime_effect(actor: ActorSnapshot, effect_id: str, ctx: PipelineContextDTO | None = None) -> None:
         entry = GameData.get_effect_catalog_entry(effect_id)
         if not entry:
             return
-        actor.statuses.effects.append(
-            EffectFactory.create_effect(
-                config=entry.technical,
-                params={},
-                source_id=actor.char_id,
-                current_exchange=actor.meta.exchange_counter,
-                damage_ref=0,
-            )
+        effect = EffectFactory.create_effect(
+            config=entry.technical,
+            params={},
+            source_id=actor.char_id,
+            current_exchange=actor.meta.exchange_counter,
+            damage_ref=0,
         )
+        effect.resolved_temp_commands = []
+        actor.statuses.effects.append(effect)
+        if ctx is not None:
+            AbilityService._stage_effect(ctx, actor, effect)
 
     @staticmethod
     def _fact_owner(
@@ -1456,7 +1499,7 @@ class AbilityService:
         return "other"
 
     @staticmethod
-    def _cleanup_expired_effects_pre_calc(actor: ActorSnapshot) -> None:
+    def _cleanup_expired_effects_pre_calc(actor: ActorSnapshot, ctx: PipelineContextDTO | None = None) -> None:
         """Remove effects that expired before the current exchange starts."""
         current_exchange = actor.meta.exchange_counter
         to_remove = []
@@ -1466,6 +1509,10 @@ class AbilityService:
                 to_remove.append(effect)
 
         for effect in to_remove:
+            if ctx is not None:
+                ctx.result.status_removals.append(
+                    CombatStatusRemovalDTO(actor_id=actor.char_id, effect_uid=effect.uid, effect_id=effect.effect_id)
+                )
             if effect.modified_sources:
                 ModifierApplicationService.remove_temp_sources(actor, effect.modified_sources)
             actor.statuses.effects.remove(effect)

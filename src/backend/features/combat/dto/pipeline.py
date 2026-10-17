@@ -426,6 +426,7 @@ class CombatStatusApplicationDTO(BaseModel):
     source_id: ActorId | None = None
     effect_id: str
     active_effect: dict[str, Any]
+    mode: Literal["add_or_refresh", "replace"] = "add_or_refresh"
     source_action_id: str | None = None
     source_effect_id: str | None = None
     source_trigger_id: str | None = None
@@ -603,6 +604,8 @@ class InteractionResultDTO(BaseModel):
 
 class PipelineContextDTO(BaseModel):
     """Пульт управления боем."""
+
+    initial_effect_uids: dict[str, set[str]] = Field(default_factory=dict, exclude=True)
 
     phases: PipelinePhasesDTO = Field(default_factory=PipelinePhasesDTO)
     flags: PipelineFlagsDTO = Field(default_factory=PipelineFlagsDTO)

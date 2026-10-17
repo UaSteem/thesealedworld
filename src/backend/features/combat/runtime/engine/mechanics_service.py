@@ -119,6 +119,8 @@ class MechanicsService:
         target: ActorSnapshot | None,
         result: InteractionResultDTO,
         actors_by_id: dict[str, ActorSnapshot] | None = None,
+        *,
+        commit_status: bool = True,
     ) -> None:
         """Apply one interaction result to source and target actor state.
 
@@ -147,7 +149,8 @@ class MechanicsService:
             self._consume_shield_opening_between(source, target, result)
 
         # 3.5. [STATUS] Commit staged effects/removals after resource math.
-        self._apply_staged_status_changes(ctx, source, target, result)
+        if commit_status:
+            self._apply_staged_status_changes(ctx, source, target, result)
 
         # 4. [FEINTS] One-way actions can still refill locally. Exchange hands are
         # rerolled once in CombatExecutor after the full paired exchange resolves.
@@ -175,8 +178,67 @@ class MechanicsService:
         actors_by_id: dict[str, ActorSnapshot] | None = None,
     ) -> None:
         """Commit a simultaneous exchange layer after all results were calculated."""
+        actors = dict(actors_by_id or {})
         for source, target, result in pairs:
-            self.apply_interaction_result(ctx, source, target, result, actors_by_id=actors_by_id)
+            actors[str(source.char_id)] = source
+            if target:
+                actors[str(target.char_id)] = target
+            self.apply_interaction_result(ctx, source, target, result, actors_by_id=actors_by_id, commit_status=False)
+        # All removals precede all applications: a dispel consumes snapshot UIDs,
+        # never a preparation created concurrently in this layer.
+        for source, target, result in pairs:
+            self._apply_staged_status_changes(ctx, source, target, result, actors_by_id=actors, phase="removals")
+        removed_uids = {
+            (str(removal.actor_id), removal.effect_uid)
+            for _source, _target, result in pairs
+            for removal in result.status_removals
+            if removal.effect_uid is not None
+        }
+        applications = [
+            (source, target, result, app)
+            for source, target, result in pairs
+            for app in result.status_applications
+            if not (app.mode == "add_or_refresh" and (str(app.actor_id), app.active_effect.get("uid")) in removed_uids)
+            if not any(
+                str(removal.actor_id) == str(app.actor_id) and removal.effect_uid == app.active_effect.get("uid")
+                for removal in result.status_removals
+            )
+        ]
+        applications.sort(key=lambda item: self._status_application_key(item[2], item[3]))
+        written = set()
+        for source, target, result, application in applications:
+            key = (str(application.actor_id), application.effect_id)
+            if key in written and application.mode == "replace":
+                continue
+            self._apply_staged_status_changes(
+                ctx, source, target, result, actors_by_id=actors, phase="applications", applications=[application]
+            )
+            written.add(key)
+
+    @staticmethod
+    def _status_application_key(result, application):
+        """Existing channels win; new self-owned preparations win before origin.
+
+        Primary, offhand, counter, secondary then canonical provenance resolve
+        new conflicts. Numeric strength never determines ownership or priority.
+        """
+        execution = result.action_facts.get("execution", {})
+        raw = application.active_effect
+        self_preparation = str(application.actor_id) == str(raw.get("source_id")) and bool(
+            effect_exclusive_channels(application.effect_id)
+        )
+        return (
+            not self_preparation,
+            {"primary": 0, "offhand": 1, "counter": 2, "secondary": 3}.get(execution.get("origin"), 4),
+            str(execution.get("intent_id") or ""),
+            str(execution.get("owner_id") or result.source_id),
+            str(result.target_id),
+            str(execution.get("parent_id") or ""),
+            str(execution.get("strike_id") or ""),
+            str(application.actor_id),
+            application.effect_id,
+            str(raw.get("uid", "")),
+        )
 
     def apply_exchange_regen(self, source: ActorSnapshot, target: ActorSnapshot) -> InteractionResultDTO:
         """Regenerate the surviving main pair after all strikes, before counters tick.
@@ -496,13 +558,22 @@ class MechanicsService:
             )
 
     def _apply_staged_status_changes(
-        self, ctx: PipelineContextDTO, source: ActorSnapshot, target: ActorSnapshot | None, result: InteractionResultDTO
+        self,
+        ctx: PipelineContextDTO,
+        source: ActorSnapshot,
+        target: ActorSnapshot | None,
+        result: InteractionResultDTO,
+        *,
+        actors_by_id=None,
+        phase="both",
+        applications=None,
     ) -> None:
-        actors = {str(source.char_id): source}
+        actors = dict(actors_by_id or {})
+        actors[str(source.char_id)] = source
         if target:
             actors[str(target.char_id)] = target
 
-        for removal in result.status_removals:
+        for removal in result.status_removals if phase != "applications" else []:
             actor_id = getattr(removal, "actor_id", None) if not isinstance(removal, dict) else removal.get("actor_id")
             actor = actors.get(str(actor_id)) if actor_id is not None else None
             if not actor:
@@ -520,10 +591,17 @@ class MechanicsService:
                 )
                 if should_remove:
                     if effect.modified_sources:
-                        ModifierApplicationService.remove_temp_sources(actor, effect.modified_sources)
+                        for recipient in actors.values():
+                            ModifierApplicationService.remove_temp_sources(recipient, effect.modified_sources)
                     continue
                 kept_effects.append(effect)
             actor.statuses.effects = kept_effects
+            for ability in actor.statuses.abilities:
+                if (effect_uid and ability.uid == effect_uid) or (
+                    effect_id and not effect_uid and ability.ability_id == effect_id
+                ):
+                    for recipient in actors.values():
+                        ModifierApplicationService.remove_temp_sources(recipient, ability.modified_sources)
             actor.statuses.abilities = [
                 ability
                 for ability in actor.statuses.abilities
@@ -533,7 +611,9 @@ class MechanicsService:
                 )
             ]
 
-        for application in result.status_applications:
+        for application in (
+            (applications if applications is not None else result.status_applications) if phase != "removals" else []
+        ):
             actor_id = (
                 getattr(application, "actor_id", None)
                 if not isinstance(application, dict)
@@ -547,6 +627,16 @@ class MechanicsService:
                 if not isinstance(application, dict)
                 else application.get("active_effect")
             )
+            if (
+                phase == "both"
+                and active_raw
+                and any(
+                    str(getattr(removal, "actor_id", None)) == str(actor_id)
+                    and getattr(removal, "effect_uid", None) == active_raw.get("uid")
+                    for removal in result.status_removals
+                )
+            ):
+                continue
             if active_raw:
                 active_effect = ActiveEffectDTO.model_validate(active_raw)
             else:
@@ -575,33 +665,48 @@ class MechanicsService:
                     expire_at_exchange=active_from + int(entry.technical.duration or 0),
                 )
 
-            if any(existing.uid == active_effect.uid for existing in actor.statuses.effects):
-                continue
+            mode = application.get("mode", "add_or_refresh") if isinstance(application, dict) else application.mode
             same_effect = next(
-                (existing for existing in actor.statuses.effects if existing.effect_id == active_effect.effect_id),
-                None,
+                (existing for existing in actor.statuses.effects if existing.effect_id == active_effect.effect_id), None
             )
-            if same_effect is not None:
+            if same_effect is not None and mode != "replace":
                 same_effect.expire_at_exchange = max(same_effect.expire_at_exchange, active_effect.expire_at_exchange)
                 continue
+            if mode == "replace":
+                for existing in list(actor.statuses.effects):
+                    if existing.effect_id == active_effect.effect_id:
+                        for recipient in actors.values():
+                            ModifierApplicationService.remove_temp_sources(recipient, existing.modified_sources)
+                        actor.statuses.effects.remove(existing)
             active_channels = effect_exclusive_channels(active_effect.effect_id)
             if active_channels and any(
                 active_channels & effect_exclusive_channels(existing.effect_id) for existing in actor.statuses.effects
             ):
                 continue
 
-            entry = CombatCatalogIntegrator.get_effect_catalog_entry(active_effect.effect_id)
-            if entry and entry.technical.modifier_applications:
-                applied = ModifierApplicationService.apply(
-                    applications=entry.technical.modifier_applications,
-                    owner="effect",
-                    owner_uid=active_effect.uid,
-                    owner_id=active_effect.effect_id,
-                    source=source,
-                    target=actor,
-                )
-                active_effect.modified_keys = sorted(set(active_effect.modified_keys) | applied.modified_keys)
-                active_effect.modified_sources = applied.modified_sources
+            if active_effect.resolved_temp_commands is not None:
+                ModifierApplicationService.apply_commands(active_effect.resolved_temp_commands, actors)
+            else:
+                # Legacy callers may omit resolved commands only for static catalogs.
+                # Dynamic values must be frozen during calculate, never recomputed here.
+                entry = CombatCatalogIntegrator.get_effect_catalog_entry(active_effect.effect_id)
+                if entry and entry.technical.modifier_applications:
+                    apps = entry.technical.modifier_applications
+                    if any(app.value_mode.startswith("source_") for app in apps):
+                        raise ValueError("Dynamic status modifiers require resolved temp commands")
+                    applied = ModifierApplicationService.apply(
+                        applications=apps,
+                        owner="effect",
+                        owner_uid=active_effect.uid,
+                        owner_id=active_effect.effect_id,
+                        source=source,
+                        target=actor,
+                    )
+                    active_effect.modified_keys = sorted(set(active_effect.modified_keys) | applied.modified_keys)
+                    active_effect.modified_sources = applied.modified_sources
+                    active_effect.resolved_temp_commands = ModifierApplicationService.capture_commands(
+                        list(actors.values()), applied.modified_sources
+                    )
             actor.statuses.effects.append(active_effect)
 
     @staticmethod

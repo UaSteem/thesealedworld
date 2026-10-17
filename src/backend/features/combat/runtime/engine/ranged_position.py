@@ -4,7 +4,12 @@ from dataclasses import dataclass
 from typing import Literal
 
 from src.backend.features.combat.dto.actor import ActiveEffectDTO, ActorSnapshot, ActorStats
-from src.backend.features.combat.dto.pipeline import CombatEffectFactDTO, InteractionResultDTO, PipelineContextDTO
+from src.backend.features.combat.dto.pipeline import (
+    CombatEffectFactDTO,
+    CombatStatusApplicationDTO,
+    InteractionResultDTO,
+    PipelineContextDTO,
+)
 from src.backend.features.combat.runtime.engine.math_core import MathCore
 from src.backend.features.combat.runtime.engine.tunables import current_tunables
 
@@ -320,7 +325,17 @@ class RangedPositionService:
             expire_at_exchange=expire_at,
             params={"position": position},
         )
+        effect.resolved_temp_commands = []
         archer.statuses.effects.append(effect)
+        result.status_applications.append(
+            CombatStatusApplicationDTO(
+                actor_id=archer.char_id,
+                source_id=archer.char_id,
+                effect_id=effect.effect_id,
+                active_effect=effect.model_dump(mode="json"),
+                mode="replace",
+            )
+        )
         result.effect_facts.append(
             CombatEffectFactDTO(
                 actor_id=archer.char_id,
