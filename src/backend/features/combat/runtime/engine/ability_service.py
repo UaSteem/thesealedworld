@@ -21,9 +21,10 @@ from src.backend.features.combat.dto import (
     InstantPayload,
     PipelineContextDTO,
 )
-from src.backend.features.combat.dto.pipeline import CombatCheckTraceDTO
+from src.backend.features.combat.dto.pipeline import CombatCheckTraceDTO, FeintActivationOutcomeDTO
 from src.backend.features.combat.integrations import CombatCatalogIntegrator as GameData
 from src.backend.features.combat.runtime.engine.effect_factory import EffectFactory
+from src.backend.features.combat.runtime.engine.execution import FeintActivation, FeintMode, StrikeExecution
 from src.backend.features.combat.runtime.engine.feint_service import FeintService
 from src.backend.features.combat.runtime.engine.math_core import MathCore
 from src.backend.features.combat.runtime.engine.modifier_application_service import ModifierApplicationService
@@ -61,9 +62,11 @@ class AbilityService:
     def pre_process(
         self,
         ctx: PipelineContextDTO,
-        move: CombatMoveDTO,
+        move: CombatMoveDTO | StrikeExecution,
         source: ActorSnapshot,
         target: ActorSnapshot | None = None,
+        *,
+        feint_mode: FeintMode = "activate",
     ) -> None:
         """Prepare the pipeline context before resolver math runs.
 
@@ -79,10 +82,15 @@ class AbilityService:
             - Spends ability or feint costs.
             - Registers triggers, temporary modifiers, and override damage rules.
         """
+        for actor in (source, target):
+            if actor is not None:
+                ctx.initial_effect_uids.setdefault(
+                    str(actor.char_id), {effect.uid for effect in actor.statuses.effects}
+                )
         # 1. [CLEANUP EXPIRED EFFECTS]
-        AbilityService._cleanup_expired_effects_pre_calc(source)
+        AbilityService._cleanup_expired_effects_pre_calc(source, ctx=ctx)
         if target:
-            AbilityService._cleanup_expired_effects_pre_calc(target)
+            AbilityService._cleanup_expired_effects_pre_calc(target, ctx=ctx)
 
         # 2. [SOURCE STATUS CHECK]
         self._apply_status_effects(ctx, source, mode="source")
@@ -99,33 +107,71 @@ class AbilityService:
 
             if ability_id:
                 self._process_action_logic(ctx, move, source, target, mode="ability")
-            elif feint_id:
-                if AbilityService._source_forbids_feints(source):
-                    ctx.result.chain_events.preserve_feint = True
-                    ctx.result.effect_facts.append(
-                        CombatEffectFactDTO(
-                            actor_id=source.char_id,
-                            owner="source",
-                            effect_id="concussed_no_feints",
-                            action="tick",
-                            source_effect_id="concussed_no_feints",
-                            tags=["control", "forbid_feints"],
+            elif feint_id and feint_mode != "none":
+                if feint_mode == "project":
+                    self._process_action_logic(ctx, move, source, target, mode="feint", feint_mode="project")
+                else:
+                    activation = (
+                        move.activation
+                        if isinstance(move, StrikeExecution)
+                        else FeintActivation(
+                            source.char_id,
+                            move.move_id,
+                            feint_id,
                         )
                     )
-                    return
-                self._process_action_logic(ctx, move, source, target, mode="feint")
+                    if activation:
+                        self.activate_feint(ctx, activation, move, source, target)
             else:
                 # Basic Attack (No CAST event needed? Or maybe "ATTACK"?)
                 pass
         else:
             pass
 
+    def activate_feint(
+        self,
+        ctx: PipelineContextDTO,
+        activation: FeintActivation,
+        move: CombatMoveDTO | StrikeExecution,
+        source: ActorSnapshot,
+        target: ActorSnapshot | None,
+    ) -> None:
+        """Activate one owner's selected feint before its primary strike.
+
+        Generated strikes never call this operation. Area projection shares
+        only the hit contract through the common action materializer.
+        """
+        if activation.owner_id != source.char_id:
+            raise ValueError("Feint activation owner must match source")
+        ctx.result.feint_activation = FeintActivationOutcomeDTO(
+            owner_id=activation.owner_id,
+            intent_id=activation.intent_id,
+            feint_id=activation.feint_id,
+            state="rejected",
+            reason="UNAVAILABLE",
+        )
+        if AbilityService._source_forbids_feints(source):
+            ctx.result.feint_activation.reason = "FORBIDDEN"
+            ctx.result.chain_events.preserve_feint = True
+            ctx.result.effect_facts.append(
+                CombatEffectFactDTO(
+                    actor_id=source.char_id,
+                    owner="source",
+                    effect_id="concussed_no_feints",
+                    action="tick",
+                    source_effect_id="concussed_no_feints",
+                    tags=["control", "forbid_feints"],
+                )
+            )
+            return
+        self._process_action_logic(ctx, move, source, target, mode="feint", activation=activation)
+
     def post_process(
         self,
         ctx: PipelineContextDTO,
         source: ActorSnapshot,
         target: ActorSnapshot | None,
-        move: CombatMoveDTO,
+        move: CombatMoveDTO | StrikeExecution,
     ) -> None:
         """Finalize ability/effect consequences after resolver math completes.
 
@@ -138,7 +184,7 @@ class AbilityService:
         Side Effects:
             - Removes expired temporary ability modifiers.
             - Consumes prepared reactions tied to the current outcome.
-            - Materializes queued effects and passive combat HP/concentration regeneration.
+            - Materializes queued effects and strike-local sustain.
         """
         if not ctx.result:
             return
@@ -154,10 +200,6 @@ class AbilityService:
 
         # 4. [VAMPIRIC SUSTAIN]
         self._register_vampiric_lifesteal(ctx, source)
-
-        # 5. [PASSIVE COMBAT RESOURCE REGEN]
-        self._register_combat_hp_regen(ctx, source)
-        self._register_combat_stamina_regen(ctx, source)
 
     # ==============================================================================
     # ATOMIC STEPS: STATUS EFFECTS (FLAGS & MODS)
@@ -257,7 +299,7 @@ class AbilityService:
     # ==============================================================================
 
     @staticmethod
-    def _extract_action_id(move: CombatMoveDTO, mode: Literal["ability", "feint"]) -> str | None:
+    def _extract_action_id(move: CombatMoveDTO | StrikeExecution, mode: Literal["ability", "feint"]) -> str | None:
         """Extract the relevant ability or feint id from a normalized move payload."""
         payload = move.payload
 
@@ -287,10 +329,12 @@ class AbilityService:
     @staticmethod
     def _process_action_logic(
         ctx: PipelineContextDTO,
-        move: CombatMoveDTO,
+        move: CombatMoveDTO | StrikeExecution,
         actor: ActorSnapshot,
         target: ActorSnapshot | None,
         mode: Literal["ability", "feint"],
+        feint_mode: FeintMode = "activate",
+        activation: FeintActivation | None = None,
     ) -> None:
         """Apply one ability or feint contract into the current pipeline context."""
         config: AbilityTechnicalDTO | FeintTechnicalDTO | None = None
@@ -319,14 +363,14 @@ class AbilityService:
                     log.bind(ability_id=config.ability_id).debug("AbilityServiceInsufficientResources")
 
         elif mode == "feint":
-            action_id = AbilityService._extract_action_id(move, mode="feint")
+            action_id = activation.feint_id if activation else AbilityService._extract_action_id(move, mode="feint")
             if not action_id:
                 return
 
             feint_entry = GameData.get_feint_catalog_entry(action_id)
             if feint_entry:
                 config = feint_entry.technical
-                if not ctx.flags.mechanics.pay_cost:
+                if feint_mode == "project" or not ctx.flags.mechanics.pay_cost:
                     cost_ok = True
                 else:
                     stamina_cost = FeintService.activation_stamina_cost(config.cost.tactics)
@@ -340,8 +384,15 @@ class AbilityService:
                         log.bind(feint_id=config.feint_id).trace("AbilityServiceInsufficientStamina")
 
         if not config or not cost_ok:
+            if activation and ctx.result.feint_activation:
+                ctx.result.feint_activation.reason = ctx.result.skip_reason or "UNAVAILABLE"
             return
 
+        if activation and ctx.result.feint_activation:
+            ctx.result.feint_activation.state = "activated"
+            ctx.result.feint_activation.reason = None
+
+        projecting = mode == "feint" and feint_mode == "project"
         ctx.result.action_facts.update(
             {
                 "id": action_id,
@@ -354,11 +405,15 @@ class AbilityService:
             ctx.result.action_facts["outcome"] = AbilityService._ability_default_outcome(config)
 
         # [EVENT] CAST
-        ctx.result.events.append(
-            CombatEventDTO(
-                type="CAST", source_id=actor.char_id, target_id=target.char_id if target else None, action_id=action_id
+        if not projecting:
+            ctx.result.events.append(
+                CombatEventDTO(
+                    type="CAST",
+                    source_id=actor.char_id,
+                    target_id=target.char_id if target else None,
+                    action_id=action_id,
+                )
             )
-        )
 
         ability_uid = str(uuid.uuid4())
         modified_keys: list[str] = []
@@ -371,9 +426,11 @@ class AbilityService:
             active_id = getattr(config, "feint_id", action_id)
 
         modifier_applications = list(config.modifier_applications or [])
-        duration_applications = [
-            application for application in modifier_applications if application.scope == "duration"
-        ]
+        duration_applications = (
+            []
+            if projecting
+            else [application for application in modifier_applications if application.scope == "duration"]
+        )
         immediate_applications = [
             application for application in modifier_applications if application.scope != "duration"
         ]
@@ -403,6 +460,7 @@ class AbilityService:
 
         if duration_applications and not materialize_status_after_calc:
             AbilityService._materialize_modifier_status_effects(
+                ctx=ctx,
                 applications=duration_applications,
                 config=config,
                 source=actor,
@@ -433,7 +491,7 @@ class AbilityService:
             AbilityService._merge_modified_sources(modified_sources, applied_modifiers.modified_sources)
 
         payload_effects: dict[str, Any] = {}
-        prep_effects = getattr(config, "preparation_effects", None)
+        prep_effects = None if projecting else getattr(config, "preparation_effects", None)
         if prep_effects:
             payload_effects["always"] = prep_effects
 
@@ -492,6 +550,7 @@ class AbilityService:
     @staticmethod
     def _materialize_modifier_status_effects(
         *,
+        ctx: PipelineContextDTO,
         applications: list[ModifierApplicationDTO],
         config: AbilityTechnicalDTO | FeintTechnicalDTO,
         source: ActorSnapshot,
@@ -533,7 +592,11 @@ class AbilityService:
                 modified_keys=sorted(applied_modifiers.modified_keys),
                 modified_sources=applied_modifiers.modified_sources,
             )
+            active_effect.resolved_temp_commands = ModifierApplicationService.capture_commands(
+                [source, target], active_effect.modified_sources
+            )
             AbilityService._replace_modifier_status_effect(effect_target, active_effect)
+            AbilityService._stage_effect(ctx, effect_target, active_effect, mode="replace")
 
     @staticmethod
     def _modifier_status_target(
@@ -602,6 +665,7 @@ class AbilityService:
                 ability_entry = GameData.get_ability_catalog_entry(ability.ability_id)
                 if ability_entry and applications:
                     AbilityService._materialize_modifier_status_effects(
+                        ctx=ctx,
                         applications=applications,
                         config=ability_entry.technical,
                         source=source,
@@ -671,6 +735,8 @@ class AbilityService:
     ) -> None:
         to_remove = []
         for effect in actor.statuses.effects:
+            if not effect.active_from_exchange <= actor.meta.exchange_counter < effect.expire_at_exchange:
+                continue
             effect_entry = GameData.get_effect_catalog_entry(effect.effect_id)
             if not effect_entry:
                 continue
@@ -708,6 +774,7 @@ class AbilityService:
                 to_remove.append(effect)
 
         for effect in to_remove:
+            ModifierApplicationService.remove_temp_sources(actor, effect.modified_sources)
             actor.statuses.effects.remove(effect)
 
     @staticmethod
@@ -749,7 +816,7 @@ class AbilityService:
         if effect_id == "prep_dual_blade_loop_parry":
             if not ctx.result.chain_events.trigger_counter_attack:
                 return
-            AbilityService._append_runtime_effect(actor, "prep_dual_blade_loop_counter")
+            AbilityService._append_runtime_effect(actor, "prep_dual_blade_loop_counter", ctx=ctx)
             return
 
         if effect_id == "prep_dual_blade_loop_counter":
@@ -876,7 +943,7 @@ class AbilityService:
         ctx.result.applied_effects.append(queued_effect)
 
     @staticmethod
-    def _source_weapon_tier(actor: ActorSnapshot, move: CombatMoveDTO) -> int:
+    def _source_weapon_tier(actor: ActorSnapshot, move: CombatMoveDTO | StrikeExecution) -> int:
         payload = move.payload
         hand = getattr(payload, "hand", None)
         source_type = "off_hand" if hand == "off" else "main_hand"
@@ -895,13 +962,20 @@ class AbilityService:
             return 1
 
     @staticmethod
-    def _dispel_prepared_effects(actor: ActorSnapshot) -> int:
+    def _dispel_prepared_effects(actor: ActorSnapshot, ctx: PipelineContextDTO | None = None) -> int:
         removed = 0
         keep = []
         for effect in actor.statuses.effects:
             effect_entry = GameData.get_effect_catalog_entry(effect.effect_id)
             tags = set(effect_entry.technical.tags) if effect_entry else set()
-            if "preparation" in tags:
+            initial_uids = ctx.initial_effect_uids.get(str(actor.char_id)) if ctx is not None else None
+            if "preparation" in tags and (initial_uids is None or effect.uid in initial_uids):
+                if ctx is not None:
+                    ctx.result.status_removals.append(
+                        CombatStatusRemovalDTO(
+                            actor_id=actor.char_id, effect_uid=effect.uid, effect_id=effect.effect_id
+                        )
+                    )
                 if effect.modified_sources:
                     ModifierApplicationService.remove_temp_sources(actor, effect.modified_sources)
                 removed += 1
@@ -1048,7 +1122,7 @@ class AbilityService:
                 continue
 
             if effect_id == "dispel_preparations":
-                removed = AbilityService._dispel_prepared_effects(effect_target)
+                removed = AbilityService._dispel_prepared_effects(effect_target, ctx=ctx)
                 ctx.result.effect_facts.append(
                     CombatEffectFactDTO(
                         actor_id=effect_target.char_id,
@@ -1064,7 +1138,19 @@ class AbilityService:
 
             if effect_id == "force_ranged_close":
                 if RangedPositionService.is_ranged_actor(effect_target):
-                    RangedPositionService.set_next_position(effect_target, "close", ctx.result)
+                    incrementing = ctx.flags.meta.incrementing_actor_ids
+                    RangedPositionService.set_next_position(
+                        effect_target,
+                        "close",
+                        ctx.result,
+                        recipient_increments=(
+                            str(effect_target.char_id) in incrementing
+                            if incrementing is not None
+                            else ctx.flags.meta.action_mode == "exchange"
+                        ),
+                        at_action_end=ctx.flags.meta.defer_queued_statuses,
+                        forced_close=True,
+                    )
                     ctx.result.effect_facts.append(
                         CombatEffectFactDTO(
                             actor_id=effect_target.char_id,
@@ -1120,16 +1206,24 @@ class AbilityService:
                 damage_ref=damage_ref,  # Передаем урон
             )
 
-            if ctx.flags.meta.action_mode == "exchange":
+            incrementing = ctx.flags.meta.incrementing_actor_ids
+            recipient_increments = (
+                str(effect_target.char_id) in incrementing
+                if incrementing is not None
+                else ctx.flags.meta.action_mode == "exchange"
+            )
+            if recipient_increments:
                 active_from_exchange = effect_target.meta.exchange_counter + 1
                 duration = max(0, active_effect.expire_at_exchange - effect_target.meta.exchange_counter)
                 active_effect.active_from_exchange = active_from_exchange
                 active_effect.expire_at_exchange = active_from_exchange + duration
 
-            if AbilityService._skip_or_refresh_exclusive_effect(effect_target, active_effect):
+            if AbilityService._skip_or_refresh_exclusive_effect(effect_target, active_effect, ctx=ctx):
                 continue
 
             if config.modifier_applications:
+                if AbilityService._uses_source_stats(config.modifier_applications):
+                    StatsEngine.ensure_stats(source)
                 applied_modifiers = ModifierApplicationService.apply(
                     applications=config.modifier_applications,
                     owner="effect",
@@ -1141,7 +1235,16 @@ class AbilityService:
                 active_effect.modified_keys = sorted(set(active_effect.modified_keys) | applied_modifiers.modified_keys)
                 active_effect.modified_sources = applied_modifiers.modified_sources
 
-            effect_target.statuses.effects.append(active_effect)
+            active_effect.resolved_temp_commands = ModifierApplicationService.capture_commands(
+                [source, target], active_effect.modified_sources
+            )
+            if ctx.flags.meta.defer_queued_statuses:
+                for recipient in (source, target):
+                    if recipient is not None:
+                        ModifierApplicationService.remove_temp_sources(recipient, active_effect.modified_sources)
+            else:
+                effect_target.statuses.effects.append(active_effect)
+                StatsEngine.sync_effect_modifiers([a for a in (source, target) if a is not None])
 
             ctx.result.status_applications.append(
                 CombatStatusApplicationDTO(
@@ -1149,6 +1252,7 @@ class AbilityService:
                     source_id=effect_source_id,
                     effect_id=active_effect.effect_id,
                     active_effect=active_effect.model_dump(mode="json"),
+                    at_action_end=ctx.flags.meta.defer_queued_statuses,
                     source_action_id=effect_data.get("source_action_id"),
                     source_effect_id=effect_data.get("source_effect_id"),
                     source_trigger_id=effect_data.get("source_trigger_id"),
@@ -1173,13 +1277,21 @@ class AbilityService:
             )
 
     @staticmethod
-    def _skip_or_refresh_exclusive_effect(effect_target: ActorSnapshot, active_effect: ActiveEffectDTO) -> bool:
+    def _skip_or_refresh_exclusive_effect(
+        effect_target: ActorSnapshot, active_effect: ActiveEffectDTO, ctx: PipelineContextDTO | None = None
+    ) -> bool:
         same_effect = next(
             (existing for existing in effect_target.statuses.effects if existing.effect_id == active_effect.effect_id),
             None,
         )
         if same_effect is not None:
+            if ctx is not None and ctx.flags.meta.defer_queued_statuses:
+                same_effect = same_effect.model_copy(deep=True)
             same_effect.expire_at_exchange = max(same_effect.expire_at_exchange, active_effect.expire_at_exchange)
+            if ctx is not None:
+                AbilityService._stage_effect(
+                    ctx, effect_target, same_effect, at_action_end=ctx.flags.meta.defer_queued_statuses
+                )
             return True
 
         incoming_channels = effect_exclusive_channels(active_effect.effect_id)
@@ -1237,34 +1349,6 @@ class AbilityService:
         if actor.stats is None:
             return 0.0
         return sum(float(getattr(actor.stats.mods, modifier_id, 0.0) or 0.0) for modifier_id in modifier_ids)
-
-    @staticmethod
-    def _register_combat_stamina_regen(ctx: PipelineContextDTO, source: ActorSnapshot) -> None:
-        if not source.is_alive:
-            return
-
-        StatsEngine.ensure_stats(source)
-        if not source.stats:
-            return
-
-        delta = AbilityService._combat_stamina_regen_delta(source.stats.mods.stamina_regen)
-        if delta <= 0:
-            return
-        ctx.result.resource_changes.setdefault("stamina", {})["combat_regen"] = f"+{delta}"
-
-    @staticmethod
-    def _register_combat_hp_regen(ctx: PipelineContextDTO, source: ActorSnapshot) -> None:
-        if not source.is_alive:
-            return
-
-        StatsEngine.ensure_stats(source)
-        if not source.stats:
-            return
-
-        delta = AbilityService._combat_regen_delta(source.stats.mods.hp_regen)
-        if delta <= 0:
-            return
-        ctx.result.resource_changes.setdefault("hp", {})["combat_regen"] = f"+{delta}"
 
     @staticmethod
     def _register_vampiric_lifesteal(ctx: PipelineContextDTO, source: ActorSnapshot) -> None:
@@ -1404,19 +1488,34 @@ class AbilityService:
         return "counter_only" in set(getattr(config, "tags", []) or [])
 
     @staticmethod
-    def _append_runtime_effect(actor: ActorSnapshot, effect_id: str) -> None:
+    def _stage_effect(ctx, actor, effect, *, mode="add_or_refresh", at_action_end=False) -> None:
+        ctx.result.status_applications.append(
+            CombatStatusApplicationDTO(
+                actor_id=actor.char_id,
+                source_id=effect.source_id,
+                effect_id=effect.effect_id,
+                active_effect=effect.model_dump(mode="json"),
+                mode=mode,
+                at_action_end=at_action_end,
+            )
+        )
+
+    @staticmethod
+    def _append_runtime_effect(actor: ActorSnapshot, effect_id: str, ctx: PipelineContextDTO | None = None) -> None:
         entry = GameData.get_effect_catalog_entry(effect_id)
         if not entry:
             return
-        actor.statuses.effects.append(
-            EffectFactory.create_effect(
-                config=entry.technical,
-                params={},
-                source_id=actor.char_id,
-                current_exchange=actor.meta.exchange_counter,
-                damage_ref=0,
-            )
+        effect = EffectFactory.create_effect(
+            config=entry.technical,
+            params={},
+            source_id=actor.char_id,
+            current_exchange=actor.meta.exchange_counter,
+            damage_ref=0,
         )
+        effect.resolved_temp_commands = []
+        actor.statuses.effects.append(effect)
+        if ctx is not None:
+            AbilityService._stage_effect(ctx, actor, effect)
 
     @staticmethod
     def _fact_owner(
@@ -1432,7 +1531,7 @@ class AbilityService:
         return "other"
 
     @staticmethod
-    def _cleanup_expired_effects_pre_calc(actor: ActorSnapshot) -> None:
+    def _cleanup_expired_effects_pre_calc(actor: ActorSnapshot, ctx: PipelineContextDTO | None = None) -> None:
         """Remove effects that expired before the current exchange starts."""
         current_exchange = actor.meta.exchange_counter
         to_remove = []
@@ -1442,6 +1541,10 @@ class AbilityService:
                 to_remove.append(effect)
 
         for effect in to_remove:
+            if ctx is not None:
+                ctx.result.status_removals.append(
+                    CombatStatusRemovalDTO(actor_id=actor.char_id, effect_uid=effect.uid, effect_id=effect.effect_id)
+                )
             if effect.modified_sources:
                 ModifierApplicationService.remove_temp_sources(actor, effect.modified_sources)
             actor.statuses.effects.remove(effect)

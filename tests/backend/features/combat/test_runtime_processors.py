@@ -33,7 +33,7 @@ from src.backend.features.combat.dto import (
     PipelineContextDTO,
 )
 from src.backend.features.combat.dto.actor import ActorStats
-from src.backend.features.combat.dto.pipeline import CombatDamageTraceDTO
+from src.backend.features.combat.dto.pipeline import CombatDamageTraceDTO, FeintActivationOutcomeDTO
 from src.backend.features.combat.integrations import CombatCatalogIntegrator, CombatSessionIntegration
 from src.backend.features.combat.runtime.engine.ability_service import AbilityService
 from src.backend.features.combat.runtime.engine.context_builder import ContextBuilder
@@ -3673,6 +3673,9 @@ def test_ability_service_applies_effect_modifier_applications_with_duration_clea
 
     effect = target.statuses.effects[0]
     source_id = effect.modified_sources["armor"][0]
+    assert source_id not in target.raw.modifiers["armor"]["temp"]
+    target.meta.exchange_counter = effect.active_from_exchange
+    StatsEngine.ensure_stats(target)
     assert target.raw.modifiers["armor"]["temp"][source_id] == "+1"
     assert source_id.startswith(f"effect:{effect.uid}:buff_armor:armor_add")
 
@@ -4904,7 +4907,9 @@ def test_mechanics_grants_one_gift_token_to_source_for_exchange_action() -> None
     ctx = PipelineContextDTO()
     ctx.flags.meta.action_mode = "exchange"
     ctx.flags.meta.grant_exchange_gift = True
-    result = InteractionResultDTO(source_id=1, target_id=2)
+    result = InteractionResultDTO(
+        source_id=1, target_id=2, hand="main_hand", action_facts={"execution": {"origin": "primary"}}
+    )
 
     MechanicsService().apply_interaction_result(ctx, source, target, result)
 
@@ -4931,7 +4936,10 @@ def test_mechanics_does_not_grant_exchange_gift_for_unidirectional_action() -> N
     target = actor(2, "b")
     ctx = PipelineContextDTO()
     ctx.flags.meta.action_mode = "unidirectional"
-    result = InteractionResultDTO(source_id=1, target_id=2)
+    ctx.flags.meta.grant_exchange_gift = True
+    result = InteractionResultDTO(
+        source_id=1, target_id=2, hand="main_hand", action_facts={"execution": {"origin": "primary"}}
+    )
 
     MechanicsService().apply_interaction_result(ctx, source, target, result)
 
@@ -5066,7 +5074,7 @@ def test_mechanics_does_not_award_blood_token_progress_to_dead_actor() -> None:
 
 
 @pytest.mark.unit
-def test_ability_post_process_registers_hp_and_stamina_combat_regen() -> None:
+def test_ability_post_process_leaves_passive_regen_to_exchange_finalization() -> None:
     source = actor(1, "a")
     source.meta.hp = 10
     source.meta.max_hp = 20
@@ -5080,19 +5088,13 @@ def test_ability_post_process_registers_hp_and_stamina_combat_regen() -> None:
 
     AbilityService().post_process(ctx, source, None, move)
 
-    assert ctx.result.resource_changes == {
-        "hp": {"combat_regen": "+1"},
-        "stamina": {"combat_regen": "+3"},
-    }
+    assert ctx.result.resource_changes == {}
 
     MechanicsService().apply_interaction_result(ctx, source, None, ctx.result)
-    assert source.meta.hp == 11
+    assert source.meta.hp == 10
     assert source.meta.en == 4
-    assert source.meta.stamina == 8
-    assert [(fact.actor_id, fact.resource, fact.reason, fact.delta) for fact in ctx.result.resource_facts] == [
-        ("1", "hp", "combat_regen", 1),
-        ("1", "stamina", "combat_regen", 3),
-    ]
+    assert source.meta.stamina == 5
+    assert ctx.result.resource_facts == []
 
 
 @pytest.mark.unit
@@ -5179,17 +5181,13 @@ async def test_executor_ticks_periodic_effects_before_exchange() -> None:
 
 
 @pytest.mark.unit
-async def test_executor_applies_explicit_combat_regen_resource_changes_to_current_exchange_actors(
+async def test_executor_finalizes_combat_regen_for_current_exchange_actors(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     async def fixed_result(self, source, target, move, exchange_count=0, external_mods=None):
         return InteractionResultDTO(
             source_id=source.char_id,
             target_id=target.char_id,
-            resource_changes={
-                "hp": {"combat_regen": "+1"},
-                "stamina": {"combat_regen": "+3"},
-            },
         )
 
     monkeypatch.setattr(CombatPipeline, "calculate", fixed_result)
@@ -5326,7 +5324,20 @@ async def test_executor_resolves_aoe_feint_secondaries_as_unidirectional_hits(
     async def fixed_result(self, source, target, move, exchange_count=0, external_mods=None):
         mods = dict(external_mods or {})
         calls.append((str(source.char_id), str(target.char_id), mods))
-        return InteractionResultDTO(source_id=source.char_id, target_id=target.char_id, is_hit=True)
+        activation = move.activation
+        return InteractionResultDTO(
+            source_id=source.char_id,
+            target_id=target.char_id,
+            is_hit=True,
+            feint_activation=FeintActivationOutcomeDTO(
+                owner_id=activation.owner_id,
+                intent_id=activation.intent_id,
+                feint_id=activation.feint_id,
+                state="activated",
+            )
+            if activation
+            else None,
+        )
 
     def feint_entry(feint_id: str):
         if feint_id != "test_aoe_feint":
@@ -5367,13 +5378,15 @@ async def test_executor_resolves_aoe_feint_secondaries_as_unidirectional_hits(
     await CombatExecutor().process_batch(ctx, [action])
 
     assert calls == [
-        ("1", "2", {"action_mode": "exchange"}),
+        ("1", "2", {"action_mode": "exchange", "incrementing_actor_ids": {"1", "2"}, "defer_queued_statuses": True}),
         (
             "1",
             "3",
             {
                 "action_mode": "unidirectional",
                 "damage_mult": 0.75,
+                "incrementing_actor_ids": {"1", "2"},
+                "defer_queued_statuses": True,
                 "feint_role": "secondary",
                 "pay_cost": False,
                 "generate_feints": False,
@@ -5385,6 +5398,8 @@ async def test_executor_resolves_aoe_feint_secondaries_as_unidirectional_hits(
             {
                 "action_mode": "unidirectional",
                 "damage_mult": 0.75,
+                "incrementing_actor_ids": {"1", "2"},
+                "defer_queued_statuses": True,
                 "feint_role": "secondary",
                 "pay_cost": False,
                 "generate_feints": False,
@@ -5436,9 +5451,36 @@ async def test_executor_resolves_multi_target_instant_ability_with_damage_penalt
     await CombatExecutor().process_batch(ctx, [action])
 
     assert calls == [
-        ("1", "2", {"action_mode": "unidirectional", "damage_mult": 0.5}),
-        ("1", "3", {"action_mode": "unidirectional", "damage_mult": 0.5}),
-        ("1", "4", {"action_mode": "unidirectional", "damage_mult": 0.5}),
+        (
+            "1",
+            "2",
+            {
+                "action_mode": "unidirectional",
+                "damage_mult": 0.5,
+                "incrementing_actor_ids": set(),
+                "defer_queued_statuses": True,
+            },
+        ),
+        (
+            "1",
+            "3",
+            {
+                "action_mode": "unidirectional",
+                "damage_mult": 0.5,
+                "incrementing_actor_ids": set(),
+                "defer_queued_statuses": True,
+            },
+        ),
+        (
+            "1",
+            "4",
+            {
+                "action_mode": "unidirectional",
+                "damage_mult": 0.5,
+                "incrementing_actor_ids": set(),
+                "defer_queued_statuses": True,
+            },
+        ),
     ]
 
 
@@ -5883,6 +5925,8 @@ def test_ranged_position_service_commits_next_position_effect_from_trigger_overr
     RangedPositionService.update_after_exchange([(archer, enemy, result)])
 
     positions = [effect for effect in archer.statuses.effects if effect.effect_id == "ranged_position"]
+    assert RangedPositionService.current_position(archer) == "close"
+    positions = [effect for effect in positions if effect.active_from_exchange == 4]
     assert len(positions) == 1
     assert positions[0].params["position"] == "far"
     assert positions[0].active_from_exchange == 4

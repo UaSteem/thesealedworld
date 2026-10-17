@@ -14,6 +14,50 @@ class CombatLogBuilder:
     """Builds short player-facing combat log entries from resolved public facts."""
 
     @classmethod
+    def build_exchange_regen_entry(
+        cls, *, ctx: BattleContext, result: InteractionResultDTO, wave: int, timestamp: float
+    ) -> dict[str, Any]:
+        """Render final resource facts without inventing another attack or cast."""
+        resources = [
+            {
+                "actor_id": str(fact.actor_id),
+                "resource": fact.resource,
+                "before": fact.before,
+                "after": fact.after,
+                "max": fact.max,
+                "delta": fact.delta,
+                "label": f"{fact.resource.upper()} {fact.after}/{fact.max}",
+            }
+            for fact in result.resource_facts
+            if fact.reason == "combat_regen"
+        ]
+        gains = []
+        for resource in resources:
+            actor = cls._actor_ref(ctx, resource["actor_id"])
+            name = (actor or {}).get("name") or resource["actor_id"]
+            gains.append(f"{name}: {resource['resource'].upper()} +{resource['delta']}")
+        return {
+            "id": f"{ctx.meta.step_counter + 1}:{wave}:combat_regen:{result.source_id}:{result.target_id}",
+            "type": "LOG",
+            "kind": "combat_regen",
+            "text": "Восстановление после размена. " + "; ".join(gains) + ".",
+            "timestamp": timestamp,
+            "global_turn": ctx.meta.step_counter + 1,
+            "wave": wave,
+            "source": cls._actor_ref(ctx, result.source_id),
+            "target": cls._actor_ref(ctx, result.target_id),
+            "tags": ["runtime", "exchange", "combat_regen"],
+            "outcome": "combat_regen",
+            "resources": resources,
+            "effects": [],
+            "badges": [],
+            "flags": {},
+            "result": {"resources": resources, "tokens": [], "effects": []},
+            "presentation": {"player_visible": True, "severity": "normal", "render": "inline_result"},
+            "severity": "normal",
+        }
+
+    @classmethod
     def build_result_entries(
         cls,
         *,
@@ -103,6 +147,8 @@ class CombatLogBuilder:
             "badges": [],
             "flags": cls._public_flags(result),
         }
+        if isinstance(result.action_facts.get("execution"), dict):
+            entry["execution"] = dict(result.action_facts["execution"])
         if cls._effect_fact_entries_should_replace_primary(result):
             return cls.build_effect_fact_entries(
                 ctx=ctx,
@@ -542,13 +588,18 @@ class CombatLogBuilder:
         if outcome == "death":
             return "death", "death", "default", cls._death_tags(result)
         if action.action_type == "exchange":
-            delivery, surface_tags = cls._source_delivery(ctx, source_id, action)
-            feint_id = None if result.is_counter else cls._feint_id(action)
+            source_type = "off_hand" if result.hand in {"off", "off_hand"} else "main_hand"
+            delivery, surface_tags = cls._source_delivery(ctx, source_id, action, source_type=source_type)
+            execution = result.action_facts.get("execution")
+            generated_strike = (
+                execution.get("origin") in {"counter", "offhand"} if isinstance(execution, dict) else result.is_counter
+            )
+            feint_id = None if generated_strike else cls._feint_id(action)
             if feint_id:
                 return "feint", feint_id, delivery, surface_tags
             return (
                 "basic_exchange",
-                cls._basic_exchange_resource_id(ctx, source_id, action, delivery),
+                cls._basic_exchange_resource_id(ctx, source_id, action, delivery, source_type=source_type),
                 delivery,
                 surface_tags,
             )
@@ -611,13 +662,15 @@ class CombatLogBuilder:
         ctx: BattleContext,
         source_id: int | str | None,
         action: CombatActionDTO,
+        *,
+        source_type: str | None = None,
     ) -> tuple[str, tuple[str, ...]]:
         if action.action_type == "instant":
             return "magic", ()
         if action.action_type == "item":
             return "item", ()
         actor = ctx.get_actor(source_id) if source_id is not None else None
-        source_type = CombatLogBuilder._action_source_type(action)
+        source_type = source_type or CombatLogBuilder._action_source_type(action)
         surface = getattr(getattr(actor, "loadout", None), "combat_surfaces", {}).get(source_type) if actor else None
         if surface is not None:
             if isinstance(surface, dict):
@@ -641,9 +694,11 @@ class CombatLogBuilder:
         source_id: int | str | None,
         action: CombatActionDTO,
         delivery: str,
+        *,
+        source_type: str | None = None,
     ) -> str:
         actor = ctx.get_actor(source_id) if source_id is not None else None
-        source_type = CombatLogBuilder._action_source_type(action)
+        source_type = source_type or CombatLogBuilder._action_source_type(action)
         loadout = getattr(actor, "loadout", None)
         surface = getattr(loadout, "combat_surfaces", {}).get(source_type) if loadout else None
         if delivery == "natural":
@@ -1360,13 +1415,14 @@ class CombatLogBuilder:
 
     @staticmethod
     def _public_flags(result: InteractionResultDTO) -> dict[str, bool]:
+        execution = result.action_facts.get("execution")
         return {
             "crit": result.is_crit,
             "dodged": result.is_dodged,
             "parried": result.is_parried,
             "blocked": result.is_blocked,
             "missed": result.is_miss,
-            "counter": result.is_counter,
+            "counter": execution.get("origin") == "counter" if isinstance(execution, dict) else result.is_counter,
             "reflect": result.reflected_damage > 0,
             "death": CombatLogBuilder._has_event(result, "DEATH"),
         }

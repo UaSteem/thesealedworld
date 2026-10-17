@@ -15,11 +15,13 @@ from src.backend.features.combat.dto import (
     PipelineContextDTO,
 )
 from src.backend.features.combat.integrations import CombatCatalogIntegrator
+from src.backend.features.combat.runtime.engine.ability_service import AbilityService
 from src.backend.features.combat.runtime.engine.feint_service import FeintService
 from src.backend.features.combat.runtime.engine.modifier_application_service import ModifierApplicationService
 from src.backend.features.combat.runtime.engine.preparation_exclusivity import (
     effect_exclusive_channels,
 )
+from src.backend.features.combat.runtime.engine.stats_engine import StatsEngine
 
 BLOOD_TOKEN_DAMAGE_STEP = 10
 PRESSURE_TOKEN_DAMAGE_STEP = BLOOD_TOKEN_DAMAGE_STEP
@@ -53,6 +55,8 @@ class MechanicsService:
             en_effect_ids = []
 
             for effect in actor.statuses.effects:
+                if not effect.active_from_exchange <= actor.meta.exchange_counter < effect.expire_at_exchange:
+                    continue
                 if not effect.impact:
                     continue
 
@@ -117,6 +121,8 @@ class MechanicsService:
         target: ActorSnapshot | None,
         result: InteractionResultDTO,
         actors_by_id: dict[str, ActorSnapshot] | None = None,
+        *,
+        commit_status: bool = True,
     ) -> None:
         """Apply one interaction result to source and target actor state.
 
@@ -145,7 +151,8 @@ class MechanicsService:
             self._consume_shield_opening_between(source, target, result)
 
         # 3.5. [STATUS] Commit staged effects/removals after resource math.
-        self._apply_staged_status_changes(ctx, source, target, result)
+        if commit_status:
+            self._apply_staged_status_changes(ctx, source, target, result)
 
         # 4. [FEINTS] One-way actions can still refill locally. Exchange hands are
         # rerolled once in CombatExecutor after the full paired exchange resolves.
@@ -173,8 +180,119 @@ class MechanicsService:
         actors_by_id: dict[str, ActorSnapshot] | None = None,
     ) -> None:
         """Commit a simultaneous exchange layer after all results were calculated."""
+        actors = dict(actors_by_id or {})
         for source, target, result in pairs:
-            self.apply_interaction_result(ctx, source, target, result, actors_by_id=actors_by_id)
+            actors[str(source.char_id)] = source
+            if target:
+                actors[str(target.char_id)] = target
+            self.apply_interaction_result(ctx, source, target, result, actors_by_id=actors_by_id, commit_status=False)
+        self.apply_status_results(ctx, pairs, actors_by_id=actors)
+
+    def apply_status_results(
+        self,
+        ctx: PipelineContextDTO,
+        pairs: list[tuple[ActorSnapshot, ActorSnapshot | None, InteractionResultDTO]],
+        *,
+        actors_by_id: dict[str, ActorSnapshot],
+        consumed_uids: set[tuple[str, str]] | None = None,
+    ) -> None:
+        """Commit statuses without replaying damage, resources, gifts or refill."""
+        actors = dict(actors_by_id)
+        # All removals precede all applications: a dispel consumes snapshot UIDs,
+        # never a preparation created concurrently in this layer.
+        for source, target, result in pairs:
+            self._apply_staged_status_changes(ctx, source, target, result, actors_by_id=actors, phase="removals")
+        removed_uids = {
+            (str(removal.actor_id), removal.effect_uid)
+            for _source, _target, result in pairs
+            for removal in result.status_removals
+            if removal.effect_uid is not None
+        }
+        removed_uids.update(consumed_uids or set())
+        applications = [
+            (source, target, result, app)
+            for source, target, result in pairs
+            for app in result.status_applications
+            if not (app.mode == "add_or_refresh" and (str(app.actor_id), app.active_effect.get("uid")) in removed_uids)
+            if not any(
+                str(removal.actor_id) == str(app.actor_id) and removal.effect_uid == app.active_effect.get("uid")
+                for removal in result.status_removals
+            )
+        ]
+        applications.sort(key=lambda item: self._status_application_key(item[2], item[3]))
+        written = set()
+        for source, target, result, application in applications:
+            key = (str(application.actor_id), application.effect_id)
+            if key in written and application.mode == "replace":
+                continue
+            self._apply_staged_status_changes(
+                ctx, source, target, result, actors_by_id=actors, phase="applications", applications=[application]
+            )
+            written.add(key)
+
+    @staticmethod
+    def _status_application_key(result, application):
+        """Existing channels win; new self-owned preparations win before origin.
+
+        Primary, offhand, counter, secondary then canonical provenance resolve
+        new conflicts. Numeric strength never determines ownership or priority.
+        """
+        execution = result.action_facts.get("execution", {})
+        raw = application.active_effect
+        self_preparation = str(application.actor_id) == str(raw.get("source_id")) and bool(
+            effect_exclusive_channels(application.effect_id)
+        )
+        return (
+            not bool(raw.get("params", {}).get("forced_close")),
+            not self_preparation,
+            {"primary": 0, "offhand": 1, "counter": 2, "secondary": 3}.get(execution.get("origin"), 4),
+            str(execution.get("intent_id") or ""),
+            str(execution.get("owner_id") or result.source_id),
+            str(result.target_id),
+            str(execution.get("parent_id") or ""),
+            str(execution.get("strike_id") or ""),
+            str(application.actor_id),
+            application.effect_id,
+            str(raw.get("uid", "")),
+        )
+
+    def apply_exchange_regen(self, source: ActorSnapshot, target: ActorSnapshot) -> InteractionResultDTO:
+        """Regenerate the surviving main pair after all strikes, before counters tick.
+
+        This result carries facts only; it must never be committed as another
+        interaction (which would replay costs, damage, tokens and effects).
+        """
+        result = InteractionResultDTO(
+            source_id=source.char_id,
+            target_id=target.char_id,
+            action_facts={"phase": "exchange_finalize", "outcome": "combat_regen"},
+        )
+        participants: tuple[tuple[ActorSnapshot, Literal["source", "target"]], ...] = (
+            (source, "source"),
+            (target, "target"),
+        )
+        for actor, owner in participants:
+            if not actor.is_alive:
+                continue
+            StatsEngine.ensure_stats(actor)
+            if actor.stats is None:
+                continue
+            deltas = (
+                ("hp", AbilityService._combat_regen_delta(actor.stats.mods.hp_regen)),
+                ("stamina", AbilityService._combat_stamina_regen_delta(actor.stats.mods.stamina_regen)),
+            )
+            for resource, delta in deltas:
+                if delta <= 0:
+                    continue
+                self._record_resource_fact(
+                    result,
+                    actor=actor,
+                    owner=owner,
+                    resource=resource,
+                    reason="combat_regen",
+                    applied=self._apply_resource_delta(actor, resource, [f"+{delta}"]),
+                )
+        return result
 
     # ==============================================================================
     # INTERNAL LOGIC
@@ -456,13 +574,22 @@ class MechanicsService:
             )
 
     def _apply_staged_status_changes(
-        self, ctx: PipelineContextDTO, source: ActorSnapshot, target: ActorSnapshot | None, result: InteractionResultDTO
+        self,
+        ctx: PipelineContextDTO,
+        source: ActorSnapshot,
+        target: ActorSnapshot | None,
+        result: InteractionResultDTO,
+        *,
+        actors_by_id=None,
+        phase="both",
+        applications=None,
     ) -> None:
-        actors = {str(source.char_id): source}
+        actors = dict(actors_by_id or {})
+        actors[str(source.char_id)] = source
         if target:
             actors[str(target.char_id)] = target
 
-        for removal in result.status_removals:
+        for removal in result.status_removals if phase != "applications" else []:
             actor_id = getattr(removal, "actor_id", None) if not isinstance(removal, dict) else removal.get("actor_id")
             actor = actors.get(str(actor_id)) if actor_id is not None else None
             if not actor:
@@ -480,10 +607,17 @@ class MechanicsService:
                 )
                 if should_remove:
                     if effect.modified_sources:
-                        ModifierApplicationService.remove_temp_sources(actor, effect.modified_sources)
+                        for recipient in actors.values():
+                            ModifierApplicationService.remove_temp_sources(recipient, effect.modified_sources)
                     continue
                 kept_effects.append(effect)
             actor.statuses.effects = kept_effects
+            for ability in actor.statuses.abilities:
+                if (effect_uid and ability.uid == effect_uid) or (
+                    effect_id and not effect_uid and ability.ability_id == effect_id
+                ):
+                    for recipient in actors.values():
+                        ModifierApplicationService.remove_temp_sources(recipient, ability.modified_sources)
             actor.statuses.abilities = [
                 ability
                 for ability in actor.statuses.abilities
@@ -493,7 +627,9 @@ class MechanicsService:
                 )
             ]
 
-        for application in result.status_applications:
+        for application in (
+            (applications if applications is not None else result.status_applications) if phase != "removals" else []
+        ):
             actor_id = (
                 getattr(application, "actor_id", None)
                 if not isinstance(application, dict)
@@ -507,6 +643,16 @@ class MechanicsService:
                 if not isinstance(application, dict)
                 else application.get("active_effect")
             )
+            if (
+                phase == "both"
+                and active_raw
+                and any(
+                    str(getattr(removal, "actor_id", None)) == str(actor_id)
+                    and getattr(removal, "effect_uid", None) == active_raw.get("uid")
+                    for removal in result.status_removals
+                )
+            ):
+                continue
             if active_raw:
                 active_effect = ActiveEffectDTO.model_validate(active_raw)
             else:
@@ -535,39 +681,57 @@ class MechanicsService:
                     expire_at_exchange=active_from + int(entry.technical.duration or 0),
                 )
 
-            if any(existing.uid == active_effect.uid for existing in actor.statuses.effects):
-                continue
+            mode = application.get("mode", "add_or_refresh") if isinstance(application, dict) else application.mode
             same_effect = next(
-                (existing for existing in actor.statuses.effects if existing.effect_id == active_effect.effect_id),
-                None,
+                (existing for existing in actor.statuses.effects if existing.effect_id == active_effect.effect_id), None
             )
-            if same_effect is not None:
+            if same_effect is not None and mode != "replace":
                 same_effect.expire_at_exchange = max(same_effect.expire_at_exchange, active_effect.expire_at_exchange)
                 continue
+            if mode == "replace":
+                for existing in list(actor.statuses.effects):
+                    if existing.effect_id == active_effect.effect_id:
+                        for recipient in actors.values():
+                            ModifierApplicationService.remove_temp_sources(recipient, existing.modified_sources)
+                        actor.statuses.effects.remove(existing)
             active_channels = effect_exclusive_channels(active_effect.effect_id)
             if active_channels and any(
                 active_channels & effect_exclusive_channels(existing.effect_id) for existing in actor.statuses.effects
             ):
                 continue
 
-            entry = CombatCatalogIntegrator.get_effect_catalog_entry(active_effect.effect_id)
-            if entry and entry.technical.modifier_applications:
-                applied = ModifierApplicationService.apply(
-                    applications=entry.technical.modifier_applications,
-                    owner="effect",
-                    owner_uid=active_effect.uid,
-                    owner_id=active_effect.effect_id,
-                    source=source,
-                    target=actor,
-                )
-                active_effect.modified_keys = sorted(set(active_effect.modified_keys) | applied.modified_keys)
-                active_effect.modified_sources = applied.modified_sources
+            if active_effect.resolved_temp_commands is None:
+                # Legacy callers may omit resolved commands only for static catalogs.
+                # Dynamic values must be frozen during calculate, never recomputed here.
+                entry = CombatCatalogIntegrator.get_effect_catalog_entry(active_effect.effect_id)
+                if entry and entry.technical.modifier_applications:
+                    apps = entry.technical.modifier_applications
+                    if any(app.value_mode.startswith("source_") for app in apps):
+                        raise ValueError("Dynamic status modifiers require resolved temp commands")
+                    applied = ModifierApplicationService.apply(
+                        applications=apps,
+                        owner="effect",
+                        owner_uid=active_effect.uid,
+                        owner_id=active_effect.effect_id,
+                        source=source,
+                        target=actor,
+                    )
+                    active_effect.modified_keys = sorted(set(active_effect.modified_keys) | applied.modified_keys)
+                    active_effect.modified_sources = applied.modified_sources
+                    active_effect.resolved_temp_commands = ModifierApplicationService.capture_commands(
+                        list(actors.values()), applied.modified_sources
+                    )
             actor.statuses.effects.append(active_effect)
+            StatsEngine.sync_effect_modifiers(list(actors.values()))
 
     @staticmethod
     def _active_effect_ids_for_feint_refill(actor: ActorSnapshot) -> set[str]:
         current_exchange = actor.meta.exchange_counter
-        return {effect.effect_id for effect in actor.statuses.effects if effect.expire_at_exchange > current_exchange}
+        return {
+            effect.effect_id
+            for effect in actor.statuses.effects
+            if effect.active_from_exchange <= current_exchange < effect.expire_at_exchange
+        }
 
     def _apply_staged_resource_applications(
         self,
@@ -955,13 +1119,16 @@ class MechanicsService:
         actor: ActorSnapshot,
         result: InteractionResultDTO,
     ) -> None:
-        if not ctx.flags.meta.grant_exchange_gift:
+        if ctx.flags.meta.grant_exchange_gift is not True:
             return
         if ctx.flags.meta.action_mode != "exchange":
             return
-        if ctx.flags.meta.source_type != "main_hand":
+        if ctx.flags.meta.source_type != "main_hand" or result.hand != "main_hand":
             return
-        if result.is_counter:
+        execution = result.action_facts.get("execution")
+        if not isinstance(execution, dict) or execution.get("origin") != "primary":
+            return
+        if result.is_counter or result.skip_reason is not None:
             return
 
         before = actor.meta.tokens.get(GIFT_MARKER, 0)

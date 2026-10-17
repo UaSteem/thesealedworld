@@ -136,6 +136,8 @@ class MetaFlagsDTO(BaseModel):
     # Режим действия (Exchange / Unidirectional)
     action_mode: Literal["exchange", "unidirectional"] = "exchange"
     grant_exchange_gift: bool = False
+    incrementing_actor_ids: set[str] | None = None
+    defer_queued_statuses: bool = False
 
 
 class MechanicsFlagsDTO(BaseModel):
@@ -426,6 +428,8 @@ class CombatStatusApplicationDTO(BaseModel):
     source_id: ActorId | None = None
     effect_id: str
     active_effect: dict[str, Any]
+    mode: Literal["add_or_refresh", "replace"] = "add_or_refresh"
+    at_action_end: bool = False
     source_action_id: str | None = None
     source_effect_id: str | None = None
     source_trigger_id: str | None = None
@@ -499,6 +503,16 @@ class CombatResourceApplicationDTO(BaseModel):
         return normalize_actor_id(value) if value is not None else None
 
 
+class FeintActivationOutcomeDTO(BaseModel):
+    """Authoritative outcome of one selected feint activation."""
+
+    owner_id: ActorId
+    intent_id: str
+    feint_id: str
+    state: Literal["activated", "rejected", "preserved"]
+    reason: str | None = None
+
+
 class InteractionResultDTO(BaseModel):
     """Итоговый отчет."""
 
@@ -557,6 +571,7 @@ class InteractionResultDTO(BaseModel):
     trigger_attempts: list[CombatTriggerAttemptDTO] = Field(default_factory=list)
     mutation_facts: list[CombatPipelineMutationFactDTO] = Field(default_factory=list)
     action_facts: dict[str, Any] = Field(default_factory=dict)
+    feint_activation: FeintActivationOutcomeDTO | None = None
     ammo_spent: dict[str, int] = Field(default_factory=dict)
 
     # === Resolver Trace (для читаемого INFO лога и аналитики) ===
@@ -592,6 +607,8 @@ class InteractionResultDTO(BaseModel):
 
 class PipelineContextDTO(BaseModel):
     """Пульт управления боем."""
+
+    initial_effect_uids: dict[str, set[str]] = Field(default_factory=dict, exclude=True)
 
     phases: PipelinePhasesDTO = Field(default_factory=PipelinePhasesDTO)
     flags: PipelineFlagsDTO = Field(default_factory=PipelineFlagsDTO)
