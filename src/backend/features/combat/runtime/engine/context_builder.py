@@ -10,6 +10,7 @@ from src.backend.features.combat.dto import (
     PipelineStagesDTO,
 )
 from src.backend.features.combat.dto.trigger_rules import TriggerRulesFlagsDTO
+from src.backend.features.combat.runtime.engine.execution import StrikeExecution
 from src.backend.features.combat.runtime.engine.ranged_position import RangedPositionService
 from src.backend.features.combat.runtime.engine.trigger_activation import activate_trigger
 
@@ -26,7 +27,7 @@ class ContextBuilder:
     def build_context(
         actor: ActorSnapshot,
         target: ActorSnapshot | None,
-        move: CombatMoveDTO,
+        move: CombatMoveDTO | StrikeExecution,
         external_mods: dict[str, Any] | None = None,
     ) -> PipelineContextDTO:
         """Construct a fresh pipeline context for one source-target interaction.
@@ -100,7 +101,10 @@ class ContextBuilder:
 
     @staticmethod
     def _analyze_intent(
-        ctx: PipelineContextDTO, actor: ActorSnapshot, move: CombatMoveDTO, external_mods: dict[str, Any] | None
+        ctx: PipelineContextDTO,
+        actor: ActorSnapshot,
+        move: CombatMoveDTO | StrikeExecution,
+        external_mods: dict[str, Any] | None,
     ) -> None:
         """Infer source-type, weapon-class, and trigger context from the move."""
         strategy = move.strategy

@@ -33,7 +33,7 @@ from src.backend.features.combat.dto import (
     PipelineContextDTO,
 )
 from src.backend.features.combat.dto.actor import ActorStats
-from src.backend.features.combat.dto.pipeline import CombatDamageTraceDTO
+from src.backend.features.combat.dto.pipeline import CombatDamageTraceDTO, FeintActivationOutcomeDTO
 from src.backend.features.combat.integrations import CombatCatalogIntegrator, CombatSessionIntegration
 from src.backend.features.combat.runtime.engine.ability_service import AbilityService
 from src.backend.features.combat.runtime.engine.context_builder import ContextBuilder
@@ -5326,7 +5326,14 @@ async def test_executor_resolves_aoe_feint_secondaries_as_unidirectional_hits(
     async def fixed_result(self, source, target, move, exchange_count=0, external_mods=None):
         mods = dict(external_mods or {})
         calls.append((str(source.char_id), str(target.char_id), mods))
-        return InteractionResultDTO(source_id=source.char_id, target_id=target.char_id, is_hit=True)
+        activation = move.activation
+        return InteractionResultDTO(
+            source_id=source.char_id, target_id=target.char_id, is_hit=True,
+            feint_activation=FeintActivationOutcomeDTO(
+                owner_id=activation.owner_id, intent_id=activation.intent_id,
+                feint_id=activation.feint_id, state="activated",
+            ) if activation else None,
+        )
 
     def feint_entry(feint_id: str):
         if feint_id != "test_aoe_feint":

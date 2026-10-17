@@ -499,6 +499,16 @@ class CombatResourceApplicationDTO(BaseModel):
         return normalize_actor_id(value) if value is not None else None
 
 
+class FeintActivationOutcomeDTO(BaseModel):
+    """Authoritative outcome of one selected feint activation."""
+
+    owner_id: ActorId
+    intent_id: str
+    feint_id: str
+    state: Literal["activated", "rejected", "preserved"]
+    reason: str | None = None
+
+
 class InteractionResultDTO(BaseModel):
     """Итоговый отчет."""
 
@@ -557,6 +567,7 @@ class InteractionResultDTO(BaseModel):
     trigger_attempts: list[CombatTriggerAttemptDTO] = Field(default_factory=list)
     mutation_facts: list[CombatPipelineMutationFactDTO] = Field(default_factory=list)
     action_facts: dict[str, Any] = Field(default_factory=dict)
+    feint_activation: FeintActivationOutcomeDTO | None = None
     ammo_spent: dict[str, int] = Field(default_factory=dict)
 
     # === Resolver Trace (для читаемого INFO лога и аналитики) ===
