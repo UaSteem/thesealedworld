@@ -31,6 +31,7 @@ from src.backend.features.combat.runtime.engine.modifier_application_service imp
 from src.backend.features.combat.runtime.engine.pipeline_mutation_service import PipelineMutationService
 from src.backend.features.combat.runtime.engine.preparation_exclusivity import effect_exclusive_channels
 from src.backend.features.combat.runtime.engine.ranged_position import RangedPositionService
+from src.backend.features.combat.runtime.engine.received_healing import received_healing_amount
 from src.backend.features.combat.runtime.engine.stats_engine import StatsEngine
 from src.backend.features.combat.runtime.engine.trigger_activation import activate_trigger
 from src.backend.features.game_catalog.combat.resources.common.modifier_applications import ModifierApplicationDTO
@@ -885,6 +886,8 @@ class AbilityService:
         ratio = AbilityService._float_param(params, "heal_max_hp_ratio", default=0.18)
         heal_min = AbilityService._int_param(params, "heal_min", default=8)
         planned_heal = max(heal_min, int(round(max_hp * ratio)))
+        StatsEngine.ensure_stats(actor)
+        planned_heal = received_healing_amount(planned_heal, actor.stats)
         heal_amount = min(missing_hp, planned_heal)
         if heal_amount <= 0:
             return
@@ -1033,7 +1036,10 @@ class AbilityService:
                 max_hp = max(0, int(effect_target.meta.max_hp or 0))
                 missing_hp = max(0, max_hp - int(effect_target.meta.hp or 0))
                 ratio = AbilityService._float_param(params, "heal_max_hp_ratio", default=0.15)
-                heal_amount = min(missing_hp, max(1, int(round(max_hp * ratio))))
+                StatsEngine.ensure_stats(effect_target)
+                heal_amount = min(
+                    missing_hp, received_healing_amount(max(1, int(round(max_hp * ratio))), effect_target.stats)
+                )
                 if heal_amount <= 0:
                     continue
                 ctx.result.healing_final += heal_amount
@@ -1074,11 +1080,21 @@ class AbilityService:
                 continue
 
             if effect_id == "restore_hp":
-                val = effect_data.get("params", {}).get("value", 0)
+                StatsEngine.ensure_stats(effect_target)
+                val = received_healing_amount(effect_data.get("params", {}).get("value", 0), effect_target.stats)
                 ctx.result.healing_final += val
-                if "hp" not in ctx.result.resource_changes:
-                    ctx.result.resource_changes["hp"] = {}
-                ctx.result.resource_changes["hp"]["heal"] = f"+{val}"
+                ctx.result.resource_applications.append(
+                    CombatResourceApplicationDTO(
+                        actor_id=effect_target.char_id,
+                        owner=AbilityService._fact_owner(ctx, effect_target.char_id),
+                        resource="hp",
+                        reason="restore_hp",
+                        value=f"+{val}",
+                        source_effect_id="restore_hp",
+                        source_trigger_id=effect_data.get("source_trigger_id"),
+                        tags=["heal"],
+                    )
+                )
                 ctx.result.effect_facts.append(
                     CombatEffectFactDTO(
                         actor_id=effect_target.char_id,
@@ -1368,7 +1384,7 @@ class AbilityService:
         if not passed:
             return
 
-        heal_amount = int(ctx.result.damage_final * power)
+        heal_amount = received_healing_amount(ctx.result.damage_final * power, source.stats)
         if heal_amount <= 0:
             return
         ctx.result.lifesteal_amount += heal_amount

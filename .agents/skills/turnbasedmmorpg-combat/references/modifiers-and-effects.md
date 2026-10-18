@@ -37,7 +37,7 @@ counter_attack_chance    counter_attack_cap
 main_hand_crit_cap       off_hand_crit_cap          magical_crit_cap
 resistance_cap           vampiric_trigger_cap
 main_hand_damage_bonus   off_hand_damage_bonus
-healing_power            received_healing_bonus
+healing_power
 {elem}_damage_bonus                                   (elemental attack bonus, pending)
 item_damage_bonus
 ```
@@ -100,3 +100,20 @@ Round-local mutations from triggers (via `_apply_mutation`) write to `ctx.flags`
 or `ctx.stages` — these are pipeline-local and do NOT persist to the snapshot.
 
 ---
+
+## Support Skills and Incoming Healing
+
+`character/runtime/rules/support_skills.py` emits normalized rules for the
+waterfall. Tactics scales only attribute-derived evasion, anti-dodge and counter
+chance; direct item modifier bonuses are not scaled. Anatomy scales natural
+HP/Energy regen separately for outside/combat and adds incoming-healing bonus.
+Use the formulas in `docs/game-design/rules/skills/combat_runtime_reference.md`.
+Stamina, existing caps/counter windows and monster zero HP regen stay intact.
+
+`received_healing_bonus` is active: `engine/received_healing.py` scales planned
+HP healing once in direct/prepared/shield/item/HOT/lifesteal producers. Explicit
+resource applications identify the recipient. Commit only applies/clamps the
+result; do not scale again in `_apply_resource_delta`, or scale passive regen.
+AC vitals must resolve persisted plus pending skills through the same builder.
+Rebuild frozen raw/snapshots for the current combat math version when comparing
+new skill behavior. Use `test_combat_support_execution.py` for the real pipeline.

@@ -4,8 +4,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from src.backend.features.combat.dto.pipeline import CombatEventDTO
+from src.backend.features.combat.dto.pipeline import CombatEventDTO, CombatResourceApplicationDTO
 from src.backend.features.combat.runtime.engine.math_core import MathCore
+from src.backend.features.combat.runtime.engine.received_healing import received_healing_amount
 
 from ._base import ResolverStep
 
@@ -46,12 +47,18 @@ class HealingStep(ResolverStep):
             raw_healing *= 1.5
             res.crit_mult = 1.5
 
-        final_healing = int(raw_healing)
+        final_healing = received_healing_amount(raw_healing, def_)
         res.healing_final = final_healing
-
-        if "hp" not in res.resource_changes:
-            res.resource_changes["hp"] = {}
-        res.resource_changes["hp"]["heal"] = f"+{final_healing}"
+        res.resource_applications.append(
+            CombatResourceApplicationDTO(
+                actor_id=target_id,
+                owner="source" if source_id == target_id else "target",
+                resource="hp",
+                reason="heal",
+                value=f"+{final_healing}",
+                tags=["heal"],
+            )
+        )
 
         tags = []
         if res.is_crit:

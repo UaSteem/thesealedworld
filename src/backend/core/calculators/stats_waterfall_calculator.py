@@ -16,7 +16,7 @@ _OPS: dict[type[ast.AST], Callable[..., Any]] = {
     ast.UAdd: operator.pos,
 }
 
-COMBAT_MATH_VERSION = "combat-math:2026-10-17.regeneration-modes"
+COMBAT_MATH_VERSION = "combat-math:2026-10-18.support-skills"
 PLAYER_MAX_HP_REGEN_RATIO = 0.005
 ATTRIBUTE_EFFECTIVE_QUADRATIC_DIVISOR = 11.0
 _LINEAR_ATTRIBUTE_PROFILES = frozenset({"monster:humanoid", "monster:beast"})
@@ -96,12 +96,27 @@ class StatsWaterfallCalculator:
         # 2. Конвертация (Derivation Bridge)
         rules_profile = raw_data.get("rules", {}).get("attribute_profile", "player")
         derived_bonuses = StatsWaterfallCalculator._derive_bonuses(final_attributes, rules_profile)
+        support_rules = raw_data.get("rules", {})
+        tactics_multipliers = support_rules.get("tactics_attribute_mult", {})
+        for key, multiplier in tactics_multipliers.items():
+            if key not in ("evasion", "anti_dodge_chance", "counter_attack_chance"):
+                continue
+            natural, _ = StatsWaterfallCalculator.evaluate_sources(derived_bonuses.get(key, []))
+            derived_bonuses[key] = [f"+{natural * float(multiplier)}"]
+        incoming_bonus = support_rules.get("anatomy_received_healing_bonus", 0.0)
+        if incoming_bonus:
+            derived_bonuses.setdefault("received_healing_bonus", []).append(f"+{float(incoming_bonus)}")
 
         # 3. Расчет Модификаторов (Secondary Stats)
         raw_modifiers = raw_data.get("modifiers", {})
         final_modifiers, mod_explanations = StatsWaterfallCalculator._calculate_modifiers(
             raw_modifiers, derived_bonuses
         )
+        for key in tactics_multipliers:
+            if key in mod_explanations:
+                mod_explanations[key] += f" (attribute base * {tactics_multipliers[key]}: skill_tactics)"
+        if incoming_bonus:
+            mod_explanations["received_healing_bonus"] += f" (skill_anatomy +{incoming_bonus})"
 
         # Объединяем все в плоские словари
         cache_result = {**final_attributes, **final_modifiers}
@@ -113,8 +128,13 @@ class StatsWaterfallCalculator:
             key = f"{resource}_regen"
             for mode in ("outside", "combat"):
                 commands = []
+                anatomy_modes = support_rules.get("anatomy_regen_mult", {})
+                multiplier = float(anatomy_modes.get(mode, 1.0)) if resource in ("hp", "en") else 1.0
                 if not (mode == "combat" and resource == "en" and str(rules_profile).startswith("player")):
                     commands.extend(derived_bonuses.get(key, []))
+                    if multiplier != 1.0:
+                        natural, _ = StatsWaterfallCalculator.evaluate_sources(commands)
+                        commands = [f"+{natural * multiplier}"]
                 for source_key in (key, f"{mode}_{key}"):
                     data = raw_modifiers.get(source_key, {})
                     if not isinstance(data, dict):
@@ -132,6 +152,14 @@ class StatsWaterfallCalculator:
                             value + max(0.0, float(cache_result.get("hp", 0.0))) * PLAYER_MAX_HP_REGEN_RATIO, 4
                         )
                         expression = f"({expression}) + max HP * {PLAYER_MAX_HP_REGEN_RATIO}"
+                        if multiplier != 1.0:
+                            natural_hp, _ = StatsWaterfallCalculator.evaluate_sources(derived_bonuses.get("hp", []))
+                            value = round(
+                                value + max(0.0, natural_hp) * PLAYER_MAX_HP_REGEN_RATIO * (multiplier - 1), 4
+                            )
+                            expression += f" + attribute HP * {PLAYER_MAX_HP_REGEN_RATIO} * {multiplier - 1}"
+                if resource in ("hp", "en") and mode in anatomy_modes:
+                    expression += f" (natural regen * {multiplier}: skill_anatomy:{mode})"
                 output_key = key if mode == "outside" else f"combat_{key}"
                 cache_result[output_key] = value
                 explanation_result[output_key] = expression

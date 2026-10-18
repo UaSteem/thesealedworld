@@ -17,8 +17,7 @@ class CharacterCombatActorInputBuilder:
     def build_input(self, active_character: dict[str, Any]) -> dict[str, Any]:
         items = self._dict(active_character.get("items"))
         symbiote = self._dict(active_character.get("symbiote"))
-        flat_skills = self._flat_skills(self._dict(active_character.get("skills")))
-        flat_skills = self._apply_pending_skills(flat_skills, active_character.get("pending_progress"))
+        flat_skills = self.build_skills(active_character)
         return {
             "meta": self._meta(active_character),
             "source": self._source(active_character),
@@ -32,6 +31,14 @@ class CharacterCombatActorInputBuilder:
             "skills": flat_skills,
             "loadout": self._loadout(items, flat_skills, symbiote),
         }
+
+    @classmethod
+    def build_skills(cls, active_character: dict[str, Any]) -> dict[str, float]:
+        """Resolve persisted and pending skills consistently for combat and vitals."""
+        return cls._apply_pending_skills(
+            cls._flat_skills(cls._dict(active_character.get("skills"))),
+            active_character.get("pending_progress"),
+        )
 
     def build_snapshot(self, active_character: dict[str, Any]) -> dict[str, Any]:
         actor_input = self.build_input(active_character)

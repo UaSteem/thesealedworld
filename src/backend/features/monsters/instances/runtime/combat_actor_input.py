@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from src.backend.features.character.runtime.rules.support_skills import build_support_skill_rules
 from src.backend.features.monsters.catalog.resources.visuals import (
     version_generated_asset_url,
     version_visual_image_urls,
@@ -20,6 +21,18 @@ class MonsterCombatActorInputBuilder:
                 f"Generated monster is missing combat_snapshot_input: {getattr(monster, 'id', '<unknown>')}"
             )
         result = dict(combat_input)
+        # Saved tier snapshots may predate support-skill rules. Derive only this
+        # owned rule layer from current skills; never mutate the stored snapshot
+        # or rebuild equipment/clan contributions at this read boundary.
+        raw = dict(result.get("raw") or {})
+        support_rules = build_support_skill_rules(result.get("skills"))
+        if "rules" in raw or support_rules:
+            rules = dict(raw.get("rules") or {})
+            for key in ("anatomy_regen_mult", "anatomy_received_healing_bonus", "tactics_attribute_mult"):
+                rules.pop(key, None)
+            rules.update(support_rules)
+            raw["rules"] = rules
+            result["raw"] = raw
         meta = dict(result.get("meta") or {})
         role = meta.get("role") or getattr(monster, "role", None)
         result["loadout"] = build_monster_feint_loadout(dict(result.get("loadout") or {}), role=role)

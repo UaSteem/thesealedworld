@@ -82,7 +82,7 @@ class MonsterCombatMathModelBuilder:
             "organization_type": profile.organization_type,
             "pipeline_tags": profile.pipeline_tags,
         }
-        raw["rules"] = {"attribute_profile": f"monster:{profile.archetype}"}
+        raw["rules"] = {**raw.get("rules", {}), "attribute_profile": f"monster:{profile.archetype}"}
         self._apply_profile_modifiers(raw["modifiers"], profile)
         return raw
 

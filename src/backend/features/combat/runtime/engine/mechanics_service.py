@@ -20,6 +20,8 @@ from src.backend.features.combat.runtime.engine.modifier_application_service imp
 from src.backend.features.combat.runtime.engine.preparation_exclusivity import (
     effect_exclusive_channels,
 )
+from src.backend.features.combat.runtime.engine.received_healing import received_healing_amount
+from src.backend.features.combat.runtime.engine.stats_engine import StatsEngine
 
 BLOOD_TOKEN_DAMAGE_STEP = 10
 PRESSURE_TOKEN_DAMAGE_STEP = BLOOD_TOKEN_DAMAGE_STEP
@@ -59,6 +61,9 @@ class MechanicsService:
                 # HP Impact
                 if "hp" in effect.impact:
                     val = effect.impact["hp"]
+                    if val > 0:
+                        StatsEngine.ensure_stats(actor)
+                        val = received_healing_amount(val, actor.stats)
                     hp_changes.append(str(val))
                     hp_effect_ids.append(effect.effect_id)
                     self._log_effect_tick(ctx, actor, effect.effect_id, val, "hp")

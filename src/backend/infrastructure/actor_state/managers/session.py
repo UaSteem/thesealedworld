@@ -5,6 +5,7 @@ import time
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any, Literal
 
+from src.backend.features.character.runtime.combat_actor_input import CharacterCombatActorInputBuilder
 from src.backend.features.character.runtime.vital_profile import resolve_player_vital_profile_key
 from src.backend.features.character.runtime.vitals import CharacterVitalsCalculator
 from src.backend.features.character.schemas.session import (
@@ -430,6 +431,7 @@ class CharacterSessionManager:
             profile_key=resolve_player_vital_profile_key(items),
             items=items,
             fill_if_default=True,
+            skills=CharacterCombatActorInputBuilder.build_skills(document),
         )
         payload = refreshed.model_dump(mode="json")
         changed = payload != current.model_dump(mode="json")
@@ -507,6 +509,7 @@ class CharacterSessionManager:
             attributes,
             profile_key=resolve_player_vital_profile_key(items),
             items=items,
+            skills=CharacterCombatActorInputBuilder.build_skills(document),
         )
         payload = restored_vitals.model_dump(mode="json")
         await self.patch_fields(char_id, {"$.vitals": payload})

@@ -96,7 +96,7 @@ InteractionResultDTO
 - Assembled weapon base: `weapon_power + ((strength_power*wS + agility_power*wA) * mastery_factor)`.
   Weapon classes use normalized effective Strength/Agility damage weights that sum to `1.0`.
 - Unarmed damage: `rand((strength_base * unarmed_efficiency + physical_damage_bonus)*(1-spread), ... ) - resist - armor`; unarmed does not add `physical_damage` twice.
-- Healing: `rand(magical_damage*0.9, magical_damage*1.1) [* 1.5 if crit]`
+- Healing: `int(rand(magical_damage*0.9, magical_damage*1.1) [* 1.5 if crit] * max(0, 1 + target.received_healing_bonus))`. Producers apply the incoming bonus once; commit only applies the explicit recipient resource application.
 
 Mass-target feints use the normal resolver for every concrete target. The
 primary target is the exchange target; secondary targets are executor-created

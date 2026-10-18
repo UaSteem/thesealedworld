@@ -9,6 +9,7 @@ from pydantic import ValidationError
 from src.backend.config.settings import settings
 from src.backend.core.exceptions import BusinessLogicException
 from src.backend.features.character.runtime import CharacterVitalsCalculator
+from src.backend.features.character.runtime.combat_actor_input import CharacterCombatActorInputBuilder
 from src.backend.features.character.runtime.gear_score import CharacterGearScoreCalculator
 from src.backend.features.character.runtime.vital_profile import resolve_player_vital_profile_key
 from src.backend.features.character.schemas.session import (
@@ -171,6 +172,9 @@ class CharacterStateIntegrator:
             vitals=CharacterVitalsCalculator.build_vitals_from_snapshot(
                 getattr(character, "vitals_snapshot", None),
                 attributes,
+                skills=CharacterCombatActorInputBuilder.build_skills(
+                    {"skills": self._session_skills_from_character(character), "pending_progress": pending}
+                ),
             ),
             attributes=attributes,
             sessions=self._session_refs_from_character(character),
@@ -214,6 +218,7 @@ class CharacterStateIntegrator:
             session_doc.attributes,
             profile_key=resolve_player_vital_profile_key(session_doc.items),
             items=session_doc.items,  # type: ignore
+            skills=CharacterCombatActorInputBuilder.build_skills(session_doc.model_dump(mode="json")),
         )
         return session_doc
 
@@ -333,6 +338,7 @@ class CharacterStateIntegrator:
             profile_key=resolve_player_vital_profile_key(session_doc.items),
             fill_if_default=True,
             items=session_doc.items,  # type: ignore
+            skills=CharacterCombatActorInputBuilder.build_skills(session_doc.model_dump(mode="json")),
         )
         if refreshed_vitals != session_doc.vitals:
             session_doc.vitals = refreshed_vitals

@@ -6,7 +6,10 @@ from datetime import UTC, datetime
 from typing import Any
 
 from src.backend.core.calculators.stats_waterfall_calculator import StatsWaterfallCalculator
+from src.backend.features.character.runtime.combat_actor_input import CharacterCombatActorInputBuilder
+from src.backend.features.character.runtime.combat_math_model import CharacterCombatMathModelBuilder
 from src.backend.features.character.runtime.rules.attribute_modifiers import DEFAULT_MODIFIER_VALUES
+from src.backend.features.character.runtime.rules.support_skills import build_support_skill_rules
 from src.backend.features.character.runtime.rules.vital_constants import REGEN_TICK_SECONDS
 from src.backend.features.character.schemas.session import (
     CharacterSessionAttributesDTO,
@@ -32,8 +35,9 @@ class CharacterVitalsCalculator:
         *,
         profile_key: str = "player",
         items: dict[str, Any] | None = None,
+        skills: dict[str, Any] | None = None,
     ) -> CharacterSessionVitalsDTO:
-        max_vitals = cls.calculate_max_vitals(attributes, profile_key=profile_key, items=items)
+        max_vitals = cls.calculate_max_vitals(attributes, profile_key=profile_key, items=items, skills=skills)
         return CharacterSessionVitalsDTO(
             hp=VitalValueDTO(cur=max_vitals.hp.max, max=max_vitals.hp.max, regen=max_vitals.hp.regen),
             energy=VitalValueDTO(
@@ -56,12 +60,13 @@ class CharacterVitalsCalculator:
         *,
         profile_key: str = "player",
         items: dict[str, Any] | None = None,
+        skills: dict[str, Any] | None = None,
     ) -> CharacterSessionVitalsDTO:
         if not snapshot:
-            return cls.build_initial_vitals(attributes, profile_key=profile_key, items=items)
+            return cls.build_initial_vitals(attributes, profile_key=profile_key, items=items, skills=skills)
 
         snapshot_vitals = CharacterSessionVitalsDTO.model_validate(snapshot)
-        return cls.refresh_max_vitals(snapshot_vitals, attributes, profile_key=profile_key, items=items)
+        return cls.refresh_max_vitals(snapshot_vitals, attributes, profile_key=profile_key, items=items, skills=skills)
 
     @classmethod
     def refresh_max_vitals(
@@ -72,8 +77,9 @@ class CharacterVitalsCalculator:
         profile_key: str = "player",
         fill_if_default: bool = False,
         items: dict[str, Any] | None = None,
+        skills: dict[str, Any] | None = None,
     ) -> CharacterSessionVitalsDTO:
-        max_vitals = cls.calculate_max_vitals(attributes, profile_key=profile_key, items=items)
+        max_vitals = cls.calculate_max_vitals(attributes, profile_key=profile_key, items=items, skills=skills)
         all_default = cls._is_default_vitals(current_vitals)
 
         return CharacterSessionVitalsDTO(
@@ -98,8 +104,9 @@ class CharacterVitalsCalculator:
         *,
         profile_key: str = "player",
         items: dict[str, Any] | None = None,
+        skills: dict[str, Any] | None = None,
     ) -> CharacterSessionVitalsDTO:
-        max_vitals = cls.calculate_max_vitals(attributes, profile_key=profile_key, items=items)
+        max_vitals = cls.calculate_max_vitals(attributes, profile_key=profile_key, items=items, skills=skills)
         now = datetime.now(UTC).timestamp()
         return CharacterSessionVitalsDTO(
             hp=VitalValueDTO(cur=max_vitals.hp.max, max=max_vitals.hp.max, regen=max_vitals.hp.regen),
@@ -123,12 +130,20 @@ class CharacterVitalsCalculator:
         *,
         profile_key: str = "player",
         items: dict[str, Any] | None = None,
+        skills: dict[str, Any] | None = None,
     ) -> CharacterSessionVitalsDTO:
+        # Share equipment attribute projection with combat; direct vital item
+        # modifiers retain their existing projection below.
+        attribute_raw = CharacterCombatMathModelBuilder().build_raw(
+            attributes=attributes,
+            items=cls._as_dict(items),
+            skills=CharacterCombatActorInputBuilder.build_skills({"skills": skills or {}}),
+        )["attributes"]
         calculated, _ = StatsWaterfallCalculator.calculate_waterfall(
             {
-                "attributes": cls._raw_attributes(attributes),
+                "attributes": attribute_raw,
                 "modifiers": cls._base_modifiers(items),
-                "rules": {"attribute_profile": profile_key},
+                "rules": {"attribute_profile": profile_key, **build_support_skill_rules(skills)},
             }
         )
 
@@ -181,13 +196,6 @@ class CharacterVitalsCalculator:
     @staticmethod
     def _resource_max(value: float) -> int:
         return max(1, int(round(value)))
-
-    @staticmethod
-    def _raw_attributes(attributes: CharacterSessionAttributesDTO) -> dict[str, dict[str, Any]]:
-        return {
-            key: {"base": float(value or 0), "source": {}, "temp": {}}
-            for key, value in attributes.model_dump(mode="json").items()
-        }
 
     @staticmethod
     def _base_modifiers(items: dict[str, Any] | None = None) -> dict[str, dict[str, Any]]:

@@ -77,8 +77,23 @@ docs/game-design/rules/combat/active_actions.md
   longer scales shield block chance.
 - `skill_anatomy` and `skill_tactics` receive combat progression from combat
   result power in the experience finalizer.
-- Feint availability references `skill_tactics`, `skill_light_armor`,
-  `skill_parrying`, `skill_anatomy`, and `skill_dual_wield`.
+- Support skills are projected into raw rules by `runtime/rules/support_skills.py`;
+  the waterfall applies them once. For normalized skill `s`, Tactics multiplies
+  attribute-derived evasion by `1+s`, anti-dodge by `1+3s`, and counter chance
+  by `1+4s`. Direct item modifier bonuses are added separately; existing caps
+  and defense/counter windows still apply. Item bonuses to attributes enter
+  the normal attribute calculation before this derivation.
+- Anatomy multiplies natural HP/Energy regeneration by `1+3s` outside combat
+  and `1+s` in combat. Direct item regen bonuses and stamina are unchanged.
+  The additional skill bonus to the player max-HP regen baseline uses only
+  attribute-derived HP. Monster HP regen stays zero; player attribute Energy
+  regen remains excluded in combat. AC vitals include persisted and pending
+  skills during bootstrap, refresh and restore.
+- Anatomy adds `s` to `received_healing_bonus`. Incoming direct, prepared,
+  shield, item, periodic HP healing and lifesteal use the recipient multiplier
+  once before commit/clamp; passive regen and DOT do not use it.
+- Feint availability is selected by weapon and tactical-style loadout; these
+  two support skills do not unlock additional feints.
 - Weapon and tactical feint catalogs can expose mass-target techniques through
   `target=ALL_ENEMIES`, `target_count`, and `secondary_damage_mult`. Runtime
   treats the primary target as the exchange target and resolves secondary
@@ -94,8 +109,7 @@ docs/game-design/rules/combat/active_actions.md
 - Full two-handed style economy beyond current parry/block pressure hooks.
 - Full shield mastery economy beyond existing shield guard/block/reflection and
   endurance/strength guard-power scaling.
-- Full anatomy healing/regeneration model.
-- Full tactics anti-evasion, counter and tactical-overwhelm model.
+- Tactical-overwhelm model beyond the implemented Tactics modifier bonuses.
 - Full non-combat skill gameplay for crafting, gathering, survival, trade and
   leadership.
 

@@ -173,7 +173,7 @@ systems consume them.
 | `vampiric_trigger_chance` | Reserved vampiric trigger chance. |
 | `vampiric_trigger_cap` | Reserved vampiric trigger cap. Current default: `1.0`. |
 | `healing_power` | Reserved outgoing healing power. |
-| `received_healing_bonus` | Reserved incoming healing bonus. |
+| `received_healing_bonus` | Additive incoming HP-healing fraction; applied once as `max(0, 1 + bonus)` at the recipient before commit. Anatomy contributes its normalized skill value; passive regeneration is separate. |
 | `pet_efficiency_mult` | Reserved pet efficiency multiplier. |
 | `damage_mult` | Global damage multiplier used by some monster size profiles and effects. |
 | `thorns_damage_flat` | Reserved reflected/thorns damage. |
