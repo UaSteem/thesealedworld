@@ -8,6 +8,8 @@ description: Item, monster, character skill catalog, generation, and lore contra
 Keep item, monster, and character skill definitions in their owning catalogs and resources. Preserve ID and surface contracts across runtime, API, and UI.
 Treat player-visible lore, balance, and visual intent as creative decisions; use project creative guidance when a choice is unresolved.
 
+For Monster encounter orders, readiness/instance orchestration and other-domain consumers, use [the Monsters skill](../turnbasedmmorpg-monsters/SKILL.md). Definitions and item catalogs remain owned here.
+
 ## Read the relevant reference
 
 | Task | Reference |
@@ -22,3 +24,4 @@ Treat player-visible lore, balance, and visual intent as creative decisions; use
 | Lore source map | [references/source-map.md](references/source-map.md) |
 
 Read the referenced details for the task at hand. Verify implementation claims against current code and tests.
+

@@ -9,6 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 TUNNEL_RAT = MemberBaseDTO(
     id="tunnel_rat",
     role="veteran",
+    assembly_cost=17,
     stats=BaseStatsDTO(
         strength=12,
         agility=14,

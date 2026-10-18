@@ -74,6 +74,7 @@ class MemberBaseDTO:
     stats: BaseStatsDTO
     tiers: TierAvailabilityDTO
     spawn_weight: int
+    assembly_cost: int
     loadout: BaseLoadoutDTO | None = None
     equipment_set_id: str | None = None
     member_model: Mapping[str, Any] | None = None
@@ -82,6 +83,8 @@ class MemberBaseDTO:
     def __post_init__(self):
         if not self.id or self.role not in ("minion", "veteran", "elite", "boss"):
             raise ValueError("Member basis requires an ID and a valid role")
+        if type(self.assembly_cost) is not int or self.assembly_cost <= 0:
+            raise ValueError("Assembly cost must be a positive integer")
         if type(self.spawn_weight) is not int or self.spawn_weight <= 0:
             raise ValueError("Spawn weight must be a positive integer")
         if not isinstance(self.stats, BaseStatsDTO):
@@ -110,10 +113,13 @@ class MemberVariantDTO:
     image: ImageAssetReference | None = None
     tags: tuple[str, ...] = ()
     ability_ids: tuple[str, ...] = ()
+    assembly_cost: int | None = None
 
     def __post_init__(self):
         if not self.id or not self.base_id or not (self.name or self.text_id):
             raise ValueError("Variant requires identity, basis and display name")
+        if self.assembly_cost is not None and (type(self.assembly_cost) is not int or self.assembly_cost <= 0):
+            raise ValueError("Assembly cost override must be a positive integer")
         for key in ("skills", "tags", "ability_ids"):
             values = tuple(getattr(self, key))
             if any(not isinstance(value, str) or not value for value in values):
@@ -253,6 +259,12 @@ def resolve_family(
             clan_name=clan_text.name,
             normal_spawn=clan.normal_spawn,
             presentation=presentation,
+            assembly_costs={
+                variant.id: variant.assembly_cost
+                if variant.assembly_cost is not None
+                else bases[variant.base_id].assembly_cost
+                for variant in clan.members
+            },
         )
         family = resolved_family if family is None else family
         clans.append(

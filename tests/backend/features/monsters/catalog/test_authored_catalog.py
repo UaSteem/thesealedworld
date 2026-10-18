@@ -43,7 +43,22 @@ def test_original_resources_and_retained_stats_are_preserved():
         old = MonsterFamilyDTO.model_validate(source)
         for variant_id, member in get_all_family_configs()[source["id"]].variants.items():
             original = old.variants[aliases.get(variant_id, variant_id)]
-            assert member.base_stats == original.base_stats
+            expected_stats = dict(original.base_stats)
+            # Approved goblin minion balance; historical resources remain frozen.
+            if source["id"] == "goblin_tribe" and variant_id in {
+                "goblin_scavenger", "goblin_sparkpick", "goblin_sneak", "goblin_cutter"
+            }:
+                values = {
+                    "goblin_scavenger": (9, 11, 9, 8, 6, 6, 10, 5, 6),
+                    "goblin_sparkpick": (10, 12, 10, 8, 6, 7, 9, 6, 6),
+                    "goblin_sneak": (9, 14, 9, 8, 6, 7, 12, 5, 7),
+                    "goblin_cutter": (11, 13, 11, 8, 6, 8, 11, 5, 7),
+                }[variant_id]
+                expected_stats = dict(zip((
+                    "strength", "agility", "endurance", "intellect", "memory", "mental",
+                    "perception", "projection", "prediction",
+                ), values, strict=True))
+            assert member.base_stats.model_dump() == expected_stats
             assert member.fixed_loadout == original.fixed_loadout
             assert member.skills == original.skills
             assert (member.min_tier, member.max_tier, member.spawn_weight) == (original.min_tier, original.max_tier, original.spawn_weight)
@@ -51,7 +66,7 @@ def test_original_resources_and_retained_stats_are_preserved():
 
 def test_complete_clan_membership_and_system_spawning():
     catalog = get_catalog()
-    assert len(catalog.families) == len(catalog.clans) == 5
+    assert len(catalog.families) == len(catalog.clans) == 6
     for family in catalog.families.values():
         clan = catalog.clans[family.clan_ids[0]]
         assert clan.family_id == family.id
@@ -194,7 +209,7 @@ def forbidden_connection(*args, **kwargs):
 socket.create_connection = forbidden_connection
 socket.socket.connect = forbidden_connection
 from src.backend.features.monsters.catalog.registry import get_catalog
-assert len(get_catalog().families) == 5
+assert len(get_catalog().families) == 6
 """
     result = subprocess.run([sys.executable, "-c", script], capture_output=True, text=True, timeout=20)
     assert result.returncode == 0, result.stderr

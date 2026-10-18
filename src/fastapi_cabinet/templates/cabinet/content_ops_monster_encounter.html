@@ -1,0 +1,105 @@
+{% extends "cabinet/base.html" %}
+{% macro budget_steps(config, label) %}
+<div class="fc-widget" aria-label="Расчёт пула бюджета">
+<h3>{{ label }} <span class="fc-muted">— тестовые настройки GS</span></h3>
+{% if config.mode == 'relative_gs' %}
+<div class="fc-stat-strip">
+<div><strong>{{ config.reference_gs }}</strong><span>Эталон GS</span></div>
+<div><strong>{{ config.player_gs_ratio }}</strong><span>Отношение GS игрока к эталону</span></div>
+<div><strong>{{ config.base_points }}</strong><span>Номинальная база при эталоне</span></div>
+<div><strong>{{ config.scaled_points }}</strong><span>Масштабированная база</span></div>
+<div><strong>+{{ config.gs_bonus_max }}</strong><span>потолок бонуса</span></div>
+<div><strong>{{ config.effective_points }}</strong><span>итоговых очков</span></div>
+</div>
+<p>Масштабированная база {{ config.scaled_points }} + бонус {{ config.bonus_points }} = <strong>{{ config.effective_points }} очков</strong>. {% if config.gs_cap_reached %}<strong>Достигнут потолок бонуса.</strong>{% endif %}</p>
+<p class="fc-muted">Пул пропорционален GS игрока относительно эталона тира; итог округляется вниз и ограничен номинальной базой плюс капом бонуса. Ступени GS для этого пула не применяются.</p>
+{% else %}
+<div class="fc-stat-strip">
+<div><strong>{{ config.gs_threshold }}</strong><span>порог GS</span></div>
+<div><strong>{{ config.gs_step_size }}</strong><span>GS на ступень</span></div>
+<div><strong>{{ config.gs_steps }}</strong><span>достигнутая ступень</span></div>
+<div><strong>+{{ config.gs_points_per_step }}</strong><span>очков за ступень</span></div>
+<div><strong>+{{ config.gs_bonus_max }}</strong><span>потолок бонуса</span></div>
+<div><strong>{{ config.effective_points }}</strong><span>итоговых очков</span></div>
+</div>
+<p>База {{ config.base_points }} + бонус {{ config.bonus_points }} = <strong>{{ config.effective_points }} очков</strong>.
+{% if config.gs_cap_reached %}<strong>Достигнут потолок бонуса.</strong>{% endif %}</p>
+<p class="fc-muted">Первая прибавка при GS {{ config.gs_threshold + config.gs_step_size }}. Учитываются только полные ступени; без GS бонус равен нулю. Очки бюджета не гарантируют появления дополнительного бойца: действуют цены и ограничения состава.</p>
+{% endif %}
+{% if config.spent_points is not none %}<p><strong>Потрачено: {{ config.spent_points }}</strong> · остаток: {{ config.remaining_points }} очков.</p>{% endif %}
+</div>
+{% endmacro %}
+{% macro matrix_squad(result) %}
+{% if result.selection %}
+<strong>{{ result.selection.members|length }} бойцов</strong>
+{% for key, label in [('minions', 'Миньоны'), ('seniors', 'Старшие')] %}{% set pool = result[key] %}{% if pool %}<p>{{ label }}: {{ 'масштабированная база' if pool.mode == 'relative_gs' else 'база' }} {{ pool.scaled_points if pool.mode == 'relative_gs' else pool.base_points }} + {{ pool.bonus_points }} = {{ pool.effective_points }}; потрачено {{ pool.spent_points }}, остаток {{ pool.remaining_points }}</p>{% endif %}{% endfor %}
+<ul>{% for role, label in role_labels.items() %}{% set group = result.selection.members|selectattr('role', 'equalto', role)|list %}{% if group %}<li>{{ label }}: {{ group|length }}</li>{% endif %}{% endfor %}</ul>
+<details><summary>Кто вошёл</summary><ul>{% for member in result.selection.members %}<li>{{ member.name }} · {{ role_labels.get(member.role, member.role) }} · Т{{ member.tier }}</li>{% endfor %}</ul></details>
+{% else %}<strong>Отказ сборки</strong>{% for reason in result.reasons %}<p>{{ reason.message }}</p>{% endfor %}{% for reason in result.preparation.reasons %}<p>{{ reason.message }}</p>{% endfor %}{% endif %}
+{% endmacro %}
+{% block content %}
+<div class="fc-page-head"><div><h1 class="fc-page-title">Проверка заказа монстров</h1><p class="fc-page-subtitle">Выбор конкретного отряда через публичный контракт Monsters. Количество, ранги и тиры определяет домен; источник не изменяется.</p></div><a class="fc-action-btn" href="{{ base_url }}/monster-browser">К каталогу</a></div>
+{% if error %}<p class="fc-empty" role="alert">{{ error }}</p>{% endif %}
+{% if contract %}
+<section class="fc-toolbar"><form method="get" class="fc-filter-form" action="{{ base_url }}/monster-encounter">
+<input type="hidden" name="run" value="1">
+<label class="fc-filter-field"><span>Тип встречи</span><select class="fc-form-input" name="encounter_type">{% for option in contract.encounter_types %}<option value="{{ option.id }}" {% if fields.encounter_type == option.id %}selected{% endif %}>{{ option.name }}</option>{% endfor %}</select></label>
+<label class="fc-filter-field"><span>Сложность</span><select class="fc-form-input" name="difficulty">{% for option in contract.difficulties %}<option value="{{ option.id }}" {% if fields.difficulty == option.id %}selected{% endif %}>{{ option.name }}</option>{% endfor %}</select></label>
+<label class="fc-filter-field"><span>Режим</span><select class="fc-form-input" name="party_mode">{% for option in contract.party_modes %}<option value="{{ option.id }}" {% if fields.party_mode == option.id %}selected{% endif %}>{{ option.name }}{% if not option.available %} — пока недоступно{% endif %}</option>{% endfor %}</select></label>
+<label class="fc-filter-field"><span>Тир локации</span><select class="fc-form-input" name="location_tier">{% for tier in contract.location_tiers %}<option value="{{ tier }}" {% if fields.location_tier == tier|string %}selected{% endif %}>{{ tier }}</option>{% endfor %}</select></label>
+<label class="fc-filter-field"><span>Seed</span><input class="fc-form-input" type="number" name="seed" value="{{ fields.seed }}" required></label>
+<label class="fc-filter-field"><span>GS игрока</span><input class="fc-form-input" type="number" min="0" step="any" name="player_gear_score" value="{{ fields.player_gear_score }}"><small>GS обязателен для встроенных профилей с относительным пулом миньонов. Внешний фиксированный профиль может работать без GS. Без обязательного GS домен вернёт отказ; базовый бюджет не подставляется. Вводите новую экспериментальную шкалу GS. Бюджеты ограничены профилем; рабочий калькулятор GS автоматически не подключён.</small></label>
+<label class="fc-filter-field"><span>Семья</span><select class="fc-form-input" name="family_ids" required>{% for family in contract.families %}<option value="{{ family.id }}" {% if family.id in selected_families %}selected{% endif %}>{{ family.name }}</option>{% endfor %}</select></label>
+<label class="fc-filter-field"><span>Источник профиля</span><select class="fc-form-input" name="profile_source"><option value="builtin" {% if fields.profile_source == 'builtin' %}selected{% endif %}>Встроенная библиотека</option><option value="external" {% if fields.profile_source == 'external' %}selected{% endif %}>Внешний тестовый профиль</option></select></label>
+<details class="fc-filter-field" {% if fields.profile_source == 'external' %}open{% endif %}><summary>Тестовый профиль: бюджет и ядро состава</summary><label><span>Полный профиль JSON</span><textarea class="fc-form-input" name="profile_override" rows="16" cols="65">{{ fields.profile_override }}</textarea></label><p class="fc-muted">Используется только при выборе внешнего профиля и полностью заменяет встроенный. Миньоны и старшие оплачиваются из отдельных пулов. Обязательные ранги оплачиваются первыми внутри своего пула. Очки между пулами не переносятся. Каталог не изменяется.</p></details>
+<button class="fc-btn-save" type="submit">Собрать отряд</button>
+<button class="fc-action-btn" type="submit" name="compare_profiles" value="1">Сравнить все 12 встроенных профилей</button></form></section>
+<p class="fc-muted">Версия контракта: {{ contract.version }}</p>
+{% endif %}
+{% if contract and fields.location_tier|int in contract.provisional_reference_tiers %}<p class="fc-muted" role="status">Эталоны GS для тиров 6–7 предварительные и требуют проверки балансом.</p>{% endif %}
+{% if profile_matrix %}
+<section class="fc-widget fc-widget--table" aria-labelledby="profile-matrix-title">
+<h2 id="profile-matrix-title">Все соло-профили: эталон и потолок бонуса</h2>
+<p class="fc-muted">Встроенная библиотека · выбранная семья · тир {{ fields.location_tier }} · seed {{ fields.seed }}. Внешний тестовый профиль здесь не применяется. Слева состав при эталонном GS выбранного тира, справа — при полном бонусе обоих пулов. Это проверка сборки, а не результат боёв.</p>
+<table class="fc-table"><thead><tr><th>Встреча / сложность</th><th>База → потолок</th><th>Масштабирование GS</th><th>Состав при эталоне</th><th>Состав с полным бонусом</th></tr></thead><tbody>
+{% for row in profile_matrix %}<tr>
+<td>{% for option in contract.encounter_types %}{% if option.id == row.encounter_type %}<strong>{{ option.name }}</strong>{% endif %}{% endfor %}<br>{% for option in contract.difficulties %}{% if option.id == row.difficulty %}{{ option.name }}{% endif %}{% endfor %}</td>
+<td>{% for key, label in [('minions', 'Миньоны'), ('seniors', 'Старшие')] %}{% if row.base %}{% set pool = row.base[key] %}<p><strong>{{ label }}</strong>: {{ pool.base_points if pool else '—' }} → {% if row.cap and row.cap[key] %}{{ row.cap[key].effective_points }}{% else %}—{% endif %}</p>{% endif %}{% endfor %}</td>
+<td>{% if row.cap_gs is defined %}{% for key, label in [('minions', 'Миньоны'), ('seniors', 'Старшие')] %}{% set pool = row.pools[key] %}<p><strong>{{ label }}</strong>: {% if pool.mode == 'relative_gs' %}пропорционально GS / {{ pool.reference_gs }}; максимум +{{ pool.bonus_max }}{% else %}порог {{ pool.threshold }}, шаг {{ pool.step_size }}<br>+{{ pool.points }} за ступень, максимум +{{ pool.bonus_max }}{% endif %}</p>{% endfor %}Потолок обоих пулов при {{ row.cap_gs }} GS{% endif %}</td>
+<td>{% if row.base %}{{ matrix_squad(row.base) }}{% endif %}{% if row.error %}<p role="status">{{ row.error }}</p>{% endif %}</td>
+<td>{% if row.cap %}{{ matrix_squad(row.cap) }}{% endif %}</td>
+</tr>{% endfor %}</tbody></table>
+</section>
+{% endif %}
+{% if order_json %}<details class="fc-widget"><summary>JSON внешнего заказа</summary><pre>{{ order_json }}</pre></details>{% endif %}
+{% if result %}
+<section class="fc-widget" aria-labelledby="squad-title">
+<h2 id="squad-title">{{ 'Отряд собран' if result.status == 'selected' else 'Отряд не собран' }}</h2>
+{% if result.selection %}
+<p><strong>{{ result.selection.members|length }} бойцов</strong> · {{ result.selection.assembly_input.configuration.id }}</p>
+<p class="fc-muted">{% for option in contract.difficulties %}{% if option.id == result.selection.assembly_input.configuration.difficulty %}{{ option.name }}{% endif %}{% endfor %} · {% for option in contract.party_modes %}{% if option.id == result.selection.assembly_input.configuration.party_mode %}{{ option.name }}{% endif %}{% endfor %}</p>
+<p>Профиль: <strong>{{ 'внешний' if result.profile_source == 'external' else 'встроенный' }}</strong> · {{ result.profile_id }} · комплектация {{ result.variant_id }}.</p>
+{{ budget_steps(result.minions, 'Пул миньонов') }}
+{{ budget_steps(result.seniors, 'Пул старших: ветераны, элита и боссы') }}
+<p class="fc-muted">Очки между пулами не переносятся. Обязательный минимум рангов оплачивается первым; остаток старшего пула расходуется только на разрешённые старшие ранги.</p>
+<p class="fc-muted">GS игрока ограниченно меняет бюджет. Состав оплачивается ценами монстров, без сопоставления GS бойцов.</p>
+<div class="fc-widget--table"><table class="fc-table"><thead><tr><th>Боец</th><th>Ранг</th><th>Тир</th><th>Цена</th><th>Клан</th></tr></thead><tbody>
+{% for member in result.selection.members %}<tr><td><a href="{{ base_url }}/monster-member-detail?clan_id={{ member.clan_id|urlencode }}&amp;member_id={{ member.member_id|urlencode }}&amp;tier={{ member.tier }}">{{ member.name or member.member_id }}</a></td><td>{{ role_labels.get(member.role, member.role) }}</td><td>{{ member.tier }}</td><td>{{ member.assembly_cost }}</td><td>{{ member.clan_id }}</td></tr>{% endfor %}
+</tbody></table></div>
+{% else %}<p class="fc-muted">Для этого заказа допустимый отряд не найден.</p>{% endif %}
+{% for reason in result.reasons %}<p role="status">{{ reason.message }} <span class="fc-muted">({{ reason.code }} · {{ reason.path }})</span></p>{% endfor %}
+</section>
+{% if result.attempts %}<details class="fc-widget"><summary>Проверенные конфигурации ({{ result.attempts|length }})</summary>
+{% for attempt in result.attempts %}<p><strong>{{ attempt.configuration_id }}</strong>{% if attempt.clan_id %} · {{ attempt.clan_id }}{% endif %} · {{ 'выполнима' if attempt.feasible else 'не подходит' }}</p><ul>{% for reason in attempt.reasons %}<li>{{ reason.message }} <span class="fc-muted">({{ reason.code }} · {{ reason.path }})</span>{% if reason.member_ids %} · {{ reason.member_ids|join(', ') }}{% endif %}</li>{% endfor %}</ul>{% endfor %}
+</details>{% endif %}
+{% endif %}
+{% if preview %}
+{% if preview.profile %}<details class="fc-widget"><summary>Применённый профиль: {{ 'внешний' if preview.profile_source == 'external' else 'встроенный' }} · {{ preview.profile.id }}</summary><pre>{{ preview.profile|tojson(indent=2) }}</pre></details>{% endif %}
+<div class="fc-stat-strip"><div><strong>{{ 'Подготовлено' if preview.status == 'prepared' else 'Отказ' }}</strong><span>результат подготовки</span></div><div><strong>{{ preview.candidates|length }}</strong><span>готовых кандидатов</span></div><div><strong>{{ preview.excluded|length }}</strong><span>исключено</span></div><div><strong>{{ preview.configurations|length }}</strong><span>конфигураций</span></div></div>
+<section class="fc-widget"><h2>Этапы подготовки</h2><ul>{% for stage in preview.stages %}<li><strong>{{ stage.name }} · {{ stage.status }}</strong> — {{ stage.detail }}</li>{% endfor %}</ul>{% for reason in preview.reasons %}<p role="status">{{ reason.message }} <span class="fc-muted">({{ reason.code }} · {{ reason.path }})</span></p>{% endfor %}</section>
+{% if preview.admission %}<section class="fc-widget fc-widget--table"><h2>Допуск для тира локации {{ preview.admission.location_tier }}</h2><table class="fc-table"><thead><tr><th>Ранг монстра</th><th>Минимальный тир</th><th>Максимальный тир</th></tr></thead><tbody>{% for rule in preview.admission.roles %}<tr><td>{{ role_labels.get(rule.role, rule.role) }}</td><td>{{ rule.min_tier }}</td><td>{{ rule.max_tier }}</td></tr>{% endfor %}</tbody></table></section>{% endif %}
+<section class="fc-widget"><h2>Конфигурации состава</h2><p class="fc-muted">Разрешённые ранги и обязательные минимумы определяются типом встречи. Ранг, которого нет в списке, запрещён.</p>{% for config in preview.configurations %}<details><summary>{{ config.id }}</summary><p>{{ config.profile_source }} · {{ config.profile_id }}</p><p>{{ config.count.min_count }}–{{ config.count.max_count }} бойцов (защитные пределы).</p>{{ budget_steps(config.minions, 'Пул миньонов') }}{{ budget_steps(config.seniors, 'Пул старших') }}<p>{{ config.family_id }} · {{ 'один клан' if config.same_clan else 'разные кланы' }} · {{ 'повторы допустимы' if config.allow_repeated_members else 'без повторов' }}</p><ul>{% for rule in config.roles %}<li>{{ role_labels.get(rule.role, rule.role) }}: {% if rule.max_count == 0 %}запрещён{% else %}минимум {{ rule.min_count }}, максимум {{ rule.max_count }}{% endif %}</li>{% endfor %}</ul></details>{% else %}<p class="fc-empty">Конфигурации отсутствуют.</p>{% endfor %}</section>
+<section class="fc-widget fc-widget--table"><h2>Готовые кандидаты</h2><table class="fc-table"><thead><tr><th>Боец</th><th>Ранг</th><th>Тир</th><th>Цена</th><th>Клан</th></tr></thead><tbody>{% for member in preview.candidates %}<tr><td><a href="{{ base_url }}/monster-member-detail?clan_id={{ member.clan_id|urlencode }}&amp;member_id={{ member.member_id|urlencode }}&amp;tier={{ member.tier }}">{{ member.name or member.member_id }}</a></td><td>{{ role_labels.get(member.role, member.role) }}</td><td>{{ member.tier }}</td><td>{{ member.assembly_cost }}</td><td>{{ member.clan_id }}</td></tr>{% else %}<tr><td colspan="5">Готовых кандидатов нет.</td></tr>{% endfor %}</tbody></table></section>
+{% if preview.excluded %}<section class="fc-widget"><h2>Исключённые кандидаты</h2>{% for member in preview.excluded %}<details><summary>{{ member.member_id }} · тир {{ member.tier }}</summary><ul>{% for issue in member.issues %}<li>{{ issue.message }} <span class="fc-muted">({{ issue.code }} · {{ issue.path }})</span></li>{% endfor %}</ul></details>{% endfor %}</section>{% endif %}
+{% endif %}
+{% endblock %}

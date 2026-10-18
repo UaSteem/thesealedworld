@@ -9,6 +9,7 @@ Project-owned skills live in `.agents/skills/`. Load the domain skill for the af
 | Frontend routes, templates, CSS, site, cabinet | [frontend](.agents/skills/turnbasedmmorpg-frontend/SKILL.md) |
 | Combat resolver, snapshots, triggers, logs | [combat](.agents/skills/turnbasedmmorpg-combat/SKILL.md) |
 | Items, monsters, character skills, generation, lore | [game-content](.agents/skills/turnbasedmmorpg-game-content/SKILL.md) |
+| Monster encounter orders, candidate readiness, instances, domain consumer contracts | [monsters](.agents/skills/turnbasedmmorpg-monsters/SKILL.md) |
 | Rift design or implementation | [rift](.agents/skills/turnbasedmmorpg-rift/SKILL.md) |
 | Local retired game data, JSONL exports, archive discovery | [content-archive](.agents/skills/turnbasedmmorpg-content-archive/SKILL.md) |
 | Local analytical studio | [studio](.agents/skills/turnbasedmmorpg-studio/SKILL.md) |

@@ -9,6 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 FLANKER = MemberBaseDTO(
     id="flanker",
     role="veteran",
+    assembly_cost=27,
     stats=BaseStatsDTO(
         strength=15,
         agility=16,

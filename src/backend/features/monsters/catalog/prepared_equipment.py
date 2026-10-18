@@ -90,6 +90,7 @@ def _loader(family_id: str):
         "wolf_pack": "wolf_catalog",
         "rat_swarm": "rat_catalog",
         "bandit_gang": "bandit_catalog",
+        "golem_foundry": "golem_catalog",
     }
     if family_id not in packages:
         raise LookupError(f"No prepared equipment for family: {family_id}")

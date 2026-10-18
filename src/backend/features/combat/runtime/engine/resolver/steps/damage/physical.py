@@ -33,6 +33,9 @@ def apply(
         phys_dmg *= state.crit_multiplier
 
     state.mitigation_pct = armor_math.effective_physical_resistance(atk, def_, ctx)
+    # Temporary experiment: bypass resistance/suppression in damage calculation.
+    # If accepted, remove the corresponding modifiers and formula separately.
+    state.mitigation_pct = 0.0
     phys_dmg *= 1.0 - state.mitigation_pct
     state.after_resist = phys_dmg
 

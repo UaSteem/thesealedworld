@@ -8,6 +8,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 GOBLIN_SCRAPGUARD = MemberBaseDTO(
     id="goblin_scrapguard",
     role="veteran",
+    assembly_cost=23,
     stats=BaseStatsDTO(
         strength=14,
         agility=13,

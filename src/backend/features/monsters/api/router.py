@@ -4,22 +4,42 @@ import json
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Query, Response
+from pydantic import ValidationError
 
 from src.backend.core.database import get_db
 from src.backend.features.monsters.api.access import require_monster_catalog_read, require_monster_catalog_write
+from src.backend.features.monsters.api.dependencies import get_cached_monster_selection_service
 from src.backend.features.monsters.catalog.bootstrap import MonsterCatalogBootstrapService
 from src.backend.features.monsters.catalog.bootstrap_contracts import MonsterCatalogBootstrapDTO
 from src.backend.features.monsters.catalog.contracts import (
     MonsterRole,  # noqa: TC001 - FastAPI resolves query annotations
 )
+from src.backend.features.monsters.catalog.registry import get_catalog
 from src.backend.features.monsters.catalog.repositories.monster_generation_repository import MonsterGenerationRepository
 from src.backend.features.monsters.catalog.services.generated_rebuild_service import (
     MonsterGeneratedRebuildService,  # noqa: TC001 - FastAPI inspects annotations
+)
+from src.backend.features.monsters.catalog.texts import localized_definition
+from src.backend.features.monsters.encounters.dto.preparation import MonsterEncounterPreparationDTO
+from src.backend.features.monsters.encounters.dto.result import MonsterEncounterSelectionDTO
+from src.backend.features.monsters.encounters.dto.selection import MonsterEncounterOrderDTO
+from src.backend.features.monsters.encounters.policies.composition import ENCOUNTER_PROFILE_KINDS
+from src.backend.features.monsters.encounters.profiles.registry import get_profile
+from src.backend.features.monsters.encounters.services.cached_selection_service import (
+    CachedMonsterEncounterSelectionService,  # noqa: TC001 - FastAPI inspects dependency annotations
+)
+from src.backend.features.monsters.encounters.services.encounter_preparation_service import (
+    MonsterEncounterPreparationService,
 )
 from src.backend.features.monsters.inspection.dto.catalog_view import (
     CatalogEquipmentViewDTO,
     CatalogMonstersResponseDTO,
     CatalogMonstersSummaryDTO,
+)
+from src.backend.features.monsters.inspection.dto.encounter_contract import (
+    MonsterContractChoiceDTO,
+    MonsterEncounterContractDTO,
+    MonsterPartyModeChoiceDTO,
 )
 from src.backend.features.monsters.inspection.dto.generated_view import (
     GeneratedMonstersResponseDTO,
@@ -30,12 +50,69 @@ from src.backend.features.monsters.inspection.dto.generated_view import (
 from src.backend.features.monsters.inspection.services.catalog_view_service import CatalogMonsterViewService
 from src.backend.features.monsters.inspection.services.generated_view_service import GeneratedMonsterViewService
 from src.backend.features.monsters.inspection.services.player_comparison_service import validate_player_attributes
+from src.backend.infrastructure.monsters.managers.encounter_pool import EncounterPoolCacheUnavailable
 
 router = APIRouter(
     prefix="/api/admin/monsters",
     tags=["monsters-admin"],
     dependencies=[Depends(require_monster_catalog_read)],
 )
+
+
+@router.get("/encounters/contract", response_model=MonsterEncounterContractDTO)
+async def get_monster_encounter_contract() -> MonsterEncounterContractDTO:
+    catalog = get_catalog()
+    family_ids = {clan.family_id for clan in catalog.find_clans(include_system=False)}
+    labels = {"ordinary": "Обычная встреча", "patrol": "Патруль", "guard": "Охрана", "leader": "Главарь"}
+    example = get_profile(party_mode="solo", encounter_type="ordinary", difficulty="easy")
+    assert example is not None
+    return MonsterEncounterContractDTO(
+        profile_override_example=example,
+        encounter_types=tuple(MonsterContractChoiceDTO(id=key, name=labels[key]) for key in ENCOUNTER_PROFILE_KINDS),
+        difficulties=tuple(
+            MonsterContractChoiceDTO(id=key, name=name)
+            for key, name in (("easy", "Лёгкая"), ("normal", "Средняя"), ("hard", "Тяжёлая"))
+        ),
+        party_modes=(
+            MonsterPartyModeChoiceDTO(id="solo", name="Соло", available=True),
+            MonsterPartyModeChoiceDTO(id="group", name="Группа", available=False),
+        ),
+        location_tiers=tuple(range(8)),
+        families=tuple(
+            MonsterContractChoiceDTO(id=family.id, name=localized_definition(family)["name"])
+            for family in catalog.families.values()
+            if family.id in family_ids
+        ),
+    )
+
+
+@router.get("/encounters/preview", response_model=MonsterEncounterPreparationDTO)
+async def preview_monster_encounter(
+    order: Annotated[str, Query(min_length=2, max_length=10000)],
+) -> MonsterEncounterPreparationDTO:
+    return MonsterEncounterPreparationService().prepare(_parse_encounter_order(order))
+
+
+def _parse_encounter_order(order: str) -> MonsterEncounterOrderDTO:
+    try:
+        return MonsterEncounterOrderDTO.model_validate_json(order)
+    except ValidationError as exc:
+        raise HTTPException(status_code=422, detail=exc.errors(include_context=False, include_input=False)) from exc
+
+
+@router.get("/encounters/select", response_model=MonsterEncounterSelectionDTO)
+async def select_monster_encounter(
+    order: Annotated[str, Query(min_length=2, max_length=10000)],
+    response: Response,
+    service: Annotated[CachedMonsterEncounterSelectionService, Depends(get_cached_monster_selection_service)],
+) -> MonsterEncounterSelectionDTO:
+    parsed = _parse_encounter_order(order)
+    try:
+        result, status = await service.select(parsed)
+    except EncounterPoolCacheUnavailable as exc:
+        raise HTTPException(status_code=503, detail={"code": "monster_pool_cache_unavailable", "message": str(exc)}) from exc
+    response.headers["X-Monster-Pool-Cache"] = status
+    return result
 
 
 @router.get("/catalog/bootstrap", response_model=MonsterCatalogBootstrapDTO)

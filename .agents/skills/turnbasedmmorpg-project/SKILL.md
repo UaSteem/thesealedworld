@@ -19,5 +19,7 @@ For agent-skill edits, follow the global project-skills-maintainer workflow. Cha
 | Lore, balance, visual, or public-copy choice | [references/creative-decisions.md](references/creative-decisions.md) |
 | Parallel design prompts | [references/parallel-design-prompts.md](references/parallel-design-prompts.md) |
 | Detailed ownership rules | [references/project-rules.md](references/project-rules.md) |
+| Isolated Monsters contracts and Studio verification workflow | [Monsters domain workflow](../turnbasedmmorpg-monsters/references/domain-workflow.md) |
 
 Read the referenced details for the task at hand. Verify implementation claims against current code and tests.
+

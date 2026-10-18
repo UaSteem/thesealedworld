@@ -6,8 +6,10 @@ from src.backend.features.combat.dto import (
     InteractionResultDTO,
     PipelineContextDTO,
 )
+from src.backend.features.combat.dto.pipeline import FeintActivationOutcomeDTO
 from src.backend.features.combat.runtime.engine.ability_service import AbilityService
 from src.backend.features.combat.runtime.engine.context_builder import ContextBuilder
+from src.backend.features.combat.runtime.engine.execution import StrikeExecution, normalize_execution
 from src.backend.features.combat.runtime.engine.mechanics_service import (
     MechanicsService,
 )
@@ -33,7 +35,7 @@ class CombatPipeline:
         self,
         source: ActorSnapshot,
         target: ActorSnapshot | None,
-        move: CombatMoveDTO,
+        move: CombatMoveDTO | StrikeExecution,
         exchange_count: int = 0,
         external_mods: dict[str, Any] | None = None,
     ) -> InteractionResultDTO:
@@ -52,12 +54,28 @@ class CombatPipeline:
         """
         # 0. Context Build
         # ContextBuilder создает ctx и инициализирует ctx.result (заполняет ID и hand)
-        ctx = ContextBuilder.build_context(source, target, move, external_mods)
+        execution = normalize_execution(
+            move,
+            source_id=source.char_id,
+            target_id=target.char_id if target else None,
+            external_mods=external_mods,
+        )
+        ctx = ContextBuilder.build_context(source, target, execution, execution.context_mods(external_mods))
+        ctx.result.action_facts["execution"] = execution.provenance()
 
         # 1. Pre-Calculation (Ability Service)
         if ctx.phases.run_pre_calc:
             # AbilityService теперь берет result из ctx.result
-            self.ability_service.pre_process(ctx, move, source, target)
+            self.ability_service.pre_process(ctx, execution, source, target, feint_mode=execution.feint_mode)
+        if execution.activation and ctx.result.feint_activation is None:
+            activation = execution.activation
+            ctx.result.feint_activation = FeintActivationOutcomeDTO(
+                owner_id=activation.owner_id,
+                intent_id=activation.intent_id,
+                feint_id=activation.feint_id,
+                state="rejected",
+                reason=ctx.result.skip_reason or "NOT_ACTIVATED",
+            )
 
         # 1.5. Liveness Check (Управление флагами)
         if ctx.phases.run_calculator:
@@ -77,8 +95,15 @@ class CombatPipeline:
         # 4. Post-Calculation (Ability Service)
         if ctx.phases.run_post_calc:
             # AbilityService использует ctx.result
-            self.ability_service.post_process(ctx, source, target, move)
+            self.ability_service.post_process(ctx, source, target, execution)
 
+        if (
+            ctx.result.feint_activation
+            and ctx.result.chain_events.preserve_feint
+            and ctx.result.feint_activation.state == "activated"
+        ):
+            ctx.result.feint_activation.state = "preserved"
+            ctx.result.feint_activation.reason = ctx.result.skip_reason
         return ctx.result
 
     def _check_liveness(self, ctx: PipelineContextDTO, source: ActorSnapshot, target: ActorSnapshot | None) -> None:

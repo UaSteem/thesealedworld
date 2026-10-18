@@ -1,404 +1,93 @@
 import pytest
 
-from src.backend.features.character.resources import STARTING_IMPRINTS
-from src.backend.features.character.resources.starting_imprints import ATTRIBUTE_KEYS
+from src.backend.features.character.resources.starting_imprints import (
+    ATTRIBUTE_KEYS,
+    STARTING_IMPRINTS,
+    _attribute_values,
+)
 from src.backend.features.character.services import StartingImprintService
 
-EXPECTED_MANUAL_ATTRIBUTES = {
-    "starter_guard_01": {
-        "strength": 16,
-        "agility": 15,
-        "endurance": 17,
-        "intellect": 9,
-        "memory": 11,
-        "mental": 12,
-        "perception": 13,
-        "projection": 10,
-        "prediction": 14,
-    },
-    "starter_breaker_01": {
-        "strength": 17,
-        "agility": 13,
-        "endurance": 16,
-        "intellect": 9,
-        "memory": 10,
-        "mental": 14,
-        "perception": 12,
-        "projection": 11,
-        "prediction": 15,
-    },
-    "starter_dual_blades_01": {
-        "strength": 13,
-        "agility": 17,
-        "endurance": 15,
-        "intellect": 9,
-        "memory": 12,
-        "mental": 10,
-        "perception": 14,
-        "projection": 11,
-        "prediction": 16,
-    },
-    "starter_dual_sword_01": {
-        "strength": 17,
-        "agility": 16,
-        "endurance": 15,
-        "intellect": 9,
-        "memory": 13,
-        "mental": 10,
-        "perception": 12,
-        "projection": 11,
-        "prediction": 14,
-    },
-    "starter_dual_mace_01": {
-        "strength": 17,
-        "agility": 15,
-        "endurance": 16,
-        "intellect": 9,
-        "memory": 13,
-        "mental": 11,
-        "perception": 12,
-        "projection": 10,
-        "prediction": 14,
-    },
-    "starter_hunter_01": {
-        "strength": 14,
-        "agility": 17,
-        "endurance": 16,
-        "intellect": 10,
-        "memory": 13,
-        "mental": 11,
-        "perception": 15,
-        "projection": 12,
-        "prediction": 9,
-    },
-    "starter_archer_01": {
-        "strength": 15,
-        "agility": 17,
-        "endurance": 16,
-        "intellect": 10,
-        "memory": 13,
-        "mental": 11,
-        "perception": 14,
-        "projection": 12,
-        "prediction": 9,
-    },
-    "starter_heavy_guard_01": {
-        "strength": 17,
-        "agility": 12,
-        "endurance": 16,
-        "intellect": 9,
-        "memory": 11,
-        "mental": 14,
-        "perception": 13,
-        "projection": 10,
-        "prediction": 15,
-    },
-    "starter_tactician_01": {
-        "strength": 17,
-        "agility": 16,
-        "endurance": 15,
-        "intellect": 9,
-        "memory": 11,
-        "mental": 12,
-        "perception": 13,
-        "projection": 10,
-        "prediction": 14,
-    },
-    "starter_rift_survivor_01": {
-        "strength": 17,
-        "agility": 15,
-        "endurance": 16,
-        "intellect": 9,
-        "memory": 12,
-        "mental": 10,
-        "perception": 14,
-        "projection": 11,
-        "prediction": 13,
-    },
+# Reviewed reference vectors, in ATTRIBUTE_KEYS order. Tests do not load var/ artifacts.
+EXPECTED_ATTRIBUTES = {
+    "starter_guard_01": (17, 14, 20, 12, 16, 13, 16, 13, 14),
+    "starter_heavy_sword_guard_01": (17, 14, 20, 12, 16, 13, 16, 13, 14),
+    "starter_mace_guard_01": (19, 13, 20, 12, 15, 14, 16, 12, 14),
+    "starter_heavy_guard_01": (19, 13, 20, 12, 15, 14, 16, 12, 14),
+    "starter_tactician_01": (18, 16, 19, 12, 15, 13, 16, 12, 14),
+    "starter_heavy_tactician_01": (18, 16, 19, 12, 15, 13, 16, 12, 14),
+    "starter_medium_breaker_01": (20, 13, 19, 12, 14, 13, 18, 12, 14),
+    "starter_breaker_01": (20, 13, 19, 12, 14, 13, 18, 12, 14),
+    "starter_rift_survivor_01": (19, 15, 18, 12, 14, 13, 17, 12, 15),
+    "starter_heavy_rift_survivor_01": (19, 15, 18, 12, 14, 13, 17, 12, 15),
+    "starter_dual_blades_01": (12, 20, 15, 15, 16, 13, 17, 13, 14),
+    "starter_medium_dual_blades_01": (12, 20, 15, 15, 16, 13, 17, 13, 14),
+    "starter_hunter_01": (12, 19, 16, 12, 16, 13, 18, 15, 14),
+    "starter_archer_01": (13, 18, 16, 12, 15, 14, 18, 15, 14),
 }
 
 
 @pytest.mark.unit
-def test_starting_imprint_builds_complete_guard_payload() -> None:
-    build = StartingImprintService().build("starter_guard_01")
-
-    assert build.attributes["strength"] == 16
-    assert build.attributes["agility"] == 15
-    assert build.attributes["endurance"] == 17
-    assert build.attributes["prediction"] == 14
-    assert set(build.attributes) == {
-        "strength",
-        "agility",
-        "endurance",
-        "intellect",
-        "memory",
-        "mental",
-        "perception",
-        "projection",
-        "prediction",
-    }
-    assert build.attributes == EXPECTED_MANUAL_ATTRIBUTES["starter_guard_01"]
-    assert build.skill_xp == {
-        "skill_swords": 0.10,
-        "skill_shield_mastery": 0.075,
-        "skill_medium_armor": 0.05,
-    }
-    assert build.skill_keys == (
-        "skill_swords",
-        "skill_shield_mastery",
-        "skill_medium_armor",
-    )
-    assert build.item_base_ids == (
-        "sword",
-        "shield",
-        "jerkin",
-        "amulet",
-    )
+@pytest.mark.parametrize("key,vector", EXPECTED_ATTRIBUTES.items())
+def test_reviewed_starting_profile_is_materialized_exactly(key, vector):
+    build = StartingImprintService().build(key)
+    assert build.attributes == dict(zip(ATTRIBUTE_KEYS, vector, strict=True))
+    assert sum(vector) == 135
+    assert max(vector) - min(vector) <= 8
+    assert all(len(set(vector[i : i + 3])) == 3 for i in (0, 3, 6))
+    assert len(build.skill_xp) == 3
+    assert tuple(build.skill_xp.values()) == (0.10, 0.075, 0.05)
+    assert build.item_base_ids[-4:] == ("linen_shirt", "fur_pants", "travel_boots", "belt")
+    assert "amulet" not in build.item_base_ids
+    assert set(build.primary_stats).issubset(ATTRIBUTE_KEYS)
+    assert "endurance" in build.primary_stats
 
 
 @pytest.mark.unit
-def test_starting_imprint_selects_closest_profile_from_weights() -> None:
-    build = StartingImprintService().build_for_weights(
-        {
-            "w_agility": 10,
-            "w_perception": 8,
-            "w_prediction": 7,
-            "w_strength": 2,
-        }
-    )
-
-    assert build.imprint_key == "starter_dual_blades_01"
-    assert build.attributes["agility"] == 17
-    assert build.attributes["endurance"] == 15
-    assert build.attributes["strength"] == 13
-    assert build.attributes["perception"] == 14
-    assert "skill_light_armor" in build.skill_keys
-
-
-@pytest.mark.unit
-def test_starting_imprints_use_explicit_manual_attribute_profiles() -> None:
+def test_catalog_replaces_ten_with_fourteen_complete_styles():
+    assert set(STARTING_IMPRINTS) == set(EXPECTED_ATTRIBUTES)
     service = StartingImprintService()
-
-    assert set(EXPECTED_MANUAL_ATTRIBUTES) == set(STARTING_IMPRINTS)
-    for imprint_key, definition in STARTING_IMPRINTS.items():
-        expected = EXPECTED_MANUAL_ATTRIBUTES[imprint_key]
-        build = service.build(imprint_key)
-
-        assert dict(definition.attribute_values) == expected
-        assert build.attributes == expected
-        assert set(build.attributes) == set(ATTRIBUTE_KEYS)
-        assert sorted(build.attributes.values()) == list(range(9, 18))
+    compositions = []
+    for key in EXPECTED_ATTRIBUTES:
+        build = service.build(key)
+        compositions.append((build.combat_style, build.armor_pack))
+    assert len(set(compositions)) == 14
+    for old_key in ("starter_dual_sword_01", "starter_dual_mace_01"):
+        with pytest.raises(ValueError, match="Unknown starting imprint"):
+            service.build(old_key)
 
 
 @pytest.mark.unit
-def test_starting_imprints_define_complete_profiles_for_selected_ten_starters() -> None:
+@pytest.mark.parametrize("key", ["starter_mace_guard_01", "starter_heavy_guard_01"])
+def test_mace_shield_uses_reviewed_plain_shield(key):
+    assert StartingImprintService().build(key).item_base_ids[:2] == ("mace", "shield")
+
+
+@pytest.mark.unit
+def test_random_start_selection_covers_all_styles_and_is_reproducible():
     service = StartingImprintService()
-    dual_imprints = {"starter_dual_blades_01", "starter_dual_sword_01", "starter_dual_mace_01"}
-    ranged_imprints = {"starter_hunter_01", "starter_archer_01"}
-
-    assert len(STARTING_IMPRINTS) == 10
-    assert "starter_pathfinder_01" not in STARTING_IMPRINTS
-    assert "starter_staff_01" not in STARTING_IMPRINTS
-    assert "starter_marksman_01" not in STARTING_IMPRINTS
-    for imprint_key, definition in STARTING_IMPRINTS.items():
-        build = service.build(imprint_key)
-
-        assert set(definition.primary_stats).issubset(set(build.attributes))
-        assert "endurance" in definition.primary_stats
-        assert definition.primary_stats.index("endurance") < 4
-        assert sum(build.skill_xp.values()) == pytest.approx(0.225)
-        assert "skill_parrying" not in build.skill_xp
-        assert "skill_tactics" not in build.skill_xp
-        assert "amulet" in build.item_base_ids
-        assert not any(
-            base_id in build.item_base_ids
-            for base_id in {
-                "helmet",
-                "gauntlets",
-                "greaves",
-                "leather_cap",
-                "reinforced_gloves",
-                "breeches",
-                "hood",
-                "soft_bracers",
-                "scout_leggings",
-                "linen_shirt",
-                "travel_boots",
-                "belt",
-                "winter_cloak",
-            }
-        )
-        if imprint_key in dual_imprints:
-            assert "skill_dual_wield" in build.skill_xp
-        elif imprint_key in ranged_imprints:
-            assert build.skill_xp["skill_archery"] == pytest.approx(0.10)
-            assert build.skill_xp["skill_ranged_combat"] == pytest.approx(0.075)
-            assert build.skill_xp["skill_light_armor"] == pytest.approx(0.05)
-            assert any(base_id in build.item_base_ids for base_id in {"shortbow", "longbow"})
-            assert any(base_id in build.item_base_ids for base_id in {"quiver_frost", "quiver_fire"})
-        else:
-            assert len(definition.primary_stats) >= 4
-            assert len(build.skill_xp) == 3
-            assert "skill_archery" not in build.skill_xp
-            assert not any(base_id in build.item_base_ids for base_id in {"shortbow", "longbow", "composite_bow"})
+    observed = {service.build_random(seed=str(seed)).imprint_key for seed in range(250)}
+    assert observed == set(EXPECTED_ATTRIBUTES)
+    assert service.build_random(seed="new-body") == service.build_random(seed="new-body")
 
 
 @pytest.mark.unit
-def test_starting_imprints_keep_weapon_damage_attributes_role_appropriate() -> None:
+def test_weight_selection_still_uses_authored_style_priorities():
     service = StartingImprintService()
-
-    for imprint_key in STARTING_IMPRINTS:
-        build = service.build(imprint_key)
-
-        assert max(build.attributes["strength"], build.attributes["agility"]) >= 16
-        assert build.attributes["agility"] >= 12
-
-@pytest.mark.unit
-def test_dual_wield_starting_imprints_use_full_attribute_orders_and_weapon_budget() -> None:
-    service = StartingImprintService()
-
-    light = service.build("starter_dual_blades_01")
-    assert light.primary_stats == (
-        "agility",
-        "prediction",
-        "endurance",
-        "perception",
-        "strength",
-        "memory",
-        "projection",
-        "mental",
-        "intellect",
-    )
-    assert light.item_base_ids[:2] == ("stiletto", "main_gauche")
-    assert light.skill_xp == {
-        "skill_fencing": 0.10,
-        "skill_dual_wield": 0.075,
-        "skill_light_armor": 0.05,
-    }
-
-    medium = service.build("starter_dual_sword_01")
-    assert medium.primary_stats == (
-        "strength",
-        "agility",
-        "endurance",
-        "prediction",
-        "memory",
-        "perception",
-        "projection",
-        "mental",
-        "intellect",
-    )
-    assert medium.item_base_ids[:2] == ("sword", "stiletto")
-    assert medium.skill_xp == {
-        "skill_swords": 0.05,
-        "skill_fencing": 0.05,
-        "skill_medium_armor": 0.075,
-        "skill_dual_wield": 0.05,
-    }
-
-    heavy = service.build("starter_dual_mace_01")
-    assert heavy.primary_stats == (
-        "strength",
-        "endurance",
-        "agility",
-        "prediction",
-        "memory",
-        "perception",
-        "mental",
-        "projection",
-        "intellect",
-    )
-    assert heavy.item_base_ids[:2] == ("mace", "main_gauche")
-    assert heavy.skill_xp == {
-        "skill_macing": 0.05,
-        "skill_fencing": 0.05,
-        "skill_heavy_armor": 0.075,
-        "skill_dual_wield": 0.05,
-    }
+    assert service.build_for_weights(None).imprint_key == "starter_guard_01"
+    assert service.build_for_weights({"w_endurance": 10}).imprint_key == "starter_guard_01"
+    assert service.build_for_weights({"w_agility": 10, "w_perception": 8}).imprint_key == "starter_dual_blades_01"
 
 
 @pytest.mark.unit
-def test_support_starting_imprints_are_combat_ready_before_respec() -> None:
-    service = StartingImprintService()
-
-    tactician = service.build("starter_tactician_01")
-    assert tactician.primary_stats == ("strength", "agility", "endurance", "prediction")
-    assert tactician.skill_xp == {
-        "skill_swords": 0.10,
-        "skill_two_handed": 0.075,
-        "skill_medium_armor": 0.05,
-    }
-    assert tactician.item_base_ids[0] == "flamberge"
-
-    survivor = service.build("starter_rift_survivor_01")
-    assert survivor.primary_stats == ("strength", "endurance", "agility", "perception")
-    assert survivor.skill_xp == {
-        "skill_polearms": 0.10,
-        "skill_two_handed": 0.075,
-        "skill_medium_armor": 0.05,
-    }
-    assert survivor.item_base_ids[0] == "halberd"
-
-
-@pytest.mark.unit
-def test_ranged_starting_imprints_use_bows_and_quivers_without_medium_marksman() -> None:
-    service = StartingImprintService()
-
-    hunter = service.build("starter_hunter_01")
-    assert hunter.primary_stats == (
-        "agility",
-        "endurance",
-        "perception",
-        "strength",
-        "memory",
-        "projection",
-        "mental",
-        "intellect",
-        "prediction",
-    )
-    assert hunter.item_base_ids[:2] == ("shortbow", "quiver_frost")
-    assert hunter.skill_xp == {
-        "skill_archery": 0.10,
-        "skill_ranged_combat": 0.075,
-        "skill_light_armor": 0.05,
-    }
-
-    archer = service.build("starter_archer_01")
-    assert archer.primary_stats == (
-        "agility",
-        "endurance",
-        "strength",
-        "perception",
-        "memory",
-        "projection",
-        "mental",
-        "intellect",
-        "prediction",
-    )
-    assert archer.item_base_ids[:2] == ("longbow", "quiver_fire")
-    assert archer.skill_xp == {
-        "skill_archery": 0.10,
-        "skill_ranged_combat": 0.075,
-        "skill_light_armor": 0.05,
-    }
-
-    assert "starter_marksman_01" not in STARTING_IMPRINTS
-
-
-@pytest.mark.unit
-def test_heavy_guard_uses_shield_block_without_support_parry_training() -> None:
-    build = StartingImprintService().build("starter_heavy_guard_01")
-
-    assert build.item_base_ids[:2] == ("mace", "kite_shield")
-    assert build.skill_xp == {
-        "skill_macing": 0.10,
-        "skill_shield_mastery": 0.075,
-        "skill_heavy_armor": 0.05,
-    }
-
-
-@pytest.mark.unit
-@pytest.mark.parametrize("imprint_key", ["missing", "starter_pathfinder_01", "starter_staff_01", "starter_marksman_01"])
-def test_starting_imprint_rejects_unknown_key(imprint_key: str) -> None:
-    with pytest.raises(ValueError, match="Unknown starting imprint"):
-        StartingImprintService().build(imprint_key)
+@pytest.mark.parametrize(
+    "vector,message",
+    [
+        ((17, 14, 19, 12, 16, 13, 16, 13, 14), "total 135"),
+        ((18, 14, 20, 11, 16, 13, 16, 13, 14), "spread"),
+        ((17, 17, 17, 12, 16, 13, 16, 13, 14), "distinct"),
+        ((17.0, 14, 20, 12, 16, 13, 16, 13, 14), "positive integers"),
+    ],
+)
+def test_attribute_contract_rejects_invalid_manual_profiles(vector, message):
+    with pytest.raises(ValueError, match=message):
+        _attribute_values(**dict(zip(ATTRIBUTE_KEYS, vector, strict=True)))

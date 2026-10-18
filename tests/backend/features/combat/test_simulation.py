@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pytest
 
+from src.backend.features.character.resources.starting_imprints import STARTING_IMPRINTS
 from src.backend.features.combat.dto import (
     ActorLoadoutDTO,
     ActorMetaDTO,
@@ -173,29 +174,18 @@ def test_starting_imprint_actor_builder_builds_seeded_random_5v5_roster() -> Non
     assert {actor.meta.team for actor in seed_zero[0]} == {"blue", "red"}
     assert len([actor for actor in seed_zero[0] if actor.meta.team == "blue"]) == 5
     assert len([actor for actor in seed_zero[0] if actor.meta.team == "red"]) == 5
-    assert len(DEFAULT_STARTER_SIMULATION_IMPRINTS) == 10
+    assert len(DEFAULT_STARTER_SIMULATION_IMPRINTS) == 14
     assert {str(actor.meta.template_id) for actor in seed_zero[0]}.issubset(set(DEFAULT_STARTER_SIMULATION_IMPRINTS))
     assert random_starter_5v5_imprints(seed=0) == random_starter_5v5_imprints(seed=0)
 
 
 @pytest.mark.unit
-def test_default_starter_pool_is_selected_ten_imprint_balance_matrix() -> None:
+def test_default_starter_pool_is_canonical_fourteen_imprint_style_matrix() -> None:
     assert STARTER_SIMULATION_BEHAVIOR_PROFILES == ("aggressive",)
-    assert set(DEFAULT_STARTER_SIMULATION_IMPRINTS) == {
-        "starter_guard_01",
-        "starter_tactician_01",
-        "starter_heavy_guard_01",
-        "starter_breaker_01",
-        "starter_hunter_01",
-        "starter_rift_survivor_01",
-        "starter_archer_01",
-        "starter_dual_blades_01",
-        "starter_dual_sword_01",
-        "starter_dual_mace_01",
-    }
-    assert "starter_pathfinder_01" not in DEFAULT_STARTER_SIMULATION_IMPRINTS
-    assert "starter_staff_01" not in DEFAULT_STARTER_SIMULATION_IMPRINTS
-    assert "starter_marksman_01" not in DEFAULT_STARTER_SIMULATION_IMPRINTS
+    assert tuple(STARTING_IMPRINTS) == DEFAULT_STARTER_SIMULATION_IMPRINTS
+    assert len(DEFAULT_STARTER_SIMULATION_IMPRINTS) == 14
+    assert "starter_dual_sword_01" not in DEFAULT_STARTER_SIMULATION_IMPRINTS
+    assert "starter_dual_mace_01" not in DEFAULT_STARTER_SIMULATION_IMPRINTS
 
 
 @pytest.mark.unit

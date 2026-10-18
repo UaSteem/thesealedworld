@@ -21,8 +21,8 @@ def test_bootstrap_content_cache_and_no_database(monkeypatch):
         response = client.get("/api/admin/monsters/catalog/bootstrap", headers=headers)
         assert response.status_code == 200
         data = response.json()
-        assert len(data["families"]) == 4
-        assert len(data["members"]) == 47
+        assert len(data["families"]) == 5
+        assert len(data["members"]) == 59
         assert data["members"]["wolf_pack.base.alpha_prime"]["name"] == "Фенрир"
         assert "description" in data["members"]["wolf_pack.base.alpha_prime"]
         assert "source_path" not in response.text

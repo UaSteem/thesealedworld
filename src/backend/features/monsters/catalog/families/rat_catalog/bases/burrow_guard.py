@@ -9,6 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 BURROW_GUARD = MemberBaseDTO(
     id="burrow_guard",
     role="elite",
+    assembly_cost=22,
     stats=BaseStatsDTO(
         strength=14,
         agility=13,

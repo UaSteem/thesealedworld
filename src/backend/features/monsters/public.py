@@ -6,6 +6,54 @@ This module does not change the existing orchestration or persistence behavior.
 from importlib import import_module
 
 _EXPORTS = {
+    "MonsterAssemblyProfileDTO": (
+        "src.backend.features.monsters.encounters.profiles.contracts",
+        "MonsterAssemblyProfileDTO",
+    ),
+    "MonsterAssemblyBudgetDTO": (
+        "src.backend.features.monsters.encounters.profiles.contracts",
+        "MonsterAssemblyBudgetDTO",
+    ),
+    "MonsterAssemblyRoleDTO": (
+        "src.backend.features.monsters.encounters.profiles.contracts",
+        "MonsterAssemblyRoleDTO",
+    ),
+    "MonsterPoolBudgetDTO": (
+        "src.backend.features.monsters.encounters.profiles.contracts",
+        "MonsterPoolBudgetDTO",
+    ),
+    "CachedMonsterEncounterSelectionService": (
+        "src.backend.features.monsters.encounters.services.cached_selection_service",
+        "CachedMonsterEncounterSelectionService",
+    ),
+    "MonsterEncounterSelectionService": (
+        "src.backend.features.monsters.encounters.services.squad_selection_service",
+        "MonsterEncounterSelectionService",
+    ),
+    "MonsterEncounterSelectionDTO": (
+        "src.backend.features.monsters.encounters.dto.result",
+        "MonsterEncounterSelectionDTO",
+    ),
+    "MonsterEncounterOrderDTO": (
+        "src.backend.features.monsters.encounters.dto.selection",
+        "MonsterEncounterOrderDTO",
+    ),
+    "MonsterEncounterPreparationDTO": (
+        "src.backend.features.monsters.encounters.dto.preparation",
+        "MonsterEncounterPreparationDTO",
+    ),
+    "MonsterEncounterPreparationService": (
+        "src.backend.features.monsters.encounters.services.encounter_preparation_service",
+        "MonsterEncounterPreparationService",
+    ),
+    "MonsterCandidateSearchService": (
+        "src.backend.features.monsters.encounters.services.candidate_search_service",
+        "MonsterCandidateSearchService",
+    ),
+    "MonsterCandidateSearchResultDTO": (
+        "src.backend.features.monsters.encounters.dto.candidate_search",
+        "MonsterCandidateSearchResultDTO",
+    ),
     "CatalogSearchService": ("src.backend.features.monsters.catalog.search", "CatalogSearchService"),
     "MonsterSearchFilters": ("src.backend.features.monsters.catalog.search", "MonsterSearchFilters"),
     "MonsterCatalogBootstrapService": (

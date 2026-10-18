@@ -8,6 +8,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 SCRAP_KING = MemberBaseDTO(
     id="scrap_king",
     role="boss",
+    assembly_cost=45,
     stats=BaseStatsDTO(
         strength=21,
         agility=15,

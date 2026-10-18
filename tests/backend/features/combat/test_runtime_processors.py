@@ -7,6 +7,7 @@ from typing import Any
 
 import pytest
 
+from src.backend.core.calculators.stats_waterfall_calculator import COMBAT_MATH_VERSION
 from src.backend.features.combat.dto import (
     ActiveEffectDTO,
     ActorLoadoutDTO,
@@ -33,7 +34,7 @@ from src.backend.features.combat.dto import (
     PipelineContextDTO,
 )
 from src.backend.features.combat.dto.actor import ActorStats
-from src.backend.features.combat.dto.pipeline import CombatDamageTraceDTO
+from src.backend.features.combat.dto.pipeline import CombatDamageTraceDTO, FeintActivationOutcomeDTO
 from src.backend.features.combat.integrations import CombatCatalogIntegrator, CombatSessionIntegration
 from src.backend.features.combat.runtime.engine.ability_service import AbilityService
 from src.backend.features.combat.runtime.engine.context_builder import ContextBuilder
@@ -771,7 +772,10 @@ def test_executor_log_entries_use_actor_names_and_result_summary() -> None:
     ]
     assert ctx.pending_logs[0]["result"]["resources"] == ctx.pending_logs[0]["resources"]
     assert ctx.pending_logs[0]["catalog"] == "combat_text"
-    assert ctx.pending_logs[0]["template"]["key"] == "combat.exchange.skill_swords.main_hand.hit.humanoid_to_humanoid.weapon"
+    assert (
+        ctx.pending_logs[0]["template"]["key"]
+        == "combat.exchange.skill_swords.main_hand.hit.humanoid_to_humanoid.weapon"
+    )
     assert ctx.pending_logs[0]["template"]["text"]
     assert ctx.pending_logs[0]["text"].endswith("нанося 7 урона.")
     assert "damage_final" not in ctx.pending_logs[0]
@@ -984,7 +988,9 @@ def test_executor_log_entries_treat_beast_monster_without_surface_as_natural() -
     CombatExecutor()._append_result_logs(ctx, result, action=action, wave=1)
 
     entry = ctx.pending_logs[0]
-    assert entry["template"]["key"] == "combat.exchange.natural_weapon.default.main_hand.parry.beast_to_humanoid.natural"
+    assert (
+        entry["template"]["key"] == "combat.exchange.natural_weapon.default.main_hand.parry.beast_to_humanoid.natural"
+    )
     assert entry["catalog_key"] == "combat.exchange.natural_weapon.default.main_hand.parry.beast_to_humanoid.natural"
     assert entry["catalog_tooltip"] == ""
     assert "(F)" not in entry["text"]
@@ -4035,9 +4041,12 @@ def test_basic_slip_pain_applies_symbiote_scaled_regen_and_absorb_from_evasion()
     assert active.expire_at_exchange == source.meta.exchange_counter + 3
     assert active.modified_keys == ["hp_regen", "incoming_damage_absorb_pct"]
     assert source.raw.modifiers["hp_regen"]["temp"][active.modified_sources["hp_regen"][0]] == "+3"
-    assert source.raw.modifiers["incoming_damage_absorb_pct"]["temp"][
-        active.modified_sources["incoming_damage_absorb_pct"][0]
-    ] == "+0.05"
+    assert (
+        source.raw.modifiers["incoming_damage_absorb_pct"]["temp"][
+            active.modified_sources["incoming_damage_absorb_pct"][0]
+        ]
+        == "+0.05"
+    )
     StatsEngine.ensure_stats(source)
     assert source.stats is not None
     assert source.stats.mods.hp_regen == pytest.approx(6.0)
@@ -4731,7 +4740,7 @@ async def test_result_support_task_payload_captures_actor_refs_and_analytics_sli
     assert data_service.analytics[0][1]["seq"] == 5
     assert data_service.analytics[0][1]["v"] == 2
     assert data_service.analytics[0][1]["analytics_schema_version"] == 2
-    assert data_service.analytics[0][1]["combat_math_version"] == "combat-math:2026-06-01.1"
+    assert data_service.analytics[0][1]["combat_math_version"] == COMBAT_MATH_VERSION
     assert data_service.analytics[0][1]["t"] == 1
     assert data_service.analytics[0][1]["w"] == 3
     assert data_service.analytics[0][1]["st"] == payload.stat_slice
@@ -5074,7 +5083,16 @@ def test_ability_post_process_registers_hp_and_stamina_combat_regen() -> None:
     source.meta.max_en = 10
     source.meta.stamina = 5
     source.meta.max_stamina = 15
-    source.stats = stats({"hp_regen": 0.96, "en_regen": 2.4, "stamina_regen": 3.0})
+    source.stats = stats(
+        {
+            "hp_regen": 99,
+            "en_regen": 99,
+            "stamina_regen": 99,
+            "combat_hp_regen": 0.96,
+            "combat_en_regen": 2.4,
+            "combat_stamina_regen": 3.0,
+        }
+    )
     ctx = PipelineContextDTO()
     move = CombatMoveDTO(move_id="m1", char_id=1, strategy="exchange", payload=ExchangePayload(target_id=2))
 
@@ -5082,15 +5100,17 @@ def test_ability_post_process_registers_hp_and_stamina_combat_regen() -> None:
 
     assert ctx.result.resource_changes == {
         "hp": {"combat_regen": "+1"},
+        "en": {"combat_regen": "+2"},
         "stamina": {"combat_regen": "+3"},
     }
 
     MechanicsService().apply_interaction_result(ctx, source, None, ctx.result)
     assert source.meta.hp == 11
-    assert source.meta.en == 4
+    assert source.meta.en == 6
     assert source.meta.stamina == 8
     assert [(fact.actor_id, fact.resource, fact.reason, fact.delta) for fact in ctx.result.resource_facts] == [
         ("1", "hp", "combat_regen", 1),
+        ("1", "en", "combat_regen", 2),
         ("1", "stamina", "combat_regen", 3),
     ]
 
@@ -5171,8 +5191,17 @@ async def test_executor_ticks_periodic_effects_before_exchange() -> None:
     assert any(
         entry["kind"] == "effect_tick"
         and entry["template"]["key"] == "combat.effect.dot_bleed.tick.humanoid.hp"
-        and entry["result"]["resources"] == [
-            {"actor_id": "1", "resource": "hp", "before": 100, "after": 98, "max": 100, "delta": -2, "label": "HP 98/100"}
+        and entry["result"]["resources"]
+        == [
+            {
+                "actor_id": "1",
+                "resource": "hp",
+                "before": 100,
+                "after": 98,
+                "max": 100,
+                "delta": -2,
+                "label": "HP 98/100",
+            }
         ]
         for entry in ctx.pending_logs
     )
@@ -5326,7 +5355,20 @@ async def test_executor_resolves_aoe_feint_secondaries_as_unidirectional_hits(
     async def fixed_result(self, source, target, move, exchange_count=0, external_mods=None):
         mods = dict(external_mods or {})
         calls.append((str(source.char_id), str(target.char_id), mods))
-        return InteractionResultDTO(source_id=source.char_id, target_id=target.char_id, is_hit=True)
+        activation = move.activation
+        return InteractionResultDTO(
+            source_id=source.char_id,
+            target_id=target.char_id,
+            is_hit=True,
+            feint_activation=FeintActivationOutcomeDTO(
+                owner_id=activation.owner_id,
+                intent_id=activation.intent_id,
+                feint_id=activation.feint_id,
+                state="activated",
+            )
+            if activation
+            else None,
+        )
 
     def feint_entry(feint_id: str):
         if feint_id != "test_aoe_feint":
@@ -5707,12 +5749,15 @@ def test_archery_attack_keeps_parry_block_and_dodge_checks(monkeypatch: pytest.M
     assert ctx.flags.restriction.ignore_parry is False
     assert ctx.stages.check_evasion is True
     assert ctx.stages.check_block is True
-    assert parry_step.run(
-        stats(),
-        stats({"parry": 1.0, "parry_cap": 1.0}, {"skill_parrying": 1.0}),
-        ctx,
-        result,
-    ) is True
+    assert (
+        parry_step.run(
+            stats(),
+            stats({"parry": 1.0, "parry_cap": 1.0}, {"skill_parrying": 1.0}),
+            ctx,
+            result,
+        )
+        is True
+    )
     assert result.is_parried is True
     assert seen_parry_chances == [pytest.approx(1.0)]
 
@@ -5752,7 +5797,7 @@ def test_context_builder_exposes_active_ammo_effect_only_for_archery() -> None:
             "id": "debuff_accuracy",
             "params": {"power": 2.0},
             "tags": ["arrow", "fire", "accuracy_debuff"],
-        }
+        },
     ]
 
     source.loadout.layout["main_hand"] = "skill_swords"
@@ -5952,7 +5997,13 @@ def test_ranged_position_service_counts_incoming_melee_contact_pressure(monkeypa
     archer_result = InteractionResultDTO(source_id=archer.char_id, target_id=enemy.char_id)
     melee_result = InteractionResultDTO(source_id=enemy.char_id, target_id=archer.char_id, damage_final=0)
     melee_result.checks.append(
-        {"stage": "ranged_position_defense", "chance": 0.1, "roll": 0.2, "passed": False, "details": {"position": "far"}}
+        {
+            "stage": "ranged_position_defense",
+            "chance": 0.1,
+            "roll": 0.2,
+            "passed": False,
+            "details": {"position": "far"},
+        }
     )
 
     RangedPositionService.update_after_exchange([(archer, enemy, archer_result), (enemy, archer, melee_result)])
@@ -7022,7 +7073,10 @@ def test_counter_shield_block_no_longer_reflects_guard_power(monkeypatch: pytest
 
     damage = damage_step.run(
         stats({"main_hand_damage_base": 20.0, "main_hand_damage_spread": 0.0}),
-        stats({"armor": 3.0, "evasion": 0.2, "physical_endurance_power": 12.0, "shield_guard_power": 8.0}, {"skill_shield_mastery": 0.5}),
+        stats(
+            {"armor": 3.0, "evasion": 0.2, "physical_endurance_power": 12.0, "shield_guard_power": 8.0},
+            {"skill_shield_mastery": 0.5},
+        ),
         ctx,
         result,
     )

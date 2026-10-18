@@ -55,7 +55,12 @@ class CharacterGearScoreCalculator:
         default_modifiers = CombatModifiersDTO().model_dump(mode="json")
         score = GEAR_SCORE_BASE
         for key, weight in GEAR_SCORE_WEIGHTS.items():
-            value = CharacterGearScoreCalculator._float_value(calculated.get(key, default_modifiers.get(key)))
+            value = CharacterGearScoreCalculator._float_value(
+                calculated.get(
+                    f"combat_{key}" if key in {"hp_regen", "en_regen", "stamina_regen"} else key,
+                    default_modifiers.get(key),
+                )
+            )
             if value is None:
                 continue
             baseline = GEAR_SCORE_BASELINES.get(key, 0.0)
@@ -84,7 +89,12 @@ class CharacterGearScoreCalculator:
         group_by_key = {key: group for group, keys in GEAR_SCORE_GROUPS.items() for key in keys}
         groups = {group: 0.0 for group in GEAR_SCORE_GROUPS}
         for key, weight in GEAR_SCORE_WEIGHTS.items():
-            value = CharacterGearScoreCalculator._float_value(calculated.get(key, default_modifiers.get(key)))
+            value = CharacterGearScoreCalculator._float_value(
+                calculated.get(
+                    f"combat_{key}" if key in {"hp_regen", "en_regen", "stamina_regen"} else key,
+                    default_modifiers.get(key),
+                )
+            )
             if value is None:
                 continue
             baseline = GEAR_SCORE_BASELINES.get(key, 0.0)

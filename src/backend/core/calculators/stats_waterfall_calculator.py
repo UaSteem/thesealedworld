@@ -16,7 +16,8 @@ _OPS: dict[type[ast.AST], Callable[..., Any]] = {
     ast.UAdd: operator.pos,
 }
 
-COMBAT_MATH_VERSION = "combat-math:2026-10-17.linear-monsters"
+COMBAT_MATH_VERSION = "combat-math:2026-10-17.regeneration-modes"
+PLAYER_MAX_HP_REGEN_RATIO = 0.005
 ATTRIBUTE_EFFECTIVE_QUADRATIC_DIVISOR = 11.0
 _LINEAR_ATTRIBUTE_PROFILES = frozenset({"monster:humanoid", "monster:beast"})
 
@@ -105,6 +106,38 @@ class StatsWaterfallCalculator:
         # Объединяем все в плоские словари
         cache_result = {**final_attributes, **final_modifiers}
         explanation_result = {**attr_explanations, **mod_explanations}
+
+        # Generic regen fields are outside-combat totals. Project combat separately
+        # before merging sources: player attribute energy must never reach combat.
+        for resource in ("hp", "en", "stamina"):
+            key = f"{resource}_regen"
+            for mode in ("outside", "combat"):
+                commands = []
+                if not (mode == "combat" and resource == "en" and str(rules_profile).startswith("player")):
+                    commands.extend(derived_bonuses.get(key, []))
+                for source_key in (key, f"{mode}_{key}"):
+                    data = raw_modifiers.get(source_key, {})
+                    if not isinstance(data, dict):
+                        data = {"base": data}
+                    if data.get("base"):
+                        commands.append(f"+{data['base']}")
+                    commands.extend(data.get("source", {}).values())
+                    commands.extend(data.get("temp", {}).values())
+                value, expression = StatsWaterfallCalculator.evaluate_sources(commands)
+                if resource == "hp":
+                    if str(rules_profile).startswith("monster:"):
+                        value, expression = 0.0, "0 (monster passive HP regeneration disabled)"
+                    elif str(rules_profile).startswith("player"):
+                        value = round(
+                            value + max(0.0, float(cache_result.get("hp", 0.0))) * PLAYER_MAX_HP_REGEN_RATIO, 4
+                        )
+                        expression = f"({expression}) + max HP * {PLAYER_MAX_HP_REGEN_RATIO}"
+                output_key = key if mode == "outside" else f"combat_{key}"
+                cache_result[output_key] = value
+                explanation_result[output_key] = expression
+                if mode == "outside":
+                    cache_result[f"outside_{key}"] = value
+                    explanation_result[f"outside_{key}"] = expression
 
         return cache_result, explanation_result
 

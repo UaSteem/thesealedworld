@@ -19,18 +19,7 @@ from src.backend.features.combat.runtime.engine.stats_engine import StatsEngine
 from src.backend.features.items.dto.instance import ItemGenerationRequestDTO, ItemOriginRefDTO
 from src.backend.features.items.runtime.item_factory import ItemFactory
 
-DEFAULT_STARTER_SIMULATION_IMPRINTS: tuple[str, ...] = (
-    "starter_guard_01",
-    "starter_tactician_01",
-    "starter_heavy_guard_01",
-    "starter_breaker_01",
-    "starter_hunter_01",
-    "starter_rift_survivor_01",
-    "starter_archer_01",
-    "starter_dual_blades_01",
-    "starter_dual_sword_01",
-    "starter_dual_mace_01",
-)
+DEFAULT_STARTER_SIMULATION_IMPRINTS: tuple[str, ...] = tuple(STARTING_IMPRINTS)
 STARTER_SKILL_PROFILE_BASELINE = "baseline"
 STARTER_SKILL_PROFILE_MAXED_EXISTING = "maxed_existing_skills"
 STARTER_SIMULATION_BEHAVIOR_PROFILES: tuple[str, ...] = ("aggressive",)
@@ -40,10 +29,14 @@ STARTER_5V5_RED = DEFAULT_STARTER_SIMULATION_IMPRINTS[5:10]
 
 STARTER_SIMULATION_NAMES: dict[str, str] = {
     "starter_guard_01": "Ada Guard",
+    "starter_heavy_sword_guard_01": "Mara Swordguard",
+    "starter_mace_guard_01": "Nox Maceguard",
+    "starter_heavy_tactician_01": "Oren Flamberge",
+    "starter_medium_breaker_01": "Perrin Breaker",
+    "starter_heavy_rift_survivor_01": "Rhea Survivor",
+    "starter_medium_dual_blades_01": "Sera Twinblades",
     "starter_breaker_01": "Borin Breaker",
     "starter_dual_blades_01": "Dax Twinblades",
-    "starter_dual_sword_01": "Mara Bladehand",
-    "starter_dual_mace_01": "Nox Ironhand",
     "starter_hunter_01": "Fenn Hunter",
     "starter_archer_01": "Galen Archer",
     "starter_heavy_guard_01": "Ivar Bulwark",
@@ -53,10 +46,14 @@ STARTER_SIMULATION_NAMES: dict[str, str] = {
 
 STARTER_SIMULATION_ARCHETYPES: dict[str, str] = {
     "starter_guard_01": "bulwark",
+    "starter_heavy_sword_guard_01": "bulwark",
+    "starter_mace_guard_01": "bulwark",
+    "starter_heavy_tactician_01": "berserker",
+    "starter_medium_breaker_01": "berserker",
+    "starter_heavy_rift_survivor_01": "balanced",
+    "starter_medium_dual_blades_01": "duelist",
     "starter_breaker_01": "berserker",
     "starter_dual_blades_01": "duelist",
-    "starter_dual_sword_01": "duelist",
-    "starter_dual_mace_01": "bulwark",
     "starter_hunter_01": "duelist",
     "starter_archer_01": "duelist",
     "starter_heavy_guard_01": "bulwark",
@@ -337,7 +334,7 @@ class StartingImprintSimulationActorBuilder:
         evasion = min(float(stats.evasion), float(stats.dodge_cap)) if stats else 0.0
         combat_stats = {
             "damage": round(float(stats.main_hand_damage_base), 2) if stats else 0.0,
-            "hp_regen": round(float(stats.hp_regen), 3) if stats else 0.0,
+            "hp_regen": round(float(stats.combat_hp_regen), 3) if stats else 0.0,
             "armor": round(float(stats.armor), 2) if stats else 0.0,
             "physical_resistance": round(float(stats.physical_resistance), 3) if stats else 0.0,
             "evasion": round(evasion, 3),

@@ -61,6 +61,7 @@ class MonsterCatalogBootstrapService:
                     clan_id=m.clan_id,
                     variant_id=m.variant_id,
                     role=m.role,
+                    assembly_cost=m.assembly_cost,
                     base_id=m.base_id,
                     image_source=m.image_source,
                     ability_ids=list(m.ability_ids),

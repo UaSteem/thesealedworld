@@ -3,6 +3,7 @@
 from src.backend.features.monsters.catalog.authoring import define_base_clan
 from src.backend.features.monsters.catalog.families.bandit_catalog.family import BANDIT_FAMILY
 from src.backend.features.monsters.catalog.families.goblin_catalog.family import GOBLIN_FAMILY
+from src.backend.features.monsters.catalog.families.golem_catalog.family import GOLEM_FAMILY
 from src.backend.features.monsters.catalog.families.rat_catalog.family import RAT_FAMILY
 from src.backend.features.monsters.catalog.families.system.anchor_sovereigns import ANCHOR_SOVEREIGNS_FAMILY
 from src.backend.features.monsters.catalog.families.wolf_catalog.family import WOLF_FAMILY
@@ -21,6 +22,7 @@ RATS = _base_catalog(RAT_FAMILY)
 WOLVES = _base_catalog(WOLF_FAMILY)
 BANDITS = _base_catalog(BANDIT_FAMILY)
 GOBLINS = _base_catalog(GOBLIN_FAMILY)
+GOLEMS = _base_catalog(GOLEM_FAMILY)
 ANCHORS = define_base_clan(
     ANCHOR_SOVEREIGNS_FAMILY,
     family_name="Владыки якорей",
@@ -28,6 +30,12 @@ ANCHORS = define_base_clan(
     clan_name="Владыки якорей",
     normal_spawn=False,
     presentation={},
+    assembly_costs={
+        "north_stasis_sovereign": 120,
+        "south_entropy_sovereign": 120,
+        "west_gravity_sovereign": 120,
+        "east_evolution_sovereign": 120,
+    },
 )
 
-PREPARED_FAMILIES = (RATS, WOLVES, BANDITS, GOBLINS, ANCHORS)
+PREPARED_FAMILIES = (RATS, WOLVES, BANDITS, GOBLINS, GOLEMS, ANCHORS)

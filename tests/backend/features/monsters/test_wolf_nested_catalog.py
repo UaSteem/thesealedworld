@@ -20,6 +20,7 @@ def test_resolved_wolves_preserve_every_existing_field():
         clan_name="Базовая волчья стая",
         normal_spawn=True,
         presentation=MEMBER_PRESENTATION["wolf_pack"],
+        assembly_costs={member.variant_id: member.assembly_cost for member in WOLVES[2]},
     )
     family, clan, members = WOLVES
     assert family.id == old_family.id

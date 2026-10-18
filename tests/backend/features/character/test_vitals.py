@@ -25,7 +25,9 @@ def _expected_hp_max(endurance: int) -> int:
 
 
 def _expected_hp_regen(endurance: int) -> float:
-    return round(_effective(endurance) * HP_REGEN_PER_ENDURANCE_ATTRIBUTE, 4)
+    flat = round(_effective(endurance) * HP_REGEN_PER_ENDURANCE_ATTRIBUTE, 4)
+    hp = round(_effective(endurance) * HP_PER_ENDURANCE_ATTRIBUTE, 4)
+    return round(flat + hp * 0.005, 4)
 
 
 def _expected_energy_max(mental: int) -> int:
@@ -179,7 +181,7 @@ def test_player_vitals_include_equipped_item_resource_bonuses():
 
     assert vitals.hp.max == 89
     assert vitals.hp.cur == 89
-    assert vitals.hp.regen == 2.8273
+    assert vitals.hp.regen == 3.2714
 
 
 def test_player_vitals_include_equipped_affix_resource_bonuses():

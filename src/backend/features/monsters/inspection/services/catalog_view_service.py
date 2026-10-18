@@ -87,8 +87,6 @@ class CatalogMonsterViewService:
             raise LookupError("Unknown catalog member")
         if type(tier) is not int or not member.min_tier <= tier <= member.max_tier:
             raise ValueError("Tier is outside this member's catalog availability")
-        if member.family_id not in {"goblin_tribe", "wolf_pack", "rat_swarm", "bandit_gang"}:
-            raise LookupError("Prepared equipment is not available for this family")
         available_tiers = sorted(
             available_tier
             for variant_id, available_tier in list_prepared_equipment(family_id=member.family_id)

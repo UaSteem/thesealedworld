@@ -4,11 +4,11 @@ from collections.abc import Mapping
 
 TIER_SCALING_CONFIG: dict[int, dict[str, float]] = {
     0: {"stat_mult": 1.0},
-    1: {"stat_mult": 1.2},
-    2: {"stat_mult": 1.5},
-    3: {"stat_mult": 2.0},
-    4: {"stat_mult": 3.0},
-    5: {"stat_mult": 4.0},
+    1: {"stat_mult": 1.1},
+    2: {"stat_mult": 1.1},
+    3: {"stat_mult": 1.3},
+    4: {"stat_mult": 1.4},
+    5: {"stat_mult": 1.6},
     6: {"stat_mult": 6.5},
     7: {"stat_mult": 10.0},
 }

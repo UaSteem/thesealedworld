@@ -11,7 +11,7 @@ from src.backend.features.monsters.catalog.indexes import MonsterCatalog
 from src.backend.features.monsters.catalog.prepared import PREPARED_FAMILIES
 from src.backend.features.monsters.catalog.validation import validate_catalog
 
-STARTER_FAMILY_IDS: tuple[str, ...] = ("rat_swarm", "wolf_pack", "bandit_gang", "goblin_tribe")
+STARTER_FAMILY_IDS: tuple[str, ...] = ("rat_swarm", "wolf_pack", "bandit_gang", "goblin_tribe", "golem_foundry")
 
 
 def _build_catalog() -> MonsterCatalog:

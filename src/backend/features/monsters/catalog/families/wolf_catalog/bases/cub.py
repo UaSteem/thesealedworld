@@ -9,6 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 CUB = MemberBaseDTO(
     id="cub",
     role="minion",
+    assembly_cost=18,
     stats=BaseStatsDTO(
         strength=14,
         agility=15,

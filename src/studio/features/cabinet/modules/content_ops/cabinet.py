@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import asyncio
+import json
+import math
 from dataclasses import dataclass
 from secrets import choice
 from typing import Any, ClassVar
@@ -17,7 +20,7 @@ from src.studio.integrations.backend_api.catalog_monsters import CatalogClan, Ca
 from src.studio.settings import settings as studio_settings
 
 _BASE = "/admin/content-ops"
-_PREPARED_FAMILIES = frozenset({"goblin_tribe", "wolf_pack", "rat_swarm", "bandit_gang"})
+_PREPARED_FAMILIES = frozenset({"goblin_tribe", "wolf_pack", "rat_swarm", "bandit_gang", "golem_foundry"})
 
 _ATTRIBUTE_LABELS = {
     "strength": "Сила",
@@ -173,6 +176,71 @@ async def _monster_table_provider(request: Request) -> TableWidgetMap:
     )
 
 
+async def _encounter_profile_matrix(
+    api: CatalogMonstersApi, *, family_id: str, location_tier: int, seed: int, reference_gs: float
+) -> list[dict[str, Any]]:
+    """Compare built-in profiles through the read-only consumer API only."""
+    if not math.isfinite(reference_gs) or reference_gs <= 0:
+        raise ValueError("Backend did not provide a valid tier reference GS")
+    semaphore = asyncio.Semaphore(4)
+
+    async def row(encounter_type: str, difficulty: str) -> dict[str, Any]:
+        async with semaphore:
+            item: dict[str, Any] = {"encounter_type": encounter_type, "difficulty": difficulty}
+            order = {
+                "encounter_type": encounter_type,
+                "difficulty": difficulty,
+                "party_mode": "solo",
+                "family_ids": [family_id],
+                "location_tier": location_tier,
+                "seed": seed,
+                "player_gear_score": reference_gs,
+            }
+            try:
+                base = await api.select_encounter(order)
+                item["base"] = base
+                configs = base.preparation.configurations
+                profile = base.preparation.profile or {}
+                config = configs[0] if configs else None
+                pools = {}
+                cap_scores = []
+                for pool_name in ("minions", "seniors"):
+                    pool = getattr(config, pool_name) if config is not None else profile[pool_name]
+
+                    def value(key: str, pool: Any = pool) -> Any:
+                        return getattr(pool, key) if config is not None else pool[key]
+
+                    mode = getattr(pool, "mode", "fixed") if config is not None else pool.get("mode", "fixed")
+                    threshold = value("gs_threshold")
+                    step_size = value("gs_step_size")
+                    points = value("gs_points_per_step")
+                    bonus_max = value("gs_bonus_max")
+                    reference = value("reference_gs") if mode == "relative_gs" else None
+                    if mode == "relative_gs":
+                        cap_gs = math.nextafter(reference * (value("base_points") + bonus_max) / value("base_points"), math.inf)
+                    else:
+                        cap_gs = threshold + step_size * math.ceil(bonus_max / points) if points else threshold
+                    pools[pool_name] = dict(mode=mode, reference_gs=reference, threshold=threshold, step_size=step_size, points=points,
+                                            bonus_max=bonus_max, cap_gs=cap_gs)
+                    cap_scores.append(cap_gs)
+                cap_gs = max(cap_scores)
+                item.update(pools=pools, cap_gs=cap_gs)
+                item["cap"] = await api.select_encounter({**order, "player_gear_score": cap_gs})
+            except (httpx.HTTPError, ValueError, AttributeError, KeyError, ZeroDivisionError):
+                item["error"] = "Сравнение недоступно: профиль или выбранный backend не предоставил данные."
+            return item
+
+    return list(
+        await asyncio.gather(
+            *(
+                row(kind, difficulty)
+                for kind in ("ordinary", "patrol", "guard", "leader")
+                for difficulty in ("easy", "normal", "hard")
+            )
+        )
+    )
+
+
 class ContentOpsAdmin(CabinetAdmin):
     key = "content_ops"
     label = "Монстры"
@@ -183,6 +251,7 @@ class ContentOpsAdmin(CabinetAdmin):
     sidebar: ClassVar = (
         SidebarItem(key="overview", label="Обзор", path=_BASE, order=10),
         SidebarItem(key="monsters", label="Каталог монстров", path=f"{_BASE}/monster-browser", order=20),
+        SidebarItem(key="encounter", label="Проверка заказа", path=f"{_BASE}/monster-encounter", order=30),
     )
     dashboard_widgets: ClassVar = (
         MetricWidget(key="content_ops_monsters", title="Каталог монстров", provider="content_ops.monster_count"),
@@ -191,6 +260,7 @@ class ContentOpsAdmin(CabinetAdmin):
     sub_pages: ClassVar[dict[str, Any]] = {}
     action_routes: ClassVar = {
         "monster-browser": ("GET", "handle_monster_browser"),
+        "monster-encounter": ("GET", "handle_monster_encounter"),
         "monster-detail": ("GET", "handle_monster_detail"),
         "monster-member-detail": ("GET", "handle_monster_member_detail"),
         "monster-random": ("GET", "handle_monster_random"),
@@ -213,6 +283,87 @@ class ContentOpsAdmin(CabinetAdmin):
                 }
             ]
         }
+
+    async def handle_monster_encounter(self, request: Request) -> Response:
+        params = request.query_params
+        fields = {
+            "encounter_type": params.get("encounter_type", "ordinary"),
+            "difficulty": params.get("difficulty", "normal"),
+            "party_mode": params.get("party_mode", "solo"),
+            "player_gear_score": params.get("player_gear_score", ""),
+            "location_tier": params.get("location_tier", "0"),
+            "seed": params.get("seed", "1"),
+            "profile_source": params.get("profile_source", "builtin"),
+            "profile_override": params.get("profile_override", ""),
+        }
+        families = params.getlist("family_ids")
+        contract, preview, result, order_json, error = None, None, None, "", ""
+        profile_matrix = []
+        try:
+            api = _api(request)
+            contract = await api.get_encounter_contract()
+            if not params.get("run") and not families and contract.families:
+                families = [contract.families[0].id]
+            if not fields["profile_override"]:
+                fields["profile_override"] = json.dumps(contract.profile_override_example, ensure_ascii=False, indent=2)
+            if params.get("compare_profiles") == "1":
+                if len(families) != 1:
+                    raise ValueError("Choose exactly one family")
+                profile_matrix = await _encounter_profile_matrix(
+                    api, family_id=families[0], location_tier=int(fields["location_tier"]), seed=int(fields["seed"]),
+                    reference_gs=float(contract.reference_player_gs_by_tier.get(int(fields["location_tier"]), "nan"))
+                )
+            if params.get("run"):
+                if len(families) != 1:
+                    raise ValueError("Choose exactly one family")
+                order = {
+                    "encounter_type": fields["encounter_type"],
+                    "difficulty": fields["difficulty"],
+                    "party_mode": fields["party_mode"],
+                    "location_tier": int(fields["location_tier"]),
+                    "family_ids": families,
+                    "seed": int(fields["seed"]),
+                }
+                if fields["player_gear_score"].strip():
+                    gear_score = float(fields["player_gear_score"])
+                    if not math.isfinite(gear_score) or gear_score < 0:
+                        raise ValueError("invalid gear score")
+                    order["player_gear_score"] = gear_score
+                if fields["profile_source"] == "external":
+                    override = json.loads(fields["profile_override"])
+                    if not isinstance(override, dict):
+                        raise ValueError("Profile must be a JSON object")
+                    order["profile_override"] = override
+                elif fields["profile_source"] != "builtin":
+                    raise ValueError("Unknown profile source")
+                order_json = json.dumps(order, ensure_ascii=False, indent=2)
+                result = await api.select_encounter(order)
+                preview = result.preparation
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code == 422:
+                error = "Заказ отклонён проверкой контракта. Проверьте тир, сложность, режим, GS и внешний профиль."
+            else:
+                error = "Проверка недоступна. Проверьте доступ к выбранному backend."
+        except httpx.RequestError:
+            error = "Backend выбранного источника недоступен."
+        except (ValueError, AttributeError):
+            error = "Не удалось прочитать контракт или запрос: выберите ровно одну семью; тир и seed — целые числа, GS — конечное неотрицательное число, внешний профиль — JSON-объект."
+        return _render_custom(
+            self,
+            request,
+            "cabinet/content_ops_monster_encounter.html",
+            {
+                "profile_matrix": profile_matrix,
+                "contract": contract,
+                "preview": preview,
+                "result": result,
+                "fields": fields,
+                "selected_families": families,
+                "order_json": order_json,
+                "error": error,
+                "base_url": _BASE,
+            },
+        )
 
     async def handle_monster_browser(self, request: Request) -> Response:
         return _render_custom(

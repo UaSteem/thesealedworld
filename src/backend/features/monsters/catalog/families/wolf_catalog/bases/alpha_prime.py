@@ -9,6 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 ALPHA_PRIME = MemberBaseDTO(
     id="alpha_prime",
     role="boss",
+    assembly_cost=54,
     stats=BaseStatsDTO(
         strength=21,
         agility=20,

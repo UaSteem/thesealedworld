@@ -165,7 +165,190 @@ class CatalogEquipment(BaseModel):
     player_comparison: PlayerComparison | None = None
 
 
+class EncounterOption(BaseModel):
+    id: str
+    name: str
+    available: bool = True
+
+
+class EncounterContract(BaseModel):
+    reference_player_gs_by_tier: dict[int, float] = Field(default_factory=dict)
+    provisional_reference_tiers: list[int] = Field(default_factory=list)
+    version: int
+    encounter_types: list[EncounterOption]
+    location_tiers: list[int]
+    families: list[EncounterOption]
+    difficulties: list[EncounterOption]
+    party_modes: list[EncounterOption]
+    profile_override_example: dict[str, Any] = Field(default_factory=dict)
+
+
+class EncounterTierRule(BaseModel):
+    role: str
+    min_tier: int
+    max_tier: int
+
+
+class EncounterAdmission(BaseModel):
+    location_tier: int
+    roles: list[EncounterTierRule]
+
+
+class EncounterCount(BaseModel):
+    min_count: int
+    max_count: int
+
+
+class EncounterRoleRule(EncounterCount):
+    role: str
+
+
+class EncounterPoolBudget(BaseModel):
+    mode: str = "fixed"
+    reference_gs: float | None = None
+    player_gs_ratio: float | None = None
+    scaled_points: int | None = None
+    base_points: int
+    bonus_points: int
+    effective_points: int
+    gs_threshold: float
+    gs_step_size: float
+    gs_steps: int
+    gs_points_per_step: int
+    gs_bonus_max: int
+    gs_cap_reached: bool
+    spent_points: int | None = None
+    remaining_points: int | None = None
+
+
+class EncounterConfiguration(BaseModel):
+    minions: EncounterPoolBudget
+    seniors: EncounterPoolBudget
+    gs_threshold: float
+    gs_step_size: float
+    gs_steps: int
+    gs_points_per_step: int
+    gs_bonus_max: int
+    gs_cap_reached: bool
+    id: str
+    family_id: str
+    encounter_type: str
+    difficulty: str
+    party_mode: str
+    count: EncounterCount
+    roles: list[EncounterRoleRule]
+    allow_repeated_members: bool
+    same_clan: bool
+    profile_source: str
+    profile_id: str
+    variant_id: str
+    budget_base: int
+    budget_bonus: int
+    budget_effective: int
+
+
+class EncounterCandidate(BaseModel):
+    member_id: str
+    family_id: str
+    clan_id: str
+    variant_id: str
+    role: str
+    tier: int
+    name: str = ""
+    assembly_cost: int
+
+
+class EncounterIssue(BaseModel):
+    code: str
+    path: str
+    message: str
+
+
+class EncounterExclusion(BaseModel):
+    member_id: str
+    tier: int
+    issues: list[EncounterIssue]
+
+
+class EncounterStage(BaseModel):
+    name: str
+    status: str
+    detail: str
+
+
+class EncounterPreview(BaseModel):
+    status: str
+    order: dict[str, Any]
+    admission: EncounterAdmission | None = None
+    configurations: list[EncounterConfiguration] = Field(default_factory=list)
+    candidates: list[EncounterCandidate] = Field(default_factory=list)
+    excluded: list[EncounterExclusion] = Field(default_factory=list)
+    reasons: list[EncounterIssue] = Field(default_factory=list)
+    stages: list[EncounterStage] = Field(default_factory=list)
+    profile: dict[str, Any] | None = None
+    profile_source: str | None = None
+
+
+class EncounterSelectionReason(EncounterIssue):
+    member_ids: list[str] = Field(default_factory=list)
+
+
+class EncounterSelectionAttempt(BaseModel):
+    configuration_id: str
+    clan_id: str | None = None
+    feasible: bool
+    reasons: list[EncounterSelectionReason] = Field(default_factory=list)
+
+
+class EncounterAssemblyInput(BaseModel):
+    configuration: EncounterConfiguration
+
+
+class EncounterSelectedSquad(BaseModel):
+    status: str
+    assembly_input: EncounterAssemblyInput
+    members: list[EncounterCandidate]
+
+
+class EncounterSelectionResult(BaseModel):
+    minions: EncounterPoolBudget | None = None
+    seniors: EncounterPoolBudget | None = None
+    status: str
+    preparation: EncounterPreview
+    selection: EncounterSelectedSquad | None = None
+    reasons: list[EncounterSelectionReason] = Field(default_factory=list)
+    attempts: list[EncounterSelectionAttempt] = Field(default_factory=list)
+    selection_strategy: str = "point_budget"
+    profile_source: str | None = None
+    profile_id: str | None = None
+    variant_id: str | None = None
+    budget_base: int | None = None
+    budget_bonus: int | None = None
+    budget_effective: int | None = None
+    budget_spent: int | None = None
+    budget_remaining: int | None = None
+
+
 class CatalogMonstersApi(BaseApiClient):
+    async def get_encounter_contract(self) -> EncounterContract:
+        return await self._request("GET", "/api/admin/monsters/encounters/contract", EncounterContract)
+
+    async def preview_encounter(self, order: dict[str, Any]) -> EncounterPreview:
+        return await self._request(
+            "GET",
+            "/api/admin/monsters/encounters/preview",
+            EncounterPreview,
+            params={"order": json.dumps(order, ensure_ascii=False)},
+        )
+
+    async def select_encounter(self, order: dict[str, Any]) -> EncounterSelectionResult:
+        return await self._request(
+            "GET",
+            "/api/admin/monsters/encounters/select",
+            EncounterSelectionResult,
+            params={"order": json.dumps(order, ensure_ascii=False)},
+        )
+
     async def get_equipment(
         self,
         member_id: str,

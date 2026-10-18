@@ -1,6 +1,6 @@
 {% extends "cabinet/base.html" %}
 {% block content %}
-<div class="fc-page-head"><div><h1 class="fc-page-title">Каталог монстров</h1><p class="fc-page-subtitle">Готовые определения семей, кланов и типов бойцов. Только просмотр.</p></div><a class="fc-action-btn" href="{{ base_url }}">Обзор</a></div>
+<div class="fc-page-head"><div><h1 class="fc-page-title">Каталог монстров</h1><p class="fc-page-subtitle">Готовые определения семей, кланов и типов бойцов. Только просмотр.</p></div><a class="fc-action-btn" href="{{ base_url }}/monster-encounter">Проверка заказа</a><a class="fc-action-btn" href="{{ base_url }}">Обзор</a></div>
 <section class="fc-toolbar"><form class="fc-filter-form" method="get" action="{{ base_url }}/monster-browser">
 <label class="fc-filter-field"><span>Семья</span><select name="family_id" class="fc-form-input"><option value="">Все</option>{% for family in browser.family_options %}<option value="{{ family }}" {% if browser.filters.family_id == family %}selected{% endif %}>{{ family }}</option>{% endfor %}</select></label>
 <label class="fc-filter-field"><span>Доступен на тире</span><select name="tier" class="fc-form-input"><option value="">Все</option>{% for tier in browser.tier_options %}<option value="{{ tier }}" {% if browser.filters.tier == tier|string %}selected{% endif %}>{{ tier }}</option>{% endfor %}</select></label>

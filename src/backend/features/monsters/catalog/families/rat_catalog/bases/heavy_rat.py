@@ -9,6 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 HEAVY_RAT = MemberBaseDTO(
     id="heavy_rat",
     role="elite",
+    assembly_cost=22,
     stats=BaseStatsDTO(
         strength=14,
         agility=12,

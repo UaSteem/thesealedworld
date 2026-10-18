@@ -9,6 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 BANDIT_RAIDER = MemberBaseDTO(
     id="bandit_raider",
     role="veteran",
+    assembly_cost=35,
     stats=BaseStatsDTO(
         strength=17,
         agility=15,

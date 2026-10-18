@@ -63,6 +63,12 @@ class StatKey(StrEnum):
     HP_REGEN = "hp_regen"
     EN_REGEN = "en_regen"
     STAMINA_REGEN = "stamina_regen"
+    COMBAT_HP_REGEN = "combat_hp_regen"
+    COMBAT_EN_REGEN = "combat_en_regen"
+    COMBAT_STAMINA_REGEN = "combat_stamina_regen"
+    OUTSIDE_HP_REGEN = "outside_hp_regen"
+    OUTSIDE_EN_REGEN = "outside_en_regen"
+    OUTSIDE_STAMINA_REGEN = "outside_stamina_regen"
 
     # --- 5. SPECIAL ---
     COUNTER_ATTACK_CHANCE = "counter_attack_chance"

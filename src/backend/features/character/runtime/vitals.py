@@ -13,6 +13,7 @@ from src.backend.features.character.schemas.session import (
     CharacterSessionVitalsDTO,
     VitalValueDTO,
 )
+from src.backend.features.items.runtime.accessory_bonuses import resolve_accessory_bonuses
 
 
 @dataclass(frozen=True)
@@ -136,12 +137,14 @@ class CharacterVitalsCalculator:
         stamina = cls._resource_max(calculated.get("stamina", 0.0))
 
         return CharacterSessionVitalsDTO(
-            hp=VitalValueDTO(cur=hp, max=hp, regen=round(float(calculated.get("hp_regen", 0.0) or 0.0), 4)),
-            energy=VitalValueDTO(cur=energy, max=energy, regen=round(float(calculated.get("en_regen", 0.0) or 0.0), 4)),
+            hp=VitalValueDTO(cur=hp, max=hp, regen=round(float(calculated.get("outside_hp_regen", 0.0) or 0.0), 4)),
+            energy=VitalValueDTO(
+                cur=energy, max=energy, regen=round(float(calculated.get("outside_en_regen", 0.0) or 0.0), 4)
+            ),
             stamina=VitalValueDTO(
                 cur=stamina,
                 max=stamina,
-                regen=round(float(calculated.get("stamina_regen", 0.0) or 0.0), 4),
+                regen=round(float(calculated.get("outside_stamina_regen", 0.0) or 0.0), 4),
             ),
         )
 
@@ -216,7 +219,7 @@ class CharacterVitalsCalculator:
             if not item:
                 continue
             mechanics = CharacterVitalsCalculator._as_dict(item.get("mechanics"))
-            bonuses = CharacterVitalsCalculator._as_dict(mechanics.get("implicit_bonuses"))
+            bonuses = resolve_accessory_bonuses(item, mechanics)
             for raw_key, raw_value in bonuses.items():
                 key = CharacterVitalsCalculator._normalize_vital_modifier_key(str(raw_key))
                 if key is None:
@@ -278,7 +281,25 @@ class CharacterVitalsCalculator:
             "stamina_add": "stamina",
             "stamina_regen_add": "stamina_regen",
         }.get(raw_key, raw_key)
-        return key if key in {"hp", "hp_regen", "en", "en_regen", "stamina", "stamina_regen"} else None
+        return (
+            key
+            if key
+            in {
+                "hp",
+                "hp_regen",
+                "en",
+                "en_regen",
+                "stamina",
+                "stamina_regen",
+                "combat_hp_regen",
+                "combat_en_regen",
+                "combat_stamina_regen",
+                "outside_hp_regen",
+                "outside_en_regen",
+                "outside_stamina_regen",
+            }
+            else None
+        )
 
     @staticmethod
     def _as_dict(value: Any) -> dict[str, Any]:

@@ -35,6 +35,9 @@ def apply(
                 pen_pct = atk.mods.magical_penetration
 
             state.mitigation_pct = max(0.0, resist_pct - pen_pct)
+            # Temporary experiment: bypass elemental resistance/penetration in damage calculation.
+            # If accepted, remove the corresponding modifiers and formula separately.
+            state.mitigation_pct = 0.0
             elem_dmg *= 1.0 - state.mitigation_pct
             state.total_damage += elem_dmg
             state.elemental_damage_before_armor += elem_dmg

@@ -7,6 +7,7 @@ from uuid import uuid4
 
 import pytest
 
+from src.backend.features.character.resources.starting_imprints import STARTING_IMPRINTS
 from src.backend.features.game_lobby.integrations import CreatedLobbyCharacter, GameLobbyIntegration
 from src.shared.enums import CoreDomain
 from src.shared.enums.skill_enums import SkillProgressState
@@ -151,10 +152,7 @@ async def test_materialize_starting_imprint_persists_attributes_skills_and_equip
     )
 
     assert result["imprint_key"] == "starter_guard_01"
-    assert attributes_repo.attributes[7]["strength"] == 16
-    assert attributes_repo.attributes[7]["agility"] == 15
-    assert attributes_repo.attributes[7]["endurance"] == 17
-    assert attributes_repo.attributes[7]["mental"] == 12
+    assert attributes_repo.attributes[7] == dict(STARTING_IMPRINTS["starter_guard_01"].attribute_values)
     assert progression_repo.free_xp[7] == 0.0
     assert {row["skill_key"]: row["total_xp"] for row in skill_repo.rows} == {
         "skill_swords": 0.10,
@@ -165,8 +163,9 @@ async def test_materialize_starting_imprint_persists_attributes_skills_and_equip
     assert ("sword", "equipped", "main_hand") in item_persistence.created
     assert ("shield", "equipped", "off_hand") in item_persistence.created
     assert ("jerkin", "equipped", "chest_armor") in item_persistence.created
-    assert ("amulet", "equipped", "amulet") in item_persistence.created
-    assert not any(base_id in {"belt", "winter_cloak", "travel_boots"} for base_id, _, _ in item_persistence.created)
+    assert ("belt", "equipped", "belt_accessory") in item_persistence.created
+    assert ("travel_boots", "equipped", "feetwear") in item_persistence.created
+    assert not any(base_id == "winter_cloak" for base_id, _, _ in item_persistence.created)
     assert result["item_ids"] == [f"item-{index}" for index in range(1, len(item_persistence.created) + 1)]
     assert character_repo.committed is True
 
@@ -239,18 +238,7 @@ async def test_materialize_starting_imprint_uses_distribution_for_automatic_sele
         {
             "user_id": user_id,
             "seed": "creation-seed",
-            "imprint_keys": (
-                "starter_guard_01",
-                "starter_breaker_01",
-                "starter_dual_blades_01",
-                "starter_dual_sword_01",
-                "starter_dual_mace_01",
-                "starter_hunter_01",
-                "starter_archer_01",
-                "starter_heavy_guard_01",
-                "starter_tactician_01",
-                "starter_rift_survivor_01",
-            ),
+            "imprint_keys": tuple(STARTING_IMPRINTS),
         }
     ]
 
@@ -332,10 +320,7 @@ async def test_reset_character_to_starting_imprint_clears_old_runtime_and_remate
 
     assert result["status"] == "reset"
     assert result["starting_imprint"]["imprint_key"] == "starter_guard_01"
-    assert attributes_repo.attributes[7]["strength"] == 16
-    assert attributes_repo.attributes[7]["agility"] == 15
-    assert attributes_repo.attributes[7]["endurance"] == 17
-    assert attributes_repo.attributes[7]["mental"] == 12
+    assert attributes_repo.attributes[7] == dict(STARTING_IMPRINTS["starter_guard_01"].attribute_values)
     assert progression_repo.free_xp[7] == 0.0
     assert skill_repo.deleted == [7]
     assert item_persistence.transferred == [7]
@@ -352,3 +337,42 @@ async def test_reset_character_to_starting_imprint_clears_old_runtime_and_remate
     assert character.vitals_snapshot is None
     assert character.active_sessions == {}
     assert character.respawn_anchor_location_id == "52_52"
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("imprint_key", tuple(STARTING_IMPRINTS))
+async def test_materialize_all_promoted_starters_matches_catalog(imprint_key: str) -> None:
+    from collections import Counter
+
+    from src.backend.features.character.services.starting_imprint_service import StartingImprintService
+
+    character = CreatedLobbyCharacter(
+        character_id=7,
+        user_id=uuid4(),
+        name="Reference",
+        gender="female",
+        avatar_url="/avatar.png",
+        created_at=datetime.now(UTC),
+        location_id="52_52",
+    )
+    attributes = FakeAttributesRepository()
+    skills = FakeSkillRepository()
+    items = FakeItemPersistence()
+    integration = GameLobbyIntegration(
+        character_repo=FakeCharacterRepository(),
+        attributes_repo=attributes,
+        skill_repo=skills,
+        progression_repo=FakeProgressionRepository(),
+        item_persistence=items,
+        character_sessions=SimpleNamespace(),
+    )
+    expected = StartingImprintService().build(imprint_key)
+
+    result = await integration.materialize_starting_imprint(character, imprint_key=imprint_key, seed="reference")
+
+    assert result["imprint_key"] == imprint_key
+    assert attributes.attributes[7] == expected.attributes
+    assert {row["skill_key"]: row["total_xp"] for row in skills.rows} == expected.skill_xp
+    assert Counter(base for base, _, _ in items.created) == Counter(expected.item_base_ids)
+    assert all(storage == "equipped" and slot for _, storage, slot in items.created)
+    assert len({slot for _, _, slot in items.created}) == len(items.created)

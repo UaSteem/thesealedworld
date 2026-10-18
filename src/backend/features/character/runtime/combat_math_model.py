@@ -12,6 +12,7 @@ from src.backend.features.character.runtime.item_sync import (
 from src.backend.features.character.runtime.rules.attribute_modifiers import ATTRIBUTE_MODIFIER_RULES
 from src.backend.features.character.runtime.vital_profile import resolve_player_vital_profile_key_from_equipped
 from src.backend.features.character.schemas.session import CharacterSessionAttributesDTO
+from src.backend.features.items.runtime.accessory_bonuses import resolve_accessory_bonuses
 from src.shared.enums.stats_enums import StatKey
 
 RawStatBlock = dict[str, dict[str, Any]]
@@ -178,7 +179,7 @@ class CharacterCombatMathModelBuilder:
                 elif combat_slot == "off_hand" and not self._is_shield(item_type, tags):
                     self._replace_base_modifier(modifiers, "off_hand_damage_spread", damage_spread)
 
-            for bonus_key, value in (mechanics.get("implicit_bonuses") or {}).items():
+            for bonus_key, value in resolve_accessory_bonuses(item, mechanics).items():
                 value, extra_bonuses = self._apply_item_sync_to_implicit_bonus(
                     item,
                     mechanics,

@@ -3,6 +3,7 @@
 from types import MappingProxyType
 
 from ..texts import MonsterTextDTO
+from .golem_texts import GOLEM_TEXT_ROWS
 
 _DATA = {
     "wolf.family": ("Волки", "Стайные хищники, полагающиеся на чутьё, скорость и согласованную охоту."),
@@ -157,6 +158,7 @@ _MEMBER_ROWS = {
 for _family, _rows in _MEMBER_ROWS.items():
     for _id, _name, _description in _rows:
         _DATA[f"{_family}.member.{_id}"] = (_name, _description)
+_DATA.update(GOLEM_TEXT_ROWS)
 # Adding a language only requires another locale key with its translated entries.
 LANGUAGE_TEXTS = {"ru": {key: MonsterTextDTO(*value) for key, value in _DATA.items()}}
 MONSTER_TEXTS = MappingProxyType(

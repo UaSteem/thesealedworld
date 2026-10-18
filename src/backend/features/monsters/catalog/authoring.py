@@ -24,12 +24,15 @@ def define_base_clan(
     clan_name: str,
     normal_spawn: bool,
     presentation: Mapping[str, Mapping[str, Any]],
+    assembly_costs: Mapping[str, int],
 ) -> tuple[FamilyDefinition, ClanDefinition, tuple[MemberDefinition, ...]]:
     validated = MonsterFamilyDTO.model_validate(data)
     payload = validated.model_dump()
     variants = payload.pop("variants")
     if set(presentation) - set(variants):
         raise ValueError(f"Presentation references unknown variants: {sorted(set(presentation) - set(variants))}")
+    if set(assembly_costs) != set(variants):
+        raise ValueError("Assembly costs must explicitly cover every member")
     members = []
     for variant_id, mechanics in variants.items():
         if mechanics["id"] != variant_id:
@@ -52,6 +55,7 @@ def define_base_clan(
                 max_tier=mechanics["max_tier"],
                 image=image,
                 mechanics=mechanics,
+                assembly_cost=assembly_costs[variant_id],
             )
         )
     family = FamilyDefinition(

@@ -9,6 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 SCAVENGER_RAT = MemberBaseDTO(
     id="scavenger_rat",
     role="minion",
+    assembly_cost=11,
     stats=BaseStatsDTO(
         strength=12,
         agility=13,

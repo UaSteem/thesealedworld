@@ -21,6 +21,7 @@ from src.backend.features.items.resources.affixes.pools import (
 )
 from src.backend.features.items.resources.item_grade import AFFIX_CONTAINER_RULES, GRADE_BY_RARITY_TIER
 from src.backend.features.items.resources.modifier_contracts import MODIFIER_CONTRACTS, compile_modifier_command
+from src.backend.features.items.runtime.accessory_bonuses import resolve_accessory_bonuses
 
 if TYPE_CHECKING:
     from src.backend.features.items.resources.affixes.schemas import AffixBundleDTO, AffixCatalogEntryDTO
@@ -215,7 +216,7 @@ class ItemFactory:
             combat=RuntimeItemCombatProjectionDTO(
                 power=item.power,
                 damage_spread=item.damage_spread,
-                implicit_bonuses=dict(item.implicit_bonuses),
+                implicit_bonuses=resolve_accessory_bonuses(item.model_dump(), item.mechanics),
                 bonuses=ItemFactory._compile_affix_bonuses(affixes),
                 triggers=list(item.triggers),
                 tags=list(item.narrative_tags),

@@ -1,174 +1,96 @@
 {
-  "watch": {
-    "status": "selected",
-    "request": {
-      "tier": 1,
-      "count": {
-        "min_count": 3,
-        "max_count": 3
-      },
-      "roles": [
-        {
-          "role": "minion",
-          "min_count": 3,
-          "max_count": 3
-        }
-      ],
-      "filters": {
-        "family_ids": [
-          "goblin_tribe"
-        ],
-        "clan_ids": [
-          "goblin_tribe.base"
-        ],
-        "member_ids": [],
-        "required_tags": [],
-        "excluded_tags": [],
-        "include_system": false
-      },
-      "selection_mode": "random",
-      "seed": 17000,
-      "specified_members": [],
-      "same_clan": true,
-      "allow_repeated_members": false
-    },
-    "members": [
-      {
-        "member_id": "goblin_tribe.base.goblin_sneak",
-        "family_id": "goblin_tribe",
-        "clan_id": "goblin_tribe.base",
-        "variant_id": "goblin_sneak",
-        "role": "minion",
-        "tier": 1
-      },
-      {
-        "member_id": "goblin_tribe.base.goblin_scavenger",
-        "family_id": "goblin_tribe",
-        "clan_id": "goblin_tribe.base",
-        "variant_id": "goblin_scavenger",
-        "role": "minion",
-        "tier": 1
-      },
-      {
-        "member_id": "goblin_tribe.base.goblin_cutter",
-        "family_id": "goblin_tribe",
-        "clan_id": "goblin_tribe.base",
-        "variant_id": "goblin_cutter",
-        "role": "minion",
-        "tier": 1
-      }
-    ]
+  "ordinary": {
+    "encounter_type": "ordinary",
+    "location_tier": 0,
+    "family_ids": [
+      "goblin_tribe"
+    ],
+    "difficulty": "normal",
+    "party_mode": "solo",
+    "seed": 13,
+    "profile_override": null,
+    "player_gear_score": 36.326
+  },
+  "guard": {
+    "encounter_type": "guard",
+    "location_tier": 0,
+    "family_ids": [
+      "goblin_tribe"
+    ],
+    "difficulty": "normal",
+    "party_mode": "solo",
+    "seed": 13,
+    "profile_override": null,
+    "player_gear_score": 36.326
+  },
+  "rejected_unknown_type": {
+    "encounter_type": "unsupported_example",
+    "location_tier": 1,
+    "family_ids": [
+      "goblin_tribe"
+    ],
+    "seed": 17000,
+    "difficulty": "normal",
+    "party_mode": "solo",
+    "player_gear_score": null
   },
   "patrol": {
-    "status": "selected",
-    "request": {
-      "tier": 1,
-      "count": {
-        "min_count": 3,
-        "max_count": 3
-      },
-      "roles": [
-        {
-          "role": "minion",
-          "min_count": 2,
-          "max_count": 2
-        },
-        {
-          "role": "veteran",
-          "min_count": 1,
-          "max_count": 1
-        }
-      ],
-      "filters": {
-        "family_ids": [
-          "goblin_tribe"
-        ],
-        "clan_ids": [
-          "goblin_tribe.base"
-        ],
-        "member_ids": [],
-        "required_tags": [],
-        "excluded_tags": [],
-        "include_system": false
-      },
-      "selection_mode": "random",
-      "seed": 17000,
-      "specified_members": [],
-      "same_clan": true,
-      "allow_repeated_members": false
-    },
-    "members": [
-      {
-        "member_id": "goblin_tribe.base.goblin_sneak",
-        "family_id": "goblin_tribe",
-        "clan_id": "goblin_tribe.base",
-        "variant_id": "goblin_sneak",
-        "role": "minion",
-        "tier": 1
-      },
-      {
-        "member_id": "goblin_tribe.base.goblin_scavenger",
-        "family_id": "goblin_tribe",
-        "clan_id": "goblin_tribe.base",
-        "variant_id": "goblin_scavenger",
-        "role": "minion",
-        "tier": 1
-      },
-      {
-        "member_id": "goblin_tribe.base.goblin_spearman",
-        "family_id": "goblin_tribe",
-        "clan_id": "goblin_tribe.base",
-        "variant_id": "goblin_spearman",
-        "role": "veteran",
-        "tier": 1
-      }
-    ]
+    "encounter_type": "patrol",
+    "location_tier": 0,
+    "family_ids": [
+      "goblin_tribe"
+    ],
+    "difficulty": "normal",
+    "party_mode": "solo",
+    "seed": 13,
+    "profile_override": null,
+    "player_gear_score": 36.326
   },
-  "rejected": {
-    "status": "rejected",
-    "request": {
-      "tier": 1,
-      "count": {
-        "min_count": 3,
-        "max_count": 3
+  "leader": {
+    "encounter_type": "leader",
+    "location_tier": 0,
+    "family_ids": [
+      "goblin_tribe"
+    ],
+    "difficulty": "normal",
+    "party_mode": "solo",
+    "seed": 13,
+    "profile_override": null,
+    "player_gear_score": 36.326
+  },
+  "external_patrol": {
+    "encounter_type": "patrol",
+    "location_tier": 0,
+    "family_ids": [
+      "goblin_tribe"
+    ],
+    "difficulty": "normal",
+    "party_mode": "solo",
+    "seed": 13,
+    "profile_override": {
+      "id": "studio.patrol.test",
+      "minions": {
+        "base_points": 30
+      },
+      "seniors": {
+        "base_points": 23,
+        "gs_threshold": 35,
+        "gs_step_size": 5,
+        "gs_points_per_step": 8,
+        "gs_bonus_max": 23
       },
       "roles": [
         {
           "role": "minion",
-          "min_count": 2,
-          "max_count": 2
+          "min_count": 0,
+          "max_count": 6
         },
         {
           "role": "veteran",
           "min_count": 1,
-          "max_count": 1
+          "max_count": 3
         }
-      ],
-      "filters": {
-        "family_ids": [
-          "goblin_tribe"
-        ],
-        "clan_ids": [
-          "goblin_tribe.base"
-        ],
-        "member_ids": [],
-        "required_tags": [],
-        "excluded_tags": [],
-        "include_system": false
-      },
-      "selection_mode": "random",
-      "seed": 17000,
-      "specified_members": [],
-      "same_clan": true,
-      "allow_repeated_members": false
-    },
-    "reasons": [
-      {
-        "code": "role_requirements_unmet",
-        "path": "roles.veteran",
-        "message": "Среди доступных кандидатов нет готового ветерана на Т1.",
-        "member_ids": []
-      }
-    ]
+      ]
+    }
   }
 }

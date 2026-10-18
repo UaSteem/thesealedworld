@@ -1222,7 +1222,7 @@ class CombatViewService:
     def _vitals_regen_items(cls, values: dict[str, float | int]) -> list[CombatStatValueDTO]:
         items: list[CombatStatValueDTO] = []
         for key, label in (("hp_regen", "HP REGEN"), ("en_regen", "EN REGEN"), ("stamina_regen", "CONC REGEN")):
-            val = float(values.get(key) or 0)
+            val = float(values.get(f"combat_{key}") or 0)
             if val:
                 items.append(CombatStatValueDTO(key=key, label=label, value=val, value_text=f"{val:.1f}"))
         initiative = values.get("initiative")

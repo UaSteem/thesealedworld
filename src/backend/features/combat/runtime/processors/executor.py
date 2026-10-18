@@ -19,6 +19,7 @@ from src.backend.features.combat.dto.session import BattleContext, TargetReturnD
 from src.backend.features.combat.integrations import CombatCatalogIntegrator
 from src.backend.features.combat.runtime.ai.ai_memory import record_exchange_outcome
 from src.backend.features.combat.runtime.engine.ability_service import AbilityService
+from src.backend.features.combat.runtime.engine.execution import StrikeExecution
 from src.backend.features.combat.runtime.engine.feint_service import FeintService
 from src.backend.features.combat.runtime.engine.pipeline import CombatPipeline
 from src.backend.features.combat.runtime.engine.ranged_position import RangedPositionService
@@ -176,91 +177,97 @@ class CombatExecutor:
             log.bind(char_id=action.move.char_id, target_id=target_id).warning("ExecutorExchangeParticipantsMissing")
             return
 
+        if action.partner_move and action.partner_move.char_id != target.char_id:
+            raise ValueError("Partner intent owner must match exchange target")
         self._process_periodic_effects(ctx, [source, target], action=action, wave=0)
 
-        # Очередь расчетов (Waves). Actor ids are resolved into fresh snapshots
-        # at each wave so one result cannot leak mutations into its partner.
-        pending_tasks: list[tuple[ActorId, ActorId | None, CombatMoveDTO, dict[str, Any], bool]] = []
-
-        # 1. Main Attack (A -> B)
-        pending_tasks.append((source.char_id, target.char_id, action.move, {"action_mode": "exchange"}, False))
-
-        # 2. Partner Attack (B -> A)
+        # An exchange owns all strike waves; generated reactions never select
+        # or activate another actor's intent.
+        pending_tasks: list[tuple[StrikeExecution, dict[str, Any]]] = [
+            (StrikeExecution.primary(action.move, target.char_id), {"action_mode": "exchange"})
+        ]
         if action.partner_move:
             pending_tasks.append(
-                (
-                    target.char_id,
-                    source.char_id,
-                    action.partner_move,
-                    {"action_mode": "exchange"},
-                    False,
-                )
+                (StrikeExecution.primary(action.partner_move, source.char_id), {"action_mode": "exchange"})
             )
         elif not action.is_forced:
             log.error("ExecutorExchangePartnerMissing")
             return
 
-        secondary_targets, secondary_damage_mult = self._secondary_feint_plan(
-            ctx, action, primary_target_id=normalize_actor_id(cast("ActorIdLike", target_id))
-        )
-        for secondary_target in secondary_targets:
-            pending_tasks.append(
-                (
-                    source.char_id,
-                    secondary_target.char_id,
-                    action.move,
-                    {
-                        "action_mode": "unidirectional",
-                        "damage_mult": secondary_damage_mult,
-                        "feint_role": "secondary",
-                        "pay_cost": False,
-                        "generate_feints": False,
-                    },
-                    True,
-                )
-            )
-
-        # --- EXECUTION LOOP (Waves) ---
         max_waves = 3
         wave = 0
         used_feints: dict[tuple[str, str], ActorSnapshot] = {}
-
         while pending_tasks and wave < max_waves:
             wave += 1
-
-            # Запускаем текущую волну по sandbox snapshots текущего состояния.
-            current_tasks = pending_tasks
             runnable: list[
-                tuple[Awaitable[InteractionResultDTO], ActorSnapshot, ActorSnapshot | None, CombatMoveDTO, bool]
+                tuple[Awaitable[InteractionResultDTO], ActorSnapshot, ActorSnapshot | None, StrikeExecution]
             ] = []
-            for source_id, target_task_id, move, mods, is_secondary in current_tasks:
-                real_source = ctx.get_actor(source_id)
-                real_target = ctx.get_actor(target_task_id) if target_task_id is not None else None
-                if not real_source or (target_task_id is not None and not real_target):
+            for strike, mods in pending_tasks:
+                real_source = ctx.get_actor(strike.owner_id)
+                real_target = ctx.get_actor(strike.target_id) if strike.target_id is not None else None
+                if not real_source or (strike.target_id is not None and not real_target):
                     continue
-                calc_source = real_source.model_copy(deep=True)
-                calc_target = real_target.model_copy(deep=True) if real_target else None
                 runnable.append(
                     (
-                        self._create_task(calc_source, calc_target, move, mods=mods),
+                        self._create_task(
+                            real_source.model_copy(deep=True),
+                            real_target.model_copy(deep=True) if real_target else None,
+                            strike,
+                            mods=mods,
+                        ),
                         real_source,
                         real_target,
-                        move,
-                        is_secondary,
+                        strike,
                     )
                 )
-            results = await asyncio.gather(*(task for task, _source, _target, _move, _is_secondary in runnable))
+            results = list(await asyncio.gather(*(task for task, *_rest in runnable)))
             pending_tasks = []
 
-            for result, (_task, real_source, real_target, _move, is_secondary) in zip(results, runnable, strict=False):
-                if not is_secondary:
+            # Project explicit area hits only after the owner's activation
+            # succeeded. They still use the same pre-commit wave snapshots, so
+            # neither participant's primary result cancels the other's attack.
+            secondary_runs = []
+            for result, (_task, real_source, _real_target, strike) in zip(results, runnable, strict=True):
+                activation = strike.activation
+                if not activation or not activation.applied_to(result) or strike.target_id is None:
+                    continue
+                secondary_targets, damage_mult = self._secondary_feint_plan(
+                    ctx,
+                    CombatActionDTO(action_type="exchange", move=strike.log_move()),
+                    primary_target_id=strike.target_id,
+                )
+                for secondary_target in secondary_targets:
+                    secondary = strike.child("secondary", owner_id=strike.owner_id, target_id=secondary_target.char_id)
+                    secondary_runs.append(
+                        (
+                            self._create_task(
+                                real_source.model_copy(deep=True),
+                                secondary_target.model_copy(deep=True),
+                                secondary,
+                                mods={
+                                    "action_mode": "unidirectional",
+                                    "damage_mult": damage_mult,
+                                    "feint_role": "secondary",
+                                    "pay_cost": False,
+                                    "generate_feints": False,
+                                },
+                            ),
+                            real_source,
+                            secondary_target,
+                            secondary,
+                        )
+                    )
+            if secondary_runs:
+                results.extend(await asyncio.gather(*(task for task, *_rest in secondary_runs)))
+                runnable.extend(secondary_runs)
+
+            for result, (_task, real_source, real_target, strike) in zip(results, runnable, strict=True):
+                if strike.origin != "secondary":
                     self._append_cleave_splash(ctx, result, real_source, real_target)
 
             commit_pairs = [
                 (real_source, real_target, result)
-                for result, (_task, real_source, real_target, _move, _is_secondary) in zip(
-                    results, runnable, strict=False
-                )
+                for result, (_task, real_source, real_target, _strike) in zip(results, runnable, strict=True)
             ]
             commit_ctx = PipelineContextDTO()
             commit_ctx.flags.meta.action_mode = "exchange"
@@ -272,89 +279,49 @@ class CombatExecutor:
             )
             RangedPositionService.update_after_exchange(commit_pairs)
 
-            for result, (_task, _real_source, _real_target, move, is_secondary) in zip(
-                results,
-                runnable,
-                strict=False,
-            ):
-                result_action = self._action_for_move(action, move, result=result)
-                s_id = result.source_id
-                t_id = result.target_id
-
-                log.bind(
-                    source_id=s_id,
-                    target_id=t_id,
-                    hand=result.hand,
-                    outcome=self._result_outcome(result),
-                    is_hit=result.is_hit,
-                    is_crit=result.is_crit,
-                    damage_final=result.damage_final,
-                    healing_final=result.healing_final,
-                    events=[event.type for event in result.events],
-                ).trace("ExecutorResult")
+            for result, (_task, real_source, real_target, strike) in zip(results, runnable, strict=True):
+                # Keep support schema stable while preserving provenance in facts.
+                result.action_facts["execution"] = strike.provenance()
+                result_action = self._action_for_move(action, strike.log_move(), result=result)
+                s_id, t_id = result.source_id, result.target_id
                 self._append_result_logs(ctx, result, action=result_action, wave=wave)
                 self._append_result_support_payload(ctx, result, action=result_action, wave=wave)
                 self._log_result_info(ctx, result, wave=wave)
-                self._refund_feint_cost_if_needed(ctx, result, move)
-                if not is_secondary and not result.chain_events.preserve_feint:
-                    feint_id = getattr(move.payload, "feint_id", None)
-                    if feint_id:
-                        assert real_source is not None
-                        used_feints[(str(real_source.char_id), str(feint_id))] = real_source
+                activation = strike.activation
+                if activation:
+                    assert strike.intent is not None
+                    self._refund_feint_cost_if_needed(ctx, result, strike.intent.move)
+                    if activation.applied_to(result):
+                        used_feints[(str(real_source.char_id), activation.feint_id)] = real_source
                 if s_id is None or t_id is None:
                     log.warning("ExecutorResultActorIdsMissing")
                     continue
-
-                # Cross-turn AI memory hook: observe one (attacker, defender,
-                # outcome, feint) tuple per resolved exchange. Read-only side
-                # is the AI runtime; this is the only writer.
-                if not is_secondary:
+                if strike.origin != "secondary":
                     record_exchange_outcome(
                         ctx,
                         s_id,
                         t_id,
                         self._result_outcome(result),
-                        getattr(move.payload, "feint_id", None),
+                        activation.feint_id if activation else None,
                     )
-
-                # --- CHAIN REACTIONS ---
-                if is_secondary:
+                else:
                     continue
-
-                # 1. Counter-Attack
+                if not real_source.is_alive or not real_target or not real_target.is_alive:
+                    continue
                 if result.chain_events.trigger_counter_attack:
-                    defender = ctx.get_actor(t_id)
-                    attacker = ctx.get_actor(s_id)
-
-                    if defender and attacker and defender.is_alive and attacker.is_alive:
-                        log.bind(source_id=t_id, target_id=s_id).trace("ExecutorCounterAttackTriggered")
-                        counter_move = action.partner_move if action.partner_move else action.move
-                        pending_tasks.append(
-                            (
-                                defender.char_id,
-                                attacker.char_id,
-                                counter_move,
-                                {"is_counter_attack": True, "action_mode": "exchange"},
-                                False,
-                            )
+                    pending_tasks.append(
+                        (
+                            strike.child("counter", owner_id=t_id, target_id=s_id),
+                            {"is_counter_attack": True, "action_mode": "exchange"},
                         )
-
-                # 2. Off-Hand Attack
+                    )
                 if result.chain_events.trigger_offhand_attack:
-                    attacker = ctx.get_actor(s_id)
-                    defender = ctx.get_actor(t_id)
-
-                    if attacker and defender and attacker.is_alive and defender.is_alive:
-                        log.bind(source_id=s_id, target_id=t_id).trace("ExecutorOffHandAttackTriggered")
-                        pending_tasks.append(
-                            (
-                                attacker.char_id,
-                                defender.char_id,
-                                action.move,
-                                {"hand": "off", "action_mode": "exchange"},
-                                False,
-                            )
+                    pending_tasks.append(
+                        (
+                            strike.child("offhand", owner_id=s_id, target_id=t_id),
+                            {"hand": "off", "action_mode": "exchange"},
                         )
+                    )
 
         # --- FINALIZE ---
         source.meta.exchange_counter += 1
@@ -463,7 +430,7 @@ class CombatExecutor:
         self,
         source: ActorSnapshot,
         target: ActorSnapshot | None,
-        move: CombatMoveDTO,
+        move: CombatMoveDTO | StrikeExecution,
         mods: dict[str, Any] | None = None,
     ) -> Awaitable[InteractionResultDTO]:
         """Create one pipeline calculation task for a concrete source/target pair."""

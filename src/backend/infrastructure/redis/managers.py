@@ -10,6 +10,7 @@ from src.backend.infrastructure.actor_state.managers import CharacterSessionMana
 from src.backend.infrastructure.expedition.managers import ExpeditionRedisManager
 from src.backend.infrastructure.game_lobby.managers import StartingImprintDistributionManager
 from src.backend.infrastructure.inventory.managers import InventorySessionManager
+from src.backend.infrastructure.monsters.managers.encounter_pool import EncounterPoolCacheManager
 from src.backend.infrastructure.rift.managers import HexRiftWorldStore, RiftPortalStore
 from src.backend.infrastructure.scenario.managers.content_manager import ScenarioContentManager
 from src.backend.infrastructure.scenario.managers.session_manager import ScenarioSessionManager
@@ -33,6 +34,7 @@ class RedisManagers:
     hex_rift_worlds: HexRiftWorldStore
     rift_portals: RiftPortalStore
     starting_imprints: StartingImprintDistributionManager
+    monster_encounter_pools: EncounterPoolCacheManager
 
 
 def build_redis_managers(
@@ -52,4 +54,5 @@ def build_redis_managers(
         hex_rift_worlds=HexRiftWorldStore(redis),
         rift_portals=RiftPortalStore(redis),
         starting_imprints=StartingImprintDistributionManager(redis),
+        monster_encounter_pools=EncounterPoolCacheManager(redis),
     )

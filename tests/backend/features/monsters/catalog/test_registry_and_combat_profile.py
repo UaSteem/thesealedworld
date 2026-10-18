@@ -219,7 +219,7 @@ async def _build_member(family_id: str, variant_key: str | None = None):
 
 @pytest.mark.unit
 def test_registry_loads_only_starter_families() -> None:
-    assert get_starter_family_ids() == ("rat_swarm", "wolf_pack", "bandit_gang", "goblin_tribe")
+    assert get_starter_family_ids() == ("rat_swarm", "wolf_pack", "bandit_gang", "goblin_tribe", "golem_foundry")
     assert get_family_config("rat_swarm") is not None
     assert get_family_config("wolf_pack") is not None
     assert get_family_config("bandit_gang") is not None

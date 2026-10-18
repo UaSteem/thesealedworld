@@ -1,12 +1,11 @@
-"""Immutable encounter contracts; catalog eligibility and buildability belong to selection services."""
+"""Immutable external order and internal composition contracts."""
 
-from collections.abc import Mapping
 from typing import Annotated, Literal, Self
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictInt, StrictStr, field_validator, model_validator
 
 from src.backend.features.monsters.catalog.contracts import MonsterRole
-from src.backend.features.monsters.catalog.search import MonsterSearchFilters
+from src.backend.features.monsters.encounters.profiles.contracts import MonsterAssemblyProfileDTO, MonsterPoolBudgetDTO
 
 Identifier = Annotated[StrictStr, Field(min_length=1, pattern=r"\S")]
 Tier = Annotated[StrictInt, Field(ge=0, le=7)]
@@ -15,6 +14,25 @@ PositiveCount = Annotated[StrictInt, Field(ge=1)]
 
 class _Contract(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
+
+
+class MonsterEncounterOrderDTO(_Contract):
+    encounter_type: Identifier
+    location_tier: Tier
+    family_ids: Annotated[tuple[Identifier, ...], Field(min_length=1, max_length=1)]
+    seed: StrictInt
+    difficulty: Literal["easy", "normal", "hard"] = "normal"
+    party_mode: Literal["solo", "group"] = "solo"
+    player_gear_score: Annotated[float, Field(ge=0, allow_inf_nan=False)] | None = None
+
+    profile_override: MonsterAssemblyProfileDTO | None = None
+
+    @field_validator("player_gear_score", mode="before")
+    @classmethod
+    def strict_score(cls, value):
+        if value is not None and type(value) not in (int, float):
+            raise ValueError("player_gear_score must be a finite number")
+        return value
 
 
 class MonsterSquadCountDTO(_Contract):
@@ -40,55 +58,73 @@ class MonsterSquadRoleRuleDTO(_Contract):
         return self
 
 
-class MonsterSquadRequestDTO(_Contract):
-    """Role rules are exhaustive. No profile precedence or implicit random seed.
-
-    Catalog existence, tags, system-clan eligibility and instance readiness must
-    be checked by the future selector, which has access to the catalog.
-    """
-
-    tier: Tier
-    count: MonsterSquadCountDTO
-    roles: Annotated[tuple[MonsterSquadRoleRuleDTO, ...], Field(min_length=1)]
-    filters: MonsterSearchFilters = Field(default_factory=MonsterSearchFilters)
-    selection_mode: Literal["random", "specified"] = "random"
-    seed: StrictInt | None = None
-    specified_members: tuple[Identifier, ...] = ()
-    same_clan: StrictBool = True
-    allow_repeated_members: StrictBool = False
-
-    @field_validator("filters", mode="before")
-    @classmethod
-    def validate_filters(cls, value: object) -> MonsterSearchFilters:
-        # Reuse the catalog dataclass while enforcing its external input boundary:
-        # Pydantic's default dataclass schema otherwise ignores unknown fields.
-        if isinstance(value, MonsterSearchFilters):
-            return value
-        if not isinstance(value, Mapping):
-            raise ValueError("filters must be a catalog filter or an object")
-        try:
-            return MonsterSearchFilters(**dict(value))
-        except (TypeError, ValueError) as exc:
-            raise ValueError(str(exc)) from exc
+class MonsterTierRuleDTO(_Contract):
+    role: MonsterRole
+    min_tier: Tier
+    max_tier: Tier
 
     @model_validator(mode="after")
-    def validate_constraints(self) -> Self:
-        if len({rule.role for rule in self.roles}) != len(self.roles):
+    def validate_range(self) -> Self:
+        if self.min_tier > self.max_tier:
+            raise ValueError("min_tier must not exceed max_tier")
+        return self
+
+
+class MonsterAdmissionPolicyDTO(_Contract):
+    location_tier: Tier
+    roles: Annotated[tuple[MonsterTierRuleDTO, ...], Field(min_length=1)]
+
+    @model_validator(mode="after")
+    def unique_roles(self) -> Self:
+        if len({r.role for r in self.roles}) != len(self.roles):
+            raise ValueError("admission roles must be unique")
+        return self
+
+
+class MonsterSquadConfigurationDTO(_Contract):
+    id: Identifier
+    family_id: Identifier
+    encounter_type: Identifier
+    count: MonsterSquadCountDTO
+    roles: Annotated[tuple[MonsterSquadRoleRuleDTO, ...], Field(min_length=1)]
+    allow_repeated_members: StrictBool
+    same_clan: StrictBool = True
+    difficulty: Literal["easy", "normal", "hard"] = "normal"
+    party_mode: Literal["solo", "group"] = "solo"
+
+    profile_source: Literal["builtin", "external"] = "builtin"
+    profile_id: Identifier
+    variant_id: Identifier
+    gs_threshold: Annotated[float, Field(ge=0, allow_inf_nan=False)] = 35
+    gs_step_size: Annotated[float, Field(gt=0, allow_inf_nan=False)] = 5
+    gs_steps: Annotated[StrictInt, Field(ge=0)] = 0
+    gs_points_per_step: Annotated[StrictInt, Field(ge=0)] = 0
+    gs_bonus_max: Annotated[StrictInt, Field(ge=0)] = 0
+    gs_cap_reached: StrictBool = False
+    minions: MonsterPoolBudgetDTO
+    seniors: MonsterPoolBudgetDTO
+    budget_base: Annotated[StrictInt, Field(ge=0)]
+    budget_bonus: Annotated[StrictInt, Field(ge=0)] = 0
+    budget_effective: Annotated[StrictInt, Field(ge=0)]
+
+    @model_validator(mode="after")
+    def constraints(self) -> Self:
+        for pool in (self.minions, self.seniors):
+            if pool.spent_points != 0 or pool.remaining_points != pool.effective_points:
+                raise ValueError("configuration pools must be unspent")
+        for aggregate, field in (
+            ("budget_base", "base_points"),
+            ("budget_bonus", "bonus_points"),
+            ("budget_effective", "effective_points"),
+        ):
+            if getattr(self, aggregate) != sum(getattr(pool, field) for pool in (self.minions, self.seniors)):
+                raise ValueError("aggregate budget differs from independent pools")
+        if len({r.role for r in self.roles}) != len(self.roles):
             raise ValueError("role rules must be unique")
-        if sum(rule.min_count for rule in self.roles) > self.count.max_count:
-            raise ValueError("role minima exceed maximum squad size")
-        if sum(rule.max_count for rule in self.roles) < self.count.min_count:
-            raise ValueError("role maxima cannot fill minimum squad size")
-        if self.selection_mode == "random":
-            if self.seed is None or self.specified_members:
-                raise ValueError("random selection requires a seed and forbids specified_members")
-        else:
-            if self.seed is not None or not self.specified_members:
-                raise ValueError("specified selection requires member IDs and forbids a seed")
-            if not self.count.min_count <= len(self.specified_members) <= self.count.max_count:
-                raise ValueError("specified member count is outside requested range")
-            if not self.allow_repeated_members and len(set(self.specified_members)) != len(self.specified_members):
-                raise ValueError("repeated specified members are forbidden")
+        if sum(r.min_count for r in self.roles) > self.count.max_count:
+            raise ValueError("role minima exceed squad maximum")
+        if sum(r.max_count for r in self.roles) < self.count.min_count:
+            raise ValueError("role maxima cannot fill squad minimum")
         return self
 
 
@@ -99,58 +135,78 @@ class MonsterSquadMemberDTO(_Contract):
     variant_id: Identifier
     role: MonsterRole
     tier: Tier
+    name: StrictStr = ""
+    assembly_cost: PositiveCount
+
+
+class MonsterSquadAssemblyInputDTO(_Contract):
+    order: MonsterEncounterOrderDTO
+    admission: MonsterAdmissionPolicyDTO
+    configuration: MonsterSquadConfigurationDTO
+    candidates: tuple[MonsterSquadMemberDTO, ...]
+
+    @model_validator(mode="after")
+    def validate_context(self) -> Self:
+        if self.order.location_tier != self.admission.location_tier:
+            raise ValueError("admission differs from order location tier")
+        if self.order.encounter_type != self.configuration.encounter_type:
+            raise ValueError("configuration differs from order encounter type")
+        if (self.order.difficulty, self.order.party_mode) != (
+            self.configuration.difficulty,
+            self.configuration.party_mode,
+        ):
+            raise ValueError("configuration differs from order difficulty or party mode")
+        if self.order.family_ids and self.configuration.family_id not in self.order.family_ids:
+            raise ValueError("configuration family violates order")
+        rules = {r.role: r for r in self.admission.roles}
+        identities = set()
+        for member in self.candidates:
+            key = (member.member_id, member.tier)
+            if key in identities:
+                raise ValueError("duplicate candidate identity and tier")
+            identities.add(key)
+            rule = rules.get(member.role)
+            if rule is None or not rule.min_tier <= member.tier <= rule.max_tier:
+                raise ValueError("candidate tier violates admission")
+            if self.order.family_ids and member.family_id not in self.order.family_ids:
+                raise ValueError("candidate family violates order")
+        return self
 
 
 class MonsterSquadSelectionDTO(_Contract):
     status: Literal["selected"] = "selected"
-    request: MonsterSquadRequestDTO
+    assembly_input: MonsterSquadAssemblyInputDTO
     members: tuple[MonsterSquadMemberDTO, ...]
 
     @model_validator(mode="after")
     def validate_members(self) -> Self:
-        request = self.request
-        if not request.count.min_count <= len(self.members) <= request.count.max_count:
-            raise ValueError("selected count is outside requested range")
-        ids = tuple(member.member_id for member in self.members)
-        if not request.allow_repeated_members and len(set(ids)) != len(ids):
+        config = self.assembly_input.configuration
+        if not config.count.min_count <= len(self.members) <= config.count.max_count:
+            raise ValueError("selected count is outside configuration")
+        if not config.allow_repeated_members and len({m.member_id for m in self.members}) != len(self.members):
             raise ValueError("repeated members are forbidden")
-        if request.same_clan and len({member.clan_id for member in self.members}) != 1:
-            raise ValueError("selected members must belong to the same clan")
-        if request.selection_mode == "specified" and ids != request.specified_members:
-            raise ValueError("selected order and identities must match specified_members")
-        rules = {rule.role: rule for rule in request.roles}
+        if config.same_clan and len({m.clan_id for m in self.members}) != 1:
+            raise ValueError("selected members must belong to same clan")
+        rules = {r.role: r for r in config.roles}
         for member in self.members:
-            if member.tier != request.tier:
-                raise ValueError("selected tier differs from requested tier")
-            if member.role not in rules:
-                raise ValueError("selected role is not allowed")
-            for category, identity in (
-                ("family_ids", member.family_id),
-                ("clan_ids", member.clan_id),
-                ("member_ids", member.member_id),
-            ):
-                allowed = getattr(request.filters, category)
-                if allowed and identity not in allowed:
-                    raise ValueError(f"selected member violates {category}")
+            if member not in self.assembly_input.candidates:
+                raise ValueError("selected member is outside ready candidate pool")
+            if member.family_id != config.family_id or member.role not in rules:
+                raise ValueError("selected member violates configuration")
+        for name in ("minions", "seniors"):
+            spent = sum(m.assembly_cost for m in self.members if (m.role == "minion") == (name == "minions"))
+            if spent > getattr(config, name).effective_points:
+                raise ValueError(f"selected squad exceeds {name} point budget")
+        if sum(m.assembly_cost for m in self.members) > config.budget_effective:
+            raise ValueError("selected squad exceeds point budget")
         for role, rule in rules.items():
-            count = sum(member.role == role for member in self.members)
-            if not rule.min_count <= count <= rule.max_count:
+            if not rule.min_count <= sum(m.role == role for m in self.members) <= rule.max_count:
                 raise ValueError(f"selected count violates role rule: {role}")
         return self
 
 
 class MonsterSquadRejectionReasonDTO(_Contract):
-    code: Literal[
-        "no_candidates",
-        "tier_unavailable",
-        "members_unbuildable",
-        "insufficient_distinct_members",
-        "role_requirements_unmet",
-        "count_requirements_unmet",
-        "clan_constraint_unmet",
-        "specified_member_unavailable",
-        "constraints_unsatisfiable",
-    ]
+    code: Identifier
     path: Identifier
     message: Identifier
     member_ids: tuple[Identifier, ...] = ()
@@ -158,7 +214,7 @@ class MonsterSquadRejectionReasonDTO(_Contract):
 
 class MonsterSquadRejectionDTO(_Contract):
     status: Literal["rejected"] = "rejected"
-    request: MonsterSquadRequestDTO
+    assembly_input: MonsterSquadAssemblyInputDTO
     reasons: Annotated[tuple[MonsterSquadRejectionReasonDTO, ...], Field(min_length=1)]
 
 

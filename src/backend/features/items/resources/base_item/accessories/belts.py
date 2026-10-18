@@ -11,7 +11,7 @@ BELTS_DB = {
         "damage_spread": 0.0,
         "narrative_description": "Пояс держит снаряжение под рукой и помогает распределить вес на ходу.",
         "narrative_tags": ["belt", "accessory", "waist", "quick_slots"],
-        "implicit_bonuses": {"quick_slot_capacity": 1.0},
+        "implicit_bonuses": {"quick_slot_capacity": 1.0, "hp": 10.0},
     },
 }
 

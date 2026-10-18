@@ -8,6 +8,13 @@ from src.backend.features.monsters.catalog.resources.stat_ladders import (
     role_attribute_base,
 )
 
+CALIBRATED_GOBLIN_MINIONS = {
+    "goblin_scavenger": (9, 11, 9, 8, 6, 6, 10, 5, 6),
+    "goblin_sparkpick": (10, 12, 10, 8, 6, 7, 9, 6, 6),
+    "goblin_sneak": (9, 14, 9, 8, 6, 7, 12, 5, 7),
+    "goblin_cutter": (11, 13, 11, 8, 6, 8, 11, 5, 7),
+}
+
 
 @pytest.mark.unit
 def test_starter_monster_stats_use_role_ladder_contract() -> None:
@@ -20,7 +27,9 @@ def test_starter_monster_stats_use_role_ladder_contract() -> None:
         for variant in family.variants.values():
             role_base = role_attribute_base(variant.role, family.organization_type)
             values = variant.base_stats.model_dump(mode="json").values()
-
+            if family_id == "goblin_tribe" and variant.id in CALIBRATED_GOBLIN_MINIONS:
+                assert tuple(values) == CALIBRATED_GOBLIN_MINIONS[variant.id]
+                continue
             assert sorted(value - role_base for value in values) == expected_ladder
 
 
@@ -38,6 +47,11 @@ def test_starter_monster_role_stat_totals_include_organization_mass_offset() -> 
         assert family is not None
 
         for variant in family.variants.values():
+            if family_id == "goblin_tribe" and variant.id in CALIBRATED_GOBLIN_MINIONS:
+                assert sum(variant.base_stats.model_dump(mode="json").values()) == sum(
+                    CALIBRATED_GOBLIN_MINIONS[variant.id]
+                )
+                continue
             organization_offset = 0 if variant.role == "boss" else ORGANIZATION_ATTRIBUTE_OFFSETS[family.organization_type]
             assert (
                 sum(variant.base_stats.model_dump(mode="json").values())

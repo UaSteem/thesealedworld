@@ -21,9 +21,10 @@ from src.backend.features.combat.dto import (
     InstantPayload,
     PipelineContextDTO,
 )
-from src.backend.features.combat.dto.pipeline import CombatCheckTraceDTO
+from src.backend.features.combat.dto.pipeline import CombatCheckTraceDTO, FeintActivationOutcomeDTO
 from src.backend.features.combat.integrations import CombatCatalogIntegrator as GameData
 from src.backend.features.combat.runtime.engine.effect_factory import EffectFactory
+from src.backend.features.combat.runtime.engine.execution import FeintActivation, FeintMode, StrikeExecution
 from src.backend.features.combat.runtime.engine.feint_service import FeintService
 from src.backend.features.combat.runtime.engine.math_core import MathCore
 from src.backend.features.combat.runtime.engine.modifier_application_service import ModifierApplicationService
@@ -61,9 +62,11 @@ class AbilityService:
     def pre_process(
         self,
         ctx: PipelineContextDTO,
-        move: CombatMoveDTO,
+        move: CombatMoveDTO | StrikeExecution,
         source: ActorSnapshot,
         target: ActorSnapshot | None = None,
+        *,
+        feint_mode: FeintMode = "activate",
     ) -> None:
         """Prepare the pipeline context before resolver math runs.
 
@@ -99,33 +102,71 @@ class AbilityService:
 
             if ability_id:
                 self._process_action_logic(ctx, move, source, target, mode="ability")
-            elif feint_id:
-                if AbilityService._source_forbids_feints(source):
-                    ctx.result.chain_events.preserve_feint = True
-                    ctx.result.effect_facts.append(
-                        CombatEffectFactDTO(
-                            actor_id=source.char_id,
-                            owner="source",
-                            effect_id="concussed_no_feints",
-                            action="tick",
-                            source_effect_id="concussed_no_feints",
-                            tags=["control", "forbid_feints"],
+            elif feint_id and feint_mode != "none":
+                if feint_mode == "project":
+                    self._process_action_logic(ctx, move, source, target, mode="feint", feint_mode="project")
+                else:
+                    activation = (
+                        move.activation
+                        if isinstance(move, StrikeExecution)
+                        else FeintActivation(
+                            source.char_id,
+                            move.move_id,
+                            feint_id,
                         )
                     )
-                    return
-                self._process_action_logic(ctx, move, source, target, mode="feint")
+                    if activation:
+                        self.activate_feint(ctx, activation, move, source, target)
             else:
                 # Basic Attack (No CAST event needed? Or maybe "ATTACK"?)
                 pass
         else:
             pass
 
+    def activate_feint(
+        self,
+        ctx: PipelineContextDTO,
+        activation: FeintActivation,
+        move: CombatMoveDTO | StrikeExecution,
+        source: ActorSnapshot,
+        target: ActorSnapshot | None,
+    ) -> None:
+        """Activate one owner's selected feint before its primary strike.
+
+        Generated strikes never call this operation. Area projection shares
+        only the hit contract through the common action materializer.
+        """
+        if activation.owner_id != source.char_id:
+            raise ValueError("Feint activation owner must match source")
+        ctx.result.feint_activation = FeintActivationOutcomeDTO(
+            owner_id=activation.owner_id,
+            intent_id=activation.intent_id,
+            feint_id=activation.feint_id,
+            state="rejected",
+            reason="UNAVAILABLE",
+        )
+        if AbilityService._source_forbids_feints(source):
+            ctx.result.feint_activation.reason = "FORBIDDEN"
+            ctx.result.chain_events.preserve_feint = True
+            ctx.result.effect_facts.append(
+                CombatEffectFactDTO(
+                    actor_id=source.char_id,
+                    owner="source",
+                    effect_id="concussed_no_feints",
+                    action="tick",
+                    source_effect_id="concussed_no_feints",
+                    tags=["control", "forbid_feints"],
+                )
+            )
+            return
+        self._process_action_logic(ctx, move, source, target, mode="feint", activation=activation)
+
     def post_process(
         self,
         ctx: PipelineContextDTO,
         source: ActorSnapshot,
         target: ActorSnapshot | None,
-        move: CombatMoveDTO,
+        move: CombatMoveDTO | StrikeExecution,
     ) -> None:
         """Finalize ability/effect consequences after resolver math completes.
 
@@ -157,6 +198,7 @@ class AbilityService:
 
         # 5. [PASSIVE COMBAT RESOURCE REGEN]
         self._register_combat_hp_regen(ctx, source)
+        self._register_combat_energy_regen(ctx, source)
         self._register_combat_stamina_regen(ctx, source)
 
     # ==============================================================================
@@ -257,7 +299,7 @@ class AbilityService:
     # ==============================================================================
 
     @staticmethod
-    def _extract_action_id(move: CombatMoveDTO, mode: Literal["ability", "feint"]) -> str | None:
+    def _extract_action_id(move: CombatMoveDTO | StrikeExecution, mode: Literal["ability", "feint"]) -> str | None:
         """Extract the relevant ability or feint id from a normalized move payload."""
         payload = move.payload
 
@@ -287,10 +329,12 @@ class AbilityService:
     @staticmethod
     def _process_action_logic(
         ctx: PipelineContextDTO,
-        move: CombatMoveDTO,
+        move: CombatMoveDTO | StrikeExecution,
         actor: ActorSnapshot,
         target: ActorSnapshot | None,
         mode: Literal["ability", "feint"],
+        feint_mode: FeintMode = "activate",
+        activation: FeintActivation | None = None,
     ) -> None:
         """Apply one ability or feint contract into the current pipeline context."""
         config: AbilityTechnicalDTO | FeintTechnicalDTO | None = None
@@ -319,14 +363,14 @@ class AbilityService:
                     log.bind(ability_id=config.ability_id).debug("AbilityServiceInsufficientResources")
 
         elif mode == "feint":
-            action_id = AbilityService._extract_action_id(move, mode="feint")
+            action_id = activation.feint_id if activation else AbilityService._extract_action_id(move, mode="feint")
             if not action_id:
                 return
 
             feint_entry = GameData.get_feint_catalog_entry(action_id)
             if feint_entry:
                 config = feint_entry.technical
-                if not ctx.flags.mechanics.pay_cost:
+                if feint_mode == "project" or not ctx.flags.mechanics.pay_cost:
                     cost_ok = True
                 else:
                     stamina_cost = FeintService.activation_stamina_cost(config.cost.tactics)
@@ -340,8 +384,15 @@ class AbilityService:
                         log.bind(feint_id=config.feint_id).trace("AbilityServiceInsufficientStamina")
 
         if not config or not cost_ok:
+            if activation and ctx.result.feint_activation:
+                ctx.result.feint_activation.reason = ctx.result.skip_reason or "UNAVAILABLE"
             return
 
+        if activation and ctx.result.feint_activation:
+            ctx.result.feint_activation.state = "activated"
+            ctx.result.feint_activation.reason = None
+
+        projecting = mode == "feint" and feint_mode == "project"
         ctx.result.action_facts.update(
             {
                 "id": action_id,
@@ -354,11 +405,15 @@ class AbilityService:
             ctx.result.action_facts["outcome"] = AbilityService._ability_default_outcome(config)
 
         # [EVENT] CAST
-        ctx.result.events.append(
-            CombatEventDTO(
-                type="CAST", source_id=actor.char_id, target_id=target.char_id if target else None, action_id=action_id
+        if not projecting:
+            ctx.result.events.append(
+                CombatEventDTO(
+                    type="CAST",
+                    source_id=actor.char_id,
+                    target_id=target.char_id if target else None,
+                    action_id=action_id,
+                )
             )
-        )
 
         ability_uid = str(uuid.uuid4())
         modified_keys: list[str] = []
@@ -371,9 +426,11 @@ class AbilityService:
             active_id = getattr(config, "feint_id", action_id)
 
         modifier_applications = list(config.modifier_applications or [])
-        duration_applications = [
-            application for application in modifier_applications if application.scope == "duration"
-        ]
+        duration_applications = (
+            []
+            if projecting
+            else [application for application in modifier_applications if application.scope == "duration"]
+        )
         immediate_applications = [
             application for application in modifier_applications if application.scope != "duration"
         ]
@@ -433,7 +490,7 @@ class AbilityService:
             AbilityService._merge_modified_sources(modified_sources, applied_modifiers.modified_sources)
 
         payload_effects: dict[str, Any] = {}
-        prep_effects = getattr(config, "preparation_effects", None)
+        prep_effects = None if projecting else getattr(config, "preparation_effects", None)
         if prep_effects:
             payload_effects["always"] = prep_effects
 
@@ -876,7 +933,7 @@ class AbilityService:
         ctx.result.applied_effects.append(queued_effect)
 
     @staticmethod
-    def _source_weapon_tier(actor: ActorSnapshot, move: CombatMoveDTO) -> int:
+    def _source_weapon_tier(actor: ActorSnapshot, move: CombatMoveDTO | StrikeExecution) -> int:
         payload = move.payload
         hand = getattr(payload, "hand", None)
         source_type = "off_hand" if hand == "off" else "main_hand"
@@ -1247,10 +1304,21 @@ class AbilityService:
         if not source.stats:
             return
 
-        delta = AbilityService._combat_stamina_regen_delta(source.stats.mods.stamina_regen)
+        delta = AbilityService._combat_stamina_regen_delta(source.stats.mods.combat_stamina_regen)
         if delta <= 0:
             return
         ctx.result.resource_changes.setdefault("stamina", {})["combat_regen"] = f"+{delta}"
+
+    @staticmethod
+    def _register_combat_energy_regen(ctx: PipelineContextDTO, source: ActorSnapshot) -> None:
+        if not source.is_alive:
+            return
+        StatsEngine.ensure_stats(source)
+        if not source.stats:
+            return
+        delta = AbilityService._combat_regen_delta(source.stats.mods.combat_en_regen)
+        if delta > 0:
+            ctx.result.resource_changes.setdefault("en", {})["combat_regen"] = f"+{delta}"
 
     @staticmethod
     def _register_combat_hp_regen(ctx: PipelineContextDTO, source: ActorSnapshot) -> None:
@@ -1261,7 +1329,7 @@ class AbilityService:
         if not source.stats:
             return
 
-        delta = AbilityService._combat_regen_delta(source.stats.mods.hp_regen)
+        delta = AbilityService._combat_regen_delta(source.stats.mods.combat_hp_regen)
         if delta <= 0:
             return
         ctx.result.resource_changes.setdefault("hp", {})["combat_regen"] = f"+{delta}"

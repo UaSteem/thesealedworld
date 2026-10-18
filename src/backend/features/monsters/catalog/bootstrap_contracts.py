@@ -1,6 +1,8 @@
 """Presentation-only catalogue snapshot for client caches."""
 
-from pydantic import BaseModel
+from typing import Annotated
+
+from pydantic import BaseModel, Field, StrictInt
 
 
 class CatalogTextDTO(BaseModel):
@@ -32,6 +34,7 @@ class MemberTextDTO(CatalogTextDTO):
     clan_id: str
     variant_id: str
     role: str
+    assembly_cost: Annotated[StrictInt, Field(gt=0)]
     base_id: str | None = None
     image_source: str | None = None
     ability_ids: list[str]

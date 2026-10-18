@@ -8,6 +8,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 GOBLIN_SPEARMAN = MemberBaseDTO(
     id="goblin_spearman",
     role="veteran",
+    assembly_cost=23,
     stats=BaseStatsDTO(
         strength=13,
         agility=14,

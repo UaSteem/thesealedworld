@@ -1379,8 +1379,8 @@ async def test_ai_simulation_service_executes_live_demo_with_preselected_roster(
     red = (
         "starter_rift_survivor_01",
         "starter_dual_blades_01",
-        "starter_dual_sword_01",
-        "starter_dual_mace_01",
+        "starter_medium_dual_blades_01",
+        "starter_mace_guard_01",
         "starter_archer_01",
     )
 

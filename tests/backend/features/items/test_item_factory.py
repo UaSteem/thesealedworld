@@ -170,7 +170,7 @@ def test_item_factory_generates_earring_accessory():
     assert item.slot == "earring"
     assert item.name == "Железная серьга"
     assert item.power == 1.0
-    assert item.implicit_bonuses == {"initiative": pytest.approx(0.5)}
+    assert item.implicit_bonuses == {"initiative": pytest.approx(0.5), "stamina_regen": pytest.approx(1.0)}
 
 
 @pytest.mark.unit
@@ -191,7 +191,7 @@ def test_item_factory_scales_belt_capacity_by_material_tier_not_tier_mult():
     )
 
     assert low.power == 2.0
-    assert low.implicit_bonuses == {"quick_slot_capacity": 1.0}
+    assert low.implicit_bonuses == {"quick_slot_capacity": 1.0, "hp": 8.0}
     assert "inventory_cell_capacity" not in low.mechanics["implicit_bonuses"]
     assert high.implicit_bonuses["quick_slot_capacity"] == 8.0
     assert high.power == 16.0

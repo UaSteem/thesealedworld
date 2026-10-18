@@ -233,6 +233,7 @@ class MemberDefinition:
     max_tier: int
     image: ImageAssetReference | None
     mechanics: Mapping[str, Any]
+    assembly_cost: int
     ability_ids: tuple[str, ...] = ()
     base_id: str | None = None
     text_id: str | None = None
@@ -241,6 +242,8 @@ class MemberDefinition:
     equipment_source: Literal["base_set", "clan_override"] | None = None
 
     def __post_init__(self):
+        if type(self.assembly_cost) is not int or self.assembly_cost <= 0:
+            raise ValueError("Assembly cost must be a positive integer")
         object.__setattr__(self, "ability_ids", tuple(self.ability_ids))
         object.__setattr__(self, "tags", frozenset(self.tags))
         object.__setattr__(self, "mechanics", freeze_catalog_value(self.mechanics))

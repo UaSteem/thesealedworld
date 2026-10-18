@@ -24,6 +24,14 @@ class VitalsDTO(BaseModel):
     stamina: int = 0  # StatKey.STAMINA
     stamina_regen: float = 0.0  # StatKey.STAMINA_REGEN
 
+    # Generic regeneration is outside combat; combat consumes these projections.
+    combat_hp_regen: float = 0.0
+    combat_en_regen: float = 0.0
+    combat_stamina_regen: float = 0.0
+    outside_hp_regen: float = 0.0
+    outside_en_regen: float = 0.0
+    outside_stamina_regen: float = 0.0
+
     resource_cost_reduction: float = 0.0
     initiative: float = 0.0  # StatKey.INITIATIVE
 

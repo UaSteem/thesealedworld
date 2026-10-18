@@ -29,8 +29,8 @@ def test_catalog_inspection_returns_authored_clans_without_database(catalog_clie
     response = catalog_client.get("/api/admin/monsters/catalog")
     assert response.status_code == 200
     data = response.json()
-    assert data["pagination"]["total"] == 5
-    assert sum(c["member_count"] for c in data["items"]) == 51
+    assert data["pagination"]["total"] == 6
+    assert sum(c["member_count"] for c in data["items"]) == 63
     assert all(c["clan_id"].endswith(".base") for c in data["items"])
     assert not any("created_at" in c or "unique_hash" in c for c in data["items"])
     member = data["items"][0]["members"][0]
@@ -42,11 +42,26 @@ def test_catalog_inspection_returns_authored_clans_without_database(catalog_clie
 
 def test_catalog_summary_counts_missing_member_art(catalog_client):
     assert catalog_client.get("/api/admin/monsters/catalog/summary").json() == {
-        "families": 5, "clans": 5, "members": 51, "missing_images": 4,
+        "families": 6, "clans": 6, "members": 63, "missing_images": 16,
     }
     assert catalog_client.get("/api/admin/monsters/catalog/summary?family_id=goblin_tribe").json() == {
         "families": 1, "clans": 1, "members": 12, "missing_images": 0,
     }
+
+
+def test_stone_golems_are_inspectable_with_prepared_natural_equipment(catalog_client):
+    response = catalog_client.get("/api/admin/monsters/catalog?clan_id=golem_foundry.base")
+    assert response.status_code == 200
+    data = response.json()
+    assert len(data["items"]) == 1
+    clan = data["items"][0]
+    assert clan["member_count"] == 12
+    assert {member["role"] for member in clan["members"]} == {"minion", "veteran", "elite", "boss"}
+    gear = catalog_client.get("/api/admin/monsters/catalog/equipment", params={
+        "member_id": "golem_foundry.base.stone_worker", "tier": 0,
+    })
+    assert gear.status_code == 200
+    assert "Каменный" in response.text
 
 
 def test_catalog_filters_members_and_paginates_without_database(catalog_client):
