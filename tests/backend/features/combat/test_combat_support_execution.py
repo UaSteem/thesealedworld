@@ -130,6 +130,46 @@ async def exchange_and_commit(source, target):
     return result
 
 
+async def test_anatomy_activity_counts_regen_through_executor_pipeline_and_commit(monkeypatch, controlled_attack):
+    source = built_actor(1, anatomy=0.5, attributes={"endurance": 11})
+    target = built_actor(2, attributes={"endurance": 11})
+    source.meta.hp = source.meta.max_hp - 2
+    target.meta.hp = target.meta.max_hp
+    monkeypatch.setattr(MathCore, "roll_chance", staticmethod(lambda chance: (1.0, False)))
+    ctx = BattleContext(
+        session_id="anatomy-activity",
+        actors={"1": source, "2": target},
+        meta=BattleMeta(
+            active=1,
+            step_counter=0,
+            teams={"a": ["1"], "b": ["2"]},
+            actors_info={"1": "player", "2": "player"},
+            active_actors_count=2,
+            battle_type="arena",
+            location_id="arena",
+        ),
+    )
+    action = CombatActionDTO(
+        action_type="exchange",
+        is_forced=True,
+        move=CombatMoveDTO(
+            move_id="anatomy-strike",
+            char_id="1",
+            strategy="exchange",
+            payload=ExchangePayload(target_id="2"),
+        ),
+    )
+    executor = CombatExecutor()
+    await executor._handle_exchange(ctx, action)
+    await executor._handle_exchange(ctx, action)
+
+    assert source.meta.hp == source.meta.max_hp
+    assert source.xp_buffer["combat_hp_regenerated"] == 2
+    assert source.skills["skill_anatomy"] == 0.5
+    saved = source.model_dump(mode="json", exclude={"stats"})
+    assert ActorSnapshot.model_validate(saved).xp_buffer["combat_hp_regenerated"] == 2
+
+
 @pytest.mark.parametrize("skill,dodged", [(0.0, False), (0.25, False), (0.5, True), (1.0, True)])
 async def test_tactics_attribute_evasion_changes_real_dodge(monkeypatch, controlled_attack, skill, dodged):
     source = built_actor(1)

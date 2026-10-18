@@ -166,7 +166,6 @@ def test_experience_finalizer_maps_flat_xp_buffer_to_skill_rewards() -> None:
         "skill_two_handed": 0.0024,
         "skill_heavy_armor": 0.0032,
         "skill_parrying": 0.0016,
-        "skill_anatomy": 0.0022,
         "skill_tactics": 0.004,
     }
 

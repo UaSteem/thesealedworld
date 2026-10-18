@@ -27,6 +27,7 @@ ACTION_POWER_MULTIPLIERS: dict[str, float] = {
 
 TACTICAL_STYLE_ACTION_SHARE = 0.5
 SUPPORT_ACTION_SHARE = 0.5
+ANATOMY_HP_PER_ACTION = 10.0
 
 
 @dataclass(frozen=True)
@@ -202,7 +203,7 @@ class CombatExperienceFinalizer:
         xp_buffer: dict[str, float],
     ) -> float:
         free_power = 0.0
-        anatomy_power = self._successful_offensive_action_power(xp_buffer) * SUPPORT_ACTION_SHARE
+        anatomy_power = max(0.0, xp_buffer.get("combat_hp_regenerated", 0.0)) / ANATOMY_HP_PER_ACTION
         tactics_power = (
             self._offensive_action_power(xp_buffer) * SUPPORT_ACTION_SHARE
             + xp_buffer.get("kill_generic", 0.0) * ACTION_POWER_MULTIPLIERS["kill"]
@@ -237,20 +238,13 @@ class CombatExperienceFinalizer:
     def _offensive_action_power(self, xp_buffer: dict[str, float]) -> float:
         return self._source_action_power(xp_buffer, "main_hand") + self._source_action_power(xp_buffer, "off_hand")
 
-    def _successful_offensive_action_power(self, xp_buffer: dict[str, float]) -> float:
-        return self._source_action_power(xp_buffer, "main_hand", include_miss=False) + self._source_action_power(
-            xp_buffer, "off_hand", include_miss=False
-        )
-
     @staticmethod
-    def _source_action_power(xp_buffer: dict[str, float], source_type: str, *, include_miss: bool = True) -> float:
-        action_power = (
+    def _source_action_power(xp_buffer: dict[str, float], source_type: str) -> float:
+        return (
             xp_buffer.get(f"{source_type}_hit", 0.0) * ACTION_POWER_MULTIPLIERS["hit"]
             + xp_buffer.get(f"{source_type}_crit", 0.0) * ACTION_POWER_MULTIPLIERS["crit"]
+            + xp_buffer.get(f"{source_type}_miss", 0.0) * ACTION_POWER_MULTIPLIERS["miss"]
         )
-        if include_miss:
-            action_power += xp_buffer.get(f"{source_type}_miss", 0.0) * ACTION_POWER_MULTIPLIERS["miss"]
-        return action_power
 
     def _flat_attributes(self, actor: dict[str, Any]) -> dict[str, float]:
         raw = self._dict(actor.get("raw"))

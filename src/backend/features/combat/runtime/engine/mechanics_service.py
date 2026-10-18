@@ -222,6 +222,7 @@ class MechanicsService:
 
             # Apply Costs
             if hp_changes:
+                hp_before = source.meta.hp
                 applied = self._apply_resource_delta(source, "hp", [val for _key, val in hp_changes])
                 self._record_resource_fact(
                     result,
@@ -231,6 +232,8 @@ class MechanicsService:
                     reason=self._resource_change_reason(hp_changes),
                     applied=applied,
                 )
+                if ctx.flags.mechanics.grant_xp:
+                    self._record_combat_regeneration_activity(source, hp_before, hp_changes)
             if en_changes:
                 applied = self._apply_resource_delta(source, "en", [val for _key, val in en_changes])
                 self._record_resource_fact(
@@ -754,6 +757,24 @@ class MechanicsService:
             applied=damage_applied,
             token_bucket=result.tokens_awarded_defender,
         )
+
+    def _record_combat_regeneration_activity(
+        self, actor: ActorSnapshot, hp_before: int, changes: list[tuple[str, str]]
+    ) -> None:
+        """Count the committed HP contribution of natural regen, excluding overheal.
+
+        Costs and regen are committed together. Comparing with the same change
+        without regen preserves that accounting even for a zero/negative net delta.
+        """
+        if not any(reason == "combat_regen" for reason, _value in changes):
+            return
+        without_regen, _ = StatsWaterfallCalculator.evaluate_sources(
+            [value for reason, value in changes if reason != "combat_regen"], base_value=0.0
+        )
+        hp_without_regen = max(0, min(hp_before + int(without_regen), actor.meta.max_hp))
+        restored = max(0, actor.meta.hp - hp_without_regen)
+        if restored:
+            self._inc_xp(actor, "combat_hp_regenerated", restored)
 
     def _apply_resource_delta(
         self, actor: ActorSnapshot, resource: str, sources: list[str]

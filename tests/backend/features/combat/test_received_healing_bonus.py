@@ -113,6 +113,7 @@ def test_hot_uses_current_recipient_bonus_per_tick_without_mutating_base_impact(
         assert ctx.result.events[0].value == expected
         assert ctx.result.effect_facts[0].value == expected
         assert effect.impact == {"hp": 10}
+        assert target.xp_buffer.get("combat_hp_regenerated", 0) == 0
 
 
 def test_negative_periodic_damage_is_not_scaled_as_healing():
@@ -140,6 +141,7 @@ def test_lifesteal_scales_recipient_and_commits_once(monkeypatch):
 
     assert source.meta.hp == 40
     assert ctx.result.lifesteal_amount == ctx.result.healing_final == 30
+    assert source.xp_buffer.get("combat_hp_regenerated", 0) == 0
     assert sum(fact.delta for fact in ctx.result.resource_facts if fact.actor_id == source.char_id) == 30
 
 
@@ -153,6 +155,7 @@ def test_heal_bonus_does_not_multiply_passive_regen_in_same_action():
     MechanicsService().apply_interaction_result(ctx, source, None, ctx.result)
     assert source.stats.mods.combat_hp_regen == 4
     assert source.meta.hp == 44  # 10 + 20 * 1.5 + 4, not (20 + 4) * 1.5.
+    assert source.xp_buffer["combat_hp_regenerated"] == 4
 
 
 def test_direct_heal_commit_clamps_to_max_hp():
