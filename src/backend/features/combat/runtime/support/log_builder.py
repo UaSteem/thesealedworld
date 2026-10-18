@@ -1096,14 +1096,13 @@ class CombatLogBuilder:
             "block": "block_proc",
         }.get(event_name, "proc")
 
-    # Triggers that generate a separate log entry (counter-attack, extra strike).
+    # Triggers that generate a separate log entry (counter-attack, dual cross-cut).
     # All others are merged into the main summary line as a suffix.
     _SEPARATE_LINE_TRIGGERS: frozenset[str] = frozenset(
         {
             "counter_on_dodge",
             "style_dual_cross_cut",
             "weapon_riposte_on_parry",
-            "weapon_shield_bash_on_block",
         }
     )
 

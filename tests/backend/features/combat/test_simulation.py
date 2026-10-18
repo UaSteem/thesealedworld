@@ -295,7 +295,10 @@ def test_action_collector_pairs_and_forces_exchange_moves() -> None:
 
     actions = SimulationActionCollector().collect_actions(state, moves)
 
-    assert [(action.move.move_id, action.partner_move.move_id if action.partner_move else None, action.is_forced) for action in actions] == [
+    assert [
+        (action.move.move_id, action.partner_move.move_id if action.partner_move else None, action.is_forced)
+        for action in actions
+    ] == [
         ("a-b", "b-a", False),
         ("c-a", None, True),
     ]
@@ -554,7 +557,7 @@ def test_telemetry_records_tactical_trigger_and_chain_parts() -> None:
             "style_2h_ignore": 9,
             "style_dual_cross_cut": 9,
             "offhand_attack": 6,
-            "weapon_shield_bash_on_block": 7,
+            "shield_damage": 7,
         },
         "b": {"counter_attack": 5},
     }
@@ -563,7 +566,7 @@ def test_telemetry_records_tactical_trigger_and_chain_parts() -> None:
         "b": {"style_ranged_perfect_backstep": 20, "style_shield_reflect": 3}
     }
     assert telemetry.tactical_shield_branch_by_actor == {"b": {"counter": 1, "defense": 1}}
-    assert telemetry.tactical_shield_damage_by_actor == {"a": {"weapon_shield_bash_on_block": 7}}
+    assert telemetry.tactical_shield_damage_by_actor == {"a": {"shield_damage": 7}}
     assert telemetry.tactical_shield_absorbed_by_actor == {"b": {"style_shield_reflect": 3}}
     assert telemetry.tactical_shield_reflected_by_actor == {"b": {"style_shield_reflect": 4}}
     assert telemetry.tactical_chain_attempts_by_actor == {

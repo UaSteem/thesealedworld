@@ -1031,16 +1031,6 @@ TRIGGER_TEMPLATE_RECIPES: tuple[CombatTextTemplateRecipeDTO, ...] = (
         pattern="{target} сбивает удар и сразу ищет ответную линию.",
         tags=["trigger", "weapon", "parry", "riposte", "beast"],
     ),
-    CombatTextTemplateRecipeDTO(
-        template_key="combat.trigger.weapon.shield_bash_on_block.block_proc.humanoid",
-        resource_type="trigger",
-        resource_id="weapon_shield_bash_on_block",
-        catalog_key="combat.trigger.weapon.shield_bash_on_block",
-        outcome="block_proc",
-        target_body="humanoid",
-        pattern="{target} принимает удар щитом и отвечает корпусом.",
-        tags=["trigger", "weapon", "shield", "block"],
-    ),
     # --- style triggers ---
     CombatTextTemplateRecipeDTO(
         template_key="combat.trigger.style.2h_ignore.proc.humanoid",

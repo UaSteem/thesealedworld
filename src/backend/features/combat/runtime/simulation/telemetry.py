@@ -347,20 +347,20 @@ class CombatTelemetry:
             if damage > 0:
                 self._increment_nested(self.tactical_damage_by_actor, source_id, tactical_id, damage)
                 self._increment_nested(self.tactical_chain_hits_by_actor, source_id, tactical_id)
-                if tactical_id == "weapon_shield_bash_on_block":
+                if tactical_id == "shield_damage":
                     self._increment_nested(self.tactical_shield_damage_by_actor, source_id, tactical_id, damage)
 
         if self._is_shield_damage_feint(result) and source_id and damage > 0:
             self._increment_nested(
                 self.tactical_damage_by_actor,
                 source_id,
-                "weapon_shield_bash_on_block",
+                "shield_damage",
                 damage,
             )
             self._increment_nested(
                 self.tactical_shield_damage_by_actor,
                 source_id,
-                "weapon_shield_bash_on_block",
+                "shield_damage",
                 damage,
             )
 
@@ -371,7 +371,6 @@ class CombatTelemetry:
             "style_shield_reflect",
             "style_ranged_perfect_backstep",
             "style_dual_cross_cut",
-            "weapon_shield_bash_on_block",
             "weapon_riposte_on_parry",
         }
 
@@ -380,7 +379,6 @@ class CombatTelemetry:
         if trigger_id in {
             "style_shield_reflect",
             "style_ranged_perfect_backstep",
-            "weapon_shield_bash_on_block",
             "weapon_riposte_on_parry",
         }:
             return target_id
@@ -392,7 +390,7 @@ class CombatTelemetry:
         loadout = cls._dict(actor_data.get("loadout"))
         layout = cls._dict(loadout.get("layout"))
         if layout.get("off_hand") == "skill_shield_mastery":
-            return "weapon_shield_bash_on_block"
+            return "shield_damage"
         return "offhand_attack"
 
     def _record_death(self, actor_id: str) -> None:

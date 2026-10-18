@@ -26,7 +26,7 @@ _FAMILY_PRESSURE_TRIALS = 10
 _EHP_REFERENCE_HIT_DAMAGE = 20.0
 _EHP_REGEN_WINDOW_EXCHANGES = 5.0
 _SHIELD_TACTICAL_PART_ID = "style_shield_reflect"
-_SHIELD_TACTICAL_PART_ALIASES = {"weapon_shield_bash_on_block"}
+_SHIELD_TACTICAL_PART_ALIASES = {"shield_damage"}
 _RANGED_POSITIONS = ("far", "mid", "close")
 _LIVE_LAUNCH_SCENARIOS = {
     "starter_presets_5v5_live",
@@ -34,16 +34,14 @@ _LIVE_LAUNCH_SCENARIOS = {
     "starter_presets_5v5_live_latest_training_file",
     "starter_presets_random_draft_live",
 }
-_STARTER_IMPRINT_OPTIONS = [
-    {"value": key, "label": imprint.title} for key, imprint in STARTING_IMPRINTS.items()
-]
+_STARTER_IMPRINT_OPTIONS = [{"value": key, "label": imprint.title} for key, imprint in STARTING_IMPRINTS.items()]
 
 _TACTICAL_PART_LABELS = {
     "style_2h_ignore": "Двуручный стиль: давление",
     "style_shield_reflect": "Щит: поглощение и возврат",
     "style_ranged_perfect_backstep": "Дальний бой: идеальный отскок",
     "style_dual_cross_cut": "Две руки: перекрестный крит",
-    "weapon_shield_bash_on_block": "Щит: ответный удар",
+    "shield_damage": "Щит: урон",
     "weapon_riposte_on_parry": "Рипост после парирования",
     "counter_attack": "Контратака",
     "offhand_attack": "Off-hand удар",

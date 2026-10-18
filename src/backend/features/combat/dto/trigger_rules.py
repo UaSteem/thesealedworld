@@ -49,8 +49,6 @@ class ParryTriggersDTO(BaseModel):
 class BlockTriggersDTO(BaseModel):
     """Триггеры этапа Блока (ON_BLOCK, ON_BLOCK_FAIL)."""
 
-    weapon_shield_bash_on_block: bool = False
-
     # Styles
     style_shield_reflect: bool = False  # Отражение урона
 

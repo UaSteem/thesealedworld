@@ -422,9 +422,7 @@ def test_analytics_table_expands_role_rows_only_when_multiple_behaviors() -> Non
     defensive = {"imprint_key": "starter_breaker_01:defensive", "imprint": "", "behavior": "defensive"}
 
     assert combat_ai_testing._expanded_analytics_table_rows([aggregate | {"role_rows": [aggressive]}]) == [aggregate]
-    assert combat_ai_testing._expanded_analytics_table_rows(
-        [aggregate | {"role_rows": [aggressive, defensive]}]
-    ) == [
+    assert combat_ai_testing._expanded_analytics_table_rows([aggregate | {"role_rows": [aggressive, defensive]}]) == [
         aggregate,
         aggressive,
         defensive,
@@ -451,14 +449,14 @@ def test_tactical_rows_show_trigger_rates_damage_and_actors() -> None:
                 "blue_duelist": {"style_dual_cross_cut": 3},
             },
             "tactical_damage_by_actor": {
-                "blue_guard": {"weapon_shield_bash_on_block": 9},
+                "blue_guard": {"shield_damage": 9},
                 "blue_duelist": {"offhand_attack": 21},
             },
             "tactical_reflected_by_actor": {"blue_guard": {"style_shield_reflect": 14}},
             "tactical_prevented_by_actor": {"blue_guard": {"style_shield_reflect": 30}},
             "tactical_chain_hits_by_actor": {"blue_duelist": {"offhand_attack": 2}},
             "tactical_shield_branch_by_actor": {"blue_guard": {"defense": 3, "counter": 1}},
-            "tactical_shield_damage_by_actor": {"blue_guard": {"weapon_shield_bash_on_block": 9}},
+            "tactical_shield_damage_by_actor": {"blue_guard": {"shield_damage": 9}},
             "tactical_shield_absorbed_by_actor": {"blue_guard": {"style_shield_reflect": 30}},
             "tactical_shield_reflected_by_actor": {"blue_guard": {"style_shield_reflect": 14}},
         },
@@ -1202,7 +1200,9 @@ async def test_family_pressure_launcher_exposes_imprint_select() -> None:
     assert table.actions[0].select_label == "Слепок"
     assert table.actions[0].select_options_key == "imprint_options"
     assert table.rows[0]["imprint_options"][0]["value"] == "starter_guard_01"
-    assert any(option["value"] == "starter_breaker_01" and option["selected"] for option in table.rows[0]["imprint_options"])
+    assert any(
+        option["value"] == "starter_breaker_01" and option["selected"] for option in table.rows[0]["imprint_options"]
+    )
     assert table.actions[1].action == "family_pressure_all_imprints"
     assert table.actions[1].label == "Все слепки"
     assert table.actions[1].input_name == "seed"
@@ -1448,7 +1448,7 @@ async def test_pve_survival_chart_compares_family_imprint_breakpoints(monkeypatc
                     "player_win_rate": 0.267,
                     "avg_player_hp": 5.0,
                     "avg_rounds": 24.0,
-                }
+                },
             ],
         },
     )

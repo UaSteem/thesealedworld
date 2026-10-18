@@ -19,7 +19,6 @@ OFFHAND_DB = {
             "evasion_penalty": -0.12,
             "parry_penalty": -0.02,
         },
-        triggers=["block.weapon_shield_bash_on_block"],
     ),
     "buckler": BaseItemDTO(
         id="buckler",
@@ -39,7 +38,6 @@ OFFHAND_DB = {
             "evasion_penalty": -0.08,
             "parry_penalty": -0.01,
         },
-        triggers=["block.weapon_shield_bash_on_block"],
     ),
     "kite_shield": BaseItemDTO(
         id="kite_shield",
@@ -59,7 +57,6 @@ OFFHAND_DB = {
             "evasion_penalty": -0.20,
             "parry_penalty": -0.035,
         },
-        triggers=["block.weapon_shield_bash_on_block"],
     ),
     "tower_shield": BaseItemDTO(
         id="tower_shield",
@@ -79,7 +76,6 @@ OFFHAND_DB = {
             "evasion_penalty": -0.30,
             "parry_penalty": -0.05,
         },
-        triggers=["block.weapon_shield_bash_on_block"],
     ),
 }
 

@@ -314,27 +314,4 @@ WEAPON_TRIGGER_CATALOG: list[TriggerCatalogEntryDTO] = [
             beast_event_texts=default_trigger_proc_event_texts("Рипост"),
         ),
     ),
-    TriggerCatalogEntryDTO(
-        key="combat.trigger.weapon.shield_bash_on_block",
-        technical=TriggerTechnicalDTO(
-            trigger_id="weapon_shield_bash_on_block",
-            event="ON_BLOCK",
-            chance=1.0,
-            pipeline_mutations=[pipeline_mutation("chain.trigger_extra_strike")],
-            allowed_sources=["weapon"],
-            display_policy="separate",
-            tags=["weapon", "shield", "block", "extra_strike"],
-        ),
-        descriptive=build_combat_description(
-            resource_type="trigger",
-            resource_id="weapon_shield_bash_on_block",
-            display_name="Ответ щитом",
-            short_description="Успешный блок открывает ответный удар щитом.",
-            humanoid_event_texts=CombatEventTextSetDTO(
-                block_proc=["{target} принимает удар щитом и отвечает корпусом."],
-                extra_strike=["{target} добавляет удар щитом."],
-            ),
-            beast_event_texts=default_trigger_proc_event_texts("Ответ щитом"),
-        ),
-    ),
 ]

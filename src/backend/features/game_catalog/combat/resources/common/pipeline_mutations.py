@@ -164,7 +164,6 @@ PIPELINE_MUTATION_CONTRACT_DEFINITIONS: tuple[PipelineMutationContractDTO, ...] 
     # Chain event commands. Cleave is intentionally excluded; target expansion belongs to collector/targeting.
     _contract("chain.trigger_offhand_attack", "result.chain_events.trigger_offhand_attack", "bool", True),
     _contract("chain.trigger_counter_attack", "result.chain_events.trigger_counter_attack", "bool", True),
-    _contract("chain.trigger_extra_strike", "result.chain_events.trigger_extra_strike", "bool", True),
     _contract("chain.preserve_feint", "result.chain_events.preserve_feint", "bool", True),
     _contract("ranged.current_position_step", "result.action_facts.ranged_current_position_step", "int", 1),
     _contract("ranged.current_position_min", "result.action_facts.ranged_current_position_min", "str", "mid"),

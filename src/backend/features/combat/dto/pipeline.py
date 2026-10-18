@@ -221,7 +221,6 @@ class ChainTriggersDTO(BaseModel):
 
     trigger_offhand_attack: bool = False  # Атака второй рукой
     trigger_counter_attack: bool = False  # Контратака
-    trigger_extra_strike: bool = False  # Дополнительный удар (перк)
     preserve_feint: bool = False  # Возвратить стоимость использованного финта
 
 

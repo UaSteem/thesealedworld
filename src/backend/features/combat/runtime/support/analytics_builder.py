@@ -347,8 +347,6 @@ class CombatAnalyticsFactBuilder:
             chains.append("oh")
         if result.chain_events.trigger_counter_attack:
             chains.append("ctr")
-        if result.chain_events.trigger_extra_strike:
-            chains.append("xs")
         if result.chain_events.preserve_feint:
             chains.append("pf")
         return chains

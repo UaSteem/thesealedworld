@@ -75,8 +75,15 @@ docs/game-design/rules/combat/active_actions.md
   subsequent-hit chain protection.
 - `skill_parrying` is wired into parry resolution and defense experience. It no
   longer scales shield block chance.
-- `skill_anatomy` and `skill_tactics` receive combat progression from combat
-  result power in the experience finalizer.
+- `skill_tactics` receives combat progression from combat result power.
+  `skill_anatomy` instead accumulates the HP actually restored by natural combat
+  regeneration in `xp_buffer.combat_hp_regenerated`. After battle, the experience
+  finalizer converts the total at **10 HP per action-power unit**, retaining
+  fractional units, then uses the normal attribute-weighted progression formula.
+  Outgoing/incoming damage, direct healing, HOT, lifesteal, Energy/stamina regen,
+  outside-combat regen and overheal do not grant this anatomy activity. Costs and
+  regen committed together count only the regen contribution remaining after
+  integer rounding and HP clamping. The skill does not advance during battle.
 - Support skills are projected into raw rules by `runtime/rules/support_skills.py`;
   the waterfall applies them once. For normalized skill `s`, Tactics multiplies
   attribute-derived evasion by `1+s`, anti-dodge by `1+3s`, and counter chance
