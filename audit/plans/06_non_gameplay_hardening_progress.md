@@ -75,3 +75,12 @@ Ruff и scoped mypy (`--follow-imports=silent`) прошли для 12 затр�
 Коммит шага: `fix(security): authorize privileged operational APIs` (на текущей ветке).
 Точный SHA доступен через `git log -1 --format=%H -- <этот файл>`.
 Дальнейшая работа остановлена до команды на шаг 2.
+
+Дополнение настройки шага 1: по поручению владельца заполнены приватные `.env`
+и `.env.prod`: разные local/prod read/write ключи, согласованные backend/frontend
+значения; Studio получает local read/write и production read, без production write.
+Прежние записи сохранены. Значения не выводились и не коммитятся. Для применения
+production настроек владелец заменяет GitHub secret `ENV_FILE` содержимым `.env.prod`.
+GitHub, production и перезапуск процессов в этом дополнении не выполнялись.
+Проверка: 8 изолированных ASGI-запросов с ключами обоих файлов прошли
+(anonymous deny, reader GET, reader mutation deny, writer mutation success).

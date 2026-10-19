@@ -29,7 +29,8 @@ Frontend admin callers получают явные серверные `BACKEND_O
 подставляются из обычного site-service key, не приходят из браузерных форм и
 не публикуются в HTML. Существующий `/admin` gate по superuser остаётся обязательным.
 Пустые настройки оставляют privileged API закрытыми; реальные значения задаются
-оператором отдельно, автоматического изменения `.env` нет.
+оператором отдельно. Backend `OPERATOR_*` и frontend `BACKEND_OPERATOR_*`
+должны содержать одинаковые значения соответствующих read/write capabilities.
 
 Для локальных операций Studio дополнительно допускается `LOCAL_OPERATOR_WRITE_KEY`.
 У production source write key отсутствует; simulation/config clients запрещают
@@ -115,6 +116,11 @@ Swagger/OpenAPI; кабинет `/admin`, публичный API и WebSocket-м
 Проверка конфигурации не является деплоем или разрешением перезапуска сервисов.
 
 Deploy workflow получает production `.env` из GitHub secret `ENV_FILE` и записывает его на сервер перед запуском Compose.
+
+Локальный приватный `.env.prod` служит источником этого secret: после изменения
+capabilities нужно заменить содержимое `ENV_FILE` целиком. Изменение локального
+файла само по себе не обновляет GitHub или уже запущенные процессы. `.env` и
+`.env.prod` не коммитятся; `.env.prod.example` содержит только пустые поля.
 
 Правила:
 
