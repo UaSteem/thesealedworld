@@ -720,3 +720,70 @@ unverified; полное operational закрытие A08-11 не заявляе
 
 Ожидается; после независимой ревизии — reviewed-awaiting-acceptance,
 accepted только по явному принятию владельца.
+
+
+### Продолжение A08-11: доступ к GitHub
+
+Поручение владельца: «давай всё-таки настроим доступ к гиту так чтобы ты мог
+настроить защиты ... это в целом доступно или нет?» Дополнение: сравнить MCP
+GitHub и GitLab. Это продолжение открытой operational части A08-11, выбранный
+режим с ревизором сохраняется, повторный выбор не требуется.
+
+Требования: R8 — настроить пользовательскую авторизацию gh через официальный
+browser flow, не просить пароль/токен в чате и не печатать credential; R9 — после
+входа только прочитать фактические permissions/environment/main protections,
+подготовить конкретные изменения защиты к review, без push/deploy; R10 — сравнить
+доступные в чате tools с официальными MCP-возможностями, не устанавливая GitLab
+и не меняя hosting проекта. Remote protection writes — после подготовки точного
+результата и проверки прав; никакого автоматического назначения reviewers наугад.
+
+План: web login с подтверждением владельцем; проверить auth/repository role;
+прочитать rules и scope secrets (только metadata, не values); подготовить изменения
+и независимую проверку. Сравнение MCP выполнено по официальным источникам;
+у текущего connector нет environment/protection tools, gh пока не авторизован.
+R8 pending; R9 pending; R10 done (обычная проверка документации, не подключение).
+
+### Operational continuation 2026-10-20: protections
+
+Owner explicitly authorized configuring GitHub protections after successful login.
+R8: gh authenticated as CodexDLC; admin access confirmed. Commit/PR authorship stays
+CodexDLC, no AI coauthor trailers. R9 extends to applying and reading back the
+following concrete settings, without push/deploy or reading/writing secret values.
+R11: main requires PR (zero human approvals for sole operator), strict required
+Full Quality and Docs from GitHub Actions, admin enforcement, resolved conversations,
+no force pushes/deletions. develop remains directly writable for current workflow.
+R12: production requires CodexDLC approval, self approval allowed, admin bypass off,
+custom deployment branch main only (no tags). Existing repository secrets untouched;
+secret migration remains explicitly open. Current remote workflow predates local
+A08-11: environment gate does not protect workflows until they reference it.
+Plan: independently review JSON payloads in var/audit/a0811-remote, apply via API,
+read back exact settings, independent verification, report limits and commit MD.
+Live baseline: main/develop protected=false, zero environments, no repository
+rulesets; four repository secret names ENV_FILE/HOST/SSH_KEY/USERNAME.
+Remote CI main run 27161231761 has successful Full Quality and Docs.
+R11/R12 implementation pending; independent verification pending.
+
+### Applied configuration and independent verification
+
+2026-10-20: all three API mutations succeeded. Required check app binding verified
+against live check-runs (github-actions app15368). Separate GET readback assertions
+passed for every configured field; ignored evidence: var/audit/a0811-remote/readback.json.
+Fresh independent reviewer remote_protection_review (fork_turns=none) reviewed
+neutral requirements and payloads before mutation, then independently fetched actual
+settings and confirmed R11/R12 configuration. No blocking findings.
+
+- [x] R8 user auth: done/pass (actual CodexDLC identity/admin access verified).
+- [x] R11 main policy: done/pass, independent actual GET; PR count0, strict quality
+  check, admins enforced, conversation resolution, force/delete prohibited.
+- [x] R12 environment configuration: done/pass, independent actual GET; CodexDLC
+  reviewer, self approval allowed, admin bypass disabled, branch main only.
+- R9 actual remote configuration applied and verified; overall deployment behavior
+  remains partial until updated workflow reaches main and repository secrets are
+  migrated safely. No secret values read/written; four existing names unchanged.
+
+Important limitation: current remote deploy workflow does not reference production
+and therefore is not gated by this environment. No push, deploy, live denial trial,
+credential migration or gameplay change occurred. develop remains unprotected and
+writable intentionally for existing one-task-at-a-time workflow. Admin retains
+ability to edit settings; enforcement covers ordinary branch/deployment operations.
+State: reviewed-awaiting-acceptance for configuration, A08-11 operational partial.
