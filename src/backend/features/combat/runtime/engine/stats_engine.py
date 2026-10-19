@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import Any
 
 from loguru import logger as log
@@ -6,6 +7,7 @@ from pydantic import ValidationError
 from src.backend.core.calculators.stats_waterfall_calculator import StatsWaterfallCalculator
 from src.backend.features.character.runtime.rules.base_power_assembler import BasePowerAssembler
 from src.backend.features.combat.dto.actor import ActorLoadoutDTO, ActorRawDTO, ActorSnapshot, ActorStats
+from src.backend.features.combat.runtime.engine.modifier_application_service import ModifierApplicationService
 from src.shared.schemas.modifier_dto import CombatModifiersDTO, CombatSkillsDTO
 
 TRACE_MOD_KEYS = (
@@ -71,6 +73,7 @@ class StatsEngine:
         Гарантирует, что у актера есть актуальные ActorStats.
         Если stats нет или они 'грязные' -> пересчитывает.
         """
+        StatsEngine.sync_effect_modifiers([actor])
         if actor.stats is None:
             # Полный пересчет (первый запуск)
             StatsEngine._recalculate_full(actor)
@@ -80,6 +83,48 @@ class StatsEngine:
             StatsEngine._recalculate_full(actor)
 
         # Если stats есть и dirty_stats пуст -> ничего не делаем (используем кэш)
+
+    @staticmethod
+    def sync_effect_modifiers(actors: list[ActorSnapshot]) -> None:
+        """Materialize only active effect-owned commands; preserve unrelated temp sources.
+
+        The owning effect stores resolved values, including for foreign recipients.
+        Action boundaries pass all loaded actors; ensure_stats also handles local
+        effects, so cached stats observe personal counter transitions after reload.
+        """
+        by_id = {str(actor.char_id): actor for actor in actors}
+        for owner in actors:
+            for effect in owner.statuses.effects:
+                if effect.resolved_temp_commands is None:
+                    # Existing snapshots already contain resolved numeric raw values.
+                    commands = ModifierApplicationService.capture_commands(actors, effect.modified_sources)
+                    expected = {source_id for ids in effect.modified_sources.values() for source_id in ids}
+                    if expected <= {command["source_id"] for command in commands}:
+                        effect.resolved_temp_commands = commands
+                else:
+                    commands = effect.resolved_temp_commands
+                active = effect.active_from_exchange <= owner.meta.exchange_counter < effect.expire_at_exchange
+                for command in commands:
+                    recipient = by_id.get(str(command["actor_id"]))
+                    if recipient is None:
+                        continue
+                    layer = getattr(recipient.raw, command["layer"])
+                    key = command["stat_key"]
+                    data = layer.get(key)
+                    if not isinstance(data, dict):
+                        if not active:
+                            continue
+                        data = {"base": data if data is not None else command["base"], "source": {}, "temp": {}}
+                        layer[key] = data
+                    temp = data.setdefault("temp", {})
+                    source_id = command["source_id"]
+                    if active:
+                        if temp.get(source_id) != command["command"]:
+                            temp[source_id] = deepcopy(command["command"])
+                            recipient.dirty_stats.add(key)
+                    elif source_id in temp:
+                        del temp[source_id]
+                        recipient.dirty_stats.add(key)
 
     @staticmethod
     def build_stats(

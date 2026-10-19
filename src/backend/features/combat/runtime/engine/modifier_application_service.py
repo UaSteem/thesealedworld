@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from copy import deepcopy
 from dataclasses import dataclass, field
 from typing import TYPE_CHECKING, Literal
 
@@ -55,6 +56,48 @@ class ModifierApplicationService:
             applied.modified_sources.setdefault(stat_key, []).append(source_id)
 
         return applied
+
+    @staticmethod
+    def capture_commands(actors, modified_sources: dict[str, list[str]]) -> list[dict]:
+        """Freeze numeric temp commands and their actual recipients during calculate."""
+        commands = []
+        for actor in actors:
+            if actor is None:
+                continue
+            for layer_name in ("attributes", "modifiers"):
+                layer = getattr(actor.raw, layer_name)
+                for stat_key, source_ids in modified_sources.items():
+                    stat_data = layer.get(stat_key)
+                    if not isinstance(stat_data, dict):
+                        continue
+                    for source_id in source_ids:
+                        if source_id in stat_data.get("temp", {}):
+                            commands.append(
+                                {
+                                    "actor_id": str(actor.char_id),
+                                    "layer": layer_name,
+                                    "stat_key": stat_key,
+                                    "source_id": source_id,
+                                    "command": deepcopy(stat_data["temp"][source_id]),
+                                    "base": stat_data.get("base", 0.0),
+                                }
+                            )
+        return commands
+
+    @staticmethod
+    def apply_commands(commands: list[dict], actors: dict[str, ActorSnapshot]) -> None:
+        for command in commands:
+            actor = actors.get(str(command["actor_id"]))
+            if actor is None:
+                continue
+            layer = getattr(actor.raw, command["layer"])
+            stat_key = command["stat_key"]
+            data = layer.get(stat_key)
+            if not isinstance(data, dict):
+                data = {"base": data if data is not None else command["base"], "source": {}, "temp": {}}
+                layer[stat_key] = data
+            data.setdefault("temp", {})[command["source_id"]] = deepcopy(command["command"])
+            actor.dirty_stats.add(stat_key)
 
     @staticmethod
     def source_id(owner: ModifierApplicationOwner, owner_uid: str, owner_id: str, modifier_id: str) -> str:

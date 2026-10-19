@@ -74,6 +74,9 @@ class ContextBuilder:
     @staticmethod
     def _apply_external_mods(ctx: PipelineContextDTO, mods: dict[str, Any]) -> None:
         """Apply executor-level branch modifiers before semantic analysis."""
+        if "incrementing_actor_ids" in mods:
+            ctx.flags.meta.incrementing_actor_ids = set(mods["incrementing_actor_ids"])
+        ctx.flags.meta.defer_queued_statuses = bool(mods.get("defer_queued_statuses", False))
         if mods.get("disable_attack"):
             ctx.phases.run_calculator = False
 

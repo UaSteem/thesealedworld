@@ -237,6 +237,8 @@ class ActiveEffectDTO(BaseModel):
     modified_keys: list[str] = Field(default_factory=list)
     # Точные source ids внутри raw.*.temp по каждому ключу.
     modified_sources: dict[str, list[str]] = Field(default_factory=dict)
+    # None is a legacy static-catalog fallback; [] explicitly means no commands.
+    resolved_temp_commands: list[dict[str, Any]] | None = None
 
 
 class ActorStatusesDTO(BaseModel):

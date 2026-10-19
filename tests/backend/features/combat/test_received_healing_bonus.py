@@ -145,14 +145,26 @@ def test_lifesteal_scales_recipient_and_commits_once(monkeypatch):
     assert sum(fact.delta for fact in ctx.result.resource_facts if fact.actor_id == source.char_id) == 30
 
 
-def test_heal_bonus_does_not_multiply_passive_regen_in_same_action():
+def test_heal_bonus_does_not_multiply_passive_regen_at_exchange_finalization():
     source = actor(1)
     ctx = context(source, source)
     ctx.stages.calculate_healing = True
     ctx.override_damage = (20, 20)
     healing_step.run(source.stats, source.stats, ctx, ctx.result)
-    AbilityService._register_combat_hp_regen(ctx, source)
-    MechanicsService().apply_interaction_result(ctx, source, None, ctx.result)
+    mechanics = MechanicsService()
+    mechanics.apply_interaction_result(ctx, source, None, ctx.result)
+    assert source.meta.hp == 40
+    assert source.xp_buffer.get("combat_hp_regenerated", 0) == 0
+    target = actor(2)
+    regen_result = mechanics.apply_exchange_regen(source, target)
+    assert (
+        next(
+            fact.delta
+            for fact in regen_result.resource_facts
+            if fact.actor_id == source.char_id and fact.resource == "hp"
+        )
+        == 4
+    )
     assert source.stats.mods.combat_hp_regen == 4
     assert source.meta.hp == 44  # 10 + 20 * 1.5 + 4, not (20 + 4) * 1.5.
     assert source.xp_buffer["combat_hp_regenerated"] == 4

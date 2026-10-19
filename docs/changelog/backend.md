@@ -4,6 +4,10 @@ Detailed milestone history for the `src/backend` game runtime layer.
 
 ## [Unreleased]
 
+- Frozen the five-family Monsters alpha catalog, tier admissions, two-pool
+  composition and portable benchmark evidence; documented the separate GS,
+  actor issuance, Rift and Exploration migrations still needed for gameplay.
+
 - Rift backend now includes a hex-world runtime slice with tile-set loading,
   layout presets, Redis persistence, and focused service/API coverage.
 
