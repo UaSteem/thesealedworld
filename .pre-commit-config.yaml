@@ -40,10 +40,14 @@ repos:
         additional_dependencies: ["bandit[toml]"]
 
   # 1. Проверка библиотек на уязвимости (CVE)
-  - repo: https://github.com/pypa/pip-audit
-    rev: v2.10.0
+  - repo: local
     hooks:
       - id: pip-audit
+        name: pip-audit (project .venv)
+        language: system
+        entry: python -I tools/dev/pip_audit_project.py
+        pass_filenames: false
+        always_run: true
         args:
           - "--local"
           - "--timeout"
@@ -62,7 +66,6 @@ repos:
           - "CVE-2026-34993"  # aiohttp held by aiogram <3.14 constraint
           - "--ignore-vuln"
           - "CVE-2026-47265"  # aiohttp held by aiogram <3.14 constraint
-        additional_dependencies: ["pip-audit[toml]", "toml"]
 
   # 2. Поиск "забытых" секретов и паролей (усиленный)
   - repo: https://github.com/Yelp/detect-secrets

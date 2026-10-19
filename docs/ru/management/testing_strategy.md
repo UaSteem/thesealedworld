@@ -33,6 +33,35 @@ Recommended pytest addopts shape:
 addopts = "--tb=short --cov=src --cov-report=term-missing"
 ```
 
+## Dependency Audit Hook
+
+The local `pip-audit` hook runs `tools/dev/pip_audit_project.py`. The helper
+selects this checkout's existing `.venv` interpreter explicitly and invokes
+`python -I -m pip_audit`, not the interpreter of an isolated pre-commit environment.
+It does not install/sync packages or modify `uv.lock`. A missing environment,
+missing scanner or scanner error fails the gate. Source filenames are not passed
+to pip-audit; the hook always runs and preserves its existing seven vulnerability
+exceptions and 15-second service timeout.
+
+From the prepared project environment:
+
+```powershell
+python -m pre_commit run pip-audit --all-files
+```
+
+This checks installed application/development packages, not a reproducible lock
+export or a deployed image. Scanner-skipped unpublished distributions remain
+unknown. A successful hook is not proof that every private distribution or
+production artifact is vulnerability-free. Newly reported advisories fail the
+hook; do not add exceptions or upgrade unrelated dependencies merely to make a
+tooling change pass. Review those findings as a separate task.
+
+Security-fix floors live in `tool.uv.constraint-dependencies`, preserving upstream
+requirements rather than overriding conflicts. Commit `uv.lock` with manifest
+updates. `codex-ai==0.2.4` resolves from its published distribution, matching the
+Docker source policy; the obsolete sibling-checkout path is removed. The dev-only
+`graphifyy` dependency is installed only on Python <3.14, as required by its metadata.
+
 ## Test Layout
 
 Tests live outside `src/` under the repository-level `tests/` package.

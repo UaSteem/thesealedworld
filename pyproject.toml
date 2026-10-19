@@ -17,23 +17,34 @@ dependencies = [
     "loguru>=0.7.3",
     "prometheus-client>=0.25.0",
     "pydantic[email]>=2.13.3",
-    "pydantic-settings>=2.14.0",
+    "pydantic-settings>=2.14.2",
     "redis>=5.0,<6",
     "rich>=13.9.4",
     "sqlalchemy>=2.0.49",
     "uvicorn>=0.46.0",
     "authx==1.6.0",
     "mako>=1.3.12",
-    "urllib3>=2.7.0",
+    "urllib3>=2.8.0",
     "codex-ai==0.2.4",
 ]
 
 [tool.uv]
+# Minimum security-fix versions; constraints preserve upstream compatibility requirements.
+constraint-dependencies = [
+    "aiohttp>=3.14.4",
+    "anyio>=4.14.2",
+    "cryptography>=50.0.0",
+    "idna>=3.15",
+    "msgpack>=1.2.1",
+    "multidict>=6.9.1",
+    "pip>=26.2",
+    "pymdown-extensions>=11.0.1",
+    "pyasn1>=0.6.4",
+    "pyjwt>=2.15.0",
+    "starlette>=1.3.1",
+    "virtualenv>=21.7.13",
+]
 default-groups = ["dev", "backend-runtime", "frontend-runtime", "tg-bot"]
-
-[tool.uv.sources]
-codex-ai = { path = "../../codex_tools/codex-ai" }
-
 
 [tool.hatch.version]
 source = "vcs"
@@ -48,12 +59,12 @@ backend-runtime = [
     "boto3>=1.35.0",
     "google-genai>=0.3.0",
     "codex-ai[gemini]==0.2.4",
-    "pillow>=12.0.0",
-    "pymongo>=4.13",
+    "pillow>=12.3.0",
+    "pymongo>=4.18.2",
 ]
 docs = [
     "mkdocs==1.6.1",
-    "mkdocs-material==9.5.49",
+    "mkdocs-material==9.7.7",
     "mkdocstrings[python]==0.27.0",
 ]
 dev = [
@@ -67,13 +78,13 @@ dev = [
     "pip-audit",
     "bandit[toml]",
     "djlint>=1.36.4",
-    "graphifyy>=0.5.4",
+    "graphifyy>=0.5.4; python_version < '3.14'",  # upstream supports Python <3.14
 ]
 frontend-runtime = [
-    "aiosmtplib>=3.0.0",
+    "aiosmtplib>=5.1.2",
     "httpx>=0.28.1",
     "jinja2>=3.1.6",
-    "python-multipart>=0.0.20",
+    "python-multipart>=0.0.31",
 ]
 tg-bot = [
     "aiogram>=3.0",

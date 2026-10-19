@@ -1,5 +1,19 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Шаг 5.2 технической очереди — 19.10.2026
+
+- [x] **A06-12:** pre-commit audit использует project `.venv` вместо hook
+  environment, передаёт scanner exit и не принимает source paths как requirements.
+- После отдельной команды владельца выполнены совместимые security updates
+  manifest/lock/окружения. Live project audit теперь проходит без `SKIP` и новых
+  waiver IDs. `uv lock --check` и `uv pip check` прошли.
+- **243 passed** в адресном наборе с настоящими disposable хранилищами;
+  docs build прошёл. Широкое сравнение до/после сохраняет 943 pass / 17 skip /
+  3 прежних stale test failures; полного зелёного gate не заявляется.
+- [План, evidence и границы](plans/06_non_gameplay_hardening_progress.md#шаг-52).
+  Удаление broken local source и Python marker dev-tool — prerequisites
+  обновления. Другие CI/artifact gates не менялись; production не затрагивалась.
+
 ## Шаг 5.1 технической очереди — 19.10.2026
 
 - [x] **A08-12:** workflow готовит env в приватном temp (`umask 077`/`mktemp`),

@@ -19,7 +19,7 @@
 | 2 | Воспроизводимые миграции сайта на пустой PostgreSQL и обновление существующей схемы | A05-13 | Исправлено и проверено; остановка до команды на шаг 3 |
 | 3 | Токены и персональные данные в логах и метриках | A08-05/06/07 | Исправлено и проверено; остановка до команды на шаг 4 |
 | 4 | Logout, expiry/revoke открытых WebSocket и атомарная ротация refresh | A07-10/16, A05-12 | Исправлено и проверено; остановка до команды на шаг 5 |
-| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12 исправлена; остальные задачи ждут отдельной команды |
+| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12 и 5.2 A06-12 исправлены; совместимые security updates по дополнительной команде; остановка |
 | 6 | Восстановление Streams pending с доказанной идемпотентностью эффектов | A05-05 | Ждёт команды |
 | 7 | Надёжное принятие и восстановление GenerationAI; срок жизни SQL-транзакций | A04-11/12/13/18, A05-07/08, A09-09 | Ждёт команды; перед реализацией разделить |
 | 8 | Производительность архива чата, backpressure, Mongo projection, предел истории вкладки | A09-03/04/08/11 | Ждёт команды; перед реализацией разделить |
@@ -260,3 +260,60 @@ Production umask/ACL не проверялись; root/deploy user остают�
 Полный project gate не запускался. Пример/secret менять не нужно.
 Commit subject: `fix(deploy): write production env with private permissions`.
 Остановиться до команды на следующую отдельную задачу группы 5.
+
+## Шаг 5.2
+
+Выбрана только A06-12: область проверки pre-commit `pip-audit`. Прежний hook
+сканировал собственное изолированное окружение: FastAPI/SQLAlchemy там отсутствуют,
+хотя project `.venv` содержит версии 0.136.1/2.0.49. Исправление подготовлено:
+local/system hook вызывает helper через `python -I`, helper выбирает interpreter
+этого checkout `.venv` и запускает `python -I -m pip_audit`. Никаких sync/install,
+изменений зависимостей, `uv.lock`, source policy или новых waiver IDs нет.
+Семь прежних hook exceptions и timeout 15 сохранены. `pass_filenames: false`
+исключает source paths из scanner input, `always_run: true` сохраняет gate.
+Отсутствующие environment/scanner и scanner errors дают ненулевой exit.
+
+Проверки: **8 passed**, включая настоящие временные venv и pre-commit CLI.
+Synthetic application package 1.2.3 присутствует в scanner inventory, отсутствует
+в outer environment; clean/advisory/error exit codes 0/1/2 передаются вызывающему.
+Ruff, scoped mypy helper и pre-commit config validation прошли. При настоящем
+repo pre-commit прошли остальные применимые hooks; project audit завершился 1.
+
+```powershell
+.venv/Scripts/python.exe -m pytest tests/tools/test_pip_audit_project.py --no-cov -q
+.venv/Scripts/python.exe -m pre_commit run pip-audit --all-files
+```
+
+Live scanner сообщил 17 packages, 121 advisory rows / 76 unique IDs; aliases и
+дубли не равны 121 независимым подтверждённым уязвимостям. Среди результатов:
+`pydantic-settings 2.14.0` (`CVE-2026-58203`), `urllib3 2.7.0`
+(`PYSEC-2026-4175/4176/4177`). `codex-ai` и `thesealedworld` пропущены scanner как
+не найденные на PyPI — это unknown, не clean. Summary находится в ignored
+`var/audit/a0612_project_audit_summary.json`, полный вывод hooks —
+`var/audit/a0612_precommit_checks.txt`. Это аудит installed packages, не lock
+export, не deployed image и не отдельная верификация применимости advisories.
+
+Владелец не разрешал пропуск hook; вместо этого отдельно поручил обновить
+уязвимые библиотеки при совместимости. Выполнено согласованное security-обновление
+`pyproject.toml`/`uv.lock` и project `.venv`: новый audit hook теперь проходит
+без `SKIP`, с прежними семью exceptions. `uv lock --check` и `uv pip check`
+проходят; в рабочем окружении 153 совместимых packages.
+
+Необходимые prerequisites: устаревший несуществующий local source `codex-ai`
+удалён, используется уже заявленный published `codex-ai==0.2.4` как в Docker.
+Совместимость используемых API и широких тестов проверена. Dev-only `graphifyy`
+ограничен Python <3.14 согласно upstream metadata; Python3.13 остаётся поддержан.
+Новыми override/waiver конфликтующие зависимости не маскировались.
+
+Итог: **243 passed** в рабочем `.venv` с real disposable PostgreSQL/Redis/MongoDB,
+ASGI/WebSocket/Nginx и новым hook. MkDocs build прошёл. В широком сравнении до/после
+одинаково **943 passed, 17 skipped, 3 failed**: прежние stale site analytics tests
+ожидают числовые значения вместо `—`. Новых регрессий не найдено, эти три теста
+не менялись. Full project gate не заявляется зелёным. Контейнеры удалены.
+Live project hook: `No known vulnerabilities found`; только сам unpublished
+`thesealedworld` пропущен scanner, source приложения этим не аудируется.
+
+Версии, команды и ограничения: [security update](07_dependency_security_update.md).
+Commit subject: `fix(quality): audit project dependencies and apply security updates`.
+Production и `.env` не менялись. Другие задачи группы 5 не выполняются без команды;
+удаление broken source выше — prerequisite одобренного обновления, не аттестация CI.
