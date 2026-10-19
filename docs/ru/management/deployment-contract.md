@@ -171,10 +171,41 @@ appleboy Actions entrypoint скачивает версионированные 
 `drone-scp 1.8.0` release assets без checksum. Buildx и setup Actions также могут
 скачивать инструменты; hosted runner, apt repositories и PyPI build inputs этой
 фиксацией не замораживаются. Это не полная транзитивная attestation и не доказательство
-побитовой воспроизводимости сборки. Source policy рассматривается отдельно (A08-10).
+побитовой воспроизводимости сборки. Контракт Python sources описан ниже (A08-10).
 
 Синтаксис и границы: [GitHub Actions pinning](https://docs.github.com/en/actions/reference/security/secure-use),
 [Dockerfile frontend digest](https://docs.docker.com/build/buildkit/frontend/).
+
+## Источники Python-зависимостей CI и Docker
+
+CI и все шесть Python Dockerfile используют uv `0.11.19`, один manifest и
+`uv.lock`. CI выполняет `uv sync --locked`; Docker — `uv export --locked`
+с учётом объявленных project sources, без `--no-sources` и без `--frozen`.
+Несогласованный manifest/lock блокирует установку/export; отсутствующий source
+не заменяется молча опубликованным пакетом.
+
+Текущий `codex-ai==0.2.4` и остальные внешние packages разрешены из published
+PyPI sources, записанных в lock. После export Docker pip устанавливает
+requirements с `--require-hashes`. Export сохраняет hashes, а package versions
+и выбранный архив должны соответствовать lock. При неверном хеше установка
+завершается ошибкой. Для проверки установленного wheel можно использовать
+`pip install --report <report.json>` и сверить URL/`archive_info.hashes.sha256`
+с wheel entries в lock.
+
+Состав окружений намеренно различается: CI jobs включают dev/docs группы, а
+Docker использует существующие `--no-dev --group ... --no-emit-project` flags
+и прежние default runtime groups. Согласование sources не меняет библиотечные
+версии и не перераспределяет runtime groups. Local project editable install
+в CI и отсутствие project package в export — ожидаемое различие.
+
+`tests/deploy/test_dependency_sources.py` проверяет согласованность инструмента,
+locked export и hash checking. Он включён в develop behavioral gate. Это контракт
+Python dependency resolution, не фиксация apt repositories, build-tool archives,
+hosted runner и не полная воспроизводимость конечного production image.
+
+Форматы: [uv locking/export](https://docs.astral.sh/uv/concepts/projects/sync/),
+[pip hash checking](https://pip.pypa.io/en/stable/topics/secure-installs/),
+[pip installation reports](https://pip.pypa.io/en/stable/reference/installation-report/).
 
 ## Env и Secrets
 

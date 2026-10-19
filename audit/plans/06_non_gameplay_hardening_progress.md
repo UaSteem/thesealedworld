@@ -19,7 +19,7 @@
 | 2 | Воспроизводимые миграции сайта на пустой PostgreSQL и обновление существующей схемы | A05-13 | Исправлено и проверено; остановка до команды на шаг 3 |
 | 3 | Токены и персональные данные в логах и метриках | A08-05/06/07 | Исправлено и проверено; остановка до команды на шаг 4 |
 | 4 | Logout, expiry/revoke открытых WebSocket и атомарная ротация refresh | A07-10/16, A05-12 | Исправлено и проверено; остановка до команды на шаг 5 |
-| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12, 5.2 A06-12, 5.3 A06-05, 5.4 A06-06, 5.5 A06-09 и 5.6 A08-09 исправлены; A08-10/11 ждут команды |
+| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12, 5.2 A06-12, 5.3 A06-05, 5.4 A06-06, 5.5 A06-09 и 5.6 A08-09 и 5.7 A08-10 исправлены; A08-11 ждёт команды |
 | 6 | Восстановление Streams pending с доказанной идемпотентностью эффектов | A05-05 | Ждёт команды |
 | 7 | Надёжное принятие и восстановление GenerationAI; срок жизни SQL-транзакций | A04-11/12/13/18, A05-07/08, A09-09 | Ждёт команды; перед реализацией разделить |
 | 8 | Производительность архива чата, backpressure, Mongo projection, предел истории вкладки | A09-03/04/08/11 | Ждёт команды; перед реализацией разделить |
@@ -498,3 +498,115 @@ assets без checksum; tool downloads, hosted runner, apt и PyPI build inputs 
 не полная supply-chain attestation. A08-10 source policy и A08-11 approvals/ref/
 concurrency остаются отдельными задачами. Gameplay, зависимости, env и secrets
 не менялись; push/deploy не выполнялись. Остановка после commit до команды.
+
+
+## Шаг 5.7 — файл задачи A08-10
+
+Режим: с ревизором. Состояние: reviewed-awaiting-acceptance.
+Рабочий каталог: `D:/Workspace/personal/pets/TurnBasedMMORPG`, ветка `develop`,
+исходный commit `2ac758cf`, рабочее дерево перед задачей чистое.
+Этот раздел — согласованный файл текущей задачи; отдельный конкурирующий план
+не создаётся.
+
+### Исходное задание и уточнения
+
+Владелец: «Давай следующую задачу шага 5 — A08-10, согласование источников
+зависимостей в CI и Docker. Так же по одной: исправляешь, проверяешь, коммитишь
+и ждёшь команды дальше». Затем выбран режим: «Да — с ревизором и файлом задачи».
+Ранее: текущая ветка без новой ветки, не менять gameplay; без push/deploy.
+Историческая A08-10 и текущие Dockerfile/CI/manifest/lock — первичные материалы.
+
+### Требования и ограничения
+
+- [x] R1: выполнить только A08-10, согласовать dependency sources CI/Docker;
+  остальные задачи очереди не выполнять. Источник: запрос владельца.
+- [x] R2: сохранить текущую ветку, gameplay, env/secrets и production;
+  проверить, закоммитить и остановиться без push/deploy. Источник: порядок владельца.
+- [x] R3: вести требования/доказательства в этом файле, провести независимую
+  ревизию перед итоговым отчётом. Источник: выбор владельца и task-review-gate.
+- [x] R4: чистый CI и Docker используют согласованный published source из
+  `pyproject.toml`/`uv.lock`; отсутствующий sibling и игнорирование источников
+  не служат fallback. Источник: проверяемый контракт A08-10.
+- [x] R5: подтвердить clean locked install/export, identity выбранных packages
+  и hash provenance установленного Docker wheel; неверный lock/hash/source
+  должен блокировать проверяемый путь. Источник: критерии исходной находки.
+
+### Предположения и первоначальный план
+
+Текущий manifest/lock уже не содержит local codex-ai source после A06-05.
+Принимается существующий published набор версий; обновление app libraries и
+перераспределение runtime groups не являются целью этой задачи.
+Проверить шесть Python Dockerfile и CI, устранить различающийся source policy,
+проверить в чистом Linux Python 3.13 без host venv/siblings/env, затем независимая
+ревизия, исправление замечаний, commit и остановка. Hosted Actions и production
+не запускать; локальные fixtures/одноразовые контейнеры допускаются для проверки.
+
+### Выполнение и доказательства
+
+| ID | Реализация | Ревизия | Доказательство |
+| --- | --- | --- | --- |
+| R1 | done | pass | Diff ограничен A08-10, gameplay/manifest/lock не менялись |
+| R2 | done | pass | Ревизор проверил task commit на develop и чистое дерево; финальная запись MD-only |
+| R3 | done | pass | Требования до реализации, независимый reviewer без истории |
+| R4 | done | pass | 6 locked exports без source bypass; uv 0.11.19 в CI/Docker |
+| R5 | done | pass | Реальные builders и wheel provenance; отказы lock/source/hash |
+
+### Наблюдения исполнителя и приёмка ведущего
+
+Изменения: все шесть exports используют `--locked` и project sources; явный
+`--require-hashes`; uv `0.11.19` в CI и Docker. Default runtime groups и app
+versions сохранены. Семь policy cases включены в develop behavioral suite.
+В минимальном контексте manifest/lock (без src, env, siblings и host venv)
+собраны реальные builder stages backend/frontend/tg (три export variants) на
+Linux Python 3.13.16. Это builder tests, не шесть готовых runtime images.
+
+В одноразовом backend builder: `uv sync --locked --all-groups --no-install-project`
+успешен. `--no-install-project` исключает только editable project из минимального
+контекста; это проверка CI dependency install, не полный hosted checkout/gate.
+Проверочная force-reinstall `codex-ai==0.2.4` в созданном builder venv выполнена
+с `pip --require-hashes --report` (не отчёт массовой установки всех packages):
+URL соответствует wheel entry lock, SHA-256
+`174fb2645df06ab33e8ded65bc6eefab48bd55df81ac63043cf9dd6684476f01`.
+`pip check` прошёл, lock не менялся. Compatible manifest drift блокирует export
+и sync с точной ошибкой `--locked`; missing sibling source блокирует оба пути;
+неверный wheel hash блокирует pip. App versions/groups не менялись.
+
+Ведущий: `pytest tests/deploy --no-cov -q` с обоими Docker opt-ins —
+**104 passed**; Ruff check/format нового test прошли. Evidence (ignored):
+`var/audit/a0810-deploy-tests.txt`, `a0810-{backend,frontend,tg}-build.txt`,
+`a0810-verification.txt`, `a0810-context/verify.py`, `identity-summary.json`,
+`pip-report.json`, `ci-clean-sync.txt`, `ci-identity.txt`, `stale-*.txt`,
+`missing-source-*.txt`, `wrong-hash.txt`, `pip-check.txt` в том же context directory.
+
+### Независимая ревизия и разбор замечаний
+
+19.10.2026, отдельный агент `a0810_independent_review` с `fork_turns=none`.
+Первоначально получил только исходные требования/ограничения и план, без отчёта
+исполнителя. Первичный вердикт: R1/R3/R4/R5 pass; R2 partial только до commit.
+Блокирующих замечаний нет. Самостоятельно выполнил 31 policy/reference tests,
+в offline Linux builder проверил Python/uv, installed codex-ai version и совпадение
+manifest/lock с checkout; сравнил тело exported requirements. Прочитал actual
+builder logs, verify.py, pip report и точные negative logs, сверил URL/hash с lock.
+
+Ограничения ревизора: hosted/full runtime/production не проверялись; полные
+сетевые install/negative cases повторно не выполнялись. Его дополнительный
+опыт со stale lock offline остановился на metadata cache miss и не используется
+как доказательство lock gate; точный refusal подтверждён исходными online logs.
+После фиксации первого заключения ревизору переданы точные claims C1–C7:
+конфигурация и неизменность app versions/groups; три builder variants; external
+CI deps с no-install-project; проверочная codex-ai wheel reinstall; точные
+negative cases; root 104 tests и reviewer 31 tests; границы hosted/runtime/prod.
+Все семь подтверждены, опровержений и неподтверждённых утверждений нет.
+После commit ревизор отдельно проверил оставшийся R2: task commit существует
+на develop, рабочее дерево чистое, scope не расширен. R2 pass; все R-ID закрыты.
+Ревизор подтвердил: финальная запись этого результата через MD-only amend того
+же task commit не требует повторной ревизии неизменённого кода. Итоговый SHA
+определяется `git log -1` после amend, а не записывается внутрь самого commit.
+Все commit hooks первого commit прошли, включая pip-audit и hadolint.
+Три временных builder images удалены после проверки; evidence logs сохранены.
+Следующая задача A08-11 не начиналась.
+
+### Принятие пользователем
+
+Ожидается. После ревизии состояние `reviewed-awaiting-acceptance`; только явное
+принятие владельцем изменяет его на `accepted`.

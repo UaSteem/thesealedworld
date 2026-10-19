@@ -1,5 +1,14 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Шаг 5.7 технической очереди — 19.10.2026
+
+- [x] **A08-10:** CI и Docker согласованы на uv 0.11.19, locked export без
+  игнорирования sources, обязательные hashes. Реальные три builder variants и
+  проверочная codex-ai wheel provenance подтверждены; **104 deploy tests passed**.
+- [Файл задачи, ревизия и ограничения](plans/06_non_gameplay_hardening_progress.md#шаг-57--файл-задачи-a08-10).
+  Независимый ревизор подтвердил локальные критерии и точные итоговые claims;
+  hosted CI/full runtime images/production не проверялись.
+
 ## Шаг 5.6 технической очереди — 19.10.2026
 
 - [x] **A08-09:** 30 Actions uses закреплены SHA; external Compose/Dockerfile и
@@ -1170,6 +1179,8 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A08-09. **Связи:** Частичные A06-09,A08-11 promotion; mutable supply chain root отдельный.
 
 ### A08-10 — CI зависит от отсутствующего local source, Docker меняет source policy
+
+- **Статус 19.10.2026:** [x] Исправлен и независимо проверен локальный CI/Docker source contract; см. файл задачи 5.7. Hosted/full runtime sign-off не заявляется.
 
 - **Источник / аудит:** [audit/08_infrastructure_security.md:331](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/08_infrastructure_security.md:331); аудит 08. **Code anchors:** [pyproject.toml:28](D:/Workspace/personal/pets/TurnBasedMMORPG/pyproject.toml:28), [uv.lock:470](D:/Workspace/personal/pets/TurnBasedMMORPG/uv.lock:470), [.github/workflows/ci.yml:24](D:/Workspace/personal/pets/TurnBasedMMORPG/.github/workflows/ci.yml:24)
 - **Исходная severity:** Medium. **Доказательность:** Подтверждено статическим анализом в исходном аудите; полного повторного анализа сейчас нет. **Стадия:** Shared infrastructure (Pre-alpha; intended Production build). **Срочность:** До следующего публичного релиза при применимости поверхности; действующая экспозиция требует отдельной проверки.
