@@ -62,7 +62,8 @@ class SessionsDict(TypedDict):
 class MetricsDict(TypedDict, total=False):
     """Производные метрики персонажа (gear_score, arena_rating, etc.)."""
 
-    gear_score: int
+    gear_score: float
+    gear_score_version: str | None
     arena_rating: int
     arena_wins: int
     arena_losses: int

@@ -8,19 +8,22 @@ from src.backend.features.arena.dto.session import ArenaCombatRequestDTO, ArenaQ
 from src.shared.schemas.arena import ArenaScreenEnum
 
 if TYPE_CHECKING:
+    from src.backend.features.arena.integrations.arena_integration import ArenaIntegration
     from src.backend.infrastructure.arena.managers import ArenaSessionManager
 
 
 class ArenaSessionIntegration:
     GS_RANGE_PERCENT = 0.15
-    DEFAULT_GS = 100
     REQUEST_TTL_SEC = 300
 
     def __init__(
         self,
         store: ArenaSessionManager[ArenaQueueRequestDTO, ArenaCombatRequestDTO, ArenaRuntimeSessionDTO],
+        *,
+        gear_scores: ArenaIntegration,
     ) -> None:
         self.store = store
+        self.gear_scores = gear_scores
 
     async def join_queue(
         self,
@@ -140,5 +143,4 @@ class ArenaSessionIntegration:
         await self.store.delete_match(match)
 
     async def get_gear_score(self, char_id: int) -> int:
-        _ = char_id
-        return self.DEFAULT_GS
+        return await self.gear_scores.fetch_gear_score(char_id)

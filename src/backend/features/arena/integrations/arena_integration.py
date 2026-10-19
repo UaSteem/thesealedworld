@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from math import isfinite
+from typing import TYPE_CHECKING, TypeGuard
 
-from src.backend.features.character.runtime.gear_score import CharacterGearScoreCalculator
+from src.backend.features.character.runtime.gear_score import GEAR_SCORE_VERSION, CharacterGearScoreCalculator
 
 if TYPE_CHECKING:
     from typing import Any
@@ -13,11 +14,7 @@ if TYPE_CHECKING:
 
 
 class ArenaIntegration:
-    """Feature-facing facade for the new ranking slice.
-
-    This is intentionally not wired into the existing ArenaService yet. The final
-    app connection happens after the rating/team/season services are complete.
-    """
+    """Read current Character scores and adapt them to Arena's integer contract."""
 
     def __init__(
         self,
@@ -39,24 +36,31 @@ class ArenaIntegration:
                 metrics_raw = session.get("metrics")
                 metrics: dict[str, Any] = metrics_raw if isinstance(metrics_raw, dict) else {}
                 cached = metrics.get("gear_score")
-                if cached is not None:
-                    return max(0, int(cached))
+                if _valid_cache(cached, metrics):
+                    return max(0, round(float(cached)))
                 breakdown = self.gear_score_calculator.calculate_breakdown_from_active_character(session)
-                score = int(breakdown["total"])
+                score = float(breakdown["total"])
                 await self.character_sessions.patch_fields(
                     char_id,
-                    {"$.metrics.gear_score": score, "$.metrics.gear_score_breakdown": breakdown},
+                    {
+                        "$.metrics.gear_score": score,
+                        "$.metrics.gear_score_breakdown": breakdown,
+                        "$.metrics.gear_score_version": GEAR_SCORE_VERSION,
+                    },
                 )
-                return score
+                return max(0, round(score))
 
         scores = await self.stream_client.request_gear_scores([char_id])
         if char_id not in scores:
             raise RuntimeError(f"character gear score unavailable: char_id={char_id}")
-        return scores[char_id]
+        return max(0, round(scores[char_id]))
 
     async def fetch_gear_scores(self, char_ids: list[int]) -> dict[int, int]:
         if self.character_sessions is None:
-            return await self.stream_client.request_gear_scores(char_ids)
+            return {
+                key: max(0, round(value))
+                for key, value in (await self.stream_client.request_gear_scores(char_ids)).items()
+            }
 
         scores: dict[int, int] = {}
         sessions = await self.character_sessions.get_sessions_batch(char_ids)
@@ -66,18 +70,37 @@ class ArenaIntegration:
             metrics_raw = session.get("metrics")
             metrics: dict[str, Any] = metrics_raw if isinstance(metrics_raw, dict) else {}
             cached = metrics.get("gear_score")
-            if cached is not None:
-                scores[char_id] = max(0, int(cached))
+            if _valid_cache(cached, metrics):
+                scores[char_id] = max(0, round(float(cached)))
                 continue
             breakdown = self.gear_score_calculator.calculate_breakdown_from_active_character(session)
-            score = int(breakdown["total"])
+            score = float(breakdown["total"])
             await self.character_sessions.patch_fields(
                 char_id,
-                {"$.metrics.gear_score": score, "$.metrics.gear_score_breakdown": breakdown},
+                {
+                    "$.metrics.gear_score": score,
+                    "$.metrics.gear_score_breakdown": breakdown,
+                    "$.metrics.gear_score_version": GEAR_SCORE_VERSION,
+                },
             )
-            scores[char_id] = score
+            scores[char_id] = max(0, round(score))
 
         missing = [char_id for char_id in char_ids if char_id not in scores]
         if missing:
-            scores.update(await self.stream_client.request_gear_scores(missing))
+            scores.update(
+                {
+                    key: max(0, round(value))
+                    for key, value in (await self.stream_client.request_gear_scores(missing)).items()
+                }
+            )
         return scores
+
+
+def _valid_cache(score: Any, metrics: dict[str, Any]) -> TypeGuard[int | float]:
+    return (
+        metrics.get("gear_score_version") == GEAR_SCORE_VERSION
+        and isinstance(score, (int, float))
+        and not isinstance(score, bool)
+        and isfinite(score)
+        and score >= 0
+    )

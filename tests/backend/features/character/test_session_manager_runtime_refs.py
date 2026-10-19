@@ -269,3 +269,138 @@ async def test_get_session_keeps_new_attribute_contract_without_legacy_stat_migr
     assert "mental" not in document["attributes"]
     assert "projection" not in document["attributes"]
     assert "prediction" not in document["attributes"]
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    "path,value",
+    [
+        ("$.attributes.strength", 16),
+        ("$.skills.skill_parrying", {"xp": 0.5}),
+        ("$.items.layout.equipment", {"main_hand": "sword"}),
+        ("$.symbiote.gift_rank", 2),
+        ("$.pending_progress.skills", {"skill_parrying": 0.1}),
+        ("$.pending_progress", {"skills": {"skill_parrying": 0.1}, "free_xp": 0}),
+    ],
+)
+async def test_combat_input_patch_invalidates_cached_gear_score_version(
+    fake_redis_service,
+    fake_redis_client,
+    path,
+    value,
+) -> None:
+    fake_redis_client.store["game:ac:7"] = {
+        "char_id": 7,
+        "metrics": {"gear_score": 35.4, "gear_score_version": "current"},
+        "attributes": {},
+        "skills": {},
+        "items": {"layout": {}},
+        "symbiote": {},
+        "pending_progress": {"skills": {}, "free_xp": 0},
+    }
+    manager = CharacterSessionManager(fake_redis_service)
+    await manager.patch_fields(7, {path: value})
+    document = fake_redis_client.store["game:ac:7"]
+    assert document["metrics"]["gear_score_version"] is None
+    assert document["metrics"]["gear_score"] == 35.4
+    assert "sync_dirty" not in document
+
+
+@pytest.mark.asyncio
+async def test_direct_skill_unlock_invalidates_gs_and_preserves_dirty_accounting(
+    fake_redis_service,
+    fake_redis_client,
+) -> None:
+    fake_redis_client.store["game:ac:7"] = {
+        "char_id": 7,
+        "skills": {},
+        "metrics": {"gear_score_version": "current"},
+    }
+    manager = CharacterSessionManager(fake_redis_service)
+    await manager.unlock_skills(7, ["skill_parrying"], initial_xp=0.2)
+    document = fake_redis_client.store["game:ac:7"]
+    assert document["metrics"]["gear_score_version"] is None
+    assert document["sync_dirty"]["targets"] == {"skills": True}
+    assert document["sync_dirty"]["paths"] == ["$.skills.skill_parrying"]
+
+
+@pytest.mark.asyncio
+async def test_pending_skill_rewards_invalidate_but_free_xp_does_not(
+    fake_redis_service,
+    fake_redis_client,
+) -> None:
+    fake_redis_client.store["game:ac:7"] = {
+        "char_id": 7,
+        "skills": {},
+        "pending_progress": {"skills": {}, "free_xp": 0},
+        "metrics": {"gear_score_version": "current"},
+    }
+    manager = CharacterSessionManager(fake_redis_service)
+    await manager.apply_pending_progress(7, {"free_xp": 3})
+    await manager.apply_skill_progress(7, {"free_xp": 2})
+    assert fake_redis_client.store["game:ac:7"]["metrics"]["gear_score_version"] == "current"
+    await manager.apply_pending_progress(7, {"skill_parrying": 0.1})
+    assert fake_redis_client.store["game:ac:7"]["metrics"]["gear_score_version"] is None
+
+
+@pytest.mark.asyncio
+async def test_metrics_vitals_and_runtime_refs_do_not_invalidate_gear_score(
+    fake_redis_service,
+    fake_redis_client,
+) -> None:
+    fake_redis_client.store["game:ac:7"] = {
+        "char_id": 7,
+        "metrics": {"gear_score_version": "current"},
+        "sessions": {},
+        "vitals": {},
+    }
+    manager = CharacterSessionManager(fake_redis_service)
+    await manager.patch_fields(7, {"$.metrics.gear_score": 39.1, "$.vitals.hp": {"cur": 50}})
+    await manager.set_inventory_session(7, "inventory:7")
+    await manager.set_arena_session(7, "arena:7")
+    assert fake_redis_client.store["game:ac:7"]["metrics"]["gear_score_version"] == "current"
+
+
+@pytest.mark.asyncio
+async def test_attribute_bonus_and_skill_progress_invalidate_cached_version(
+    fake_redis_service,
+    fake_redis_client,
+    monkeypatch,
+) -> None:
+    fake_redis_client.store["game:ac:7"] = {
+        "char_id": 7,
+        "attributes": {"strength": 15},
+        "skills": {},
+        "metrics": {"gear_score_version": "current"},
+    }
+
+    def numincrby(pipe, key, path, delta):
+        current = pipe.client._get_path(pipe.client.store[key], path.removeprefix("$."))
+        return pipe.set(key, path, current + delta)
+
+    monkeypatch.setattr(type(fake_redis_client.pipeline()), "numincrby", numincrby, raising=False)
+    manager = CharacterSessionManager(fake_redis_service)
+    await manager.apply_attribute_bonus(7, {"strength": 1})
+    document = fake_redis_client.store["game:ac:7"]
+    assert document["metrics"]["gear_score_version"] is None
+    assert document["attributes"]["strength"] == 16
+    assert document["sync_dirty"]["targets"] == {"attributes": True}
+    await manager.patch_fields(7, {"$.metrics.gear_score_version": "current"})
+    await manager.apply_skill_progress(7, {"skill_parrying": 0.1})
+    assert document["metrics"]["gear_score_version"] is None
+    assert document["sync_dirty"]["targets"] == {"attributes": True, "skills": True}
+
+
+@pytest.mark.asyncio
+async def test_clearing_pending_skills_invalidates_cached_version(
+    fake_redis_service,
+    fake_redis_client,
+) -> None:
+    fake_redis_client.store["game:ac:7"] = {
+        "char_id": 7,
+        "pending_progress": {"skills": {"skill_parrying": 0.1}},
+        "metrics": {"gear_score_version": "current"},
+    }
+    manager = CharacterSessionManager(fake_redis_service)
+    await manager.set_pending_progress(7, {"skills": {}, "free_xp": 0})
+    assert fake_redis_client.store["game:ac:7"]["metrics"]["gear_score_version"] is None

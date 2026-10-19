@@ -542,7 +542,9 @@ class CombatViewService:
             tags=[str(tag) for tag in meta.get("tags", []) if tag] if isinstance(meta.get("tags"), list) else [],
             source=dict(source),
             visual=dict(visual),
-            gear_score=self._optional_int(meta.get("gear_score")) or self._optional_int(metrics.get("gear_score")),
+            gear_score=self._optional_float(meta.get("gear_score"))
+            if meta.get("gear_score") is not None
+            else self._optional_float(metrics.get("gear_score")),
             power_score=self._optional_int(meta.get("power_score")) or self._optional_int(metrics.get("power_score")),
             is_ai=bool(meta.get("is_ai", False)),
             is_dead=actor_id in dead_actor_ids or bool(meta.get("is_dead", False)) or self._int(meta.get("hp")) <= 0,

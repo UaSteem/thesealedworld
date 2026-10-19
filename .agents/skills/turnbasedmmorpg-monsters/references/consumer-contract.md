@@ -1,6 +1,6 @@
 # Consumer contract
 
-For a caller migration, start with the [implementation handoff and separate tasks](../../../../docs/ru/backend/features/monsters/consumer_migration.md). It distinguishes accepted catalog behavior from the unfinished live GS, instance delivery and Rift/Exploration integration. Presence in `monsters.public` alone does not make a retired service usable.
+For a caller migration, start with the [implementation handoff and separate tasks](../../../../docs/ru/backend/features/monsters/consumer_migration.md). Character GS now uses canonical physical-v5; instance delivery and Rift/Exploration integration remain unfinished. Use exact float Character GS for orders, never Arena-rounded values. Old-scale data is reset rather than converted. Presence in `monsters.public` alone does not make a retired service usable.
 
 For seed ownership and operational logging, read [Seeds and selection logs](../../../../docs/ru/backend/features/monsters/seeds_and_logging.md). Consumers derive world/region/encounter seeds or persist independent rift-instance seeds; Monsters only consumes the ready seed. Keep order/results persistent in their owning domain, not in operational logs. World/Rift wiring remains unimplemented.
 

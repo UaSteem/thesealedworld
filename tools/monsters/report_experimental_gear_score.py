@@ -1,4 +1,4 @@
-"""Compare experimental physical power projections without changing runtime GS."""
+"""Inspect canonical physical GS components and resource regeneration."""
 
 from __future__ import annotations
 
@@ -45,7 +45,7 @@ def main():
             {
                 "label": label,
                 "group": group,
-                "old_gs": CharacterGearScoreCalculator.calculate_from_raw(raw, skills=skills, loadout=loadout),
+                "live_gs": CharacterGearScoreCalculator.calculate_from_raw(raw, skills=skills, loadout=loadout),
                 "experimental": calculator.calculate_from_raw(raw, skills=skills, loadout=loadout),
                 "regeneration": {
                     mode: {resource: calculated[f"{prefix}{resource}_regen"] for resource in ("hp", "en", "stamina")}
@@ -93,7 +93,7 @@ def main():
     body = ""
     for row in rows:
         exp = row["experimental"]
-        cells = [row["label"], row["old_gs"], exp["total"]]
+        cells = [row["label"], row["live_gs"], exp["total"]]
         cells.extend(f"{exp['components'][k]['value']:.2f} → {exp['components'][k]['score']:.2f}" for k in keys)
         cells.extend(
             " · ".join(
@@ -108,7 +108,7 @@ def main():
     headers = (
         "Сборка",
         "Рабочий GS",
-        "Экспериментальный GS",
+        "Проверка общей модели GS",
         "Базовый EHP → GS",
         "Доп. EHP → GS",
         "Базовая атака → GS",
@@ -119,7 +119,7 @@ def main():
     )
     page = '<!doctype html><html lang="ru"><meta charset="utf-8"><title>Экспериментальный GS</title>'
     page += "<style>body{font:15px system-ui;margin:28px;background:#f4f6fa;color:#172033}table{border-collapse:collapse;background:white}td,th{padding:10px;border:1px solid #ddd}pre{white-space:pre-wrap}.scroll{overflow:auto}</style>"
-    page += "<h1>Экспериментальный GS и регенерация</h1><p>Подбор не переключён на экспериментальный GS. Новые веса предварительные: абсолютные числа старого и нового GS не имеют общей шкалы. Физическая проекция относительно фиксированных условий; это не прогноз победы. Сопротивление и подавление исключены из новой оценки. Поддержка учитывает только боевое восстановление. Реген от бижутерии работает в обоих режимах; энергия игрока от атрибутов — только вне боя. Боевое восстановление HP монстров равно нулю.</p>"
+    page += "<h1>Физический GS и регенерация</h1><p>Рабочий калькулятор и аналитическая проекция используют одну модель physical-v5. Физическая проекция относительно фиксированных условий; это не прогноз победы. Поддержка учитывает только боевое восстановление. Реген от бижутерии работает в обоих режимах; энергия игрока от атрибутов — только вне боя. Боевое восстановление HP монстров равно нулю.</p>"
     page += (
         '<div class="scroll"><table><tr>'
         + "".join(f"<th>{h}</th>" for h in headers)
@@ -131,7 +131,7 @@ def main():
     (args.output / "report.html").write_text(page, encoding="utf-8")
     print(
         json.dumps(
-            {"rows": len(rows), "player_old": rows[0]["old_gs"], "player_experimental": first}, ensure_ascii=False
+            {"rows": len(rows), "player_live": rows[0]["live_gs"], "player_model": first}, ensure_ascii=False
         )
     )
 

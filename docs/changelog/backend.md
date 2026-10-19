@@ -5,8 +5,12 @@ Detailed milestone history for the `src/backend` game runtime layer.
 ## [Unreleased]
 
 - Frozen the five-family Monsters alpha catalog, tier admissions, two-pool
-  composition and portable benchmark evidence; documented the separate GS,
-  actor issuance, Rift and Exploration migrations still needed for gameplay.
+  composition and portable benchmark evidence; documented actor issuance, Rift and Exploration migrations still needed
+  for gameplay.
+- Promoted accepted physical-v5 GS to Character without formula or coefficient
+  changes. Character metrics/events retain float precision and cache version;
+  Arena rounds only its matching boundary. Removed old weighted GS rules; old
+  data is reset rather than numerically migrated.
 
 - Rift backend now includes a hex-world runtime slice with tile-set loading,
   layout presets, Redis persistence, and focused service/API coverage.

@@ -66,7 +66,8 @@ class CharacterSessionRefsDTO(BaseModel):
 
 
 class CharacterSessionMetricsDTO(BaseModel):
-    gear_score: int = 0
+    gear_score: float = 0.0
+    gear_score_version: str | None = None
     gear_score_breakdown: dict[str, float | int] = Field(default_factory=dict)
 
 

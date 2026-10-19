@@ -48,7 +48,7 @@ class ArenaStreamClient:
         commitments = _json_dict(response.get("commitments"))
         return {str(key): str(value) for key, value in commitments.items() if value}
 
-    async def request_gear_scores(self, char_ids: list[int]) -> dict[int, int]:
+    async def request_gear_scores(self, char_ids: list[int]) -> dict[int, float]:
         response = await self.events.request(
             CharacterEvents.GEAR_SCORE_RECALCULATE_REQUESTED,
             {"char_ids": json.dumps(char_ids)},
@@ -57,7 +57,7 @@ class ArenaStreamClient:
         if not isinstance(response, dict) or response.get("status") not in ("ok", "partial"):
             return {}
         gear_scores = _json_dict(response.get("gear_scores"))
-        return {int(char_id): int(score) for char_id, score in gear_scores.items()}
+        return {int(char_id): float(score) for char_id, score in gear_scores.items()}
 
     async def publish_rating_updated(
         self,

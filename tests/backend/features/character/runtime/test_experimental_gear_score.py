@@ -281,7 +281,7 @@ def test_anti_dodge_preserves_accuracy_base_and_counters_and_weights_both_hands_
               "off_hand": "skill_fencing", "main_hand_trigger": "crit.weapon_heavy_crit"}
     baseline = project(values, {"skill_light_armor": 0.5}, layout)
     result = project({**values, "anti_dodge_chance": 0.2}, {"skill_light_armor": 0.5}, layout)
-    assert result["version"] == "experimental-physical-v5"
+    assert result["version"] == "physical-v5"
     assert result["effective"]["hands"] == baseline["effective"]["hands"]
     assert result["components"]["base_offense"] == baseline["components"]["base_offense"]
     extra = result["components"]["extra_offense"]

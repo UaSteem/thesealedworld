@@ -20,7 +20,7 @@ from src.backend.features.character.repositories import (
     SkillRepository,
     SymbioteRepository,
 )
-from src.backend.features.character.runtime.gear_score import CharacterGearScoreCalculator
+from src.backend.features.character.runtime.gear_score import GEAR_SCORE_VERSION, CharacterGearScoreCalculator
 from src.backend.features.character.services import CharacterSessionPersistenceService, CharacterSkillService
 from src.shared.enums.skill_enums import SkillProgressState
 
@@ -195,7 +195,7 @@ async def on_gear_score_recalculate_requested(payload: dict[str, Any]) -> None:
             char_ids = [int(payload["char_id"])]
         calculator = CharacterGearScoreCalculator()
         sessions = await _app.state.character_sessions.get_sessions_batch(char_ids)
-        gear_scores: dict[str, int] = {}
+        gear_scores: dict[str, float] = {}
         failed: list[int] = []
         for char_id in char_ids:
             active_character = sessions.get(char_id)
@@ -203,12 +203,13 @@ async def on_gear_score_recalculate_requested(payload: dict[str, Any]) -> None:
                 failed.append(char_id)
                 continue
             gear_score_breakdown = calculator.calculate_breakdown_from_active_character(active_character)
-            gear_score = int(gear_score_breakdown["total"])
+            gear_score = float(gear_score_breakdown["total"])
             await _app.state.character_sessions.patch_fields(
                 char_id,
                 {
                     "$.metrics.gear_score": gear_score,
                     "$.metrics.gear_score_breakdown": gear_score_breakdown,
+                    "$.metrics.gear_score_version": GEAR_SCORE_VERSION,
                 },
             )
             gear_scores[str(char_id)] = gear_score

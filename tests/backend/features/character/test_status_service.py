@@ -6,6 +6,7 @@ import pytest
 
 from src.backend.core.exceptions import BusinessLogicException
 from src.backend.features.character.integrations import CharacterStateIntegrator
+from src.backend.features.character.runtime.gear_score import GEAR_SCORE_VERSION
 from src.backend.features.character.runtime.rules.vital_constants import CONCENTRATION_PER_SENSOR_ATTRIBUTE
 from src.backend.features.character.services.status_service import CharacterStatusService
 from src.shared.enums.skill_enums import SkillProgressState
@@ -167,7 +168,7 @@ def build_actor_core_document():
         "attributes": {"strength": 8},
         "sessions": {"scenario_id": None, "combat_id": None, "inventory_id": None},
         "active_quest": None,
-        "metrics": {"gear_score": 612},
+        "metrics": {"gear_score": 612, "gear_score_version": GEAR_SCORE_VERSION},
         "skills": {"skill_macing": {"xp": 0.0}, "skill_medium_armor": {"xp": 0.0}},
         "symbiote": {"name": "SYSTEM"},
         "updated_at": datetime.now(UTC),
@@ -227,7 +228,10 @@ async def test_get_actor_core_returns_game_ac_document():
     assert dto.panel is not None
     assert dto.panel.id == "character_status"
     avatar_widget = next(widget for widget in dto.panel.widgets if widget.title == "PROFILE")
-    assert avatar_widget.data["gear_score"] == 612
+    assert avatar_widget.data["gear_score"] == dto.metrics["gear_score"]
+    assert dto.metrics["gear_score"] > 0
+    assert dto.metrics["gear_score"] != 612  # Repair changed combat inputs; the displayed metric must follow.
+    assert dto.metrics["gear_score_version"] == GEAR_SCORE_VERSION
     attributes_widget = next(widget for widget in dto.panel.widgets if widget.title == "ATTRIBUTES")
     assert attributes_widget.type == "attribute_grid"
     assert [group["title"] for group in attributes_widget.data["groups"]] == ["BODY", "CORE", "SENSOR"]

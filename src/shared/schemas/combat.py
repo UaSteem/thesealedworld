@@ -241,7 +241,7 @@ class CombatActorCardDTO(CombatJsonDTO):
     tags: list[str] = Field(default_factory=list)
     source: dict[str, Any] = Field(default_factory=dict)
     visual: dict[str, Any] = Field(default_factory=dict)
-    gear_score: int | None = None
+    gear_score: float | None = None
     power_score: int | None = None
     is_ai: bool = False
     is_dead: bool = False

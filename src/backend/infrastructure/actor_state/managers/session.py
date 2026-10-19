@@ -121,6 +121,17 @@ class CharacterSessionManager:
         if not updates:
             return
 
+        updates = dict(updates)
+        invalidates_gear_score = self._gear_score_input_paths(list(updates))
+        if "$.pending_progress" in updates:
+            current = await self.get_section(char_id, "pending_progress")
+            previous_skills = current.get("skills", {}) if isinstance(current, dict) else {}
+            pending = updates["$.pending_progress"]
+            next_skills = pending.get("skills", {}) if isinstance(pending, dict) else {}
+            invalidates_gear_score |= previous_skills != next_skills
+        if invalidates_gear_score:
+            updates["$.metrics.gear_score_version"] = None
+
         key = self.build_key(char_id)
         async with self._redis_client().pipeline(transaction=False) as pipe:
             for path, value in updates.items():
@@ -147,18 +158,18 @@ class CharacterSessionManager:
             if isinstance(previous_reason, str) and previous_reason and previous_reason != reason:
                 reasons.insert(0, previous_reason)
 
-        await self.patch_fields(
-            char_id,
-            {
-                "$.sync_dirty": {
-                    "dirty": True,
-                    "reason": "+".join(dict.fromkeys(reasons)),
-                    "paths": sorted(merged_paths),
-                    "targets": {target: True for target in sorted(merged_targets)},
-                    "generation": time.time(),
-                }
-            },
-        )
+        updates: dict[str, Any] = {
+            "$.sync_dirty": {
+                "dirty": True,
+                "reason": "+".join(dict.fromkeys(reasons)),
+                "paths": sorted(merged_paths),
+                "targets": {target: True for target in sorted(merged_targets)},
+                "generation": time.time(),
+            }
+        }
+        if self._gear_score_input_paths(paths):
+            updates["$.metrics.gear_score_version"] = None
+        await self.patch_fields(char_id, updates)
 
     async def is_dirty(self, char_id: int) -> bool:
         dirty_marker = await self.get_section(char_id, "sync_dirty")
@@ -789,6 +800,12 @@ class CharacterSessionManager:
             changed = True
 
         return changed
+
+    @staticmethod
+    def _gear_score_input_paths(paths: list[str]) -> bool:
+        """Invalidate derived metrics without changing persistence dirty targets."""
+        roots = ("$.attributes", "$.skills", "$.items", "$.symbiote", "$.pending_progress.skills")
+        return any(path == root or path.startswith(root + ".") for path in paths for root in roots)
 
     @staticmethod
     def _dirty_targets_from_paths(paths: list[str]) -> list[str]:

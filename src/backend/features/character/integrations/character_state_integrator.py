@@ -10,7 +10,7 @@ from src.backend.config.settings import settings
 from src.backend.core.exceptions import BusinessLogicException
 from src.backend.features.character.runtime import CharacterVitalsCalculator
 from src.backend.features.character.runtime.combat_actor_input import CharacterCombatActorInputBuilder
-from src.backend.features.character.runtime.gear_score import CharacterGearScoreCalculator
+from src.backend.features.character.runtime.gear_score import GEAR_SCORE_VERSION, CharacterGearScoreCalculator
 from src.backend.features.character.runtime.vital_profile import resolve_player_vital_profile_key
 from src.backend.features.character.schemas.session import (
     CharacterSessionAttributesDTO,
@@ -130,6 +130,9 @@ class CharacterStateIntegrator:
             await self.character_sessions.update_session(char_id, session_doc.model_dump(mode="json"))
             return session_doc
         repaired_doc, changed = self._repair_session_from_persisted_actor_state(session_doc, character)
+        if changed or repaired_doc.metrics.gear_score_version != GEAR_SCORE_VERSION:
+            self._calculate_gear_score(repaired_doc)
+            changed = True
         if changed:
             repaired_doc.updated_at = datetime.now(UTC)
             await self.character_sessions.update_session(char_id, repaired_doc.model_dump(mode="json"))
@@ -243,25 +246,24 @@ class CharacterStateIntegrator:
         *,
         expedition_run_id: str | None = None,
     ) -> None:
-        if self.inventory_repo is None:
-            return
+        if self.inventory_repo is not None:
+            rows = await self.inventory_repo.list_character_items(
+                session_doc.char_id,
+                expedition_run_id=expedition_run_id,
+            )
+            runtime_items = [runtime_item_from_instance(instance, placement) for instance, placement in rows]
+            inventory_session = build_runtime_session(session_doc.char_id, runtime_items)
+            projection = build_active_character_projection(inventory_session).model_dump(mode="json")
+            session_doc.items = CharacterSessionItemsDTO.model_validate(projection)
+        self._calculate_gear_score(session_doc)
 
-        rows = await self.inventory_repo.list_character_items(
-            session_doc.char_id,
-            expedition_run_id=expedition_run_id,
-        )
-        if not rows:
-            return
-
-        runtime_items = [runtime_item_from_instance(instance, placement) for instance, placement in rows]
-        inventory_session = build_runtime_session(session_doc.char_id, runtime_items)
-        projection = build_active_character_projection(inventory_session).model_dump(mode="json")
-        session_doc.items = CharacterSessionItemsDTO.model_validate(projection)
+    def _calculate_gear_score(self, session_doc: CharacterSessionDocumentDTO) -> None:
         gear_score_breakdown = self.gear_score_calculator.calculate_breakdown_from_active_character(
             session_doc.model_dump(mode="json")
         )
-        session_doc.metrics.gear_score = int(gear_score_breakdown["total"])
+        session_doc.metrics.gear_score = float(gear_score_breakdown["total"])
         session_doc.metrics.gear_score_breakdown = gear_score_breakdown
+        session_doc.metrics.gear_score_version = GEAR_SCORE_VERSION
 
     async def _apply_and_persist_vitals_regen(
         self,

@@ -9,6 +9,12 @@ from src.shared.enums import CoreDomain
 from src.shared.schemas.arena import ArenaScreenEnum
 
 
+class FakeGearScores:
+    async def fetch_gear_score(self, char_id: int) -> int:
+        _ = char_id
+        return 100
+
+
 class FakeStore:
     def __init__(self) -> None:
         self.requests: dict[int, ArenaQueueRequestDTO] = {}
@@ -176,7 +182,7 @@ class FakeRatingView:
 def build_service(store: FakeStore, events: FakeEvents) -> ArenaService:
     sessions = FakeCharacterSessions()
     return ArenaService(
-        session_service=ArenaSessionIntegration(store),
+        session_service=ArenaSessionIntegration(store, gear_scores=FakeGearScores()),
         integrator=ArenaSystemIntegrator(events=events, character_sessions=sessions),
     )
 
@@ -187,7 +193,7 @@ async def test_view_creates_arena_runtime_session_and_attaches_active_character_
     events = FakeEvents()
     sessions = FakeCharacterSessions()
     service = ArenaService(
-        session_service=ArenaSessionIntegration(store),
+        session_service=ArenaSessionIntegration(store, gear_scores=FakeGearScores()),
         integrator=ArenaSystemIntegrator(events=events, character_sessions=sessions),
     )
 
@@ -206,7 +212,7 @@ async def test_view_includes_rating_metadata_when_rating_view_is_configured():
     events = FakeEvents()
     sessions = FakeCharacterSessions()
     service = ArenaService(
-        session_service=ArenaSessionIntegration(store),
+        session_service=ArenaSessionIntegration(store, gear_scores=FakeGearScores()),
         integrator=ArenaSystemIntegrator(events=events, character_sessions=sessions),
         rating_view=FakeRatingView(),
     )
@@ -225,7 +231,7 @@ async def test_group_lobby_updates_arena_runtime_position():
     events = FakeEvents()
     sessions = FakeCharacterSessions()
     service = ArenaService(
-        session_service=ArenaSessionIntegration(store),
+        session_service=ArenaSessionIntegration(store, gear_scores=FakeGearScores()),
         integrator=ArenaSystemIntegrator(events=events, character_sessions=sessions),
     )
 
@@ -432,7 +438,7 @@ async def test_check_combat_ready_does_not_enter_ready_shadow_without_confirm():
     events = FakeEvents()
     sessions = FakeCharacterSessions()
     service = ArenaService(
-        session_service=ArenaSessionIntegration(store),
+        session_service=ArenaSessionIntegration(store, gear_scores=FakeGearScores()),
         integrator=ArenaSystemIntegrator(events=events, character_sessions=sessions),
     )
     match = ArenaCombatRequestDTO(
@@ -459,7 +465,7 @@ async def test_check_combat_ready_enters_ready_shadow_combat_with_confirm():
     events = FakeEvents()
     sessions = FakeCharacterSessions()
     service = ArenaService(
-        session_service=ArenaSessionIntegration(store),
+        session_service=ArenaSessionIntegration(store, gear_scores=FakeGearScores()),
         integrator=ArenaSystemIntegrator(events=events, character_sessions=sessions),
     )
     match = ArenaCombatRequestDTO(
@@ -488,7 +494,7 @@ async def test_view_clears_entered_shadow_match_after_combat_return():
     events = FakeEvents()
     sessions = FakeCharacterSessions()
     service = ArenaService(
-        session_service=ArenaSessionIntegration(store),
+        session_service=ArenaSessionIntegration(store, gear_scores=FakeGearScores()),
         integrator=ArenaSystemIntegrator(events=events, character_sessions=sessions),
     )
     runtime = await service.ensure_runtime_session(1)
@@ -528,7 +534,7 @@ async def test_view_keeps_entered_shadow_match_while_combat_is_active():
     sessions = FakeCharacterSessions()
     sessions.combat[1] = "combat:shadow"
     service = ArenaService(
-        session_service=ArenaSessionIntegration(store),
+        session_service=ArenaSessionIntegration(store, gear_scores=FakeGearScores()),
         integrator=ArenaSystemIntegrator(events=events, character_sessions=sessions),
     )
     runtime = await service.ensure_runtime_session(1)

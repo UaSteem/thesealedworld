@@ -6,7 +6,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.backend.core.database import get_db
 from src.backend.features.arena.dto.session import ArenaCombatRequestDTO, ArenaQueueRequestDTO, ArenaRuntimeSessionDTO
 from src.backend.features.arena.gateway import ArenaGateway
-from src.backend.features.arena.integrations import ArenaSessionIntegration, ArenaSystemIntegrator
+from src.backend.features.arena.integrations import (
+    ArenaIntegration,
+    ArenaSessionIntegration,
+    ArenaStreamClient,
+    ArenaSystemIntegrator,
+)
 from src.backend.features.arena.services import (
     ArenaDuelService,
     ArenaGroupService,
@@ -31,7 +36,12 @@ def get_arena_service(request: Request, db_session: Annotated[AsyncSession, Depe
         combat_schema=ArenaCombatRequestDTO,
         runtime_schema=ArenaRuntimeSessionDTO,
     )
-    session_service = ArenaSessionIntegration(store)
+    gear_scores = ArenaIntegration(
+        session_manager=store,
+        stream_client=ArenaStreamClient(request.app.state.events),
+        character_sessions=request.app.state.character_sessions,
+    )
+    session_service = ArenaSessionIntegration(store, gear_scores=gear_scores)
     integrator = ArenaSystemIntegrator(
         events=request.app.state.events,
         character_sessions=request.app.state.character_sessions,

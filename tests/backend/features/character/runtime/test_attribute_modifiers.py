@@ -73,7 +73,9 @@ def test_character_raw_attributes_drive_combat_modifiers_through_waterfall() -> 
     assert calculated["hp"] == _approx_effective(effective_endurance * 3.0)
     assert calculated["en"] == _approx_effective(effective_mental * 2.0)
     assert calculated["stamina"] == _approx_effective(effective_projection * 3.5)
-    assert calculated["hp_regen"] == _approx_effective(effective_endurance * 0.1)
+    assert calculated["hp_regen"] == _approx_effective(effective_endurance * 0.1 + calculated["hp"] * 0.005)
+    assert calculated["combat_hp_regen"] == calculated["hp_regen"]
+    assert calculated["combat_en_regen"] == 0.0
     assert calculated["en_regen"] == _approx_effective(effective_mental * 0.25)
     assert calculated["stamina_regen"] == _approx_effective(1.0 + (effective_projection * 0.3))
     assert calculated["physical_resistance"] == _approx_effective(effective_endurance * 0.02)
