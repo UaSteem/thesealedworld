@@ -2,7 +2,7 @@ name: tbmmorpg
 
 services:
   postgres:
-    image: postgres:17-alpine
+    image: postgres:17-alpine@sha256:b0f9560a2de083e2cc7382e75f808c7381a32852a7ec49117deedb300e552b24
     container_name: tbmmorpg-postgres
     restart: unless-stopped
     environment:
@@ -21,7 +21,7 @@ services:
       - tbmmorpg-network
 
   redis:
-    image: redis/redis-stack-server:7.2.0-v14
+    image: redis/redis-stack-server:7.2.0-v14@sha256:076f9df0f581f2c87dd620f38aeaae9deff9228d612961cf9ca4403c0befa7e1
     container_name: tbmmorpg-redis
     restart: unless-stopped
     environment:
@@ -38,7 +38,7 @@ services:
       - tbmmorpg-network
 
   mongo:
-    image: mongo:8
+    image: mongo:8@sha256:0e900a3364da37b76d642b73b0bba56bd4c6c509ab470cf700436fd866bee3ff
     container_name: tbmmorpg-mongo
     restart: unless-stopped
     environment:
@@ -81,7 +81,7 @@ services:
         max-file: "3"
 
   certbot:
-    image: certbot/certbot:v2.11.0
+    image: certbot/certbot:v2.11.0@sha256:ddf9e5d226a56e886986838fa0ebedc0237511c78664352e8d0f4346ee022cd8
     container_name: tbmmorpg-certbot
     profiles:
       - manual

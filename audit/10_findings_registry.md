@@ -1,5 +1,14 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Шаг 5.6 технической очереди — 19.10.2026
+
+- [x] **A08-09:** 30 Actions uses закреплены SHA; external Compose/Dockerfile и
+  BuildKit images — проверенными multi-platform digest. Policy test запрещает
+  возврат mutable refs; deploy-набор **97 passed**, 10 Compose config прошли.
+- [Evidence и ограничения](plans/06_non_gameplay_hardening_progress.md#шаг-56).
+  Hosted runs и полная транзитивная supply chain не подтверждались; versioned
+  upstream tool assets без checksum явно остаются ограничением.
+
 ## Шаг 5.5 технической очереди — 19.10.2026
 
 - [x] **A06-09:** successful quality/build текущей attempt и manifest всех шести
@@ -1150,6 +1159,8 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A08-08. **Связи:** Частичный A07-12 Studio access; source readonly separate.
 
 ### A08-09 — Mutable Actions/images не фиксируют цепочку происхождения
+
+- **Статус 19.10.2026:** [x] Объявленные Action/image refs закреплены и проверены; шаг 5.6. Транзитивные tool downloads и hosted evidence остаются ограничениями.
 
 - **Источник / аудит:** [audit/08_infrastructure_security.md:321](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/08_infrastructure_security.md:321); аудит 08. **Code anchors:** [.github/workflows/deploy-production.yml:34](D:/Workspace/personal/pets/TurnBasedMMORPG/.github/workflows/deploy-production.yml:34), [.github/workflows/build-images.yml:21](D:/Workspace/personal/pets/TurnBasedMMORPG/.github/workflows/build-images.yml:21), [deploy/compose.infra.yml:5](D:/Workspace/personal/pets/TurnBasedMMORPG/deploy/compose.infra.yml:5)
 - **Исходная severity:** Medium. **Доказательность:** Подтверждено статическим анализом в исходном аудите; полного повторного анализа сейчас нет. **Стадия:** Shared infrastructure (intended Production / CI). **Срочность:** До следующего публичного релиза при применимости поверхности; действующая экспозиция требует отдельной проверки.

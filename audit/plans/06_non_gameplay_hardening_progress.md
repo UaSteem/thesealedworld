@@ -19,7 +19,7 @@
 | 2 | Воспроизводимые миграции сайта на пустой PostgreSQL и обновление существующей схемы | A05-13 | Исправлено и проверено; остановка до команды на шаг 3 |
 | 3 | Токены и персональные данные в логах и метриках | A08-05/06/07 | Исправлено и проверено; остановка до команды на шаг 4 |
 | 4 | Logout, expiry/revoke открытых WebSocket и атомарная ротация refresh | A07-10/16, A05-12 | Исправлено и проверено; остановка до команды на шаг 5 |
-| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12, 5.2 A06-12, 5.3 A06-05, 5.4 A06-06 и 5.5 A06-09 исправлены; остальные задачи группы ждут команды |
+| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12, 5.2 A06-12, 5.3 A06-05, 5.4 A06-06, 5.5 A06-09 и 5.6 A08-09 исправлены; A08-10/11 ждут команды |
 | 6 | Восстановление Streams pending с доказанной идемпотентностью эффектов | A05-05 | Ждёт команды |
 | 7 | Надёжное принятие и восстановление GenerationAI; срок жизни SQL-транзакций | A04-11/12/13/18, A05-07/08, A09-09 | Ждёт команды; перед реализацией разделить |
 | 8 | Производительность архива чата, backpressure, Mongo projection, предел истории вкладки | A09-03/04/08/11 | Ждёт команды; перед реализацией разделить |
@@ -451,3 +451,50 @@ Hosted Actions, реальные GHCR build/push/download и production не з�
 проверки API используют локальные fixtures по official API contract. Полный
 project gate не заявляется. Gameplay, зависимости, production env и secrets
 не менялись. После commit остановка до следующей команды владельца.
+
+
+## Шаг 5.6
+
+**A08-09 — immutable Actions/container references: исправлено и проверено локально.**
+
+Все 30 external `uses` (девять Actions) используют полные 40-character commit SHA.
+Официальные refs проверены через GitHub; исходные version tags оставлены в comments,
+major не менялись. Прежний setup-uv pin сохранён, подтверждён tag v8.1.0.
+Buildx явно закреплён на официальном stable v0.38.0 вместо runner/default latest.
+Два setup-buildx jobs используют проверенный digest BuildKit driver image.
+
+В 14 deploy-файлах закреплены 35 image references: Dockerfile FROM, внешний
+Dockerfile frontend и literal Compose images. Вместе с BuildKit и CI hadolint это 15 уникальных
+registry indexes/manifest lists. Digest каждого проверен по SHA-256 raw manifest;
+все сохраняют Linux amd64 и arm64. Теги читаемы, включая `latest@sha256` для
+прежних tools: выбор содержимого теперь определяет digest. Проектные images
+остаются verified outputs A06-09, mutable fallback не добавлен.
+
+Новый policy test сканирует все workflow/deploy YAML/Dockerfile, включая `# syntax`,
+и запрещает mutable refs; image variables разрешены только шести verified project
+outputs. Проверка Buildx требует explicit release и driver digest. Тест добавлен
+в develop behavioral suite; её команда в testing strategy синхронизирована.
+До pinning policy: **15 failed, 5 passed**; после: **24 passed**.
+
+Проверки 19.10.2026:
+
+- `pytest tests/deploy --no-cov -q` с обоими Docker opt-ins и новым Nginx image:
+  **97 passed**, включая A06-09 promotion, Linux env permissions и Nginx.
+- **10** Compose projects/overlay combinations: `config --quiet --no-env-resolution`
+  с пустым `--env-file` и синтетическими параметрами; реальные env не читались.
+- Из минимального контекста без secrets успешно собран локальный Nginx image
+  `a0809-nginx-check:local` из pinned base; именно он использован в Docker tests.
+- Ruff check/format изменённых tests прошли. Full project gate и builds остальных
+  runtime images не запускались; hosted Actions/production не проверялись.
+
+Evidence (ignored): `var/audit/a0809-actions.json`, `a0809-setupuv.json`,
+`a0809-buildx-version.json`, `a0809-images.json`, `a0809-policy-before.txt`,
+`a0809-policy-after.txt`, `a0809-deploy-tests.txt`, `a0809-nginx-build.txt`,
+`a0809-check/compose-results.json`.
+
+Ограничения: pinned appleboy entrypoints скачивают versioned drone-ssh/scp release
+assets без checksum; tool downloads, hosted runner, apt и PyPI build inputs не
+становятся транзитивно immutable. Это закрытие объявленных Action/image refs,
+не полная supply-chain attestation. A08-10 source policy и A08-11 approvals/ref/
+concurrency остаются отдельными задачами. Gameplay, зависимости, env и secrets
+не менялись; push/deploy не выполнялись. Остановка после commit до команды.

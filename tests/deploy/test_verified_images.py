@@ -267,7 +267,9 @@ def test_workflow_gate_dominates_all_ssh_and_uses_verified_source():
     assert build["build-images"]["needs"] == "quality"
     steps = build["build-images"]["steps"]
     upload = steps[-1]
-    assert upload["uses"] == "actions/upload-artifact@v4"
+    action_repo, action_commit = upload["uses"].split("@")
+    assert action_repo == "actions/upload-artifact"
+    assert len(action_commit) == 40 and all(char in "0123456789abcdef" for char in action_commit)
     assert upload["with"]["name"] == "release-images-${{ github.run_attempt }}"
     assert not upload.get("if") and not upload.get("continue-on-error")
     assert len([step for step in steps[:-2] if step.get("id", "").startswith("image_")]) == 6

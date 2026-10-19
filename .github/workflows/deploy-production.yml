@@ -44,7 +44,7 @@ jobs:
       image_tg_bot: ${{ steps.verify.outputs.image_tg_bot }}
       image_nginx: ${{ steps.verify.outputs.image_nginx }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
       - name: Verify build and immutable image manifest
         id: verify
         env:
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test SSH Connection
-        uses: appleboy/ssh-action@v1.2.5
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
@@ -71,12 +71,12 @@ jobs:
     needs: [verify-images, preflight]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           ref: ${{ needs.verify-images.outputs.head_sha }}
 
       - name: Copy deploy configs to server
-        uses: appleboy/scp-action@v1.0.0
+        uses: appleboy/scp-action@ff85246acaad7bdce478db94a363cd2bf7c90345 # v1.0.0
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
@@ -88,7 +88,7 @@ jobs:
           overwrite: true
 
       - name: SSH Deploy
-        uses: appleboy/ssh-action@v1.2.5
+        uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         env:
           DEPLOY_LAYER: ${{ inputs.layer }}
           IMAGE_SITE: ${{ needs.verify-images.outputs.image_site }}

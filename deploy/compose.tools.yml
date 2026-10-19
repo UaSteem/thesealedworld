@@ -2,7 +2,7 @@ name: tbmmorpg
 
 services:
   cloudbeaver:
-    image: dbeaver/cloudbeaver:latest
+    image: dbeaver/cloudbeaver:latest@sha256:0c875296f85ffd7c0ffaaaeff678cd2f383890050297585318d7cf8f49024d1f
     container_name: tbmmorpg-cloudbeaver
     restart: unless-stopped
     ports:
@@ -13,14 +13,14 @@ services:
       - tbmmorpg-network
 
   redisinsight-data-init:
-    image: alpine:3.20
+    image: alpine:3.20@sha256:d9e853e87e55526f6b2917df91a2115c36dd7c696a35be12163d44e6e2a4b6bc
     restart: "no"
     command: ["sh", "-c", "chown -R 1000:1000 /data && chmod -R u+rwX,g+rwX /data"]
     volumes:
       - tbmmorpg-redisinsight-data:/data
 
   redisinsight:
-    image: redis/redisinsight:latest
+    image: redis/redisinsight:latest@sha256:b5e19ee240abef6edb435871b90ff8a210995422e8e018ab61c0339d318a1f84
     container_name: tbmmorpg-redisinsight
     restart: unless-stopped
     ports:

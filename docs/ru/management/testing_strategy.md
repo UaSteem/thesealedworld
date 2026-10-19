@@ -81,7 +81,7 @@ production configuration.
 The exact command is:
 
 ```sh
-uv run --locked python -m pytest tests/frontend tests/shared tests/studio tests/tg_bot tests/backend/core tests/backend/realtime tests/backend/chat tests/backend/features/generation_ai --no-cov -q
+uv run --locked python -m pytest tests/frontend tests/shared tests/studio tests/tg_bot tests/backend/core tests/backend/realtime tests/backend/chat tests/backend/features/generation_ai tests/deploy/test_immutable_references.py --no-cov -q
 ```
 
 Any nonzero pytest exit fails this separate status; it has no dependency on the

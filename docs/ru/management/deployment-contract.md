@@ -148,6 +148,34 @@ Hosted Actions и production этой локальной проверкой не
 Форматы API: [artifacts](https://docs.github.com/en/rest/actions/artifacts),
 [workflow jobs](https://docs.github.com/en/rest/actions/workflow-jobs).
 
+## Immutable Actions и внешние образы
+
+Внешние `uses` в workflow закреплены полными commit SHA; комментарий сохраняет
+исходный version tag. Литеральные `image` в Compose, Dockerfile `FROM` и внешний
+Dockerfile frontend (`# syntax`) используют `tag@sha256:<digest>`. Digest относится
+к multi-platform index: Linux amd64 и arm64 остаются доступны. Проектные
+`DOCKER_IMAGE_*` по-прежнему получает gate успешной сборки, описанный выше.
+В обоих Docker build jobs также закреплены Buildx `v0.38.0` и image BuildKit driver.
+CI helper hadolint использует отдельный проверенный image digest.
+
+Смена upstream tag теперь не обновляет эти ссылки автоматически. Для обновления
+нужно сверить SHA с официальным GitHub repository (annotated tag разрешать до
+commit), а image digest — с registry; проверить SHA-256 raw manifest/index и
+поддерживаемые платформы, изменить pin и прогнать deploy-тесты и Compose config.
+Новый pin не означает проверку отсутствия уязвимостей. Проверка
+`tests/deploy/test_immutable_references.py` запрещает mutable ссылки и включена
+в develop behavioral gate; full quality также собирает этот файл.
+
+Граница проверки — объявленные Actions и container references. У закреплённых
+appleboy Actions entrypoint скачивает версионированные `drone-ssh 1.8.2` и
+`drone-scp 1.8.0` release assets без checksum. Buildx и setup Actions также могут
+скачивать инструменты; hosted runner, apt repositories и PyPI build inputs этой
+фиксацией не замораживаются. Это не полная транзитивная attestation и не доказательство
+побитовой воспроизводимости сборки. Source policy рассматривается отдельно (A08-10).
+
+Синтаксис и границы: [GitHub Actions pinning](https://docs.github.com/en/actions/reference/security/secure-use),
+[Dockerfile frontend digest](https://docs.docker.com/build/buildkit/frontend/).
+
 ## Env и Secrets
 
 При `DEBUG=False` backend и frontend отказываются запускаться с пустыми,

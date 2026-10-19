@@ -1,7 +1,7 @@
 services:
 
   prometheus:
-    image: prom/prometheus:v2.53.0
+    image: prom/prometheus:v2.53.0@sha256:075b1ba2c4ebb04bc3a6ab86c06ec8d8099f8fda1c96ef6d104d9bb1def1d8bc
     container_name: tbmmorpg-prometheus
     restart: unless-stopped
     ports:
@@ -13,7 +13,7 @@ services:
       - tbmmorpg-network
 
   grafana:
-    image: grafana/grafana:11.0.0
+    image: grafana/grafana:11.0.0@sha256:0dc5a246ab16bb2c38a349fb588174e832b4c6c2db0981d0c3e6cd774ba66a54
     container_name: tbmmorpg-grafana
     restart: unless-stopped
     environment:
