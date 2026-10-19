@@ -19,7 +19,7 @@
 | 2 | Воспроизводимые миграции сайта на пустой PostgreSQL и обновление существующей схемы | A05-13 | Исправлено и проверено; остановка до команды на шаг 3 |
 | 3 | Токены и персональные данные в логах и метриках | A08-05/06/07 | Исправлено и проверено; остановка до команды на шаг 4 |
 | 4 | Logout, expiry/revoke открытых WebSocket и атомарная ротация refresh | A07-10/16, A05-12 | Исправлено и проверено; остановка до команды на шаг 5 |
-| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | Ждёт команды; перед реализацией разделить на отдельные задачи |
+| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12 исправлена; остальные задачи ждут отдельной команды |
 | 6 | Восстановление Streams pending с доказанной идемпотентностью эффектов | A05-05 | Ждёт команды |
 | 7 | Надёжное принятие и восстановление GenerationAI; срок жизни SQL-транзакций | A04-11/12/13/18, A05-07/08, A09-09 | Ждёт команды; перед реализацией разделить |
 | 8 | Производительность архива чата, backpressure, Mongo projection, предел истории вкладки | A09-03/04/08/11 | Ждёт команды; перед реализацией разделить |
@@ -226,3 +226,37 @@ DoS audit не выполнялся. Реальные browser domains/production
 `.env`, production и deployment не менялись; новые env variables не нужны.
 Commit subject: `fix(auth): revoke game sessions and rotate refresh tokens atomically`.
 Шаг 5 не начат; перед ним надо выбрать одну задачу из объединённой группы.
+
+## Шаг 5.1
+
+Права production env-файла. По команде владельца из группы выбрана только A08-12. Остальные находки шага 5
+в этой итерации не исправлялись. Исходный SSH deploy записывал секрет сразу в
+`.env`, не задавая права; permissive umask и прежний mode не ограничивались.
+
+Workflow теперь устанавливает `umask 077`, создаёт приватный temp через `mktemp`
+в том же каталоге и записывает env/image refs туда. После успешной подготовки
+`chmod 600` и `mv -fT` атомарно заменяют `.env`, не следуя существующему symlink.
+Владелец файла — SSH deploy user. При ошибке подготовки старый файл сохраняется,
+EXIT trap удаляет temp. Registry login и Compose идут после завершения замены.
+Настоящие `.env`, `.env.prod`, GitHub secrets и production не менялись.
+
+Red: новый regression test на исходном shell block workflow падал для четырёх
+сценариев. Green: **36 passed** в полном `tests/deploy`, включая четыре новых
+реальных Linux filesystem cases: missing/regular/symlink/failed update. Проверены
+mode открытого write descriptor при первом credential write (не только после
+`chmod`), итоговые `0600`/owner, denied read для `nobody`, сохранение значений и
+шести image refs, неизменная цель symlink, cleanup и old content при ошибке `sed`.
+
+```powershell
+$env:RUN_ENV_FILE_CONTAINER_TEST='1'
+$env:RUN_NGINX_CONTAINER_TEST='1'
+.venv/Scripts/python.exe -m pytest tests/deploy --no-cov -q
+```
+
+Тест исполняет точный env-writing block из YAML, останавливаясь до registry login;
+только synthetic content, существующий локальный Linux image, одноразовый Docker
+`--rm --network none`, без volumes и published ports. Реального SSH/deploy не было.
+Production umask/ACL не проверялись; root/deploy user остаются доверенными.
+Полный project gate не запускался. Пример/secret менять не нужно.
+Commit subject: `fix(deploy): write production env with private permissions`.
+Остановиться до команды на следующую отдельную задачу группы 5.

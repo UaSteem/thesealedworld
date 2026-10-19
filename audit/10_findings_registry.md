@@ -1,5 +1,16 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Шаг 5.1 технической очереди — 19.10.2026
+
+- [x] **A08-12:** workflow готовит env в приватном temp (`umask 077`/`mktemp`),
+  атомарно заменяет `.env` с `0600`; прежний permissive mode не наследуется,
+  symlink target не перезаписывается. Ошибка подготовки сохраняет старый файл.
+- **36 passed** в `tests/deploy`: реальная Linux проверка прав с первого write,
+  denied read, regular/symlink/create/failure cleanup и прежние deploy contracts.
+- Выбрана только одна задача группы 5; остальные ID не закрываются.
+  [План и границы](plans/06_non_gameplay_hardening_progress.md#шаг-51).
+  Production mode/ACL и GitHub не проверялись и не менялись.
+
 ## Шаг 4 технической очереди — 19.10.2026
 
 - [x] **A05-12:** site refresh rotation выполняет conditional consume + insert

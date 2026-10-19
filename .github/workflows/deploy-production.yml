@@ -80,15 +80,20 @@ jobs:
 
             cd /opt/turnbasedmmorpg/deploy
 
-            printf '%s\n' "$ENV_FILE_CONTENT" > .env
+            # Create privately, update off to the side, then replace atomically.
+            # umask alone cannot fix the mode of an already-existing .env.
+            umask 077
+            env_tmp=$(mktemp .env.tmp.XXXXXX)
+            trap 'rm -f -- "$env_tmp"' EXIT
+            printf '%s\n' "$ENV_FILE_CONTENT" > "$env_tmp"
 
             update_var() {
               key="$1"
               value="$2"
-              if grep -q "^${key}=" .env; then
-                sed -i "s|^${key}=.*|${key}=${value}|g" .env
+              if grep -q "^${key}=" "$env_tmp"; then
+                sed -i "s|^${key}=.*|${key}=${value}|g" "$env_tmp"
               else
-                printf '%s=%s\n' "$key" "$value" >> .env
+                printf '%s=%s\n' "$key" "$value" >> "$env_tmp"
               fi
             }
 
@@ -98,6 +103,10 @@ jobs:
             update_var "DOCKER_IMAGE_WORKER" "ghcr.io/${REPO_LOWER}-worker:${IMAGE_REF}"
             update_var "DOCKER_IMAGE_TG_BOT" "ghcr.io/${REPO_LOWER}-tg-bot:${IMAGE_REF}"
             update_var "DOCKER_IMAGE_NGINX" "ghcr.io/${REPO_LOWER}-nginx:${IMAGE_REF}"
+
+            chmod 600 "$env_tmp"
+            mv -fT -- "$env_tmp" .env
+            trap - EXIT
 
             echo "$GITHUB_TOKEN" | docker login ghcr.io -u "$GITHUB_ACTOR" --password-stdin
 
