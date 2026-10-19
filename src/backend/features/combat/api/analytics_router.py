@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.backend.core.database import get_db
 from src.backend.core.mongo import get_mongo_provider
+from src.backend.core.operator_auth import require_operator_read, require_operator_write
 from src.backend.features.combat.dependencies import CombatAnalyticsDashboardServiceDep  # noqa: TC001
 from src.backend.features.combat.dto.analytics_dashboard import (
     CombatAnalyticsDrilldownResponseDTO,
@@ -17,7 +18,9 @@ from src.backend.features.combat.services.analytics_dashboard_service import ROL
 from src.backend.infrastructure.combat.repositories import CombatFinalizationRepository
 from src.backend.infrastructure.mongo import CombatDocumentRepository
 
-router = APIRouter(prefix="/api/game/combat/analytics", tags=["combat-analytics"])
+router = APIRouter(
+    prefix="/api/game/combat/analytics", tags=["combat-analytics"], dependencies=[Depends(require_operator_read)]
+)
 
 
 @router.get("/filters", response_model=CombatAnalyticsFiltersDTO)
@@ -114,7 +117,7 @@ def _dimension_filters(request: Request) -> dict[str, Any]:
     return filters
 
 
-@router.post("/backfill")
+@router.post("/backfill", dependencies=[Depends(require_operator_write)])
 async def backfill_combat_analytics(
     db_session: Annotated[AsyncSession, Depends(get_db)],
     limit: Annotated[int, Query(ge=1, le=2000)] = 500,

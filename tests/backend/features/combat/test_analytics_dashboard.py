@@ -183,12 +183,15 @@ def test_dashboard_filters_route_is_static_and_does_not_hit_character_route(clie
             return CombatAnalyticsFiltersDTO(aggregate_version=aggregate_version or 7)
 
     from src.backend.app import app
+    from src.backend.core.operator_auth import require_operator_read
 
     app.dependency_overrides[get_combat_analytics_dashboard_service] = lambda: FakeService()
+    app.dependency_overrides[require_operator_read] = lambda: None
     try:
         response = client.get("/api/game/combat/analytics/filters")
     finally:
         app.dependency_overrides.pop(get_combat_analytics_dashboard_service, None)
+        app.dependency_overrides.pop(require_operator_read, None)
 
     assert response.status_code == 200
     assert response.json()["aggregate_version"] == 7

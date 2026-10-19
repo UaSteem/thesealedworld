@@ -101,29 +101,24 @@ async def _archive_payload(payload: dict[str, Any], *, mongo_repo: ChatBucketRep
             member_ids=member_ids,
             metadata={"source_channel": channel} if channel != thread_type else None,
         )
+        thread_id = thread.id
+
+    # Commit the thread identity before the external write. If the index commit
+    # fails, replay must address the same Mongo bucket rather than a new thread.
+    async with get_session_context() as session:
+        repo = ChatThreadRepository(session)
         try:
             bucket = await mongo_repo.append_message(
-                thread_id=str(thread.id),
+                thread_id=str(thread_id),
                 thread_type=thread_type,
                 scope_id=scope_id,
                 created_at=created_at,
                 message=_mongo_message(payload, message_id=message_id, sender_id=sender_id, created_at=created_at),
             )
-            await repo.add_message_index(
-                message_id=message_id,
-                thread_id=thread.id,
-                sender_id=sender_id,
-                created_at=created_at,
-                mongo_collection=bucket.collection,
-                mongo_bucket_id=bucket.bucket_id,
-                bucket_seq=bucket.seq,
-                mongo_status="stored",
-            )
-            return "stored"
         except Exception:
             await repo.add_message_index(
                 message_id=message_id,
-                thread_id=thread.id,
+                thread_id=thread_id,
                 sender_id=sender_id,
                 created_at=created_at,
                 mongo_collection=None,
@@ -131,8 +126,19 @@ async def _archive_payload(payload: dict[str, Any], *, mongo_repo: ChatBucketRep
                 bucket_seq=None,
                 mongo_status="write_failed",
             )
-            log.bind(message_id=str(message_id), thread_id=str(thread.id)).exception("ChatMongoBucketWriteFailed")
+            log.bind(message_id=str(message_id), thread_id=str(thread_id)).exception("ChatMongoBucketWriteFailed")
             return "write_failed"
+        await repo.add_message_index(
+            message_id=message_id,
+            thread_id=thread_id,
+            sender_id=sender_id,
+            created_at=created_at,
+            mongo_collection=bucket.collection,
+            mongo_bucket_id=bucket.bucket_id,
+            bucket_seq=bucket.seq,
+            mongo_status="stored",
+        )
+        return "stored"
 
 
 async def _discover_streams(redis: aioredis.Redis) -> list[str]:

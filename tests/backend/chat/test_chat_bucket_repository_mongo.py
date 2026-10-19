@@ -48,6 +48,13 @@ async def test_disposable_mongo_concurrent_replay_and_capacity() -> None:
         docs = await database[refs[0].collection].find({}).to_list(length=None)
         assert sum(doc["message_count"] for doc in docs) == 25
         assert all(doc["message_count"] <= 3 for doc in docs)
+        for doc in docs:
+            assert [message["seq"] for message in doc["messages"]] == list(range(1, doc["message_count"] + 1))
+        # A restarted worker has no local repository state, including index cache.
+        repo = ChatBucketRepository(database, max_bucket_messages=3)
+        assert await asyncio.gather(*(append(index) for index in range(24))) == refs
+        docs = await database[refs[0].collection].find({}).to_list(length=None)
+        assert sum(doc["message_count"] for doc in docs) == 25
     finally:
         await client.drop_database(name)
         await client.close()

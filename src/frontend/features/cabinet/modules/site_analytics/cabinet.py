@@ -1,9 +1,7 @@
-import httpx
 from fastapi import Request
 
 from fastapi_cabinet import CabinetAdmin, MetricWidget, SidebarItem, cabinet_site
 from fastapi_cabinet.contracts.widgets import MetricWidgetMap
-from src.frontend.config.settings import settings
 from src.frontend.core.database.session import get_session_context
 from src.frontend.features.auth.repositories.user_repository import UserRepository
 from src.frontend.features.cabinet.modules.site_analytics.mapper import SiteAnalyticsCabinetMapper
@@ -72,15 +70,9 @@ async def _active_travels_provider(request: Request) -> MetricWidgetMap:
 
 
 async def _active_sessions_metric(request: Request, *, api_cls, key: str, title: str) -> MetricWidgetMap:
-    subtitle = "game backend"
-    try:
-        client: httpx.AsyncClient = request.app.state.backend_http_client
-        api = api_cls(client=client, base_url=settings.backend_base_url)
-        value = str(len(await api.list_active()))
-    except (AttributeError, httpx.HTTPStatusError, httpx.RequestError):
-        value = "0"
-        subtitle = "game backend недоступен"
-    return MetricWidgetMap(key=key, title=title, value=value, subtitle=subtitle)
+    # Operator diagnostics are deliberately unavailable to the public frontend.
+    # A sampled session page is also unsuitable as a total count.
+    return MetricWidgetMap(key=key, title=title, value="—", subtitle="Операторская диагностика доступна в Studio")
 
 
 class SiteAnalyticsAdmin(CabinetAdmin):

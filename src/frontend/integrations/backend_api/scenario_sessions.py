@@ -1,11 +1,5 @@
-from src.frontend.core.api import BaseApiClient
+from src.frontend.integrations.backend_api.diagnostic_sessions import DiagnosticSessionsApi
 
 
-class ScenarioSessionsApi(BaseApiClient):
-    async def list_active(self) -> list[dict]:
-        raw = await self._request("GET", "/api/internal/scenario/sessions")
-        if isinstance(raw, dict):
-            return raw.get("data", [])  # type: ignore[return-value]
-        if isinstance(raw, list):
-            return raw
-        return []
+class ScenarioSessionsApi(DiagnosticSessionsApi):
+    endpoint = "/api/internal/scenario/sessions"

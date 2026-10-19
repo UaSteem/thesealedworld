@@ -1,5 +1,20 @@
 # 11. Независимая верификация аудита Астры и дополнительный технический аудит (Antigravity)
 
+## Быстрая сверка исправлений — 19.10.2026
+
+База: `12811132`. `[x]` — исправление в репозитории подтверждается коммитом и статической сверкой текущего кода/регрессионных тестов; тесты в этой сверке не запускались. Исторический текст и статистика ниже сохранены, они не являются текущим списком открытых дефектов.
+
+- [x] **AG-01 — gift только за завершённый primary main-hand удар.** `cfd6b43c`: `mechanics_service.py`, `test_exchange_execution_contract.py`; исключены counter, offhand, secondary и skipped.
+- [x] **AG-02 — пассивная регенерация один раз за размен.** `aa35933c`: `apply_exchange_regen` в финализации executor; `test_exchange_regen_contract.py`.
+- [x] **AG-03 — commit изменений статусов и модификаторов между волнами.** `2b13d1ac`: staging/commit в AbilityService и MechanicsService; multi-wave cases в `test_exchange_execution_contract.py`.
+- [x] **AG-04 — тайминг эффектов и позиция лучника в финализации размена.** `12f1c6e7`: единая финализация, привязка тайминга к личному счётчику получателя; `test_effect_timing_contract.py`. Дополнение `2a5fdf2a`: periodic tick только в разменах, `test_instant_periodic_contract.py`. AG-01–04 интегрированы через `a2642896`.
+- [x] **AG-07 — default/dev service key отклоняется в production.** `0ba3aa3b`: `src/backend/core/game_auth.py`; `test_game_auth.py` и `test_production_settings.py`.
+- [ ] **AG-05, AG-06, AG-08, AG-09:** закрытие этой быстрой сверкой не установлено; требуется отдельная адресная проверка. Это не повторное подтверждение дефектов.
+
+**Дополнение 19.10.2026:** остатки A05-15, A08-03/A07-04 и A08-08 устранены/адресно проверены в рабочем дереве; результаты Mongo/API/Nginx/Compose приведены в [реестре 10](10_findings_registry.md#адресная-приёмка-оставшихся-частей--19102026). Это не production sign-off.
+
+Статусы исходных A02–A09 ведутся в [реестре 10](10_findings_registry.md#быстрая-сверка-исправлений--19102026). В этом отчёте есть смысловые расхождения старых IDs: например, A08-01 в исходном реестре относится к default keys, а не к публикации backend-порта. Статус сверять по контракту, не только по ID.
+
 - **Аудитор:** Antigravity (независимая техническая проверка + собственный аудит кода)
 - **Дата:** 2026-10-17
 - **Проверяемый пакет:** `audit/01_project_inventory.md` .. `audit/10_master_audit.md`, `audit/10_findings_registry.md`, `audit/10_root_causes.md`, `audit/10_skill_gaps.md`, `audit/plans/00_remediation_roadmap.md` .. `audit/plans/05_skill_updates.md`

@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING, Any
 
 from loguru import logger
 
+from src.backend.infrastructure.diagnostic_pagination import scan_key_page
+
 if TYPE_CHECKING:
     from collections.abc import Iterable, Sequence
 
@@ -203,24 +205,24 @@ class CombatSessionManager:
         return {self._decode(k): self._decode(v) for k, v in raw.items()}
 
     async def scan_active_sessions(self) -> list[tuple[str, dict[str, Any]]]:
-        """Scan Redis for all active combat sessions. Returns list of (session_id, meta)."""
-        client = self._client()
-        session_ids: list[str] = []
-        cursor = 0
-        while True:
-            cursor, keys = await client.scan(cursor, match="combat:rbc:*:meta", count=100)
-            for key in keys:
-                parts = self._decode(key).split(":")
-                if len(parts) == 4:
-                    session_ids.append(parts[2])
-            if cursor == 0:
-                break
-        result = []
-        for sid in session_ids:
+        """Return the first bounded diagnostic page of active sessions."""
+        sessions, _ = await self.list_session_page()
+        return sessions
+
+    async def list_session_page(
+        self, *, cursor: str = "0:0", limit: int = 100
+    ) -> tuple[list[tuple[str, dict[str, Any]]], str | None]:
+        keys, next_cursor = await scan_key_page(self._client(), match="combat:rbc:*:meta", cursor=cursor, limit=limit)
+        result: list[tuple[str, dict[str, Any]]] = []
+        for key in keys:
+            parts = self._decode(key).split(":")
+            if len(parts) != 4:
+                continue
+            sid = parts[2]
             meta = await self.get_meta(sid)
             if meta and str(meta.get("active", "0")) == "1":
                 result.append((sid, meta))
-        return result
+        return result, next_cursor
 
     async def get_rbc_session_meta(self, session_id: str) -> dict[str, Any] | None:
         return await self.get_meta(session_id)

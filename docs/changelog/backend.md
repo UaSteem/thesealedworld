@@ -4,6 +4,11 @@ Detailed milestone history for the `src/backend` game runtime layer.
 
 ## [Unreleased]
 
+- Closed remaining audit contracts for operator diagnostics and chat archive:
+  separate read/write operator keys, bounded session pages and explicit detail
+  projection; durable thread identity survives SQL index rollback after Mongo
+  success. Added real Mongo concurrency/replay and Nginx ingress regressions.
+
 - Finished platform hardening: production key validation, loopback-only local
   service ports, protected Nginx routes, retry-safe chat archival, SQL combat
   result recovery and image normalization off the event loop.

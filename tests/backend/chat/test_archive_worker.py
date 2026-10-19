@@ -73,3 +73,71 @@ async def test_malformed_entries_skip_without_logging_the_payload(monkeypatch):
     warnings = [row for row in records if row["message"] == "ChatBufferMalformedEntrySkipped"]
     assert len(warnings) == 2
     assert all(row["exception"] is None and "private" not in str(row["extra"]) for row in warnings)
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("failure", ["flush", "commit"])
+async def test_mongo_success_sql_rollback_replays_same_thread_and_body(monkeypatch, failure):
+    from contextlib import asynccontextmanager
+    from uuid import uuid4
+
+    from src.backend.infrastructure.mongo.chat_buckets import ChatBucketRef
+
+    durable = {"thread": None, "index": None}
+    fail_once = True
+    bodies = {}
+
+    @asynccontextmanager
+    async def session_context():
+        nonlocal fail_once
+        session = SimpleNamespace(thread=durable["thread"], index=None)
+        yield session
+        if session.index is not None and fail_once and failure == "commit":
+            fail_once = False
+            raise RuntimeError("SQL commit failed")
+        durable["thread"] = session.thread
+        if session.index is not None:
+            durable["index"] = session.index
+
+    class Repository:
+        def __init__(self, session):
+            self.session = session
+
+        async def get_or_create_thread(self, **kwargs):
+            if self.session.thread is None:
+                self.session.thread = SimpleNamespace(id=uuid4())
+            return self.session.thread
+
+        async def add_message_index(self, **kwargs):
+            nonlocal fail_once
+            if fail_once and failure == "flush":
+                fail_once = False
+                raise RuntimeError("SQL flush failed")
+            self.session.index = kwargs
+
+    async def append(**kwargs):
+        # Mongo is externally committed and cannot be undone by SQL rollback.
+        key = (kwargs["thread_id"], kwargs["message"]["id"])
+        bodies.setdefault(key, ChatBucketRef("chat_world_buckets", f"bucket:{key[0]}", 1))
+        return bodies[key]
+
+    monkeypatch.setattr(archive, "get_session_context", session_context)
+    monkeypatch.setattr(archive, "ChatThreadRepository", Repository)
+    mongo = SimpleNamespace(append_message=AsyncMock(side_effect=append))
+    payload = {
+        "id": str(uuid4()),
+        "sender_id": str(uuid4()),
+        "channel": "global",
+        "content": "persist me",
+        "created_at": "2026-06-04T10:03:00+00:00",
+    }
+    with pytest.raises(RuntimeError, match=f"SQL {failure} failed"):
+        await archive._archive_payload(payload, mongo_repo=mongo)
+    assert durable["thread"] is not None
+    assert durable["index"] is None
+    assert await archive._archive_payload(payload, mongo_repo=mongo) == "stored"
+    assert len(bodies) == 1
+    ref = next(iter(bodies.values()))
+    assert durable["index"]["mongo_bucket_id"] == ref.bucket_id
+    assert durable["index"]["bucket_seq"] == ref.seq
+    assert mongo.append_message.await_count == 2

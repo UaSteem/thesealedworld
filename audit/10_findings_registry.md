@@ -1,5 +1,30 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Быстрая сверка исправлений — 19.10.2026
+
+База сверки: `12811132`. Проверены история, соответствующие diff и выборочно текущие исходники/тесты. `[x]` означает исправление указанного контракта в репозитории по статической сверке; это не повторный успешный запуск тестов и не подтверждение production. `Частично` не закрывает всю находку. Остальные карточки ниже — исторические; отсутствие отметки означает «в этой сверке не проверено», а не «дефект точно сохраняется».
+
+- [x] **A07-14 / A08-01 — запрет default/dev signing и effective internal keys при `debug=False`.** `0ba3aa3b`: validators в `src/backend/config/settings.py`, `src/frontend/config/settings.py`; проверки в `tests/backend/core/test_production_settings.py`. Реальные настройки сервера не проверялись.
+- [x] **A05-06 — курсор архива чата не перескакивает через ошибку записи.** `0ba3aa3b`: `src/backend/chat/workers/archive.py` останавливает batch на первой ошибке и сохраняет последний безопасный ID; `tests/backend/chat/test_archive_worker.py` покрывает остановку и retry.
+- [x] **A05-15 — Mongo chat append/seq и replay после SQL rollback.** Доработано в текущем рабочем дереве поверх `12811132`: thread identity коммитится до Mongo append; ошибка SQL index не создаёт новый thread при retry. Реальная одноразовая MongoDB 8: concurrent unique/duplicate append, rollover, непрерывный seq, replay после нового repository; SQL flush/commit rollback проверен управляемой transaction fake. Chat suite: **11 passed**, включая Mongo integration. Real PostgreSQL failure injection не выполнялась.
+- [x] **A08-03 / A07-04 — диагностика, analytics и backfill.** В текущем дереве: отдельные operator read/write keys; anonymous, game/site-service callers не получают operational доступ; read не разрешает backfill. Все три списка имеют bounded cursor pages, деталь боя — allowlist полей. API/analytics/pagination suite: **86 passed**. Live одноразовый Nginx: `nginx -t`, 26 private/normalized HTTPS paths → 404, 8 public paths → 200. Deploy suite: **29 passed**.
+- [x] **A08-08 — локальная публикация сервисов.** Loopback bindings из `0ba3aa3b` подтверждены реальным `docker compose config` для local/DB/observability (изолированный env, без чтения service secrets). Production aggregate публикует только Nginx 80/443; host networking отсутствует. Внешнего observability режима нет. Покрыто тем же deploy suite (**29 passed**, не дополнительные 29 тестов).
+
+### Адресная приёмка оставшихся частей — 19.10.2026
+
+Для трёх отметок выше проведены новые проверки, в отличие от первоначальной статической сверки. Команды:
+
+- `.venv/Scripts/python.exe -m pytest tests/backend/features/test_diagnostic_access.py tests/backend/features/test_internal_routers.py tests/backend/features/combat/test_analytics_dashboard.py tests/backend/infrastructure/test_diagnostic_pagination.py --no-cov -q` — 86 passed.
+- `.venv/Scripts/python.exe -m pytest tests/backend/chat/test_archive_worker.py tests/backend/chat/test_chat_bucket_repository.py tests/backend/chat/test_chat_bucket_repository_mongo.py --no-cov -q` — 11 passed при явно заданном `TEST_MONGO_URL` одноразового локального контейнера.
+- `.venv/Scripts/python.exe -m pytest tests/deploy/test_network_boundaries.py --no-cov -q` — 29 passed с `RUN_NGINX_CONTAINER_TEST=1`, из уже локального image, без pull.
+
+- `.venv/Scripts/python.exe -m pytest tests/studio/test_operator_diagnostics.py tests/frontend/test_diagnostic_session_consumers.py --no-cov -q` — 16 passed: ключ выбранного источника, сохранение continuation, явная выборка, отсутствие ложного нуля на сайте.
+- Ruff check/format затронутых Python-файлов прошли. Mypy с `--follow-imports=silent` прошёл для 7 затронутых policy/API/settings модулей. Запуск тех же целей с обычным обходом imports завершился 109 ошибками в 9 других файлах зависимостей; общий type gate не заявляется зелёным.
+
+Одноразовые контейнеры удалены. Существующий стек и production не запускались и не проверялись; эти отметки закрывают репозиторные контракты, а не подтверждают фактическую конфигурацию сервера. Полный project gate не запускался. Studio source-specific read keys описаны в [deployment contract](../docs/ru/management/deployment-contract.md#операционная-диагностика-и-аналитика).
+
+**Отдельный реестр Combat:** в [аудите 11](11_independent_verification_and_audit.md#быстрая-сверка-исправлений--19102026) отмечены AG-01–AG-04 и AG-07. IDs в таблицах 11 местами не совпадают по смыслу с исходным реестром 10; переносить статусы между ними только после сверки названия и контракта. Исторические количества и severity ниже не пересчитаны.
+
 Дата консолидации: 09.10.2026. Объект: локальное рабочее дерево TurnBasedMMORPG. База, указанная в аудитах: 6ccc92561c633f618eb7ee082c36caa44a1400f7; дерево уже содержит staged/unstaged/untracked изменения. Совпадение HEAD не подтверждает тождество снимков рабочего дерева. Это master consolidation существующих свидетельств, **не новый security audit, не план реализации и не разрешение исправлять приложение**.
 
 ## Правила чтения

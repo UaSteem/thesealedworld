@@ -3,6 +3,8 @@ from __future__ import annotations
 import copy
 from typing import TYPE_CHECKING, Any
 
+from src.backend.infrastructure.diagnostic_pagination import scan_key_page
+
 if TYPE_CHECKING:
     from codex_platform.redis_service import RedisService
 
@@ -49,14 +51,16 @@ class ExplorationEncounterRuntimeManager:
         await self.redis.string.delete(self.build_encounter_key(encounter_id))
 
     async def list_session_summaries(self, *, limit: int = 100) -> list[dict[str, Any]]:
-        client = self._redis_client()
-        keys: list[Any] = []
-        cursor = 0
-        while True:
-            cursor, batch = await client.scan(cursor, match="game:encounter:*", count=limit)
-            keys.extend(batch)
-            if cursor == 0:
-                break
+        """Return the first bounded diagnostic page."""
+        sessions, _ = await self.list_session_page(limit=limit)
+        return sessions
+
+    async def list_session_page(
+        self, *, cursor: str = "0:0", limit: int = 100
+    ) -> tuple[list[dict[str, Any]], str | None]:
+        keys, next_cursor = await scan_key_page(
+            self._redis_client(), match="game:encounter:*", cursor=cursor, limit=limit
+        )
 
         results: list[dict[str, Any]] = []
         for key in keys:
@@ -78,7 +82,7 @@ class ExplorationEncounterRuntimeManager:
                 )
             except Exception:  # nosec B112
                 continue
-        return results
+        return results, next_cursor
 
     async def get_monster_cache(self, cache_key: str) -> dict[str, Any] | None:
         result = await self.redis.json_module.get(cache_key, "$")

@@ -55,6 +55,8 @@ class BackendSettings(BaseCommonSettings):
     frontend_internal_service_key: str | None = "dev-site-to-game-service-key"  # pragma: allowlist secret
     monster_catalog_write_key: str = ""
     monster_catalog_read_key: str = ""
+    operator_read_key: str = ""
+    operator_write_key: str = ""
     game_access_token_expire_minutes: int = 15
     game_refresh_token_expire_minutes: int = 12 * 60
     default_symbiote_name: str = "SYSTEM"

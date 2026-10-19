@@ -1,12 +1,16 @@
 from __future__ import annotations
 
 import time
+from typing import Annotated
 
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, Response
 
+from src.backend.core.operator_auth import require_operator_read
 from src.backend.infrastructure.combat.managers.session import CombatSessionManager
 
-router = APIRouter(prefix="/api/internal/combat", tags=["combat-internal"])
+router = APIRouter(
+    prefix="/api/internal/combat", tags=["combat-internal"], dependencies=[Depends(require_operator_read)]
+)
 
 
 def _session_manager(request: Request) -> CombatSessionManager:
@@ -30,13 +34,33 @@ async def get_session(session_id: str, request: Request) -> dict:
     meta = await mgr.get_meta(session_id)
     if not meta:
         raise HTTPException(status_code=404, detail="Session not found")
-    return {"session_id": session_id, **meta}
+    fields = (
+        "active",
+        "status",
+        "battle_type",
+        "step_counter",
+        "active_actors_count",
+        "winner",
+        "started_at",
+        "last_activity_at",
+    )
+    return {"session_id": session_id, **{key: meta[key] for key in fields if key in meta}}
 
 
 @router.get("/sessions")
-async def list_active_sessions(request: Request) -> list[dict]:
+async def list_active_sessions(
+    request: Request,
+    response: Response,
+    cursor: Annotated[str, Query(pattern=r"^[0-9]+:[0-9]+$", max_length=50)] = "0:0",
+    limit: Annotated[int, Query(ge=1, le=100)] = 100,
+) -> list[dict]:
     mgr = _session_manager(request)
-    sessions = await mgr.scan_active_sessions()
+    try:
+        sessions, next_cursor = await mgr.list_session_page(cursor=cursor, limit=limit)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    if next_cursor:
+        response.headers["X-Next-Cursor"] = next_cursor
     now = int(time.time())
     result = []
     for sid, meta in sessions:

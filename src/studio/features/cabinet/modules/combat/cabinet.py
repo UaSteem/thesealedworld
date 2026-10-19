@@ -118,15 +118,22 @@ async def _recent_provider(request: Request) -> TableWidgetMap:
 
 async def _sessions_provider(request: Request) -> TableWidgetMap:
     client: httpx.AsyncClient = request.app.state.backend_http_client
-    api = CombatSessionsApi(client=client, base_url=request.state.source.api_base)
+    api = CombatSessionsApi(
+        client=client,
+        base_url=request.state.source.api_base,
+        internal_service_key=request.state.source.operator_read_key,
+        internal_service_header="X-Operator-Key",
+    )
     try:
-        sessions = await api.list_active()
+        sessions, next_cursor = await api.list_page()
+        sample_title = "Выборка боёв: до 100 сессий" + (" · есть продолжение" if next_cursor else "")
     except (httpx.HTTPStatusError, httpx.RequestError):
         sessions = []
+        sample_title = "Сессии недоступны: проверьте подключение и доступ"
     rows = [{**s, "href": f"{_DETAIL_URL}?id={s['session_id']}"} for s in sessions]
     return TableWidgetMap(
         key="combat_sessions",
-        title="Активные бои",
+        title=sample_title,
         columns=[
             TableColumnMap(key="session_id", label="ID сессии"),
             TableColumnMap(key="status", label="Статус"),
@@ -188,7 +195,12 @@ async def _fetch_session_meta(request: Request) -> dict:
     if not session_id:
         return {}
     client: httpx.AsyncClient = request.app.state.backend_http_client
-    api = CombatSessionsApi(client=client, base_url=request.state.source.api_base)
+    api = CombatSessionsApi(
+        client=client,
+        base_url=request.state.source.api_base,
+        internal_service_key=request.state.source.operator_read_key,
+        internal_service_header="X-Operator-Key",
+    )
     return await api.get_session(session_id) or {}
 
 
@@ -197,7 +209,12 @@ async def _fetch_session_meta(request: Request) -> dict:
 
 async def _get_summary_data(request: Request, *, days: int = 30) -> dict:
     client: httpx.AsyncClient = request.app.state.backend_http_client
-    api = CombatAnalyticsApi(client=client, base_url=request.state.source.api_base)
+    api = CombatAnalyticsApi(
+        client=client,
+        base_url=request.state.source.api_base,
+        internal_service_key=request.state.source.operator_read_key,
+        internal_service_header="X-Operator-Key",
+    )
     try:
         return await api.get_combat_summary(days=days)
     except (httpx.HTTPStatusError, httpx.RequestError):
@@ -206,7 +223,12 @@ async def _get_summary_data(request: Request, *, days: int = 30) -> dict:
 
 async def _get_analytics_rows(request: Request, *, days: int = 30) -> list[dict]:
     client: httpx.AsyncClient = request.app.state.backend_http_client
-    api = CombatAnalyticsApi(client=client, base_url=request.state.source.api_base)
+    api = CombatAnalyticsApi(
+        client=client,
+        base_url=request.state.source.api_base,
+        internal_service_key=request.state.source.operator_read_key,
+        internal_service_header="X-Operator-Key",
+    )
     date_from = (datetime.now(UTC) - timedelta(days=days)).date().isoformat()
     try:
         data = await api.get_rollups(bucket_grain="day", date_from=date_from)
@@ -217,7 +239,12 @@ async def _get_analytics_rows(request: Request, *, days: int = 30) -> list[dict]
 
 async def _get_drilldown_data(request: Request, *, limit: int = 100, offset: int = 0) -> dict:
     client: httpx.AsyncClient = request.app.state.backend_http_client
-    api = CombatAnalyticsApi(client=client, base_url=request.state.source.api_base)
+    api = CombatAnalyticsApi(
+        client=client,
+        base_url=request.state.source.api_base,
+        internal_service_key=request.state.source.operator_read_key,
+        internal_service_header="X-Operator-Key",
+    )
     date_from = (datetime.now(UTC) - timedelta(days=30)).date().isoformat()
     try:
         return await api.get_drilldown(limit=limit, offset=offset, date_from=date_from)

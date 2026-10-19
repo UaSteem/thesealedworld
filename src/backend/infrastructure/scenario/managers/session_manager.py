@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Any
 
 from src.backend.features.scenario.dto.context import ScenarioContextDTO
 from src.backend.features.scenario.game_config import ScenarioConfig
+from src.backend.infrastructure.diagnostic_pagination import scan_key_page
 from src.backend.infrastructure.scenario.managers.keys import ScenarioSessionKey
 
 if TYPE_CHECKING:
@@ -77,14 +78,16 @@ class ScenarioSessionManager:
         return await self.redis.string.exists(self.build_key(char_id))
 
     async def list_session_summaries(self, *, limit: int = 100) -> list[dict[str, Any]]:
-        client = self._redis_client()
-        keys: list[Any] = []
-        cursor = 0
-        while True:
-            cursor, batch = await client.scan(cursor, match="game:ac:*:scenario", count=limit)
-            keys.extend(batch)
-            if cursor == 0:
-                break
+        """Return the first bounded diagnostic page."""
+        sessions, _ = await self.list_session_page(limit=limit)
+        return sessions
+
+    async def list_session_page(
+        self, *, cursor: str = "0:0", limit: int = 100
+    ) -> tuple[list[dict[str, Any]], str | None]:
+        keys, next_cursor = await scan_key_page(
+            self._redis_client(), match="game:ac:*:scenario", cursor=cursor, limit=limit
+        )
 
         results: list[dict[str, Any]] = []
         for key in keys:
@@ -108,7 +111,7 @@ class ScenarioSessionManager:
                 )
             except Exception:  # nosec B112
                 continue
-        return results
+        return results, next_cursor
 
     @staticmethod
     def _first(result: Any) -> Any:

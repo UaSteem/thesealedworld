@@ -41,14 +41,21 @@ async def _recent_provider(request: Request) -> TableWidgetMap:
 
 async def _sessions_provider(request: Request) -> TableWidgetMap:
     client: httpx.AsyncClient = request.app.state.backend_http_client
-    api = ScenarioSessionsApi(client=client, base_url=request.state.source.api_base)
+    api = ScenarioSessionsApi(
+        client=client,
+        base_url=request.state.source.api_base,
+        internal_service_key=request.state.source.operator_read_key,
+        internal_service_header="X-Operator-Key",
+    )
     try:
-        sessions = await api.list_active()
+        sessions, next_cursor = await api.list_page()
+        sample_title = "Выборка сценариев: до 100 сессий" + (" · есть продолжение" if next_cursor else "")
     except (httpx.HTTPStatusError, httpx.RequestError):
         sessions = []
+        sample_title = "Сессии недоступны: проверьте подключение и доступ"
     return TableWidgetMap(
         key="scenario_sessions",
-        title="Активные сценарии",
+        title=sample_title,
         columns=[
             TableColumnMap(key="char_id", label="Персонаж"),
             TableColumnMap(key="session_id", label="Сессия"),
