@@ -239,7 +239,7 @@ async def test_stale_session_closes_with_4003(monkeypatch: pytest.MonkeyPatch) -
     socket = _FakeWebSocket()
     socket.app = SimpleNamespace(state=state)  # type: ignore[attr-defined]
 
-    await ws_module.realtime_ws(socket, token="t")  # type: ignore[arg-type]
+    await ws_module.realtime_ws(socket, token="t", char_id=None)  # type: ignore[arg-type]
 
     assert socket.closed is not None
     assert socket.closed["code"] == CODE_STALE_SESSION

@@ -1,8 +1,8 @@
-from contextlib import suppress
-from typing import Annotated
+from typing import Annotated, Literal
 
+import httpx
 from fastapi import APIRouter, Depends, Request, status
-from fastapi.responses import RedirectResponse
+from fastapi.responses import PlainTextResponse, RedirectResponse
 
 from src.frontend.config.settings import settings
 from src.frontend.core.renderer import UIRenderer, get_ui_renderer
@@ -13,7 +13,12 @@ from src.frontend.features.auth.services.auth_service import FrontendAuthService
 from src.frontend.features.auth.services.referral_code import normalize_referral_code
 from src.frontend.features.auth.token_state import ACCESS_COOKIE_NAME, REFRESH_COOKIE_NAME
 from src.frontend.game_features.session.cookies import clear_active_character_cookie
-from src.frontend.game_features.session.token_state import clear_game_token_cookies
+from src.frontend.game_features.session.token_state import (
+    GAME_ACCESS_COOKIE_NAME,
+    GAME_REFRESH_COOKIE_NAME,
+    clear_game_token_cookies,
+)
+from src.frontend.integrations.backend_api.game_lobby import BackendGameLobbyApi
 from src.shared.exceptions import AuthException, BusinessLogicException
 
 router = APIRouter(tags=["Auth"])
@@ -139,12 +144,54 @@ async def logout(
     request: Request,
     auth_service: Annotated[FrontendAuthService, Depends(get_frontend_auth_service)],
 ):
-    refresh_token = request.cookies.get(auth_service.refresh_cookie_name)
+    game_refresh = request.cookies.get(GAME_REFRESH_COOKIE_NAME)
+    game_access = request.cookies.get(GAME_ACCESS_COOKIE_NAME)
+    if game_refresh or game_access:
+        api = BackendGameLobbyApi(client=request.app.state.backend_http_client, base_url=settings.backend_base_url)
+        credentials: tuple[tuple[str | None, Literal["game_refresh", "game_access"]], ...] = (
+            (game_refresh, "game_refresh"),
+            (game_access, "game_access"),
+        )
+        for token, token_type in credentials:
+            if not token:
+                continue
+            try:
+                await api.logout_token(token, token_type=token_type)
+            except httpx.HTTPStatusError as exc:
+                # A rejected credential cannot authorize this session. Still
+                # revoke the other cookie: it may name the current session.
+                if exc.response.status_code != status.HTTP_401_UNAUTHORIZED:
+                    return _logout_unavailable()
+            except (httpx.RequestError, ConnectionError, TimeoutError):
+                return _logout_unavailable()
+
+    rotated = getattr(request.state, "auth_tokens", None)
+    refresh_token = getattr(rotated, "refresh_token", None) or request.cookies.get(auth_service.refresh_cookie_name)
     if refresh_token:
-        with suppress(AuthException):
+        try:
             await auth_service.logout(refresh_token)
+        except AuthException:
+            pass
+        except Exception:
+            return _logout_unavailable()
 
     response = RedirectResponse(url="/login", status_code=status.HTTP_303_SEE_OTHER)
-    auth_service.clear_auth_cookies(response)
+    domain = settings.auth_cookie_domain or None
+    for name in (ACCESS_COOKIE_NAME, REFRESH_COOKIE_NAME):
+        response.delete_cookie(name, path="/", domain=domain)
+        if domain:
+            response.delete_cookie(name, path="/")
     clear_active_character_cookie(response)
+    clear_game_token_cookies(response)
+    # Outer refresh middleware must not reattach credentials after this response.
+    request.state.auth_tokens = None
+    request.state.game_tokens = None
     return response
+
+
+def _logout_unavailable() -> PlainTextResponse:
+    return PlainTextResponse(
+        "Logout could not be completed. Please retry.",
+        status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+        headers={"Retry-After": "5"},
+    )

@@ -69,6 +69,27 @@ class AuthPersistence:
         await self.tokens.commit()
         return refresh_token
 
+    async def rotate_refresh_token(
+        self, *, user_id: uuid.UUID, old_token: str, new_token: str, expires_at: datetime
+    ) -> bool:
+        """Durably replace one refresh row, or leave the old row on definite failure.
+
+        After a successful commit, replaying the old token is rejected. A lost
+        response does not create another successor and is not replayed as success.
+        """
+        try:
+            rotated = await self.tokens.rotate(
+                user_id=user_id, old_token=old_token, new_token=new_token, expires_at=expires_at
+            )
+            if not rotated:
+                await self.tokens.rollback()
+                return False
+            await self.tokens.commit()
+            return True
+        except Exception:
+            await self.tokens.rollback()
+            raise
+
     async def delete_refresh_token(self, token: str) -> None:
         await self.tokens.delete(token)
         await self.tokens.commit()

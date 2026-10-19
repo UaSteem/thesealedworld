@@ -1,7 +1,8 @@
 import uuid
-from typing import Annotated, Any, cast
+from typing import Annotated, Any, Literal, cast
 
 from fastapi import APIRouter, Depends, Request
+from pydantic import BaseModel
 
 from src.backend.core.auth import User, get_current_user, require_game_character_scope
 from src.backend.core.exceptions import SessionReplacedException
@@ -9,6 +10,7 @@ from src.backend.core.game_auth import (
     GameTokenPairDTO,
     GameTokenRefreshRequestDTO,
     create_game_token_pair,
+    decode_game_access_token,
     decode_game_refresh_token,
     refresh_game_token_pair,
     require_internal_service_key,
@@ -43,6 +45,27 @@ from src.shared.schemas import (
 from src.shared.schemas.auth import AuthenticatedUser
 
 router = APIRouter(prefix="/game-lobby", tags=["Game Lobby"])
+
+
+class GameTokenLogoutRequest(BaseModel):
+    token: str
+    token_type: Literal["game_access", "game_refresh"] = "game_refresh"
+
+
+@router.post("/logout-token")
+async def logout_game_token(
+    request: Request,
+    dto: GameTokenLogoutRequest,
+    _service: Annotated[object, Depends(require_internal_service_key)],
+) -> dict[str, bool]:
+    """Revoke the signed session without releasing or changing gameplay state."""
+    # Token type is a public discriminator, never a credential.
+    decode = decode_game_refresh_token if dto.token_type == "game_refresh" else decode_game_access_token  # nosec B105
+    claims = decode(dto.token)
+    revoked = False
+    if claims.session_id:
+        revoked = await request.app.state.game_session_lock.release_if_current(claims.character_id, claims.session_id)
+    return {"revoked": revoked}
 
 
 @router.post("/bootstrap", response_model=CoreResponseDTO[GameLobbyPayloadDTO])
@@ -176,14 +199,12 @@ async def refresh_game_token(
     # access token so the old device cannot resurrect itself.
     claims = decode_game_refresh_token(dto.refresh_token)
     lock = request.app.state.game_session_lock
-    current_session = await lock.current(claims.character_id)
-    if claims.session_id is None or current_session != claims.session_id:
+    if claims.session_id is None or not await lock.touch_if_current(claims.character_id, claims.session_id):
         raise SessionReplacedException()
     pair = refresh_game_token_pair(dto.refresh_token)
     # Keep the lock TTL rolling for active players. Without this the lock
     # silently expires after its own TTL even while the player is online,
     # and the next refresh would see current_session=None -> 409.
-    await lock.claim(claims.character_id, claims.session_id)
     return pair
 
 

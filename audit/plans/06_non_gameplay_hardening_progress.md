@@ -18,7 +18,7 @@
 | 1 | Авторизация API настроек, AI-генерации и симуляций; согласованные read/write callers | A07-02/03 | Исправлено и проверено; остановка до команды на шаг 2 |
 | 2 | Воспроизводимые миграции сайта на пустой PostgreSQL и обновление существующей схемы | A05-13 | Исправлено и проверено; остановка до команды на шаг 3 |
 | 3 | Токены и персональные данные в логах и метриках | A08-05/06/07 | Исправлено и проверено; остановка до команды на шаг 4 |
-| 4 | Logout, expiry/revoke открытых WebSocket и атомарная ротация refresh | A07-10/16, A05-12 | Ждёт команды |
+| 4 | Logout, expiry/revoke открытых WebSocket и атомарная ротация refresh | A07-10/16, A05-12 | Исправлено и проверено; остановка до команды на шаг 5 |
 | 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | Ждёт команды; перед реализацией разделить на отдельные задачи |
 | 6 | Восстановление Streams pending с доказанной идемпотентностью эффектов | A05-05 | Ждёт команды |
 | 7 | Надёжное принятие и восстановление GenerationAI; срок жизни SQL-транзакций | A04-11/12/13/18, A05-07/08, A09-09 | Ждёт команды; перед реализацией разделить |
@@ -166,3 +166,63 @@ private data, произвольно переименованные в разр�
 Без deploy/restart текущие production processes не изменятся; `.env` не менялся.
 Commit subject: `fix(observability): keep credentials out of logs and metrics`.
 Шаг 4 не начат; нужна отдельная команда владельца.
+
+## Шаг 4
+
+По команде владельца исправлены A05-12, A07-10 и lifecycle/budget часть A07-16.
+Исходные red проверки: две concurrent threshold rotation на реальной PostgreSQL
+создавали два успешных successor token; browser logout не имел game revoke bridge;
+actual ASGI socket продолжал получать notice после замены session slot.
+
+- Site rotation: conditional `DELETE ... RETURNING` старого hash с user binding,
+  insert нового hash и один commit. Конкурентный проигравший получает прежний
+  `RefreshTokenNotFoundError`; определённый insert/commit failure выполняет rollback
+  и сохраняет старую durable строку. Порог семи дней и healthy non-rotation сохранены.
+  Signing выполняется до потребления токена. После успешного commit старый token
+  не replayable: retry потерянного ответа отклоняется без второго successor.
+- Browser logout вызывает internal `/game-lobby/logout-token` для обеих имеющихся
+  signed game credentials, затем отзывает текущий site refresh (включая уже
+  rotated request-state token). Очищаются все пять cookies в domain/host-only
+  вариантах и middleware token state. Невалидная refresh-cookie не мешает отзыву
+  valid access-cookie. Storage/backend failure возвращает 503 с `Retry-After`,
+  credentials остаются для повтора. Gameplay actor release не выполняется.
+- Game slot release/renew используют Redis Lua compare-and-delete/expire.
+  Устаревший logout не удаляет replacement session; concurrent refresh больше
+  не восстанавливает отозванную сессию через unconditional claim. Endpoint требует
+  internal service key и валидный signed game token; char/user не берутся из
+  произвольного browser body. Captured game HTTP/refresh credentials после отзыва
+  отклоняются. Новые login claim semantics сохранены.
+- Единственный active WS `/ws/realtime` использует общий guarded transport для
+  receive, fan-out, notices, heartbeat и history replay. Access expiry → 4001;
+  logout/replacement/Redis error → 4003. Idle monitor опрашивает раз в секунду с
+  учётом expiry, Redis timeout — две секунды. Отписки и pending sends очищаются;
+  query char_id сверяется с claims. Text budget 16 KiB UTF-8, token bucket
+  20 frames/sec, burst 40; oversized/rate/binary → 1009/1008/1003.
+
+Общий итоговый набор: **184 passed**. Включены реальные одноразовые PostgreSQL 16
+и Redis 7, forced insert conflict и deferred COMMIT trigger failure, barrier
+rotation race, 20 повторов logout/renew и 20 replacement races, service gate deny,
+signed HTTP logout → actual WebSocket close, blocked send/slow storage cleanup.
+
+```powershell
+$env:RUN_SITE_AUTH_POSTGRES='1'
+$env:TEST_REDIS_URL='redis://127.0.0.1:57020/0'
+$env:TEST_REALTIME_REDIS_URL='redis://127.0.0.1:57020/0'
+.venv/Scripts/python.exe -m pytest tests/backend/realtime tests/backend/features/game_lobby/test_game_token_flow.py tests/backend/infrastructure/actor_state/test_game_session_lock.py tests/backend/infrastructure/actor_state/test_game_session_lock_redis.py tests/backend/core/test_game_auth.py tests/backend/core/test_auth_session_replaced.py tests/frontend/features/auth/test_browser_logout.py tests/frontend/features/auth/test_refresh_rotation_postgres.py tests/frontend/features/auth/test_site_auth_service.py tests/frontend/features/auth/test_auth_service.py tests/frontend/features/auth/test_api_router.py tests/frontend/core/test_auth_middleware.py tests/frontend/game_features/session/test_game_token_state.py tests/frontend/game_features/session/test_game_keepalive_route.py --no-cov -q
+```
+
+Redis URL выше использован только для специально созданного disposable контейнера
+без volumes/persistence на loopback; не подставлять действующую базу. PostgreSQL
+fixture создаёт собственный контейнер. Все контейнеры после проверки удалены.
+Ruff затронутых Python-файлов и scoped mypy девяти source modules прошли.
+Полный project gate не запускался. Инструкция: `docs/ru/frontend/index.md`.
+
+Границы: JSON `/auth/logout` остаётся site-only; captured stateless site access JWT
+сохраняет прежний expiry, blacklist не добавлен. Неопределённый commit acknowledgement
+не гарантирует rollback после реального commit. Redis authorization check не атомарен
+с последующей сетевой доставкой; idle revoke имеет bounded polling delay. Frame
+budget применяется после ASGI receive; wire limits сервера не менялись, новый
+DoS audit не выполнялся. Реальные browser domains/production не проверялись.
+`.env`, production и deployment не менялись; новые env variables не нужны.
+Commit subject: `fix(auth): revoke game sessions and rotate refresh tokens atomically`.
+Шаг 5 не начат; перед ним надо выбрать одну задачу из объединённой группы.

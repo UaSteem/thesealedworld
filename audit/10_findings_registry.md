@@ -1,5 +1,23 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Шаг 4 технической очереди — 19.10.2026
+
+- [x] **A05-12:** site refresh rotation выполняет conditional consume + insert
+  одним commit; проигравший конкурентный запрос не создаёт второго successor,
+  definite insert/commit failure откатывается с сохранением старого токена.
+- [x] **A07-10:** browser logout отзывает signed game session и текущий site
+  refresh, очищает site/game/character cookies и pending middleware token state.
+  Redis CAS защищает replacement и исключает resurrection concurrent refresh.
+- [x] **A07-16 — lifetime и frame budgets:** idle и active WebSocket прекращает
+  доступ при access expiry/revoke/replacement; fan-out/notices/replay защищены
+  общим transport guard. Добавлены bounded frame size/rate и storage timeout.
+- **184 passed**: одноразовые PostgreSQL/Redis, SQL concurrency/failure,
+  actual HTTP logout → WebSocket close, HTTP/refresh deny, cleanup и регрессии.
+  Ruff и scoped mypy девяти source modules прошли.
+- Границы: stateless site access JWT до expiry, site-only JSON logout,
+  polling delay и ASGI/wire limits описаны в [плане очереди](plans/06_non_gameplay_hardening_progress.md#шаг-4).
+  Production не проверялась и не менялась; это не новый DoS audit.
+
 ## Шаг 3 технической очереди — 19.10.2026
 
 - [x] **A08-05:** HTTP metrics используют matched route templates после routing,

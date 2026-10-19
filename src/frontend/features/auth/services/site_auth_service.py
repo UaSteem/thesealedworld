@@ -19,10 +19,8 @@ from src.shared.exceptions import AuthException, BusinessLogicException
 _DUMMY_PASSWORD_HASH = get_password_hash(secrets.token_urlsafe(32))
 
 # Refresh-token rotation policy: only rotate when the existing token is close to expiry.
-# Rotating on every access-refresh creates a race in browsers that issue parallel
-# requests (the first one rotates, the rest see "Invalid refresh token" because their
-# cookie value is already gone). Keeping the refresh stable until ~7 days remain kills
-# that race entirely while still rotating well before real expiry.
+# Healthy refreshes keep the same cookie. Near expiry, one atomic rotation wins;
+# competing requests and retries of the consumed cookie receive NotFound.
 _REFRESH_ROTATION_THRESHOLD = timedelta(days=7)
 
 
@@ -121,10 +119,25 @@ class AuthService:
             logger.bind(user_id=str(user.id), rotated=False).info("AuthRefreshAccepted")
             return Token(access_token=access_token, refresh_token=token, token_type="bearer")  # nosec
 
-        # Refresh is close to expiry — rotate (delete + create) to extend the session.
-        await self._persistence.delete_refresh_token(token)
-        logger.bind(user_id=str(user.id), rotated=True).info("AuthRefreshAccepted")
-        return await self.create_tokens(user_schema)
+        # Build credentials before persistence so signing failures cannot consume
+        # the old token. Delete + insert + commit then form one durable transition.
+        access_token = create_access_token(
+            subject=str(user_schema.id),
+            expires_delta=timedelta(minutes=settings.access_token_expire_minutes),
+        )
+        refresh_token = secrets.token_urlsafe(32)
+        refresh_token_expires = now + timedelta(days=settings.refresh_token_expire_days)
+        rotated = await self._persistence.rotate_refresh_token(
+            user_id=user_schema.id,
+            old_token=token,
+            new_token=refresh_token,
+            expires_at=refresh_token_expires,
+        )
+        if not rotated:
+            logger.bind(reason="token_already_consumed").warning("AuthRefreshRejected")
+            raise RefreshTokenNotFoundError("Invalid refresh token")
+        logger.bind(user_id=str(user_schema.id), rotated=True).info("AuthRefreshAccepted")
+        return Token(access_token=access_token, refresh_token=refresh_token, token_type="bearer")  # nosec
 
     async def logout(self, token: str) -> None:
         await self._persistence.delete_refresh_token(token)

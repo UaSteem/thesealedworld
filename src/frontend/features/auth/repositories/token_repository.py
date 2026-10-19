@@ -29,6 +29,23 @@ class TokenRepository:
         )
         return result.scalar_one_or_none()
 
+    async def rotate(self, *, user_id: uuid.UUID, old_token: str, new_token: str, expires_at: datetime) -> bool:
+        """Claim the old row and insert its successor in the caller's transaction.
+
+        PostgreSQL serializes competing DELETEs on this row; only one caller
+        receives an id and may insert a successor. No commit occurs here.
+        """
+        result = await self.session.execute(
+            delete(RefreshToken)
+            .where(RefreshToken.token_hash == hash_refresh_token(old_token), RefreshToken.user_id == user_id)
+            .returning(RefreshToken.id)
+            .execution_options(synchronize_session=False)
+        )
+        if result.scalar_one_or_none() is None:
+            return False
+        await self.create(user_id=user_id, token=new_token, expires_at=expires_at)
+        return True
+
     async def delete(self, token: str) -> None:
         await self.session.execute(delete(RefreshToken).where(RefreshToken.token_hash == hash_refresh_token(token)))
 
@@ -37,3 +54,6 @@ class TokenRepository:
 
     async def commit(self) -> None:
         await self.session.commit()
+
+    async def rollback(self) -> None:
+        await self.session.rollback()

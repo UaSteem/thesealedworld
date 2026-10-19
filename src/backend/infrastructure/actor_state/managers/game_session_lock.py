@@ -1,11 +1,13 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from src.backend.config.settings import settings
 from src.backend.infrastructure.redis.keys import GameSessionLockKey
 
 if TYPE_CHECKING:
+    from collections.abc import Awaitable
+
     from codex_platform.redis_service import RedisService
 
 
@@ -29,8 +31,9 @@ class GameSessionLockManager:
     Backed by a Redis string key ``game:ac_sess:{char_id}`` whose TTL is
     aligned with ``settings.game_refresh_token_expire_minutes`` so the lock
     stays alive as long as the refresh token can mint new access tokens.
-    The refresh endpoint must call :meth:`touch` (or re-``claim``) on every
-    successful refresh to keep the TTL rolling forward for active players.
+    The refresh endpoint must call :meth:`touch_if_current` so a concurrent
+    logout or replacement cannot be undone. Unconditional :meth:`claim` is
+    reserved for a new login/character selection.
     """
 
     def __init__(self, redis: RedisService, *, ttl_seconds: int | None = None) -> None:
@@ -56,3 +59,32 @@ class GameSessionLockManager:
     async def touch(self, char_id: int) -> None:
         """Refresh the TTL of an existing lock without changing its value."""
         await self.redis.string.expire(self.build_key(char_id), self.ttl_seconds)
+
+    async def release_if_current(self, char_id: int, session_id: str) -> bool:
+        """Revoke only the signed session, never a newer login's slot."""
+        return bool(
+            await cast(
+                "Awaitable[int]",
+                self.redis.string.client.eval(
+                    "if redis.call('GET', KEYS[1]) == ARGV[1] then return redis.call('DEL', KEYS[1]) end return 0",
+                    1,
+                    self.build_key(char_id),
+                    session_id,
+                ),
+            )
+        )
+
+    async def touch_if_current(self, char_id: int, session_id: str) -> bool:
+        """Renew atomically; a concurrent logout or replacement cannot be undone."""
+        return bool(
+            await cast(
+                "Awaitable[int]",
+                self.redis.string.client.eval(
+                    "if redis.call('GET', KEYS[1]) == ARGV[1] then return redis.call('EXPIRE', KEYS[1], ARGV[2]) end return 0",
+                    1,
+                    self.build_key(char_id),
+                    session_id,
+                    str(self.ttl_seconds),
+                ),
+            )
+        )

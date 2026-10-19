@@ -8,9 +8,10 @@ the envelope shape is already in :mod:`src.backend.realtime.dto.envelope`.
 Authentication
 --------------
 The handshake reads ``tbmmorpg_game_access_token`` from cookies. The same
-cookie is rotated by :class:`GameTokenRefreshMiddleware` on every game-area
-HTTP call (12h refresh window), so a long-lived browser tab survives the 15
-minute access expiry without the page knowing the new value. ``?token=`` is
+cookie is rotated by :class:`GameTokenRefreshMiddleware` on game-area HTTP
+calls (12h refresh window). The socket closes at its original access expiry;
+the browser supervisor refreshes through HTTP and reconnects with the new
+cookie. ``?token=`` is
 kept as a fallback for diagnostics and tests; in production the browser tab
 never has access to the value to embed it in the URL.
 
@@ -36,7 +37,7 @@ import contextlib
 import json
 import time
 import uuid
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from fastapi import APIRouter, Query, WebSocket, WebSocketDisconnect
 from loguru import logger as log
@@ -47,6 +48,7 @@ from src.backend.config.settings import settings
 from src.backend.core.game_auth import decode_game_access_token
 from src.backend.realtime.dto.envelope import IncomingEnvelopeDTO
 from src.backend.realtime.services.chat_bridge import ChatBridge, with_session_scope
+from src.backend.realtime.services.session_guard import SessionGuard
 
 if TYPE_CHECKING:
     from src.backend.realtime.services.connection_manager import RealtimeConnectionManager
@@ -123,14 +125,20 @@ async def realtime_ws(
     user_id = str(claims.sub)
     character_id = claims.character_id
     session_id = claims.session_id
+    if char_id is not None and char_id != character_id:
+        await _accept_then_close(ws, CODE_AUTH_FAILED, "character mismatch")
+        return
+    char_id = character_id
 
     # 3. Enforce single active session (matches HTTP behaviour).
     lock = getattr(ws.app.state, "game_session_lock", None)
-    if lock is not None:
-        current = await lock.current(character_id)
-        if current != session_id:
-            await _accept_then_close(ws, CODE_STALE_SESSION, "stale session")
-            return
+    try:
+        current = await asyncio.wait_for(lock.current(character_id), 2.0) if lock is not None else None
+    except Exception:
+        current = None
+    if current != session_id:
+        await _accept_then_close(ws, CODE_STALE_SESSION, "stale session")
+        return
 
     realtime_manager: RealtimeConnectionManager = ws.app.state.realtime_manager
     chat_manager = ws.app.state.chat_manager
@@ -138,6 +146,9 @@ async def realtime_ws(
     chat_sessions = ws.app.state.chat_sessions
     msg_service = MessageService(chat_manager, redis)
     bridge = ChatBridge(msg_service)
+    guard = SessionGuard(ws, lock, character_id, session_id, claims.exp)
+    # All delivery paths share the guarded transport's WebSocket-shaped interface.
+    ws = cast("WebSocket", guard)
 
     # 4. Seed chat session state from the live actor key.
     if char_id is not None:
@@ -181,6 +192,10 @@ async def realtime_ws(
         topics=topics,
         chat_manager=chat_manager,
     )
+    guard.on_disconnect(lambda: realtime_manager.disconnect(ws, chat_manager))
+    owner = asyncio.current_task()
+    assert owner is not None
+    session_task = asyncio.create_task(guard.monitor(owner), name="realtime-session-monitor")
 
     # 7. Replay recent history ONLY for private (DM) threads, through the
     #    envelope adapter so every chat payload arrives wrapped as
@@ -191,27 +206,27 @@ async def realtime_ws(
     #    join cheap. The buffer is still written by MessageService (the
     #    archiver consumes it); we simply do not push it on connect.
     #    DM tabs keep a short tail so a reconnect does not drop the open thread.
-    for topic in topics:
-        if not topic.startswith("chat:dm:"):
-            continue
-        stream_key = f"chat:buffer:{topic}"
-        try:
-            entries = await redis.xrevrange(stream_key, count=_TAIL_COUNT)
-            for _, fields in reversed(entries):
-                data = fields.get("data")
-                if data is None:
-                    continue
-                await entry.adapter.send_text(data)
-        except Exception:
-            log.bind(topic=topic, char_id=char_id).debug("RealtimeHotTailReplayFailed")
-
     # 8. Heartbeat + receive loop. The heartbeat task lives alongside the
     #    receive loop so a missed pong forces close even if the client never
     #    writes anything.
     sender_name: str = state.get("sender_name") or user_id
     liveness = _Liveness()
-    heartbeat_task = asyncio.create_task(_heartbeat_loop(ws, liveness, character_id))
+    heartbeat_task = asyncio.create_task(_heartbeat_loop(ws, liveness, character_id), name="realtime-heartbeat")
     try:
+        for topic in topics:
+            if not topic.startswith("chat:dm:"):
+                continue
+            stream_key = f"chat:buffer:{topic}"
+            try:
+                entries = await redis.xrevrange(stream_key, count=_TAIL_COUNT)
+                for _, fields in reversed(entries):
+                    data = fields.get("data")
+                    if data is not None:
+                        await entry.adapter.send_text(data)
+            except WebSocketDisconnect:
+                raise
+            except Exception:
+                log.bind(topic=topic, char_id=char_id).debug("RealtimeHotTailReplayFailed")
         while True:
             raw = await ws.receive_text()
             envelope = _parse_envelope(raw)
@@ -237,6 +252,9 @@ async def realtime_ws(
             else:
                 await _send_error(ws, "unsupported_type")
 
+    except asyncio.CancelledError:
+        if not guard.closed:
+            raise
     except WebSocketDisconnect as exc:
         log.bind(
             character_id=character_id,
@@ -248,8 +266,11 @@ async def realtime_ws(
         log.bind(character_id=character_id).exception("RealtimeReceiveLoopFailed")
     finally:
         heartbeat_task.cancel()
+        session_task.cancel()
         with contextlib.suppress(asyncio.CancelledError, Exception):
             await heartbeat_task
+        with contextlib.suppress(asyncio.CancelledError, Exception):
+            await session_task
         realtime_manager.disconnect(ws, chat_manager)
 
 
@@ -341,6 +362,8 @@ async def _handle_chat_send(
         msg = scoped
 
     try:
+        if isinstance(ws, SessionGuard):
+            await ws.ensure_current()
         log.bind(
             sender_id=user_id,
             channel=msg.channel,
@@ -352,6 +375,8 @@ async def _handle_chat_send(
             sender_id=uuid.UUID(user_id),
             sender_name=sender_name,
         )
+    except WebSocketDisconnect:
+        raise
     except Exception:
         log.bind(sender_id=user_id, channel=msg.channel).exception("RealtimeChatSendFailed")
         return False
@@ -370,7 +395,7 @@ async def _accept_then_close(ws: WebSocket, code: int, reason: str) -> None:
         await ws.accept()
     except Exception:
         return
-    log.info(f"RealtimeAuthClose code={code} reason={reason!r}")
+    log.bind(code=code, reason=reason).info("RealtimeAuthClose")
     try:
         await ws.close(code=code, reason=reason)
     except Exception:

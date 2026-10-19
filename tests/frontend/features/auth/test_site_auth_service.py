@@ -30,7 +30,7 @@ class TestAuthService:
             tester_status="none",
             tester_approved_at=None,
             referral_code="SEAL-ABCD2345",
-            created_at=datetime.now()
+            created_at=datetime.now(),
         )
         persistence.register_user = AsyncMock(return_value=mock_user)
 
@@ -61,7 +61,7 @@ class TestAuthService:
             tester_status="none",
             tester_approved_at=None,
             referral_code="SEAL-ABCD2345",
-            created_at=datetime.now()
+            created_at=datetime.now(),
         )
         persistence.get_user_by_email = AsyncMock(return_value=user)
 
@@ -76,7 +76,7 @@ class TestAuthService:
             id=uuid.uuid4(),
             email="test@example.com",
             hashed_password="hashed",  # pragma: allowlist secret
-            is_active=True
+            is_active=True,
         )
         persistence.get_user_by_email = AsyncMock(return_value=user)
 
@@ -112,7 +112,9 @@ class TestAuthService:
         mocker.patch("secrets.token_urlsafe", return_value="refresh")
         persistence.create_refresh_token = AsyncMock()
 
-        user = UserResponse(id=uuid.uuid4(), email="test@example.com", is_active=True, is_superuser=False, created_at=datetime.now())
+        user = UserResponse(
+            id=uuid.uuid4(), email="test@example.com", is_active=True, is_superuser=False, created_at=datetime.now()
+        )
         tokens = await service.create_tokens(user)
 
         assert tokens.access_token == "access"
@@ -121,22 +123,45 @@ class TestAuthService:
 
     async def test_refresh_token_rotates_when_near_expiry(self, service, persistence, mocker):
         from datetime import UTC, timedelta
-        db_token = MagicMock(user_id=uuid.uuid4(), expires_at=datetime.now(UTC) + timedelta(days=1))
+        from types import SimpleNamespace
+
+        db_token = SimpleNamespace(user_id=uuid.uuid4(), expires_at=datetime.now(UTC) + timedelta(days=1))
         persistence.get_refresh_token = AsyncMock(return_value=db_token)
+        persistence.rotate_refresh_token = AsyncMock(return_value=True)
         persistence.delete_refresh_token = AsyncMock()
-
-        user = MagicMock(id=db_token.user_id, email="t@e.com", is_active=True, tester_status="none", tester_approved_at=None, referral_code="SEAL-ABCD2345", created_at=datetime.now())
+        persistence.create_refresh_token = AsyncMock()
+        user = SimpleNamespace(
+            id=db_token.user_id,
+            email="rotation@example.test",
+            is_active=True,
+            is_superuser=False,
+            tester_status="none",
+            tester_approved_at=None,
+            referral_code="SEAL-ABCD2345",
+            created_at=datetime.now(UTC),
+        )
         persistence.get_user_by_id = AsyncMock(return_value=user)
-
-        mocker.patch.object(service, "create_tokens", AsyncMock(return_value="new_tokens"))
+        mocker.patch(
+            "src.frontend.features.auth.services.site_auth_service.create_access_token", return_value="fresh-access"
+        )
+        mocker.patch(
+            "src.frontend.features.auth.services.site_auth_service.secrets.token_urlsafe", return_value="new-refresh"
+        )
 
         result = await service.refresh_token("valid_token")
-        assert result == "new_tokens"
-        persistence.delete_refresh_token.assert_called_with("valid_token")
+        assert result.access_token == "fresh-access"
+        assert result.refresh_token == "new-refresh"
+        persistence.rotate_refresh_token.assert_awaited_once()
+        args = persistence.rotate_refresh_token.await_args.kwargs
+        assert args["user_id"] == user.id and args["old_token"] == "valid_token" and args["new_token"] == "new-refresh"
+        assert args["expires_at"] > datetime.now(UTC) + timedelta(days=7)
+        persistence.delete_refresh_token.assert_not_awaited()
+        persistence.create_refresh_token.assert_not_awaited()
 
     async def test_refresh_token_keeps_existing_when_healthy(self, service, persistence, mocker):
         """Refresh with >7d left: only issue new access; do NOT rotate refresh."""
         from datetime import UTC, timedelta
+
         db_token = MagicMock(user_id=uuid.uuid4(), expires_at=datetime.now(UTC) + timedelta(days=20))
         persistence.get_refresh_token = AsyncMock(return_value=db_token)
         persistence.delete_refresh_token = AsyncMock()
@@ -173,17 +198,20 @@ class TestAuthService:
 
     async def test_refresh_token_expired(self, service, persistence):
         from datetime import UTC, timedelta
+
         db_token = MagicMock(expires_at=datetime.now(UTC) - timedelta(days=1))
         persistence.get_refresh_token = AsyncMock(return_value=db_token)
         persistence.delete_refresh_token = AsyncMock()
 
         from src.shared.exceptions import AuthException
+
         with pytest.raises(AuthException, match="Refresh token expired"):
             await service.refresh_token("expired")
         persistence.delete_refresh_token.assert_called_once()
 
     async def test_refresh_token_user_not_found_or_inactive(self, service, persistence):
         from datetime import UTC, timedelta
+
         db_token = MagicMock(user_id=uuid.uuid4(), expires_at=datetime.now(UTC) + timedelta(days=1))
         persistence.get_refresh_token = AsyncMock(return_value=db_token)
         persistence.delete_refresh_token = AsyncMock()
@@ -191,6 +219,7 @@ class TestAuthService:
         persistence.get_user_by_id = AsyncMock(return_value=None)
 
         from src.shared.exceptions import AuthException
+
         with pytest.raises(AuthException, match="User not found or inactive"):
             await service.refresh_token("token")
 
@@ -203,3 +232,41 @@ class TestAuthService:
         persistence.delete_refresh_token = AsyncMock()
         await service.logout("token")
         persistence.delete_refresh_token.assert_called_with("token")
+
+
+@pytest.mark.parametrize("remaining_days,rotates", [(7, True), (7.001, False)])
+async def test_refresh_threshold_policy_and_atomic_loser(monkeypatch, remaining_days, rotates):
+    from datetime import UTC, timedelta
+    from types import SimpleNamespace
+
+    from src.frontend.features.auth.services import site_auth_service as module
+
+    now = datetime.now(UTC)
+
+    class Clock:
+        @staticmethod
+        def now(tz):
+            return now
+
+    monkeypatch.setattr(module, "datetime", Clock)
+    monkeypatch.setattr(module, "create_access_token", lambda **kwargs: "fresh-access")
+    user_id = uuid.uuid4()
+    user = SimpleNamespace(
+        id=user_id, email="rotation@example.test", is_active=True, is_superuser=False, created_at=now
+    )
+    persistence = SimpleNamespace(
+        get_refresh_token=AsyncMock(
+            return_value=SimpleNamespace(user_id=user_id, expires_at=now + timedelta(days=remaining_days))
+        ),
+        get_user_by_id=AsyncMock(return_value=user),
+        rotate_refresh_token=AsyncMock(return_value=False),
+    )
+    service = module.AuthService(persistence)
+    if rotates:
+        with pytest.raises(module.RefreshTokenNotFoundError):
+            await service.refresh_token("old-refresh")
+        persistence.rotate_refresh_token.assert_awaited_once()
+    else:
+        result = await service.refresh_token("old-refresh")
+        assert result.refresh_token == "old-refresh"
+        persistence.rotate_refresh_token.assert_not_awaited()

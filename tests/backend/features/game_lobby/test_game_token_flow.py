@@ -175,9 +175,7 @@ async def test_create_character_for_site_user_returns_scenario_and_game_tokens()
 @pytest.mark.unit
 async def test_name_availability_for_site_user_uses_creation_service() -> None:
     service = SimpleNamespace(
-        check_name_availability=AsyncMock(
-            return_value=CharacterNameAvailabilityDTO(available=False, code="name_taken")
-        )
+        check_name_availability=AsyncMock(return_value=CharacterNameAvailabilityDTO(available=False, code="name_taken"))
     )
 
     response = await check_lobby_character_name_for_site_user(
@@ -221,20 +219,17 @@ async def test_release_character_for_site_user_uses_internal_user_context() -> N
 
 
 def _request_with_lock_current(*, current_value: str | None) -> tuple[SimpleNamespace, AsyncMock]:
-    """Fake Request exposing both ``current`` and ``claim`` on game_session_lock."""
-    claim = AsyncMock()
+    """Atomic renewal succeeds only for the currently owned session."""
+    touch = AsyncMock(side_effect=lambda char_id, session_id: current_value == session_id)
     current = AsyncMock(return_value=current_value)
-    state = SimpleNamespace(game_session_lock=SimpleNamespace(current=current, claim=claim))
+    state = SimpleNamespace(game_session_lock=SimpleNamespace(current=current, touch_if_current=touch))
     request = SimpleNamespace(app=SimpleNamespace(state=state))
-    return request, claim
+    return request, touch
 
 
 @pytest.mark.unit
 async def test_refresh_game_token_touches_lock_on_success() -> None:
-    """Active players must keep their slot: each refresh re-claims the lock
-    with the same session_id so its TTL rolls forward. Without this the lock
-    silently expires while the refresh token is still valid, and the next
-    refresh would see current=None and raise SessionReplacedException."""
+    """Renew the current slot without reclaiming a revoked/replaced session."""
     user_id = uuid4()
     refresh_token_value = create_game_refresh_token(
         user_id=user_id,
@@ -271,7 +266,43 @@ async def test_refresh_game_token_rejects_stale_session_without_touching_lock() 
             object(),
         )
 
-    claim.assert_not_awaited()
+    claim.assert_awaited_once_with(7, "sess-OLD")
+
+
+@pytest.mark.unit
+async def test_logout_uses_only_signed_session_and_does_not_release_gameplay() -> None:
+    from src.backend.features.game_lobby.api.router import GameTokenLogoutRequest, logout_game_token
+
+    token = create_game_refresh_token(user_id=uuid4(), character_id=7, session_id="old-session")
+    release = AsyncMock(return_value=False)
+    request = SimpleNamespace(
+        app=SimpleNamespace(
+            state=SimpleNamespace(
+                game_session_lock=SimpleNamespace(release_if_current=release),
+            )
+        )
+    )
+    assert await logout_game_token(request, GameTokenLogoutRequest(token=token), object()) == {"revoked": False}
+    release.assert_awaited_once_with(7, "old-session")
+
+
+@pytest.mark.unit
+async def test_logout_rejects_forged_token_before_any_session_mutation() -> None:
+    from src.backend.features.game_lobby.api.router import GameTokenLogoutRequest, logout_game_token
+
+    release = AsyncMock()
+    request = SimpleNamespace(
+        app=SimpleNamespace(
+            state=SimpleNamespace(
+                game_session_lock=SimpleNamespace(release_if_current=release),
+            )
+        )
+    )
+    from src.backend.core.exceptions import AuthException
+
+    with pytest.raises(AuthException):
+        await logout_game_token(request, GameTokenLogoutRequest(token="forged"), object())
+    release.assert_not_awaited()
 
 
 @pytest.mark.unit

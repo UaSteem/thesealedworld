@@ -90,6 +90,36 @@ refresh secrets из SHA-256: сессии потребуют повторног
 откатывает транзакцию миграции. Это проверки изолированной схемы, не разрешение
 на rollback или изменение действующей базы.
 
+## Завершение и обновление сессий
+
+Browser `POST /logout` отзывает обе присутствующие game credentials через
+внутренний backend endpoint, затем текущий site refresh token. Если middleware
+уже выполнил ротацию, используется новый токен из request state. При успехе
+удаляются site/game access/refresh и active-character cookies, включая domain и
+legacy host-only варианты; middleware не выставляет их повторно. При недоступном
+backend/хранилище возвращается 503 с `Retry-After`, credentials сохраняются для
+повтора. Logout не освобождает игровой actor и не меняет gameplay state.
+
+Game session revoke и продление refresh выполняются Redis compare-and-delete /
+compare-and-expire: старый session ID не может удалить новый вход или восстановить
+отозванный slot. Site refresh с оставшимся сроком больше семи дней сохраняется;
+при сроке не больше семи дней старый hash удаляется и новый добавляется одной SQL транзакцией.
+Из конкурентных ротаций успешна одна. После успешного commit повтор старого токена
+отклоняется, включая потерю ответа; это не replay успешного refresh.
+
+Активный WebSocket route — `/ws/realtime`. Он проверяет game access expiry и
+текущий session ID на входящих/исходящих операциях и фоновым monitor раз в секунду
+с учётом expiry; Redis check ограничен двумя секундами. Expiry закрывает сокет
+кодом 4001, logout/replacement/ошибка хранилища — 4003. Отписки и pending sends
+очищаются. Transport budgets: 16 KiB UTF-8 на text frame, 20 frames/sec с burst 40;
+binary frames отклоняются. Frame budget действует после ASGI receive; wire limits
+сервера не менялись. Redis check — точка авторизации, не атомарная сетевая доставка.
+
+JSON API `/auth/logout` принимает только site refresh token и остаётся site-only.
+Ранее скопированный stateless site access JWT сохраняет прежний срок действия;
+этот шаг не вводит blacklist site JWT. Для game tokens отзыв session slot
+прекращает HTTP/refresh доступ и завершает открытый WebSocket.
+
 ## Разделы
 
 - [Дизайн веб-интерфейса](interface_design/index.md)

@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Literal
 
 from pydantic import BaseModel, Field
 
@@ -67,6 +67,13 @@ GameLobbyCharacterDeleteRequest = GameLobbyCharacterDeleteRequestDTO
 
 
 class BackendGameLobbyApi(BaseApiClient):
+    async def logout_token(self, token: str, *, token_type: Literal["game_access", "game_refresh"]) -> None:
+        await self._request(
+            "POST",
+            "/game-lobby/logout-token",
+            json={"token": token, "token_type": token_type},
+        )
+
     async def bootstrap(self, user: GameLobbyUserContext) -> GameLobbyResponse:
         return await self._request(
             "POST",
