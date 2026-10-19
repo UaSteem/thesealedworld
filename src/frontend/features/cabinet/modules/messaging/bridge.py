@@ -99,4 +99,4 @@ class SiteMessagingBridge:
                 email=email,
             )
         except Exception:
-            logger.bind(email=email).exception("TesterStatusEmailDeliveryFailed")
+            logger.exception("TesterStatusEmailDeliveryFailed")

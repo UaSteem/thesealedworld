@@ -14,6 +14,7 @@ from src.frontend.features.auth.services.site_auth_service import (
 )
 from src.frontend.features.auth.token_state import ACCESS_COOKIE_NAME, REFRESH_COOKIE_NAME, get_access_token
 from src.shared.exceptions import AuthException
+from src.shared.infrastructure.http_route_context import safe_route_template
 
 
 class FrontendAuthService:
@@ -68,9 +69,11 @@ class FrontendAuthService:
         user = await self.get_current_user(request)
         if user is None:
             if getattr(request.state, "backend_unavailable", False):
-                logger.bind(path=request.url.path).warning("FrontendAuthRequiredBackendUnavailable")
+                logger.bind(route_template=safe_route_template(request)).warning(
+                    "FrontendAuthRequiredBackendUnavailable"
+                )
                 raise _backend_starting_redirect()
-            logger.bind(path=request.url.path).warning("FrontendAuthRequired")
+            logger.bind(route_template=safe_route_template(request)).warning("FrontendAuthRequired")
             raise _login_redirect()
         return user
 
@@ -107,7 +110,7 @@ class FrontendAuthService:
             user = await self.auth_service.get_user_by_id(user_id)
             return UserResponse.model_validate(user) if user is not None else None
         except (AuthException, ValueError, TypeError) as exc:
-            logger.bind(error=str(exc)).warning("FrontendCurrentUserLookupRejected")
+            logger.bind(error_type=exc.__class__.__name__).warning("FrontendCurrentUserLookupRejected")
             tokens = await self._refresh_from_request(request)
             if not tokens:
                 return None
@@ -116,7 +119,9 @@ class FrontendAuthService:
                 user = await self.auth_service.get_user_by_id(uuid.UUID(str(payload.get("sub"))))
                 return UserResponse.model_validate(user) if user is not None else None
             except Exception as refresh_exc:
-                logger.bind(error=str(refresh_exc)).warning("FrontendCurrentUserLookupRejectedAfterRefresh")
+                logger.bind(error_type=refresh_exc.__class__.__name__).warning(
+                    "FrontendCurrentUserLookupRejectedAfterRefresh"
+                )
                 return None
         except Exception:
             tokens = await self._refresh_from_request(request)
@@ -127,7 +132,9 @@ class FrontendAuthService:
                 user = await self.auth_service.get_user_by_id(uuid.UUID(str(payload.get("sub"))))
                 return UserResponse.model_validate(user) if user is not None else None
             except Exception as refresh_exc:
-                logger.bind(error=str(refresh_exc)).warning("FrontendCurrentUserLookupRejectedAfterRefresh")
+                logger.bind(error_type=refresh_exc.__class__.__name__).warning(
+                    "FrontendCurrentUserLookupRejectedAfterRefresh"
+                )
                 return None
 
     async def _refresh_from_request(self, request: Request) -> TokenResponse | None:
@@ -141,10 +148,12 @@ class FrontendAuthService:
             # Likely a rotation race: a sibling request already consumed the cookie.
             # Stay silent — do NOT clear cookies. The next refresh attempt either
             # succeeds with the freshly issued cookie or falls into the hard branch.
-            logger.bind(error=str(exc), recovered_from="race").info("FrontendAuthRefreshRaceDetected")
+            logger.bind(error_type=exc.__class__.__name__, recovered_from="race").info(
+                "FrontendAuthRefreshRaceDetected"
+            )
             return None
         except AuthException as exc:
-            logger.bind(error=str(exc)).warning("FrontendAuthRefreshRejected")
+            logger.bind(error_type=exc.__class__.__name__).warning("FrontendAuthRefreshRejected")
             request.state.clear_auth_cookies = True
             return None
 

@@ -1,6 +1,6 @@
 """HTTP request context middleware for structured logging.
 
-Injects ``request_id``, ``char_id``, and ``healthcheck`` marker into the
+Injects ``request_id`` and a ``healthcheck`` marker into the
 async-local log context so every log call within the request automatically
 carries these fields.
 """
@@ -22,10 +22,6 @@ class LogContextMiddleware(BaseHTTPMiddleware):
 
         if request.url.path in _HEALTHCHECK_PATHS:
             ctx["healthcheck"] = True
-
-        char_id = request.path_params.get("char_id") or request.path_params.get("character_id")
-        if char_id is not None:
-            ctx["char_id"] = int(char_id)
 
         set_log_context(**ctx)
         try:

@@ -1,5 +1,22 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Шаг 3 технической очереди — 19.10.2026
+
+- [x] **A08-05:** HTTP metrics используют matched route templates после routing,
+  ограниченный `<unmatched>` и `OTHER`, без URL-токенов/идентификаторов;
+  публичный `/metrics` закрыт Nginx на обоих production hosts.
+- [x] **A08-06:** Nginx access log сохраняет только группы маршрутов и operational
+  context; исходные URL/query/IP не записываются. Нативный HTTP error log отключён,
+  поскольку его request URLs невозможно редактировать; startup errors сохранены.
+  App error/auth logs используют безопасный route context.
+- [x] **A08-07:** project production logging удаляет exception values/locals и
+  известные приватные поля до JSON serialization; тип ошибки, frame metadata и
+  request/correlation context сохранены. Email callers не логируют адрес/содержимое.
+- **81 passed** в общем адресном наборе, включая реальный одноразовый Nginx,
+  ASGI/Prometheus и stdout/collector JSON с synthetic canaries.
+  Подробности и границы: [план очереди](plans/06_non_gameplay_hardening_progress.md#шаг-3).
+  Реальные secrets/SMTP/production и исторические collector logs не проверялись.
+
 ## Шаг 2 технической очереди — 19.10.2026
 
 - [x] **A05-13:** site baseline фиксирует исторический DDL вместо текущих ORM

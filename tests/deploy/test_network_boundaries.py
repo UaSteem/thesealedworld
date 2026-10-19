@@ -65,6 +65,8 @@ def public_servers():
         "/docs/oauth2-redirect",
         "/redoc/",
         "/openapi.json",
+        "/metrics",
+        "/metrics/",
     ],
 )
 def test_internal_and_schema_paths_denied_on_both_hosts(public_servers, path):
@@ -233,7 +235,8 @@ trap 'nginx -s quit -c /contract/nginx.conf' EXIT
 for host in example.test play.example.test; do
     for path in /api/internal /api/internal/sessions /api/admin /api/admin/players \
         /api//internal/sessions /api/%69nternal/sessions /api/internal%2fsessions \
-        /api/public/../admin/players /docs /docs/oauth2-redirect /%64ocs /redoc/ /openapi%2ejson; do
+        /api/public/../admin/players /docs /docs/oauth2-redirect /%64ocs /redoc/ /openapi%2ejson \
+        /metrics /metrics/ /%6detrics; do
         code=$(curl --silent --show-error --path-as-is --insecure --max-time 5 \
             -H "Host: $host" -o /dev/null -w '%{http_code}' "https://127.0.0.1$path")
         [ "$code" = 404 ] || { echo "Unexpected $code for $host $path"; exit 1; }

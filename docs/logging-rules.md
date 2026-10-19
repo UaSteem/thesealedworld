@@ -67,7 +67,7 @@ logger.bind(stage="start", worker_type="combat").info("WorkerInit")
 
 | Field | Source | When |
 |-------|--------|------|
-| `char_id` | middleware path params / task payload | when path contains char_id |
+| `char_id` | trusted domain/task context | when provided by the domain; HTTP middleware does not copy URL parameters |
 | `task_name` | `@logged_task` decorator | worker tasks only |
 | `correlation_id` | event handler wrapper | event bus handlers |
 
@@ -90,6 +90,25 @@ logger.bind(stage="start", worker_type="combat").info("WorkerInit")
 | Console level | DEBUG | INFO |
 | Healthcheck logs | Visible | Filtered (suppressed) |
 | Backtrace / diagnose | Enabled | Disabled |
+
+Production sinks are configured by the project wrapper. Exception diagnostics
+retain the error type and traceback file/function/line metadata, without locals,
+source lines, exception values or chains. Unstructured third-party messages are
+replaced by `ExternalLogMessage`; the originating logger/module remains available.
+Explicit private fields (credentials, email recipients and message contents) are
+removed before JSON serialization. This is defense in depth: callers must still
+follow the prohibition on logging private data under arbitrary field names.
+
+HTTP telemetry uses matched route templates after routing, never a raw request
+URL. Unknown routes use a single `<unmatched>` label; unknown methods use `OTHER`.
+Public site/play Nginx hosts deny `/metrics`; scraping uses private service access.
+
+Nginx access records contain bounded route families, method, status, bytes and
+upstream/request timing. They omit raw URL/query, client IP, headers and referrer.
+Native Nginx request error messages cannot redact request URLs, so the HTTP-scope
+error log is disabled. Master/startup errors remain enabled; use structured access
+status/upstream/timing for request failures. This trades detailed proxy error text
+for preventing credential-bearing URLs from entering the collector.
 
 In production, Docker captures stdout. Alloy collects it and ships to Grafana Cloud Loki.
 File sinks are unnecessary and would consume disk on the container.

@@ -39,6 +39,7 @@ from src.frontend.game_features.session.middleware import GameTokenRefreshMiddle
 from src.frontend.game_features.session.token_state import clear_game_token_cookies
 from src.frontend.integrations.generated_assets import configure_generated_asset_serving
 from src.shared.exceptions import BaseAPIException
+from src.shared.infrastructure.http_route_context import safe_http_method, safe_route_template
 from src.shared.infrastructure.log_middleware import LogContextMiddleware
 from src.shared.infrastructure.logging_config import setup_logging
 from src.shared.infrastructure.metrics_endpoint import metrics_router
@@ -228,10 +229,8 @@ async def health():
 
 @app.exception_handler(404)
 async def not_found_handler(request: Request, exc: Exception):
-    logger.bind(method=request.method, path=request.url.path).warning(
-        "FrontendNotFound method={} path={}",
-        request.method,
-        request.url.path,
+    logger.bind(method=safe_http_method(request), route_template=safe_route_template(request), status=404).warning(
+        "FrontendNotFound"
     )
     ui = get_ui_renderer(request)
     return await ui.render("errors/404.html", context={"error": "PAGE_NOT_FOUND"}, status_code=404)
@@ -264,10 +263,9 @@ async def frontend_http_exception_handler(request: Request, exc: HTTPException):
 async def backend_http_status_handler(request: Request, exc: httpx.HTTPStatusError):
     backend_status = exc.response.status_code
     logger.bind(
-        method=request.method,
-        path=request.url.path,
+        method=safe_http_method(request),
+        route_template=safe_route_template(request),
         backend_status=backend_status,
-        backend_url=str(exc.request.url),
     ).warning("FrontendBackendRequestFailed")
     if backend_status in {status.HTTP_401_UNAUTHORIZED, status.HTTP_403_FORBIDDEN}:
         return _redirect_and_clear_expired_state(request, _auth_recovery_location(request))
@@ -282,7 +280,12 @@ async def backend_http_status_handler(request: Request, exc: httpx.HTTPStatusErr
 
 @app.exception_handler(httpx.RequestError)
 async def backend_request_error_handler(request: Request, exc: httpx.RequestError):
-    logger.bind(method=request.method, path=request.url.path, error=str(exc)).warning("FrontendBackendUnavailable")
+    logger.bind(
+        method=safe_http_method(request),
+        route_template=safe_route_template(request),
+        error_type=exc.__class__.__name__,
+        status=503,
+    ).warning("FrontendBackendUnavailable")
     ui = get_ui_renderer(request)
     return await ui.render(
         "errors/500.html",
@@ -293,9 +296,12 @@ async def backend_request_error_handler(request: Request, exc: httpx.RequestErro
 
 @app.exception_handler(500)
 async def server_error_handler(request: Request, exc: Exception):
-    logger.bind(method=request.method, path=request.url.path, error_type=exc.__class__.__name__).opt(
-        exception=exc
-    ).critical("FrontendServerError")
+    logger.bind(
+        method=safe_http_method(request),
+        route_template=safe_route_template(request),
+        error_type=exc.__class__.__name__,
+        status=500,
+    ).opt(exception=exc).error("FrontendServerError")
     ui = get_ui_renderer(request)
     return await ui.render("errors/500.html", context={"error": str(exc)}, status_code=500)
 

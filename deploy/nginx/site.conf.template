@@ -117,6 +117,11 @@ server {
         add_header Cache-Control "public, immutable";
     }
 
+    # Scraping uses the private service network, never the public hosts.
+    location ~ ^/metrics(/|$) {
+        return 404;
+    }
+
     location ~ ^/api/(internal|admin)(/|$) {
         return 404;
     }
@@ -254,6 +259,11 @@ server {
         proxy_set_header Host $host;
         expires 1y;
         add_header Cache-Control "public, immutable";
+    }
+
+    # Scraping uses the private service network, never the public hosts.
+    location ~ ^/metrics(/|$) {
+        return 404;
     }
 
     location ~ ^/api/(internal|admin)(/|$) {

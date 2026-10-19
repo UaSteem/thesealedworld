@@ -100,7 +100,7 @@ class AccountService:
                     email=email,
                 )
         except Exception:
-            logger.bind(email=email).exception("TesterApplicationEmailDeliveryFailed")
+            logger.exception("TesterApplicationEmailDeliveryFailed")
 
 
 def _build_referral_vm(user: AccountProfileUser) -> AccountReferralVM:

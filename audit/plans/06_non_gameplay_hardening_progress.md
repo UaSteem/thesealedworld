@@ -17,7 +17,7 @@
 | --- | --- | --- | --- |
 | 1 | Авторизация API настроек, AI-генерации и симуляций; согласованные read/write callers | A07-02/03 | Исправлено и проверено; остановка до команды на шаг 2 |
 | 2 | Воспроизводимые миграции сайта на пустой PostgreSQL и обновление существующей схемы | A05-13 | Исправлено и проверено; остановка до команды на шаг 3 |
-| 3 | Токены и персональные данные в логах и метриках | A08-05/06/07 | Ждёт команды |
+| 3 | Токены и персональные данные в логах и метриках | A08-05/06/07 | Исправлено и проверено; остановка до команды на шаг 4 |
 | 4 | Logout, expiry/revoke открытых WebSocket и атомарная ротация refresh | A07-10/16, A05-12 | Ждёт команды |
 | 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | Ждёт команды; перед реализацией разделить на отдельные задачи |
 | 6 | Восстановление Streams pending с доказанной идемпотентностью эффектов | A05-05 | Ждёт команды |
@@ -122,3 +122,47 @@ refresh sessions при таком откате не сохраняются. Э�
 Инструкция: `docs/ru/frontend/index.md`. Commit subject:
 `fix(site): make schema migrations reproducible`.
 Следующий шаг — только после отдельной команды владельца.
+
+## Шаг 3
+
+По команде владельца исправлены A08-05/06/07. Воспроизведены synthetic canary
+утечки в raw URL metrics, Nginx access/request error logs и production exceptions
+прежнего library setup. Реальные secrets, сообщения и логи не использовались.
+
+- Metrics выбирают route template после routing, неизвестные пути сводят к
+  `<unmatched>`, методы — к конечному набору с `OTHER`. Error paths учитывают
+  status/duration и возвращают in-flight gauge к нулю. URL parameters не копируются
+  в HTTP log context. App error/auth logs сохраняют безопасный `route_template`.
+- Nginx на обоих публичных hosts запрещает `/metrics` (включая trailing slash
+  и normalized encoded URI), private scraper endpoint сохранён. Access JSON
+  содержит route family, generated request ID, method/status/bytes/timing/upstream,
+  без raw URI/query/IP. HTTP error log отключён: Nginx не умеет редактировать
+  credential-bearing request URLs в error text. Master/startup errors сохранены;
+  диагностика request failures использует structured access records.
+- Project production wrapper явно задаёт `diagnose=False`, `backtrace=False`,
+  исключает exception message/chains/source/locals, сохраняет error type и
+  file/function/line frames. Известные приватные fields удаляются рекурсивно,
+  arbitrary objects не сериализуются через repr, unstructured library/access
+  messages становятся `ExternalLogMessage`. Service/request/correlation context
+  сохраняется. Email adapter и fallback callers не bind адрес/subject/body.
+  Установленная и canonical `codex_core` не изменялись.
+
+Общий адресный прогон: **81 passed**:
+
+```powershell
+$env:RUN_NGINX_CONTAINER_TEST='1'
+.venv/Scripts/python.exe -m pytest tests/shared/test_http_route_privacy.py tests/shared/test_production_log_privacy.py tests/shared/test_logging_config.py tests/shared/test_log_task_wrapper.py tests/frontend/test_url_log_privacy.py tests/frontend/features/auth/test_auth_service.py tests/frontend/features/email/test_email_service.py tests/frontend/features/account/test_account_service.py tests/frontend/features/cabinet/test_messaging_bridge.py tests/deploy/test_nginx_log_privacy.py tests/deploy/test_network_boundaries.py --no-cov -q
+```
+
+Проверены ASGI success/error/404/405, bounded label cardinality, stdout и collector
+JSON с canary locals/SMTP error/email/body/query, реальные Nginx access/error
+records при 200/502, public metrics deny, сохранность HTTP/WS routing.
+Ruff и scoped mypy затронутых source modules прошли; полный project gate не запускался.
+
+Ограничения: debug сохраняет developer diagnostics; sanitizer не распознаёт
+private data, произвольно переименованные в разрешённые fields, поэтому запрет
+логирования PII для callers остаётся. Collector проверен как JSON sink,
+не как реальная Grafana Cloud доставка. Исторические production logs не очищались.
+Без deploy/restart текущие production processes не изменятся; `.env` не менялся.
+Commit subject: `fix(observability): keep credentials out of logs and metrics`.
+Шаг 4 не начат; нужна отдельная команда владельца.
