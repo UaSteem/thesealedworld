@@ -4,6 +4,11 @@ Detailed milestone history for the `src/frontend` site-web layer.
 
 ## [Unreleased]
 
+- Freeze the site Alembic baseline instead of loading current ORM metadata;
+  normalize historical index names in revision `0005_site_index_names`.
+- Add disposable PostgreSQL upgrade/data-preservation/schema-parity and rollback
+  coverage; baseline downgrade refuses to cascade into unrelated objects.
+
 - Shared frontend routing/static bootstrap now supports the refreshed play
   surface assets used by the rift hex-map prototype.
 

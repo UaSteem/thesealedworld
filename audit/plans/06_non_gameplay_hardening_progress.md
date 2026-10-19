@@ -16,7 +16,7 @@
 | Шаг | Задача | Исходные ID | Статус |
 | --- | --- | --- | --- |
 | 1 | Авторизация API настроек, AI-генерации и симуляций; согласованные read/write callers | A07-02/03 | Исправлено и проверено; остановка до команды на шаг 2 |
-| 2 | Воспроизводимые миграции сайта на пустой PostgreSQL и обновление существующей схемы | A05-13 | Ждёт команды |
+| 2 | Воспроизводимые миграции сайта на пустой PostgreSQL и обновление существующей схемы | A05-13 | Исправлено и проверено; остановка до команды на шаг 3 |
 | 3 | Токены и персональные данные в логах и метриках | A08-05/06/07 | Ждёт команды |
 | 4 | Logout, expiry/revoke открытых WebSocket и атомарная ротация refresh | A07-10/16, A05-12 | Ждёт команды |
 | 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | Ждёт команды; перед реализацией разделить на отдельные задачи |
@@ -84,3 +84,41 @@ production настроек владелец заменяет GitHub secret `ENV
 GitHub, production и перезапуск процессов в этом дополнении не выполнялись.
 Проверка: 8 изолированных ASGI-запросов с ключами обоих файлов прошли
 (anonymous deny, reader GET, reader mutation deny, writer mutation success).
+
+## Шаг 2
+
+По команде владельца исправлена A05-13. До изменения на одноразовой PostgreSQL 16
+воспроизведён `DuplicateColumnError`: `0002` повторно добавляла `token_hash`, уже
+созданный первой миграцией через актуальные ORM models.
+
+`0001_site_schema_baseline` теперь содержит явный DDL девяти исходных таблиц:
+raw refresh token, без последующих referral/email полей. Импорт live metadata
+удалён; изменения ORM больше не меняют историческую схему. Ревизии `0002`–`0004`
+сохранены. Новая `0005_site_index_names` переименовывает четыре исторических
+индекса по текущему соглашению ORM, без пересоздания таблиц и изменения данных.
+Уже канонические имена допускаются; неизвестные определения/дубли требуют
+разбора и вызывают транзакционный отказ. Downgrade baseline больше не использует
+`CASCADE`, поэтому конфликт с чужими объектами сохраняет их и откатывает миграцию.
+
+Проверка: **9 passed** на реальной одноразовой PostgreSQL 16:
+
+```powershell
+$env:RUN_SITE_MIGRATION_POSTGRES='1'
+.venv/Scripts/python.exe -m pytest tests/frontend/migrations/test_site_migrations_postgres.py --no-cov -q
+```
+
+Покрыты clean upgrade/repeat head, populated `0001`→head с сохранением данных
+девяти таблиц и SHA-256 conversion refresh token, populated `0004`→`0005`,
+канонические/конфликтующие индексы и их rollback, downgrade/reapply,
+защита чужих объектов и независимость baseline от будущих ORM tables/columns.
+Alembic comparison head с текущими ORM types/nullability/defaults/indexes/FK
+не показал различий. Ruff check/format трёх Python-файлов и scoped mypy двух
+миграций (`--follow-imports=silent`) прошли. Одноразовый контейнер удалён.
+
+Ограничения: проверялась изолированная база, не копия production. Реальные базы,
+`.env`, GitHub и deployment не менялись; полный project gate не запускался.
+Downgrade ниже `0002` не восстанавливает raw refresh secrets из hash; существующие
+refresh sessions при таком откате не сохраняются. Это не рекомендация откатывать БД.
+Инструкция: `docs/ru/frontend/index.md`. Commit subject:
+`fix(site): make schema migrations reproducible`.
+Следующий шаг — только после отдельной команды владельца.
