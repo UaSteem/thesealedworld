@@ -12,6 +12,9 @@ Read only the reference needed:
 | Task | Reference |
 | --- | --- |
 | Call Monsters from another domain; external order/result | [Consumer contract](references/consumer-contract.md) |
+| Replace retired Rift/Exploration consumers or align live player GS | [Consumer migration handoff](../../../docs/ru/backend/features/monsters/consumer_migration.md) |
 | Change internals, Studio validation or domain workflow | [Domain map and workflow](references/domain-workflow.md) |
 
 Preparation returns a ready pool and configurations; selection returns a complete concrete squad or rejection. Neither creates runtime instances. Keep these stages distinct. Do not enable retired persistence/generation as a fallback. Formula, balance, database and Combat changes require their own authorized scope.
+
+The catalog alpha and detached probes are accepted; live consumer migration is separate work. Probes use experimental GS while live Character still uses its legacy calculator. Do not pass live GS into the relative-budget profiles as if the scales matched. Follow the migration handoff before claiming an encounter can enter live Combat; do not remove retirement guards.

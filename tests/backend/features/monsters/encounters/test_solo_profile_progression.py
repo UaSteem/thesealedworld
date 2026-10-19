@@ -47,12 +47,21 @@ def test_unaffordable_family_returns_reason_instead_of_changing_budget():
         MonsterEncounterOrderDTO(
             encounter_type="ordinary",
             difficulty="easy",
-            location_tier=0,
+            location_tier=2,
             family_ids=("golem_foundry",),
             seed=13,
             player_gear_score=36.326,
+            profile_override={
+                "id": "test.unaffordable",
+                "minions": {"base_points": 1},
+                "seniors": {"base_points": 0},
+                "roles": [{"role": "minion", "max_count": 3}],
+                "min_members": 2, "max_members": 3,
+            },
         )
     )
     assert result.status == "rejected"
     assert result.reasons
-    assert result.preparation.configurations[0].budget_effective == 30
+    assert result.preparation.configurations[0].budget_effective == 1
+
+    assert any(reason.code == "squad_minimum_unaffordable" for attempt in result.attempts for reason in attempt.reasons)

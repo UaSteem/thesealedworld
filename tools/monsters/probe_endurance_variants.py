@@ -119,7 +119,12 @@ def write_report(output: Path, report: dict):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--baseline", type=Path, default=ROOT / "var/starter-style-goblins-t0-ordinary-verified")
+    parser.add_argument(
+        "--baseline",
+        type=Path,
+        required=True,
+        help="Explicit historical baseline directory; never inferred from ignored var",
+    )
     parser.add_argument("--output", type=Path, default=ROOT / "var/starter-endurance-t0")
     parser.add_argument("--workers", type=int, default=4)
     args = parser.parse_args()

@@ -42,13 +42,15 @@ def test_real_family_selection_respects_budget_core_clan_and_tier(family, kind):
     profile["roles"][0]["max_count"] = 2
     profile["seniors"]["base_points"] = 240
     result = MonsterEncounterSelectionService().select(
-        order(family_ids=[family], encounter_type=kind, profile_override=profile)
+        order(family_ids=[family], location_tier=1 if family in {"wolf_pack", "bandit_gang"} else 0,
+              encounter_type=kind, profile_override=profile)
     )
     assert result.status == "selected"
     members = result.selection.members
     config = result.selection.assembly_input.configuration
     assert len({m.clan_id for m in members}) == 1
-    assert all(m.tier == 0 and m.family_id == family for m in members)
+    expected_tier = 1 if family in {"wolf_pack", "bandit_gang"} else 0
+    assert all(m.tier == expected_tier and m.family_id == family for m in members)
     assert 2 <= len(members) <= 8
     assert result.budget_spent == sum(m.assembly_cost for m in members) <= result.budget_effective
     assert result.budget_remaining == result.budget_effective - result.budget_spent

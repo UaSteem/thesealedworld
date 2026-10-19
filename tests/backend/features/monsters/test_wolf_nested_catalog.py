@@ -30,10 +30,16 @@ def test_resolved_wolves_preserve_every_existing_field():
     assert len(members) == 11
     for actual, previous in zip(members, old_members, strict=True):
         assert actual.base_stats == previous.base_stats
-        assert actual.fixed_loadout == previous.fixed_loadout
-        assert actual.skills == previous.skills
+        from tests.backend.features.monsters.catalog.alpha_expectations import approved_mechanics
+
+        expected = approved_mechanics("wolf_pack", actual.variant_id, {
+            "fixed_loadout": dict(previous.fixed_loadout), "skills": list(previous.skills), "min_tier": 0,
+        })
+        assert dict(actual.fixed_loadout) == expected["fixed_loadout"]
+        assert list(actual.skills) == expected["skills"]
         assert actual.image == previous.image
-        assert (actual.min_tier, actual.max_tier) == (previous.min_tier, previous.max_tier)
+        assert previous.min_tier == 0  # Historical snapshot remains frozen.
+        assert (actual.min_tier, actual.max_tier) == (1, previous.max_tier)
         assert actual.base_id == actual.variant_id
 
 

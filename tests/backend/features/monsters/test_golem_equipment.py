@@ -18,10 +18,10 @@ def test_all_golem_tiers_have_exact_natural_shared_kits():
     catalog = get_catalog()
     members = [member for member in catalog.members.values() if member.family_id == "golem_foundry"]
     assert len(members) == 12
-    assert len(list_prepared_equipment(family_id="golem_foundry")) == 72
+    assert len(list_prepared_equipment(family_id="golem_foundry")) == 48
     readiness = MonsterBuildReadinessService()
     for member in members:
-        for tier in range(6):
+        for tier in range(member.min_tier, member.max_tier + 1):
             kit = get_member_prepared_equipment(member=member, tier=tier)
             assert kit.clan_id == member.clan_id
             assert {slot for slot, value in member.fixed_loadout.items() if value} == {item.slot for item in kit.items}
@@ -45,7 +45,7 @@ def test_golem_kit_is_deterministic_and_independent(monkeypatch):
         raise AssertionError("Shared golem equipment must not generate items")
 
     monkeypatch.setattr(ItemGenerationService, "__init__", forbidden)
-    kwargs = dict(family_id="golem_foundry", variant_id="stone_worker", tier=0)
+    kwargs = dict(family_id="golem_foundry", variant_id="stone_worker", tier=2)
     first, second = get_prepared_equipment(**kwargs), get_prepared_equipment(**kwargs)
     assert first == second
     assert first.items[0] is not second.items[0]
@@ -60,4 +60,4 @@ def test_golem_kit_rejects_unavailable_tiers(tier):
 def test_golem_kit_never_falls_back_to_another_clan():
     member = get_catalog().members["golem_foundry.base.stone_worker"]
     with pytest.raises(LookupError, match="No exact"):
-        get_member_prepared_equipment(member=replace(member, clan_id="golem_foundry.iron"), tier=0)
+        get_member_prepared_equipment(member=replace(member, clan_id="golem_foundry.iron"), tier=2)

@@ -3,6 +3,7 @@ from __future__ import annotations
 import pytest
 
 from src.backend.features.combat.runtime.services.durability_policy import CombatDurabilityPolicy
+from src.backend.features.combat.runtime.support.analytics_builder import COMBAT_MATH_VERSION
 from src.backend.features.combat.workers.tasks.victory_finalizer_task import victory_finalizer_task
 from src.backend.features.inventory.events.publisher import InventoryEvents
 
@@ -189,8 +190,10 @@ async def test_victory_finalizer_commits_player_vitals_to_active_session() -> No
         (7, "stamina", 12, 50),
     ]
     assert character_sessions.progress == [
-        (7, {"skill_swords": 0.0012, "skill_anatomy": 0.0008, "skill_tactics": 0.0008})
+        (7, {"skill_swords": 0.0012, "skill_tactics": 0.0008})
     ]
+    # This fixture records only an offensive hit, not committed natural HP regeneration.
+    assert "skill_anatomy" not in character_sessions.progress[0][1]
     assert character_sessions.patches == [
         (
             7,
@@ -228,12 +231,11 @@ async def test_victory_finalizer_commits_player_vitals_to_active_session() -> No
     assert finalization["actors"]["7"]["xp_buffer"] == {"main_hand_hit": 1.0}
     assert finalization["actors"]["7"]["progression"] == {
         "skill_swords": 0.0012,
-        "skill_anatomy": 0.0008,
         "skill_tactics": 0.0008,
     }
     assert finalization["report"]["last_turn"] == 1
     assert finalization["analytics"]["analytics_schema_version"] == 2
-    assert finalization["analytics"]["combat_math_version"] == "combat-math:2026-06-01.1"
+    assert finalization["analytics"]["combat_math_version"] == COMBAT_MATH_VERSION
     assert finalization["analytics"]["1:0"] == {"t": 1, "o": "H"}
     assert queue.jobs == [("combat_finalization_persist_task", {"combat_id": "combat-1"})]
 

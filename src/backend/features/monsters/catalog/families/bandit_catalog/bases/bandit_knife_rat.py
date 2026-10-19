@@ -9,7 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 BANDIT_KNIFE_RAT = MemberBaseDTO(
     id="bandit_knife_rat",
     role="minion",
-    assembly_cost=23,
+    assembly_cost=16,
     stats=BaseStatsDTO(
         strength=14,
         agility=16,
@@ -40,7 +40,7 @@ BANDIT_KNIFE_RAT = MemberBaseDTO(
         belt_accessory=None,
         quiver=None,
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=1, max_tier=5),
     spawn_weight=20,
     default_image=ImageAssetReference(
         asset_id="bandit_gang.bandit_knife_rat",

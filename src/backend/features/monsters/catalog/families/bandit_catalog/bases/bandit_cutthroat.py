@@ -9,7 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 BANDIT_CUTTHROAT = MemberBaseDTO(
     id="bandit_cutthroat",
     role="boss",
-    assembly_cost=69,
+    assembly_cost=45,
     stats=BaseStatsDTO(
         strength=21,
         agility=22,
@@ -40,7 +40,7 @@ BANDIT_CUTTHROAT = MemberBaseDTO(
         belt_accessory=None,
         quiver=None,
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=1, max_tier=5),
     spawn_weight=600,
     default_image=ImageAssetReference(
         asset_id="bandit_gang.bandit_cutthroat",

@@ -43,14 +43,27 @@ class PreparedEquipmentSetDTO(BaseModel):
 
 
 def list_prepared_equipment(*, family_id: str) -> tuple[tuple[str, int], ...]:
-    """Return available saved sets; no generation or persistence."""
-    return _loader(family_id).list_prepared_equipment()
+    """Return active authored sets; raw family loaders retain historical artifacts."""
+    from src.backend.features.monsters.catalog.registry import get_catalog
+
+    members = get_catalog().members
+    return tuple(
+        (variant, tier)
+        for variant, tier in _loader(family_id).list_prepared_equipment()
+        if (member := members.get(f"{family_id}.base.{variant}")) is not None
+        and member.min_tier <= tier <= member.max_tier
+    )
 
 
 def get_prepared_equipment(*, family_id: str, variant_id: str, tier: int) -> PreparedEquipmentSetDTO:
     result = _loader(family_id).get_prepared_equipment(variant_id, tier)
     if result.family_id != family_id:
         raise ValueError("Prepared equipment belongs to a different family")
+    from src.backend.features.monsters.catalog.registry import get_catalog
+
+    member = get_catalog().members.get(f"{result.clan_id}.{variant_id}")
+    if member is None or not member.min_tier <= tier <= member.max_tier:
+        raise LookupError(f"No active prepared equipment for {family_id}.{variant_id}, tier {tier}")
     return result
 
 
@@ -63,6 +76,8 @@ def get_member_prepared_equipment(*, member: MemberDefinition, tier: int) -> Pre
         for value in (member.family_id, member.clan_id, member.variant_id)
     ):
         raise ValueError("Expected valid member family, clan and variant IDs")
+    if not member.min_tier <= tier <= member.max_tier:
+        raise LookupError(f"No exact prepared equipment for {member.id}, tier {tier}: tier unavailable")
     result = _loader(member.family_id).get_prepared_equipment(member.variant_id, tier)
     expected = {
         "family_id": member.family_id,

@@ -16,6 +16,8 @@ from src.backend.features.monsters.catalog.registry import (
 )
 from src.backend.features.monsters.catalog.validation import CatalogValidationError, validate_catalog
 
+CALIBRATED_RAT_ATTRIBUTES = {'sewer_rat': (7, 10, 7, 3, 4, 6, 8, 3, 5), 'scavenger_rat': (9, 10, 8, 4, 4, 6, 8, 3, 5), 'swarm_rat': (8, 12, 8, 4, 6, 5, 9, 3, 7), 'tunnel_rat': (13, 15, 14, 9, 8, 11, 12, 7, 10), 'pack_rat': (14, 13, 15, 10, 8, 11, 12, 7, 9), 'screecher': (12, 15, 13, 10, 8, 11, 14, 7, 9), 'burrow_guard': (15, 14, 17, 11, 10, 13, 12, 9, 8), 'ironfang': (17, 15, 14, 11, 10, 12, 13, 8, 9), 'heavy_rat': (15, 13, 17, 11, 10, 14, 12, 9, 8), 'rat_brute': (23, 21, 24, 16, 15, 22, 20, 19, 18), 'brood_alpha': (22, 24, 23, 19, 16, 20, 21, 18, 15), 'rat_king': (23, 16, 24, 19, 18, 22, 21, 20, 15)}
+
 MECHANICS_DIGESTS = {
     "rat_swarm": "8410910f6fcaac75373139a7496b78e8cb2991fd01c2672a14f01f5f363c2833",
     "wolf_pack": "032312f9fc55b6c4ff06bef07eaba2a8708df0dfbc6535e657cd59a2ed5aadf7",
@@ -58,10 +60,26 @@ def test_original_resources_and_retained_stats_are_preserved():
                     "strength", "agility", "endurance", "intellect", "memory", "mental",
                     "perception", "projection", "prediction",
                 ), values, strict=True))
+            if source["id"] == "rat_swarm":
+                expected_stats = dict(zip((
+                    "strength", "agility", "endurance", "intellect", "memory", "mental",
+                    "perception", "projection", "prediction",
+                ), CALIBRATED_RAT_ATTRIBUTES[variant_id], strict=True))
             assert member.base_stats.model_dump() == expected_stats
-            assert member.fixed_loadout == original.fixed_loadout
-            assert member.skills == original.skills
-            assert (member.min_tier, member.max_tier, member.spawn_weight) == (original.min_tier, original.max_tier, original.spawn_weight)
+            expected_loadout = original.fixed_loadout.model_dump()
+            expected_skills = list(original.skills)
+            if source["id"] == "rat_swarm" and variant_id in {"sewer_rat", "scavenger_rat", "swarm_rat"}:
+                expected_loadout["off_hand"] = None
+                expected_skills.remove("skill_dual_wield")
+            if source["id"] == "wolf_pack" and variant_id in {
+                "cub", "runner", "mangy_biter", "stalker", "flanker", "snapper"
+            }:
+                expected_loadout["off_hand"] = None
+                expected_skills.remove("skill_dual_wield")
+            assert member.fixed_loadout.model_dump() == expected_loadout
+            assert member.skills == expected_skills
+            expected_min = 1 if source["id"] in {"wolf_pack", "bandit_gang"} else original.min_tier
+            assert (member.min_tier, member.max_tier, member.spawn_weight) == (expected_min, original.max_tier, original.spawn_weight)
 
 
 def test_complete_clan_membership_and_system_spawning():

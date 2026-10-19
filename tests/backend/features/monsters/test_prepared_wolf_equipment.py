@@ -10,7 +10,7 @@ from src.backend.features.monsters.catalog.resources.equipment_mapping import ge
 
 def test_all_wolf_sets_preserve_roles_slots_tiers_and_natural_texts():
     refs = list_prepared_equipment(family_id="wolf_pack")
-    assert len(refs) == len(set(refs)) == 66
+    assert len(refs) == len(set(refs)) == 55
     members = {member.variant_id: member for member in resolve_family(WOLF_FAMILY)[2]}
     count = 0
     for variant, tier in refs:
@@ -23,7 +23,7 @@ def test_all_wolf_sets_preserve_roles_slots_tiers_and_natural_texts():
         assert set(equipment.to_items_projection().layout.equipment) == {
             slot for slot, key in member.fixed_loadout.items() if key
         }
-        assert len(equipment.items) == 4
+        assert len(equipment.items) == (3 if member.role in {"minion", "veteran"} else 4)
         for item in equipment.items:
             mapping = get_natural_equipment_mapping(member.fixed_loadout[item.slot])
             assert item.base_id == mapping.base_id
@@ -33,11 +33,11 @@ def test_all_wolf_sets_preserve_roles_slots_tiers_and_natural_texts():
             assert item.generation.rarity_tier == tier
             assert item.owner_key == f"{member.id}:tier:{tier}"
         count += len(equipment.items)
-    assert count == 264
+    assert count == 190
 
 
 def test_saved_wolf_load_returns_independent_objects():
-    args = dict(family_id="wolf_pack", variant_id="cub", tier=0)
+    args = dict(family_id="wolf_pack", variant_id="cub", tier=1)
     first, second = get_prepared_equipment(**args), get_prepared_equipment(**args)
     assert first == second
     assert first.items[0] is not second.items[0]
@@ -71,7 +71,7 @@ def test_manifest_records_natural_itemservice_inputs():
             assert request["presentation_name_ru"] == mapping.name_ru
             assert request["presentation_description"] == mapping.description_ru
             assert request["generation_mode"] == "runtime"
-    assert validate(Path(DEFAULT_OUTPUT)) == {"sets": 66, "items": 264}
+    assert validate(Path(DEFAULT_OUTPUT)) == {"sets": 66, "items": 228}
 
 
 def test_loader_never_calls_itemservice(monkeypatch):
@@ -81,13 +81,13 @@ def test_loader_never_calls_itemservice(monkeypatch):
         raise AssertionError("Saved equipment must not generate items")
 
     monkeypatch.setattr(ItemGenerationService, "__init__", forbidden)
-    assert len(get_prepared_equipment(family_id="wolf_pack", variant_id="cub", tier=5).items) == 4
+    assert len(get_prepared_equipment(family_id="wolf_pack", variant_id="cub", tier=5).items) == 3
 
 
 def test_facade_rejects_cross_family_equipment(monkeypatch):
     from src.backend.features.monsters.catalog import prepared_equipment
 
-    wolf = get_prepared_equipment(family_id="wolf_pack", variant_id="cub", tier=0)
+    wolf = get_prepared_equipment(family_id="wolf_pack", variant_id="cub", tier=1)
 
     class WrongLoader:
         def get_prepared_equipment(self, variant_id, tier):
@@ -95,7 +95,7 @@ def test_facade_rejects_cross_family_equipment(monkeypatch):
 
     monkeypatch.setattr(prepared_equipment, "_loader", lambda family_id: WrongLoader())
     with pytest.raises(ValueError, match="different family"):
-        get_prepared_equipment(family_id="goblin_tribe", variant_id="cub", tier=0)
+        get_prepared_equipment(family_id="goblin_tribe", variant_id="cub", tier=1)
 
 
 def test_writer_rejects_existing_directory_before_any_generation():

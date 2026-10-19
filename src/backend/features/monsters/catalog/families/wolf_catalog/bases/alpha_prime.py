@@ -9,7 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 ALPHA_PRIME = MemberBaseDTO(
     id="alpha_prime",
     role="boss",
-    assembly_cost=54,
+    assembly_cost=45,
     stats=BaseStatsDTO(
         strength=21,
         agility=20,
@@ -27,7 +27,7 @@ ALPHA_PRIME = MemberBaseDTO(
         chest_armor="wolf_heavy_hide",
         amulet="wolf_pack_mark",
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=1, max_tier=5),
     spawn_weight=600,
     default_image=ImageAssetReference(
         **{

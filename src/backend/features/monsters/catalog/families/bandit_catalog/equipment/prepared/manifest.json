@@ -100,8 +100,8 @@
     "src/backend/features/items/resources/affixes/schemas.py": "8c484c6a721b43aa0a773d1b4e42e949bf9c6102ea19f0b2fb9f15c0d6b377f9",
     "src/backend/features/items/resources/base_item/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "src/backend/features/items/resources/base_item/accessories/__init__.py": "95258c0057cf291bad1d5c0475cb46f2c3ff41b8e3a728a03e887a9669d7e2d1",
-    "src/backend/features/items/resources/base_item/accessories/belts.py": "acb204474b5136cbd49552f1c4c2b9df36ff42c14bd55e29b530091509350f72",
-    "src/backend/features/items/resources/base_item/accessories/jewelry.py": "9d6f208361a11521aca03fbd3acd645315918414ccba98dc3be465e51e9ee2a6",
+    "src/backend/features/items/resources/base_item/accessories/belts.py": "5ebdc474a1aea40d1a8eb4064c18668db1b54aac4bad523673431a85576e04d6",
+    "src/backend/features/items/resources/base_item/accessories/jewelry.py": "2435fb5d3f720b3a3ebaa9ba7921acdafe702d4fe7d05bfca9386b6f9b14f999",
     "src/backend/features/items/resources/base_item/accessories/quivers.py": "9c0d1bde28253fbbb28922f2499f3fbb06ad1a47e9c016214fcb36bb8343a171",
     "src/backend/features/items/resources/base_item/armor/__init__.py": "c742f3b4a79c3c2f51bd65dcd50ae34f9ec9d288da9e1d1fb927cdac547cd9db",
     "src/backend/features/items/resources/base_item/armor/heavy.py": "ab3de24338c5626942c1ce96dcf43288ff14ad2237cf8a33472eecdf38f73821",
@@ -149,22 +149,22 @@
     "src/backend/features/items/resources/schemas.py": "551337821840a462c87880a4f1f1d7a0f2ed360498d3a5bba67e771479355332",
     "src/backend/features/items/runtime/__init__.py": "d1cdd0cf19b9d2b6978ef8367c03198a38400936f00260bf31f9f1f56f929170",
     "src/backend/features/items/runtime/item_enricher.py": "9149d0335a5cf93f3f74ba3800026a577cf568b0f1f687403b60be5ff4fa41ed",
-    "src/backend/features/items/runtime/item_factory.py": "112eb699aa80caab8b030f9c8d3a0c1da82c8d5d7ffb52e0185a37d752237540",
+    "src/backend/features/items/runtime/item_factory.py": "afd203776acfb8e7ae903ac728512919eda1c6fecabbf26c0867b2379792aca9",
     "src/backend/features/items/services/generation_service.py": "6bab214bc65c0ebdadb69ddcd949f118c76176707e4ef2eda4e72cd0b0168141",
     "src/backend/features/monsters/catalog/families/bandit_catalog/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "src/backend/features/monsters/catalog/families/bandit_catalog/bases/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_billhook.py": "2a158fec738ccdbfe0ea71567e7cd170b4f2804d7bd3f38034fe431214e500d9",
-    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_blackguard.py": "253ce4322943eb41c5d021fd99e95485730b422ae05ff40ba280b92cdd0dc457",
-    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_captain.py": "60f240a0672d4c66af4396fca699cac55f7f27133a81308ffc89f9841083aabd",
-    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_cutthroat.py": "499758bc6689759920c2efec0e0c6fc047588b938d2895e213bddb2992239eed",
-    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_hedge_wizard.py": "f1ed52469d5ce945d6b91fbde8e083d494b566d8a788f901429af980d529757b",
-    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_kingpin.py": "f0010598e4d6528b92a3e9f0db75e5f4c0471ef63fa3a85d51d09a7ff1db939e",
-    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_knife_rat.py": "13c4e0ef565117fc5c42b150f7aec822761c7e6fa7313ccd4ebe091c570c4e5c",
-    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_lookout.py": "02b9bc86a9c3a39f9dfbcdebf13d33d37dbbab1cb7daef9d2378fd2b9bfff244",
-    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_poacher.py": "b32553acd94ecae9f30c50ba269d88d951d99e940f321d0ded40e404e858c22b",
-    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_raider.py": "6063474a2c3c014765d7b709d98dbb3e00935d2ba602348e01c2fc6de3ec5564",
-    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_thug.py": "42a3bd2c02cdb0719a3ce273d6eda00b837366fddd44a6932648788e660dd966",
-    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_warlord.py": "3af5c6cf08f20f2466c0ecaa27a9574539c88205f2cd704082096cebddbae634",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_billhook.py": "f3a8e8b2800d7fd3fcc939fe98891defab3c0ca56c1d82a8870ee5688f372d15",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_blackguard.py": "057cb0e3c806bf57e19e9e842d33af84a7a46d4cd7023e6404213815526c7d0e",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_captain.py": "5a15dc1b061662333be2c5fd36d666637e876ce73703f03a4af0b66a4bafe07c",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_cutthroat.py": "9be81e57bb76bfe098194e8c7b6eec5d10c94fc19c5766a2a75098e377749910",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_hedge_wizard.py": "2e12126f7ef67314d6c1f4d630d27d3a40777c8c431cb2e90f2c10f971bb0dca",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_kingpin.py": "fed0820e130438b39c92bde23a58209aa4c8f4587faece28cbef92c5cb03518f",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_knife_rat.py": "a579474f06b3f9039c8653b1832f726f4fe443b18349f0f713fdb4434791c28b",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_lookout.py": "0b70530479c4f1151a5e65a272bc088f62cd6c0a47defd5ec1e937d3019ed366",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_poacher.py": "3c89f9a4cf8bae2ae478992789940f73434f86c6bdf82046a39807a4f3fde2ed",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_raider.py": "6e46092d418ee52c73d6161b3072370530fdd4625d66a31dc82cc19c1e3bbd4c",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_thug.py": "eb5edb7e99e7ded59764ce169c5fbb723cff21895a358f6b9bf1956e3c5bc4c3",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_warlord.py": "1dd380e771e6ef7ebb28f24313c7c6e3bd931ae29e5465196f679430e4d13fec",
     "src/backend/features/monsters/catalog/families/bandit_catalog/clans/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/clan.py": "773183659494178d73c4fc23e2c5f668a00f473e32febc42e8bff842629e1bf6",
@@ -184,10 +184,10 @@
     "src/backend/features/monsters/catalog/families/bandit_catalog/equipment/__init__.py": "66ddca235faca64bcaf771f24992c0739757a2cf1136cfbcb5033a1d329f7998",
     "src/backend/features/monsters/catalog/families/bandit_catalog/equipment/prepared_loader.py": "0035457c53950015e0111b22ce637f4f861f43643db2019d69a2fbc8b939462b",
     "src/backend/features/monsters/catalog/families/bandit_catalog/family.py": "e439c8ba8ee1fd0e457f93122e3404dbdfd9022c061f8d4753159be20601c372",
-    "src/backend/features/monsters/catalog/resources/equipment_mapping.py": "a3d7d122c767534e8056af7825114722b1b77a8cdad54bf05b8e45e905728bc4",
+    "src/backend/features/monsters/catalog/resources/equipment_mapping.py": "e76dcc732dae912875f2251584d44dcca4f2ee1539e62a6a8f55cf8922ef55c5",
     "src/backend/features/monsters/catalog/resources/item_affix_profiles.py": "d9afb1ec8fbd536e9890def4ec19633ce755ecc08412a5684cfe7dc3ab179f75",
     "src/backend/features/monsters/instances/integrations/item_generation.py": "39dce1ee0ea856042bbffd5383d1a1199abe17c4aa4f94064c0eb1a1c481efa5",
-    "tools/monsters/prepare_family_equipment.py": "d8dbe6b4aaf12fe49a51063639cdd264b1bf546e3764bdd786dba178e34d77b1"
+    "tools/monsters/prepare_family_equipment.py": "ebc727979a987c274287b2916be18e3131f17515d49fdf006608f06760784914"
   },
   "inputs": [
     {
@@ -14475,6 +14475,266 @@
           "return_item": true
         }
       ]
+    }
+  ],
+  "generation_sources_original": {
+    "src/backend/features/items/resources/__init__.py": "026502c3784f998abb8d5d44d16caa37b736af96cb741b5d451495f75d7c2a85",
+    "src/backend/features/items/resources/affix_balance.py": "29a87846f1d7edc91579bb1da82d5c1f4d4199247766d8d42f57b20dca5f0819",
+    "src/backend/features/items/resources/affixes/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/backend/features/items/resources/affixes/bundles/__init__.py": "7dfabc36575c3c5d13ea65c98a6581f1265fcad932bd6628133e4507cf6b9b16",
+    "src/backend/features/items/resources/affixes/bundles/bundles_3.py": "a7ba7ce10c271922a49aee7d7a97ee183f1f0414741c7e2bfb837573d57c01b2",
+    "src/backend/features/items/resources/affixes/bundles/bundles_4.py": "fa380917126ba842d5575895c92cf41d39c6003d8597e9c88c9e164d25d89c4e",
+    "src/backend/features/items/resources/affixes/catalog.py": "bb4c5c121185736ca8d3ac226de4387694415ca36f013d8f44494b55a1a5516e",
+    "src/backend/features/items/resources/affixes/definitions/__init__.py": "9f49f38e6d553a577d9bba7fc666fdf1fef633e7b4dd2134fea8fec3d9d7c8cf",
+    "src/backend/features/items/resources/affixes/definitions/attributes.py": "e8ddda16d81d759eb671a9c48602a2d6c495a63ef19d746820e9a25868eae614",
+    "src/backend/features/items/resources/affixes/definitions/combat_control.py": "6271fe711446fd560b1f4f277021124e49863dbb99e818da942c25ef41724e0a",
+    "src/backend/features/items/resources/affixes/definitions/combat_defense.py": "ff511e493d9c6a5e8d5a5d66d01f2feba3d88c0cb27529126fe396b2ef2b5d86",
+    "src/backend/features/items/resources/affixes/definitions/combat_magic.py": "0e064f6cb4a8710763f768ac4ac579f52c0b8aa78e274d87c4b8cb09bc68dfc8",
+    "src/backend/features/items/resources/affixes/definitions/combat_offense.py": "82d0799cefc1659655bf5456a888a62d6d8bc7ae7c37afe9fd38496fa19f876e",
+    "src/backend/features/items/resources/affixes/definitions/combat_resource.py": "0c686c828ca4fe11e4aedc7597a7d51257a4d40612202f9b7bd260212b4f4b5a",
+    "src/backend/features/items/resources/affixes/definitions/crafting.py": "f112f08932c71031fc02151a3eebf7d1d3968fb7fd86ba89f4eb5ef07bff7c73",
+    "src/backend/features/items/resources/affixes/definitions/economy.py": "ce0bf4ac4095b31e0872dc4b773ee3b2030367c445f70dd19708894ce58d8ed7",
+    "src/backend/features/items/resources/affixes/definitions/utility.py": "8052338cf100fdfa112a5022147e2956f2061b36f043b6d36d44427888def470",
+    "src/backend/features/items/resources/affixes/definitions/world_exploration.py": "ca2dd19fa358c37bf36e91e37098819a56ac954a7fef4339f70264395f1f2ea3",
+    "src/backend/features/items/resources/affixes/definitions/world_survival.py": "54260635cef632b1f2ff705c5f9c6f96c9cc328e5e9a745f0bee5e311071d5ea",
+    "src/backend/features/items/resources/affixes/pools.py": "bfb2eb343e97a4e3e20a1700a24b4478e561649dca817504a0217005b72af6df",
+    "src/backend/features/items/resources/affixes/schemas.py": "8c484c6a721b43aa0a773d1b4e42e949bf9c6102ea19f0b2fb9f15c0d6b377f9",
+    "src/backend/features/items/resources/base_item/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/backend/features/items/resources/base_item/accessories/__init__.py": "95258c0057cf291bad1d5c0475cb46f2c3ff41b8e3a728a03e887a9669d7e2d1",
+    "src/backend/features/items/resources/base_item/accessories/belts.py": "acb204474b5136cbd49552f1c4c2b9df36ff42c14bd55e29b530091509350f72",
+    "src/backend/features/items/resources/base_item/accessories/jewelry.py": "9d6f208361a11521aca03fbd3acd645315918414ccba98dc3be465e51e9ee2a6",
+    "src/backend/features/items/resources/base_item/accessories/quivers.py": "9c0d1bde28253fbbb28922f2499f3fbb06ad1a47e9c016214fcb36bb8343a171",
+    "src/backend/features/items/resources/base_item/armor/__init__.py": "c742f3b4a79c3c2f51bd65dcd50ae34f9ec9d288da9e1d1fb927cdac547cd9db",
+    "src/backend/features/items/resources/base_item/armor/heavy.py": "ab3de24338c5626942c1ce96dcf43288ff14ad2237cf8a33472eecdf38f73821",
+    "src/backend/features/items/resources/base_item/armor/light.py": "5c46f3c4a7a9c20edf21384fee9a056145e9a3f6aecf6f73b82010515e0e2f54",
+    "src/backend/features/items/resources/base_item/armor/medium.py": "8dea4fa22013681794ae4fcb267681237572dbb3fd2b25958f08fbfd26fb9034",
+    "src/backend/features/items/resources/base_item/garment/__init__.py": "95ca23d10e6ba5425bb4df79b1b80f49a092f33d927c26aa51aeed81ab5af52a",
+    "src/backend/features/items/resources/base_item/garment/basic.py": "5a092d876a2a3288609b2df295fe61effa2938c97d23dcb19d537bfcd6b1c762",
+    "src/backend/features/items/resources/base_item/weapons/__init__.py": "2faf4e8eb16f90e29bea94dce3063d39c34e335a2d5fcb23cc91429fde6192be",
+    "src/backend/features/items/resources/base_item/weapons/archery.py": "4f253007e6b1579488e6e88b0374ae9d675464882e505c03aa79e3021bc47c17",
+    "src/backend/features/items/resources/base_item/weapons/fencing.py": "5736d3c2876cc0da876205b519bc1fda9a812036b14bfae3e893bc1d6226900d",
+    "src/backend/features/items/resources/base_item/weapons/macing.py": "841cf84d8890fe5d7a1bdc84d1006f13b98e41c4fba9ca82d85965ce7b5db3b7",
+    "src/backend/features/items/resources/base_item/weapons/offhand.py": "af920f4bb74b57f71975bbd67cc38d8fce3aef5e3b2105376bdadaba4c47b88e",
+    "src/backend/features/items/resources/base_item/weapons/polearms.py": "b0b2050b02a4a65acdfa573db84908e667d7c6ef1226b5d66cc76a863e009378",
+    "src/backend/features/items/resources/base_item/weapons/swords.py": "8003745740e8ab1a34c5e5bc32fc717c32e57a1ff58c8cef26a7091205c61b71",
+    "src/backend/features/items/resources/bases.py": "942933bdc847f90b1ad7d2a506219dbaaebae0df0acc950924020d504530db44",
+    "src/backend/features/items/resources/item_grade.py": "7113952cd279934226d22ab3f016a407be3d73d3e3f519fef81c4f9f1715c3a8",
+    "src/backend/features/items/resources/material/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/backend/features/items/resources/material/cloths.py": "7a7527689f5353286ad5bfb27881911025a5614d5924086b5d9b19e42e063d97",
+    "src/backend/features/items/resources/material/ingots.py": "43ef9a20f69ca4e43b4dedbc9cf90d5eb9d792cc354e7680cd33fd676dc4b8ef",
+    "src/backend/features/items/resources/material/leathers.py": "2215b79360f115970c6678e203543475d8d735bef8a1e3d464aece8228a8ecbe",
+    "src/backend/features/items/resources/material/parts.py": "80be28f1102310d322971e5d9e3877f6a907867a2a2d86d5cdd73932845bda04",
+    "src/backend/features/items/resources/material/woods.py": "84534e34e128990196ffc66988b72128bf859de9f321712482f9d087ecefc040",
+    "src/backend/features/items/resources/materials.py": "8861f4d94313b587740213e11c1a4e44b4fa3c9d2c5112eb2e375c5721102c1a",
+    "src/backend/features/items/resources/modifier_contracts/__init__.py": "0ce7588c11f4ab247f081be4c9b0a4cb69f42a4ec73fa4a723256a3f96237dbe",
+    "src/backend/features/items/resources/modifier_contracts/catalog.py": "ae303b29b41c51ae10ddedfe9fa0c07258695e068439afd9cbbea1a7a6294fe0",
+    "src/backend/features/items/resources/modifier_contracts/compiler.py": "4a997ae7ed127c3587b44f5a7dccd38037f537e96d4376693a100c2cecb76802",
+    "src/backend/features/items/resources/modifier_contracts/definitions.py": "83de2afd2b27bb439299d3f9c89c0f6dcaab714fdaf0a74e1ba6de3208726a3f",
+    "src/backend/features/items/resources/modifier_contracts/schemas.py": "f4a7f20d19ae0ec96c823293f7530f0a26c83c4129689dcc948aa7e08a962d0b",
+    "src/backend/features/items/resources/monster_equipment/__init__.py": "a5b3b51fb5d41f3f6b9bf6eff36cb5a25dafc7e36eb8d93a6bdc733b52bcd138",
+    "src/backend/features/items/resources/monster_equipment/natural.py": "749e305482ea88a96e541f55f9f05772a958be4ac70f6e5170caaad33b28f8be",
+    "src/backend/features/items/resources/presentation_texts.py": "3780359ad115459275bbc85a345dcfc9bba28f246f8091854807dc2f98595a55",
+    "src/backend/features/items/resources/rarity_config.py": "ab4b7744c10f019009ea1c022790b24a2015dee11f3d6eac396cff5ce5a2136a",
+    "src/backend/features/items/resources/raw_resource/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/backend/features/items/resources/raw_resource/bark.py": "b746df2820535cc96bd679047af7ebc1b27541db923e6e09ebe2305878aaf399",
+    "src/backend/features/items/resources/raw_resource/common_supplies.py": "b9c24a61df305c06c8478b111d7e677e055da5b6b3a21eed90b02cf17c9620f8",
+    "src/backend/features/items/resources/raw_resource/currency.py": "a534b59bcdcd6f908fecadb60158959c7c778474ec1d9624a3b94a8c4b9ff71c",
+    "src/backend/features/items/resources/raw_resource/essences.py": "5d8c800a1b3586bf030442ce1836b37f07549df303522a981cdd5c4b9be9c2f0",
+    "src/backend/features/items/resources/raw_resource/fibers.py": "f1b99aea170ba69e4a804b5ce878ae2a749eda394ce9958f05047435a0c8d7eb",
+    "src/backend/features/items/resources/raw_resource/flowers.py": "00147c8806883f2c5eafcf03f5ce3de4baa3afcb268da18a2c596801a8a9c013",
+    "src/backend/features/items/resources/raw_resource/hides.py": "675454b6cc457173553f4c467211a0c53d4aeb12f0de2b96e1378b9cc07ee98f",
+    "src/backend/features/items/resources/raw_resource/ores.py": "8c808dc866ce4c71cded2a531134e9effb518db1a83ddc322e7c73029b3d20a9",
+    "src/backend/features/items/resources/raw_resource/stone.py": "287319e535fa750300b99c98d59dac88f448da023c2781396810544d05806271",
+    "src/backend/features/items/resources/raw_resource/woods.py": "674f18d48329cae9e6d19a92830a811e2e3f050107b9f4e7c730dc840bb002ff",
+    "src/backend/features/items/resources/raw_resources.py": "a45dd079b3aa4705b85be61cc4d17a25ca9ea8403321f0af7f97db89d33ccfd6",
+    "src/backend/features/items/resources/schemas.py": "551337821840a462c87880a4f1f1d7a0f2ed360498d3a5bba67e771479355332",
+    "src/backend/features/items/runtime/__init__.py": "d1cdd0cf19b9d2b6978ef8367c03198a38400936f00260bf31f9f1f56f929170",
+    "src/backend/features/items/runtime/item_enricher.py": "9149d0335a5cf93f3f74ba3800026a577cf568b0f1f687403b60be5ff4fa41ed",
+    "src/backend/features/items/runtime/item_factory.py": "112eb699aa80caab8b030f9c8d3a0c1da82c8d5d7ffb52e0185a37d752237540",
+    "src/backend/features/items/services/generation_service.py": "6bab214bc65c0ebdadb69ddcd949f118c76176707e4ef2eda4e72cd0b0168141",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_billhook.py": "2a158fec738ccdbfe0ea71567e7cd170b4f2804d7bd3f38034fe431214e500d9",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_blackguard.py": "253ce4322943eb41c5d021fd99e95485730b422ae05ff40ba280b92cdd0dc457",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_captain.py": "60f240a0672d4c66af4396fca699cac55f7f27133a81308ffc89f9841083aabd",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_cutthroat.py": "499758bc6689759920c2efec0e0c6fc047588b938d2895e213bddb2992239eed",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_hedge_wizard.py": "f1ed52469d5ce945d6b91fbde8e083d494b566d8a788f901429af980d529757b",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_kingpin.py": "f0010598e4d6528b92a3e9f0db75e5f4c0471ef63fa3a85d51d09a7ff1db939e",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_knife_rat.py": "13c4e0ef565117fc5c42b150f7aec822761c7e6fa7313ccd4ebe091c570c4e5c",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_lookout.py": "02b9bc86a9c3a39f9dfbcdebf13d33d37dbbab1cb7daef9d2378fd2b9bfff244",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_poacher.py": "b32553acd94ecae9f30c50ba269d88d951d99e940f321d0ded40e404e858c22b",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_raider.py": "6063474a2c3c014765d7b709d98dbb3e00935d2ba602348e01c2fc6de3ec5564",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_thug.py": "42a3bd2c02cdb0719a3ce273d6eda00b837366fddd44a6932648788e660dd966",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_warlord.py": "3af5c6cf08f20f2466c0ecaa27a9574539c88205f2cd704082096cebddbae634",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/clan.py": "773183659494178d73c4fc23e2c5f668a00f473e32febc42e8bff842629e1bf6",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/bandit_billhook.py": "a76f2e42f62db88af24c98fbec61a709c1da2e95c35f09752c76eeb1ddbf9d21",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/bandit_blackguard.py": "862df7417ac389f0f7237f6b233e5ffa86fb6c7233fade600ae91886e6e733ad",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/bandit_captain.py": "f7719975bfc30f2639c69f4a1af6a4334c1b8aadf9d700b09cc2eca0a0c5812c",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/bandit_cutthroat.py": "cce4eb43460baf6d30ac6fab3c0877821b9bc30ad9d97739ba1861ec8e1246a5",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/bandit_hedge_wizard.py": "4f706a13044b446a884544ebdb64adfbabc99dc68d3866434d6952f87d19a956",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/bandit_kingpin.py": "f87b236c7498b3c6730d7f19086f5b9b91be7152c43483da06f168eb87f6479d",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/bandit_knife_rat.py": "d2df50fda696ca22e3cbc4889b6d99606f3f5e207230dbdf00cf5c189f4723a4",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/bandit_lookout.py": "27f883498524327d3fdc351508966ba710a2731c47229aa0d92cf70d4f36f100",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/bandit_poacher.py": "3d6bc257c08a591ddf9823b2746929315b0ac73dfdaa6b008582539b44a3a492",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/bandit_raider.py": "3ccd2f6f87646892bde5e44f1da5ad6f7cce1ec1f68c34de5140e3f69330e5f9",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/bandit_thug.py": "0c2510c81c37b820c996d551c535d86d81b429566d160ace7259a704a9c8453a",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/clans/base/members/bandit_warlord.py": "4d51bd6b6f02d0d79b55cea99d26e5558304f2786e8ba31b7eebfada65f344aa",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/equipment/__init__.py": "66ddca235faca64bcaf771f24992c0739757a2cf1136cfbcb5033a1d329f7998",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/equipment/prepared_loader.py": "0035457c53950015e0111b22ce637f4f861f43643db2019d69a2fbc8b939462b",
+    "src/backend/features/monsters/catalog/families/bandit_catalog/family.py": "e439c8ba8ee1fd0e457f93122e3404dbdfd9022c061f8d4753159be20601c372",
+    "src/backend/features/monsters/catalog/resources/equipment_mapping.py": "a3d7d122c767534e8056af7825114722b1b77a8cdad54bf05b8e45e905728bc4",
+    "src/backend/features/monsters/catalog/resources/item_affix_profiles.py": "d9afb1ec8fbd536e9890def4ec19633ce755ecc08412a5684cfe7dc3ab179f75",
+    "src/backend/features/monsters/instances/integrations/item_generation.py": "39dce1ee0ea856042bbffd5383d1a1199abe17c4aa4f94064c0eb1a1c481efa5",
+    "tools/monsters/prepare_family_equipment.py": "d8dbe6b4aaf12fe49a51063639cdd264b1bf546e3764bdd786dba178e34d77b1"
+  },
+  "retained_inactive_tiers": [
+    0
+  ],
+  "reviewed_source_updates": [
+    {
+      "id": "alpha-family-tier-gates-v1",
+      "reason": "Approved authored tier gates and strict active/historical validator coverage; saved payloads and generation inputs unchanged; no regeneration.",
+      "sources": {
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_billhook.py": {
+          "before": "2a158fec738ccdbfe0ea71567e7cd170b4f2804d7bd3f38034fe431214e500d9",
+          "after": "a4d1369fd6aa0fd8f5e085bf6049f74560bc330cc8cd6ba98a4d66cd7b89c7bd"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_blackguard.py": {
+          "before": "253ce4322943eb41c5d021fd99e95485730b422ae05ff40ba280b92cdd0dc457",
+          "after": "fed282d78792c13b07964985778932592a3e8b290e30a069af3deadf0580fa1a"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_captain.py": {
+          "before": "60f240a0672d4c66af4396fca699cac55f7f27133a81308ffc89f9841083aabd",
+          "after": "051fbdeb09cb7ec15ef06ed86fb6dc5a64d8d2485c4b4fbb3c5e722d8efb321e"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_cutthroat.py": {
+          "before": "499758bc6689759920c2efec0e0c6fc047588b938d2895e213bddb2992239eed",
+          "after": "0d3bbe0c83520e96df96f1f94c7df92c52dc0ab1a2805ed75a930fd73b6a8616"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_hedge_wizard.py": {
+          "before": "f1ed52469d5ce945d6b91fbde8e083d494b566d8a788f901429af980d529757b",
+          "after": "deeba0c4e4cfd2bafa34416c953d18c90600c476ec7f7b19e8f5e8b7c6fbf57f"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_kingpin.py": {
+          "before": "f0010598e4d6528b92a3e9f0db75e5f4c0471ef63fa3a85d51d09a7ff1db939e",
+          "after": "1b68ce4cfd61c673ef81679fae01dd9f50208ca355c838bdbbd67ea99c042f1c"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_knife_rat.py": {
+          "before": "13c4e0ef565117fc5c42b150f7aec822761c7e6fa7313ccd4ebe091c570c4e5c",
+          "after": "5b8fc8e828626e73e1947417d620ca8474ac8ab67a036af65a6badf2dd89728b"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_lookout.py": {
+          "before": "02b9bc86a9c3a39f9dfbcdebf13d33d37dbbab1cb7daef9d2378fd2b9bfff244",
+          "after": "7abcd556d1a664e2e63eb1bf20656df895f41162613d9b83344332ad2e77cbbf"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_poacher.py": {
+          "before": "b32553acd94ecae9f30c50ba269d88d951d99e940f321d0ded40e404e858c22b",
+          "after": "ac8001d1a5ec52d0a0eb160f669ccda05d6347a88080d8777224d2cd557b2a5a"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_raider.py": {
+          "before": "6063474a2c3c014765d7b709d98dbb3e00935d2ba602348e01c2fc6de3ec5564",
+          "after": "5635c41027c98271b3262e427e9e95b054cc5fe8db5be2a0e233b06b9a698475"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_thug.py": {
+          "before": "42a3bd2c02cdb0719a3ce273d6eda00b837366fddd44a6932648788e660dd966",
+          "after": "ffc147e82dbf91e950aacc0306309023130b0a94de683aab9456d2b40b7d27f1"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_warlord.py": {
+          "before": "3af5c6cf08f20f2466c0ecaa27a9574539c88205f2cd704082096cebddbae634",
+          "after": "f13e8e8c2c63af89298b68c3f2b435a3b73a7c940d4825fd11364a3518ba5820"
+        },
+        "tools/monsters/prepare_family_equipment.py": {
+          "before": "d8dbe6b4aaf12fe49a51063639cdd264b1bf546e3764bdd786dba178e34d77b1",
+          "after": "ebc727979a987c274287b2916be18e3131f17515d49fdf006608f06760784914"
+        }
+      },
+      "preexisting_drift_already_reviewed_in_rat_manifest": {
+        "src/backend/features/items/resources/base_item/accessories/belts.py": {
+          "before": "acb204474b5136cbd49552f1c4c2b9df36ff42c14bd55e29b530091509350f72",
+          "after": "5ebdc474a1aea40d1a8eb4064c18668db1b54aac4bad523673431a85576e04d6"
+        },
+        "src/backend/features/items/resources/base_item/accessories/jewelry.py": {
+          "before": "9d6f208361a11521aca03fbd3acd645315918414ccba98dc3be465e51e9ee2a6",
+          "after": "2435fb5d3f720b3a3ebaa9ba7921acdafe702d4fe7d05bfca9386b6f9b14f999"
+        },
+        "src/backend/features/items/runtime/item_factory.py": {
+          "before": "112eb699aa80caab8b030f9c8d3a0c1da82c8d5d7ffb52e0185a37d752237540",
+          "after": "afd203776acfb8e7ae903ac728512919eda1c6fecabbf26c0867b2379792aca9"
+        },
+        "src/backend/features/monsters/catalog/resources/equipment_mapping.py": {
+          "before": "a3d7d122c767534e8056af7825114722b1b77a8cdad54bf05b8e45e905728bc4",
+          "after": "e76dcc732dae912875f2251584d44dcca4f2ee1539e62a6a8f55cf8922ef55c5"
+        }
+      }
+    },
+    {
+      "id": "bandit-alpha-price-ladder-v1",
+      "reason": "Approved authored prices only; original prepared payloads, inputs/seeds and all mechanics unchanged. No regeneration.",
+      "sources": {
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_billhook.py": {
+          "recorded_generation_before": "a4d1369fd6aa0fd8f5e085bf6049f74560bc330cc8cd6ba98a4d66cd7b89c7bd",
+          "reviewed_actual_before": "a4d1369fd6aa0fd8f5e085bf6049f74560bc330cc8cd6ba98a4d66cd7b89c7bd",
+          "after": "f3a8e8b2800d7fd3fcc939fe98891defab3c0ca56c1d82a8870ee5688f372d15"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_blackguard.py": {
+          "recorded_generation_before": "fed282d78792c13b07964985778932592a3e8b290e30a069af3deadf0580fa1a",
+          "reviewed_actual_before": "fed282d78792c13b07964985778932592a3e8b290e30a069af3deadf0580fa1a",
+          "after": "057cb0e3c806bf57e19e9e842d33af84a7a46d4cd7023e6404213815526c7d0e"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_captain.py": {
+          "recorded_generation_before": "051fbdeb09cb7ec15ef06ed86fb6dc5a64d8d2485c4b4fbb3c5e722d8efb321e",
+          "reviewed_actual_before": "051fbdeb09cb7ec15ef06ed86fb6dc5a64d8d2485c4b4fbb3c5e722d8efb321e",
+          "after": "5a15dc1b061662333be2c5fd36d666637e876ce73703f03a4af0b66a4bafe07c"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_cutthroat.py": {
+          "recorded_generation_before": "0d3bbe0c83520e96df96f1f94c7df92c52dc0ab1a2805ed75a930fd73b6a8616",
+          "reviewed_actual_before": "0d3bbe0c83520e96df96f1f94c7df92c52dc0ab1a2805ed75a930fd73b6a8616",
+          "after": "9be81e57bb76bfe098194e8c7b6eec5d10c94fc19c5766a2a75098e377749910"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_hedge_wizard.py": {
+          "recorded_generation_before": "deeba0c4e4cfd2bafa34416c953d18c90600c476ec7f7b19e8f5e8b7c6fbf57f",
+          "reviewed_actual_before": "deeba0c4e4cfd2bafa34416c953d18c90600c476ec7f7b19e8f5e8b7c6fbf57f",
+          "after": "2e12126f7ef67314d6c1f4d630d27d3a40777c8c431cb2e90f2c10f971bb0dca"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_kingpin.py": {
+          "recorded_generation_before": "1b68ce4cfd61c673ef81679fae01dd9f50208ca355c838bdbbd67ea99c042f1c",
+          "reviewed_actual_before": "1b68ce4cfd61c673ef81679fae01dd9f50208ca355c838bdbbd67ea99c042f1c",
+          "after": "fed0820e130438b39c92bde23a58209aa4c8f4587faece28cbef92c5cb03518f"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_knife_rat.py": {
+          "recorded_generation_before": "5b8fc8e828626e73e1947417d620ca8474ac8ab67a036af65a6badf2dd89728b",
+          "reviewed_actual_before": "5b8fc8e828626e73e1947417d620ca8474ac8ab67a036af65a6badf2dd89728b",
+          "after": "a579474f06b3f9039c8653b1832f726f4fe443b18349f0f713fdb4434791c28b"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_lookout.py": {
+          "recorded_generation_before": "7abcd556d1a664e2e63eb1bf20656df895f41162613d9b83344332ad2e77cbbf",
+          "reviewed_actual_before": "7abcd556d1a664e2e63eb1bf20656df895f41162613d9b83344332ad2e77cbbf",
+          "after": "0b70530479c4f1151a5e65a272bc088f62cd6c0a47defd5ec1e937d3019ed366"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_poacher.py": {
+          "recorded_generation_before": "ac8001d1a5ec52d0a0eb160f669ccda05d6347a88080d8777224d2cd557b2a5a",
+          "reviewed_actual_before": "ac8001d1a5ec52d0a0eb160f669ccda05d6347a88080d8777224d2cd557b2a5a",
+          "after": "3c89f9a4cf8bae2ae478992789940f73434f86c6bdf82046a39807a4f3fde2ed"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_raider.py": {
+          "recorded_generation_before": "5635c41027c98271b3262e427e9e95b054cc5fe8db5be2a0e233b06b9a698475",
+          "reviewed_actual_before": "5635c41027c98271b3262e427e9e95b054cc5fe8db5be2a0e233b06b9a698475",
+          "after": "6e46092d418ee52c73d6161b3072370530fdd4625d66a31dc82cc19c1e3bbd4c"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_thug.py": {
+          "recorded_generation_before": "ffc147e82dbf91e950aacc0306309023130b0a94de683aab9456d2b40b7d27f1",
+          "reviewed_actual_before": "ffc147e82dbf91e950aacc0306309023130b0a94de683aab9456d2b40b7d27f1",
+          "after": "eb5edb7e99e7ded59764ce169c5fbb723cff21895a358f6b9bf1956e3c5bc4c3"
+        },
+        "src/backend/features/monsters/catalog/families/bandit_catalog/bases/bandit_warlord.py": {
+          "recorded_generation_before": "f13e8e8c2c63af89298b68c3f2b435a3b73a7c940d4825fd11364a3518ba5820",
+          "reviewed_actual_before": "f13e8e8c2c63af89298b68c3f2b435a3b73a7c940d4825fd11364a3518ba5820",
+          "after": "1dd380e771e6ef7ebb28f24313c7c6e3bd931ae29e5465196f679430e4d13fec"
+        }
+      }
     }
   ]
 }

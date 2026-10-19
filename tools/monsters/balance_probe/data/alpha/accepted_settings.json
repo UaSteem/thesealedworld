@@ -1,0 +1,6521 @@
+{
+  "schema_version": 1,
+  "meaning": "Reviewed static alpha settings; runtime catalog remains the authority. Not a second balance implementation.",
+  "source_fingerprint": "bf14fea4572ce5f1f906d4e735c4c0756a4ad3b7040d38dc32ce3f7115b28a54",
+  "tier_scaling": {
+    "0": {
+      "stat_mult": 1.0
+    },
+    "1": {
+      "stat_mult": 1.2
+    },
+    "2": {
+      "stat_mult": 1.7
+    },
+    "3": {
+      "stat_mult": 2.2
+    },
+    "4": {
+      "stat_mult": 2.7
+    },
+    "5": {
+      "stat_mult": 3.2
+    },
+    "6": {
+      "stat_mult": 3.7
+    },
+    "7": {
+      "stat_mult": 4.2
+    }
+  },
+  "builtin_family_limits": {
+    "goblin_tribe": [
+      3,
+      6
+    ],
+    "rat_swarm": [
+      4,
+      8
+    ],
+    "wolf_pack": [
+      2,
+      5
+    ],
+    "bandit_gang": [
+      2,
+      4
+    ],
+    "golem_foundry": [
+      1,
+      2
+    ]
+  },
+  "golem_exception": {
+    "minions_only": [
+      2,
+      3
+    ],
+    "allows_seniors": [
+      1,
+      2
+    ]
+  },
+  "members": [
+    {
+      "id": "rat_swarm.base.sewer_rat",
+      "family": "rat_swarm",
+      "role": "minion",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 5,
+      "mechanics": {
+        "id": "sewer_rat",
+        "role": "minion",
+        "narrative_hint": "Любопытный молодой зверёк пробует силы и быстро отступает к сородичам.",
+        "spawn_weight": 20,
+        "extra_tags": [
+          "young",
+          "weak"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 7,
+          "agility": 10,
+          "endurance": 7,
+          "intellect": 3,
+          "memory": 4,
+          "mental": 6,
+          "perception": 8,
+          "projection": 3,
+          "prediction": 5
+        },
+        "fixed_loadout": {
+          "main_hand": "rat_bite_claws",
+          "off_hand": null,
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "rat_light_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "rat_plague_gland",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "rat_swarm.base.scavenger_rat",
+      "family": "rat_swarm",
+      "role": "minion",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 6,
+      "mechanics": {
+        "id": "scavenger_rat",
+        "role": "minion",
+        "narrative_hint": "Проворная крыса обыскивает щели и хватает всё, что можно унести.",
+        "spawn_weight": 20,
+        "extra_tags": [
+          "young",
+          "scavenger",
+          "hoarder"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 9,
+          "agility": 10,
+          "endurance": 8,
+          "intellect": 4,
+          "memory": 4,
+          "mental": 6,
+          "perception": 8,
+          "projection": 3,
+          "prediction": 5
+        },
+        "fixed_loadout": {
+          "main_hand": "rat_bite_claws",
+          "off_hand": null,
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "rat_light_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "rat_plague_gland",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "rat_swarm.base.swarm_rat",
+      "family": "rat_swarm",
+      "role": "minion",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 7,
+      "mechanics": {
+        "id": "swarm_rat",
+        "role": "minion",
+        "narrative_hint": "Держится рядом с выводком и становится смелее среди сородичей.",
+        "spawn_weight": 20,
+        "extra_tags": [
+          "young",
+          "swarm"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 8,
+          "agility": 12,
+          "endurance": 8,
+          "intellect": 4,
+          "memory": 6,
+          "mental": 5,
+          "perception": 9,
+          "projection": 3,
+          "prediction": 7
+        },
+        "fixed_loadout": {
+          "main_hand": "rat_bite_claws",
+          "off_hand": null,
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "rat_light_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "rat_plague_gland",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "rat_swarm.base.tunnel_rat",
+      "family": "rat_swarm",
+      "role": "veteran",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "tunnel_rat",
+        "role": "veteran",
+        "narrative_hint": "Гибкое тело позволяет ей двигаться там, где более крупный зверь застрянет.",
+        "spawn_weight": 50,
+        "extra_tags": [
+          "digger",
+          "stealth"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 13,
+          "agility": 15,
+          "endurance": 14,
+          "intellect": 9,
+          "memory": 8,
+          "mental": 11,
+          "perception": 12,
+          "projection": 7,
+          "prediction": 10
+        },
+        "fixed_loadout": {
+          "main_hand": "rat_veteran_claws",
+          "off_hand": "rat_offhand_bite",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "rat_medium_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "rat_plague_gland",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_dual_wield",
+          "skill_medium_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "rat_swarm.base.pack_rat",
+      "family": "rat_swarm",
+      "role": "veteran",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "pack_rat",
+        "role": "veteran",
+        "narrative_hint": "Опытный зверь бережёт добычу и хорошо знает пути через своё убежище.",
+        "spawn_weight": 50,
+        "extra_tags": [
+          "pack_tactics",
+          "flanker"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 14,
+          "agility": 13,
+          "endurance": 15,
+          "intellect": 10,
+          "memory": 8,
+          "mental": 11,
+          "perception": 12,
+          "projection": 7,
+          "prediction": 9
+        },
+        "fixed_loadout": {
+          "main_hand": "rat_veteran_claws",
+          "off_hand": "rat_bone_growth",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "rat_light_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "rat_plague_gland",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_shield_mastery",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "rat_swarm.base.screecher",
+      "family": "rat_swarm",
+      "role": "veteran",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "screecher",
+        "role": "veteran",
+        "narrative_hint": "Резкий крик этой крысы поднимает переполох и привлекает внимание выводка.",
+        "spawn_weight": 50,
+        "extra_tags": [
+          "support",
+          "alarm"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 12,
+          "agility": 15,
+          "endurance": 13,
+          "intellect": 10,
+          "memory": 8,
+          "mental": 11,
+          "perception": 14,
+          "projection": 7,
+          "prediction": 9
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "rat_poison_spit",
+          "head_armor": null,
+          "chest_armor": "rat_medium_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "rat_plague_gland",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": "rat_poison_glands"
+        },
+        "skills": [
+          "skill_archery",
+          "skill_ranged_combat",
+          "skill_medium_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "rat_swarm.base.burrow_guard",
+      "family": "rat_swarm",
+      "role": "elite",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "burrow_guard",
+        "role": "elite",
+        "narrative_hint": "Упрямая крыса преграждает тесный проход и защищает сородичей за спиной.",
+        "spawn_weight": 150,
+        "extra_tags": [
+          "guardian",
+          "defender"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 15,
+          "agility": 14,
+          "endurance": 17,
+          "intellect": 11,
+          "memory": 10,
+          "mental": 13,
+          "perception": 12,
+          "projection": 9,
+          "prediction": 8
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "rat_poison_spit",
+          "head_armor": null,
+          "chest_armor": "rat_medium_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "rat_plague_gland",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": "rat_poison_glands"
+        },
+        "skills": [
+          "skill_archery",
+          "skill_ranged_combat",
+          "skill_medium_armor",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "rat_swarm.base.ironfang",
+      "family": "rat_swarm",
+      "role": "elite",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "ironfang",
+        "role": "elite",
+        "narrative_hint": "Матёрый зверь с крепкими резцами уверенно бросается на добычу.",
+        "spawn_weight": 150,
+        "extra_tags": [
+          "fangs",
+          "fighter"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 17,
+          "agility": 15,
+          "endurance": 14,
+          "intellect": 11,
+          "memory": 10,
+          "mental": 12,
+          "perception": 13,
+          "projection": 8,
+          "prediction": 9
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "rat_crushing_bite",
+          "head_armor": null,
+          "chest_armor": "rat_heavy_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "rat_plague_gland",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_two_handed",
+          "skill_heavy_armor",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "rat_swarm.base.heavy_rat",
+      "family": "rat_swarm",
+      "role": "elite",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "heavy_rat",
+        "role": "elite",
+        "narrative_hint": "Тяжёлая крыса движется неторопливо, зато с трудом уступает занятое место.",
+        "spawn_weight": 150,
+        "extra_tags": [
+          "heavy",
+          "strong"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 15,
+          "agility": 13,
+          "endurance": 17,
+          "intellect": 11,
+          "memory": 10,
+          "mental": 14,
+          "perception": 12,
+          "projection": 9,
+          "prediction": 8
+        },
+        "fixed_loadout": {
+          "main_hand": "rat_elite_claws",
+          "off_hand": "rat_spiked_growth",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "rat_medium_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "rat_plague_gland",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_shield_mastery",
+          "skill_medium_armor",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "rat_swarm.base.rat_brute",
+      "family": "rat_swarm",
+      "role": "boss",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 45,
+      "mechanics": {
+        "id": "rat_brute",
+        "role": "boss",
+        "narrative_hint": "Огромный зверь расталкивает сородичей и первым добирается до добычи.",
+        "spawn_weight": 600,
+        "extra_tags": [
+          "brute",
+          "strong"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 23,
+          "agility": 21,
+          "endurance": 24,
+          "intellect": 16,
+          "memory": 15,
+          "mental": 22,
+          "perception": 20,
+          "projection": 19,
+          "prediction": 18
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "rat_crushing_bite",
+          "head_armor": null,
+          "chest_armor": "rat_heavy_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "rat_plague_gland",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_two_handed",
+          "skill_heavy_armor",
+          "skill_tactics",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "rat_swarm.base.brood_alpha",
+      "family": "rat_swarm",
+      "role": "boss",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 45,
+      "mechanics": {
+        "id": "brood_alpha",
+        "role": "boss",
+        "narrative_hint": "Опытный предводитель удерживает выводок рядом и не терпит чужаков.",
+        "spawn_weight": 600,
+        "extra_tags": [
+          "leader",
+          "alpha",
+          "tactician"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 22,
+          "agility": 24,
+          "endurance": 23,
+          "intellect": 19,
+          "memory": 16,
+          "mental": 20,
+          "perception": 21,
+          "projection": 18,
+          "prediction": 15
+        },
+        "fixed_loadout": {
+          "main_hand": "rat_boss_claws",
+          "off_hand": "rat_spiked_growth",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "rat_heavy_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "rat_plague_gland",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_shield_mastery",
+          "skill_heavy_armor",
+          "skill_tactics",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "rat_swarm.base.rat_king",
+      "family": "rat_swarm",
+      "role": "boss",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 45,
+      "mechanics": {
+        "id": "rat_king",
+        "role": "boss",
+        "narrative_hint": "Клубок переплетённых крыс шевелится как одно существо; из него выскальзывают новые сородичи.",
+        "spawn_weight": 600,
+        "extra_tags": [
+          "king",
+          "hive_mind",
+          "summoner"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 23,
+          "agility": 16,
+          "endurance": 24,
+          "intellect": 19,
+          "memory": 18,
+          "mental": 22,
+          "perception": 21,
+          "projection": 20,
+          "prediction": 15
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "rat_poison_spit",
+          "head_armor": null,
+          "chest_armor": "rat_heavy_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "rat_plague_gland",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": "rat_poison_glands"
+        },
+        "skills": [
+          "skill_archery",
+          "skill_ranged_combat",
+          "skill_heavy_armor",
+          "skill_tactics",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "wolf_pack.base.cub",
+      "family": "wolf_pack",
+      "role": "minion",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 10,
+      "mechanics": {
+        "id": "cub",
+        "role": "minion",
+        "narrative_hint": "Молодой волк ещё ошибается на охоте, но уже старается держаться рядом со стаей.",
+        "spawn_weight": 20,
+        "extra_tags": [
+          "young",
+          "weak"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 14,
+          "agility": 15,
+          "endurance": 13,
+          "intellect": 9,
+          "memory": 8,
+          "mental": 11,
+          "perception": 12,
+          "projection": 7,
+          "prediction": 10
+        },
+        "fixed_loadout": {
+          "main_hand": "wolf_young_fangs",
+          "off_hand": null,
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "wolf_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "wolf_pack_mark",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "wolf_pack.base.runner",
+      "family": "wolf_pack",
+      "role": "minion",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 12,
+      "mechanics": {
+        "id": "runner",
+        "role": "minion",
+        "narrative_hint": "Подвижный волк преследует отставшую добычу и не даёт ей уйти от стаи.",
+        "spawn_weight": 20,
+        "extra_tags": [
+          "fast",
+          "scout"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 14,
+          "agility": 15,
+          "endurance": 13,
+          "intellect": 10,
+          "memory": 8,
+          "mental": 11,
+          "perception": 12,
+          "projection": 7,
+          "prediction": 9
+        },
+        "fixed_loadout": {
+          "main_hand": "wolf_young_fangs",
+          "off_hand": null,
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "wolf_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "wolf_pack_mark",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "wolf_pack.base.mangy_biter",
+      "family": "wolf_pack",
+      "role": "minion",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 14,
+      "mechanics": {
+        "id": "mangy_biter",
+        "role": "minion",
+        "narrative_hint": "Потрёпанный зверь осторожно выжидает момент для короткого укуса.",
+        "spawn_weight": 20,
+        "extra_tags": [
+          "mangy",
+          "ambusher",
+          "bleeder"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 14,
+          "agility": 15,
+          "endurance": 13,
+          "intellect": 9,
+          "memory": 8,
+          "mental": 11,
+          "perception": 12,
+          "projection": 7,
+          "prediction": 10
+        },
+        "fixed_loadout": {
+          "main_hand": "wolf_young_fangs",
+          "off_hand": null,
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "wolf_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "wolf_pack_mark",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "wolf_pack.base.stalker",
+      "family": "wolf_pack",
+      "role": "veteran",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "stalker",
+        "role": "veteran",
+        "narrative_hint": "Тихий охотник сближается с добычей, стараясь не выдать себя раньше времени.",
+        "spawn_weight": 50,
+        "extra_tags": [
+          "stealth",
+          "hunter"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 16,
+          "agility": 15,
+          "endurance": 14,
+          "intellect": 11,
+          "memory": 10,
+          "mental": 12,
+          "perception": 13,
+          "projection": 8,
+          "prediction": 9
+        },
+        "fixed_loadout": {
+          "main_hand": "wolf_bite_claws",
+          "off_hand": null,
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "wolf_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "wolf_pack_mark",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "wolf_pack.base.flanker",
+      "family": "wolf_pack",
+      "role": "veteran",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "flanker",
+        "role": "veteran",
+        "narrative_hint": "Опытный волк держится сбоку и ищет открытый путь к противнику.",
+        "spawn_weight": 50,
+        "extra_tags": [
+          "tactical",
+          "fast"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 15,
+          "agility": 16,
+          "endurance": 14,
+          "intellect": 11,
+          "memory": 10,
+          "mental": 12,
+          "perception": 13,
+          "projection": 8,
+          "prediction": 9
+        },
+        "fixed_loadout": {
+          "main_hand": "wolf_bite_claws",
+          "off_hand": null,
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "wolf_medium_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "wolf_pack_mark",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_medium_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "wolf_pack.base.snapper",
+      "family": "wolf_pack",
+      "role": "veteran",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "snapper",
+        "role": "veteran",
+        "narrative_hint": "Резкий бросок и крепкие челюсти помогают этому волку удерживать добычу.",
+        "spawn_weight": 50,
+        "extra_tags": [
+          "executioner",
+          "strong_jaw"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 16,
+          "agility": 14,
+          "endurance": 15,
+          "intellect": 10,
+          "memory": 9,
+          "mental": 12,
+          "perception": 13,
+          "projection": 8,
+          "prediction": 11
+        },
+        "fixed_loadout": {
+          "main_hand": "wolf_bite_claws",
+          "off_hand": null,
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "wolf_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "wolf_pack_mark",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "wolf_pack.base.pack_leader",
+      "family": "wolf_pack",
+      "role": "elite",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "pack_leader",
+        "role": "elite",
+        "narrative_hint": "Уверенный зверь задаёт направление охоты и собирает вокруг себя сородичей.",
+        "spawn_weight": 150,
+        "extra_tags": [
+          "leader",
+          "support",
+          "alpha"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 17,
+          "agility": 15,
+          "endurance": 16,
+          "intellect": 11,
+          "memory": 10,
+          "mental": 13,
+          "perception": 14,
+          "projection": 12,
+          "prediction": 9
+        },
+        "fixed_loadout": {
+          "main_hand": "wolf_elite_fangs",
+          "off_hand": "wolf_braced_mane",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "wolf_medium_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "wolf_pack_mark",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_shield_mastery",
+          "skill_medium_armor",
+          "skill_tactics",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "wolf_pack.base.dire_wolf",
+      "family": "wolf_pack",
+      "role": "elite",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "dire_wolf",
+        "role": "elite",
+        "narrative_hint": "Крупный хищник теснит добычу тяжестью тела и силой челюстей.",
+        "spawn_weight": 150,
+        "extra_tags": [
+          "dire",
+          "heavy",
+          "brute"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 17,
+          "agility": 14,
+          "endurance": 16,
+          "intellect": 11,
+          "memory": 10,
+          "mental": 15,
+          "perception": 13,
+          "projection": 9,
+          "prediction": 12
+        },
+        "fixed_loadout": {
+          "main_hand": "wolf_elite_fangs",
+          "off_hand": "wolf_bone_shoulders",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "wolf_heavy_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "wolf_pack_mark",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_shield_mastery",
+          "skill_heavy_armor",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "wolf_pack.base.old_fang",
+      "family": "wolf_pack",
+      "role": "elite",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "old_fang",
+        "role": "elite",
+        "narrative_hint": "Шрамы и стёртые клыки выдают зверя, пережившего немало схваток.",
+        "spawn_weight": 150,
+        "extra_tags": [
+          "veteran",
+          "cunning"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 17,
+          "agility": 13,
+          "endurance": 16,
+          "intellect": 12,
+          "memory": 11,
+          "mental": 14,
+          "perception": 15,
+          "projection": 9,
+          "prediction": 10
+        },
+        "fixed_loadout": {
+          "main_hand": "wolf_elite_fangs",
+          "off_hand": "wolf_locking_fangs",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "wolf_medium_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "wolf_pack_mark",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_dual_wield",
+          "skill_medium_armor",
+          "skill_tactics",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "wolf_pack.base.pack_huntmaster",
+      "family": "wolf_pack",
+      "role": "boss",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 45,
+      "mechanics": {
+        "id": "pack_huntmaster",
+        "role": "boss",
+        "narrative_hint": "Матёрый охотник ведёт преследование и направляет стаю к загнанной добыче.",
+        "spawn_weight": 600,
+        "extra_tags": [
+          "cunning",
+          "coordinator",
+          "hunter"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 21,
+          "agility": 19,
+          "endurance": 22,
+          "intellect": 16,
+          "memory": 17,
+          "mental": 20,
+          "perception": 18,
+          "projection": 15,
+          "prediction": 14
+        },
+        "fixed_loadout": {
+          "main_hand": "wolf_alpha_fangs",
+          "off_hand": "wolf_braced_mane",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "wolf_heavy_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "wolf_pack_mark",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_shield_mastery",
+          "skill_heavy_armor",
+          "skill_tactics",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "wolf_pack.base.alpha_prime",
+      "family": "wolf_pack",
+      "role": "boss",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 45,
+      "mechanics": {
+        "id": "alpha_prime",
+        "role": "boss",
+        "narrative_hint": "Могучий предводитель возвышается над остальной стаей; его присутствие удерживает зверей вместе.",
+        "spawn_weight": 600,
+        "extra_tags": [
+          "alpha",
+          "prime",
+          "legendary"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 21,
+          "agility": 20,
+          "endurance": 22,
+          "intellect": 16,
+          "memory": 15,
+          "mental": 19,
+          "perception": 18,
+          "projection": 17,
+          "prediction": 14
+        },
+        "fixed_loadout": {
+          "main_hand": "wolf_alpha_fangs",
+          "off_hand": "wolf_bone_shoulders",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "wolf_heavy_hide",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "wolf_pack_mark",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_shield_mastery",
+          "skill_heavy_armor",
+          "skill_tactics",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "bandit_gang.base.bandit_thug",
+      "family": "bandit_gang",
+      "role": "minion",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 13,
+      "mechanics": {
+        "id": "bandit_thug",
+        "role": "minion",
+        "narrative_hint": "Привычный к дракам бандит полагается на грубую силу и простое оружие.",
+        "spawn_weight": 20,
+        "extra_tags": [],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 16,
+          "agility": 14,
+          "endurance": 15,
+          "intellect": 10,
+          "memory": 9,
+          "mental": 12,
+          "perception": 13,
+          "projection": 8,
+          "prediction": 11
+        },
+        "fixed_loadout": {
+          "main_hand": "hatchet",
+          "off_hand": "buckler",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "jerkin",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_medium_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "bandit_gang.base.bandit_poacher",
+      "family": "bandit_gang",
+      "role": "minion",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 15,
+      "mechanics": {
+        "id": "bandit_poacher",
+        "role": "minion",
+        "narrative_hint": "Терпеливый стрелок привык выбирать удобную позицию и ждать добычу.",
+        "spawn_weight": 20,
+        "extra_tags": [],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 14,
+          "agility": 16,
+          "endurance": 13,
+          "intellect": 10,
+          "memory": 9,
+          "mental": 12,
+          "perception": 15,
+          "projection": 8,
+          "prediction": 11
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "shortbow",
+          "head_armor": null,
+          "chest_armor": "leather_armor",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": "quiver_training"
+        },
+        "skills": [
+          "skill_archery",
+          "skill_light_armor",
+          "skill_ranged_combat"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "bandit_gang.base.bandit_lookout",
+      "family": "bandit_gang",
+      "role": "minion",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 14,
+      "mechanics": {
+        "id": "bandit_lookout",
+        "role": "minion",
+        "narrative_hint": "Внимательный наблюдатель первым замечает путников и предупреждает шайку.",
+        "spawn_weight": 20,
+        "extra_tags": [
+          "watcher",
+          "spear",
+          "scout"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 14,
+          "agility": 15,
+          "endurance": 13,
+          "intellect": 11,
+          "memory": 9,
+          "mental": 10,
+          "perception": 16,
+          "projection": 8,
+          "prediction": 12
+        },
+        "fixed_loadout": {
+          "main_hand": "spear",
+          "off_hand": null,
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "leather_armor",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_polearms",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "bandit_gang.base.bandit_knife_rat",
+      "family": "bandit_gang",
+      "role": "minion",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 16,
+      "mechanics": {
+        "id": "bandit_knife_rat",
+        "role": "minion",
+        "narrative_hint": "Молодой разбойник крепко держится за нож и старается казаться опаснее, чем есть.",
+        "spawn_weight": 20,
+        "extra_tags": [
+          "dagger",
+          "ambusher",
+          "street"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 14,
+          "agility": 16,
+          "endurance": 13,
+          "intellect": 10,
+          "memory": 9,
+          "mental": 11,
+          "perception": 15,
+          "projection": 8,
+          "prediction": 12
+        },
+        "fixed_loadout": {
+          "main_hand": "dagger",
+          "off_hand": "dagger",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "leather_armor",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_dual_wield",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "bandit_gang.base.bandit_cutthroat",
+      "family": "bandit_gang",
+      "role": "boss",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 45,
+      "mechanics": {
+        "id": "bandit_cutthroat",
+        "role": "boss",
+        "narrative_hint": "Опытный убийца ищет слабое место в защите и не любит затяжных схваток.",
+        "spawn_weight": 600,
+        "extra_tags": [],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 21,
+          "agility": 22,
+          "endurance": 20,
+          "intellect": 16,
+          "memory": 15,
+          "mental": 17,
+          "perception": 18,
+          "projection": 14,
+          "prediction": 19
+        },
+        "fixed_loadout": {
+          "main_hand": "dagger",
+          "off_hand": "dagger",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "leather_armor",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_light_armor",
+          "skill_dual_wield",
+          "skill_tactics",
+          "skill_parrying",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "bandit_gang.base.bandit_raider",
+      "family": "bandit_gang",
+      "role": "veteran",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "bandit_raider",
+        "role": "veteran",
+        "narrative_hint": "Бывалый разбойник привык нападать решительно и уходить с добычей.",
+        "spawn_weight": 50,
+        "extra_tags": [
+          "raider",
+          "shield",
+          "bruiser"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 17,
+          "agility": 15,
+          "endurance": 16,
+          "intellect": 11,
+          "memory": 10,
+          "mental": 14,
+          "perception": 13,
+          "projection": 9,
+          "prediction": 12
+        },
+        "fixed_loadout": {
+          "main_hand": "mace",
+          "off_hand": "shield",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "jerkin",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_medium_armor",
+          "skill_shield_mastery"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "bandit_gang.base.bandit_billhook",
+      "family": "bandit_gang",
+      "role": "veteran",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "bandit_billhook",
+        "role": "veteran",
+        "narrative_hint": "Боец с длинным оружием старается держать противника на расстоянии.",
+        "spawn_weight": 50,
+        "extra_tags": [
+          "polearm",
+          "disabler",
+          "roadside"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 17,
+          "agility": 15,
+          "endurance": 16,
+          "intellect": 11,
+          "memory": 10,
+          "mental": 12,
+          "perception": 14,
+          "projection": 9,
+          "prediction": 13
+        },
+        "fixed_loadout": {
+          "main_hand": "spear",
+          "off_hand": null,
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "jerkin",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_polearms",
+          "skill_medium_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "bandit_gang.base.bandit_captain",
+      "family": "bandit_gang",
+      "role": "elite",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "bandit_captain",
+        "role": "elite",
+        "narrative_hint": "Дисциплинированный предводитель управляет бойцами и следит за порядком в схватке.",
+        "spawn_weight": 150,
+        "extra_tags": [],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 18,
+          "agility": 16,
+          "endurance": 17,
+          "intellect": 12,
+          "memory": 11,
+          "mental": 15,
+          "perception": 13,
+          "projection": 14,
+          "prediction": 10
+        },
+        "fixed_loadout": {
+          "main_hand": "sword",
+          "off_hand": "shield",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "jerkin",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_swords",
+          "skill_medium_armor",
+          "skill_shield_mastery",
+          "skill_tactics",
+          "skill_parrying"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "bandit_gang.base.bandit_hedge_wizard",
+      "family": "bandit_gang",
+      "role": "veteran",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "bandit_hedge_wizard",
+        "role": "veteran",
+        "narrative_hint": "Самоучка бережёт свои записи и поддерживает репутацию опасного чародея.",
+        "spawn_weight": 50,
+        "extra_tags": [],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 11,
+          "agility": 14,
+          "endurance": 13,
+          "intellect": 17,
+          "memory": 15,
+          "mental": 16,
+          "perception": 12,
+          "projection": 10,
+          "prediction": 9
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "quarterstaff",
+          "head_armor": null,
+          "chest_armor": "leather_armor",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_polearms",
+          "skill_light_armor",
+          "skill_two_handed"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "bandit_gang.base.bandit_blackguard",
+      "family": "bandit_gang",
+      "role": "boss",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 45,
+      "mechanics": {
+        "id": "bandit_blackguard",
+        "role": "boss",
+        "narrative_hint": "Хорошо защищённый боец охраняет главарей и выдерживает первые удары.",
+        "spawn_weight": 600,
+        "extra_tags": [
+          "blackguard",
+          "heavy",
+          "guard"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 21,
+          "agility": 19,
+          "endurance": 22,
+          "intellect": 15,
+          "memory": 14,
+          "mental": 20,
+          "perception": 18,
+          "projection": 17,
+          "prediction": 16
+        },
+        "fixed_loadout": {
+          "main_hand": "mace",
+          "off_hand": "shield",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "plate_chest",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_heavy_armor",
+          "skill_shield_mastery",
+          "skill_tactics",
+          "skill_parrying",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "bandit_gang.base.bandit_kingpin",
+      "family": "bandit_gang",
+      "role": "elite",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "bandit_kingpin",
+        "role": "elite",
+        "narrative_hint": "Влиятельный главарь удерживает шайку обещанием добычи и собственной силой.",
+        "spawn_weight": 150,
+        "extra_tags": [],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 18,
+          "agility": 16,
+          "endurance": 17,
+          "intellect": 11,
+          "memory": 10,
+          "mental": 14,
+          "perception": 13,
+          "projection": 15,
+          "prediction": 12
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "warhammer",
+          "head_armor": null,
+          "chest_armor": "plate_chest",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_heavy_armor",
+          "skill_two_handed",
+          "skill_tactics",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "bandit_gang.base.bandit_warlord",
+      "family": "bandit_gang",
+      "role": "elite",
+      "min_tier": 1,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "bandit_warlord",
+        "role": "elite",
+        "narrative_hint": "Закалённый командир носит добротное снаряжение, добытое в долгой череде налётов.",
+        "spawn_weight": 150,
+        "extra_tags": [
+          "marksman",
+          "commander",
+          "ranged"
+        ],
+        "min_tier": 1,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 15,
+          "agility": 18,
+          "endurance": 16,
+          "intellect": 13,
+          "memory": 11,
+          "mental": 14,
+          "perception": 17,
+          "projection": 10,
+          "prediction": 12
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "longbow",
+          "head_armor": null,
+          "chest_armor": "leather_armor",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": "quiver_bodkin"
+        },
+        "skills": [
+          "skill_archery",
+          "skill_light_armor",
+          "skill_ranged_combat",
+          "skill_tactics",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "goblin_tribe.base.goblin_sneak",
+      "family": "goblin_tribe",
+      "role": "minion",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 9,
+      "mechanics": {
+        "id": "goblin_sneak",
+        "role": "minion",
+        "narrative_hint": "Щуплый гоблин прячется за чужими спинами и выбирает момент для внезапного выпада.",
+        "spawn_weight": 20,
+        "extra_tags": [
+          "stealth",
+          "assassin",
+          "dual_wield",
+          "knife"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 9,
+          "agility": 14,
+          "endurance": 9,
+          "intellect": 8,
+          "memory": 6,
+          "mental": 7,
+          "perception": 12,
+          "projection": 5,
+          "prediction": 7
+        },
+        "fixed_loadout": {
+          "main_hand": "knife",
+          "off_hand": "knife",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "leather_armor",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_dual_wield",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "goblin_tribe.base.goblin_scavenger",
+      "family": "goblin_tribe",
+      "role": "minion",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 7,
+      "mechanics": {
+        "id": "goblin_scavenger",
+        "role": "minion",
+        "narrative_hint": "Зоркий гоблин тащит полезный хлам и никогда не проходит мимо брошенного оружия.",
+        "spawn_weight": 20,
+        "extra_tags": [
+          "scavenger",
+          "hoarder",
+          "scrap",
+          "buckler"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 9,
+          "agility": 11,
+          "endurance": 9,
+          "intellect": 8,
+          "memory": 6,
+          "mental": 6,
+          "perception": 10,
+          "projection": 5,
+          "prediction": 6
+        },
+        "fixed_loadout": {
+          "main_hand": "mace",
+          "off_hand": "buckler",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "leather_armor",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_shield_mastery",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "goblin_tribe.base.goblin_cutter",
+      "family": "goblin_tribe",
+      "role": "minion",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 10,
+      "mechanics": {
+        "id": "goblin_cutter",
+        "role": "minion",
+        "narrative_hint": "Задиристый боец с потрёпанным клинком охотно ввязывается в близкую схватку.",
+        "spawn_weight": 20,
+        "extra_tags": [
+          "knife",
+          "bleeder",
+          "ambusher",
+          "dual_wield"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 11,
+          "agility": 13,
+          "endurance": 11,
+          "intellect": 8,
+          "memory": 6,
+          "mental": 8,
+          "perception": 11,
+          "projection": 5,
+          "prediction": 7
+        },
+        "fixed_loadout": {
+          "main_hand": "dagger",
+          "off_hand": "knife",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "leather_armor",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_dual_wield",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "goblin_tribe.base.goblin_sparkpick",
+      "family": "goblin_tribe",
+      "role": "minion",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 8,
+      "mechanics": {
+        "id": "goblin_sparkpick",
+        "role": "minion",
+        "narrative_hint": "Любознательный гоблин возится с необычными инструментами и мерцающими находками.",
+        "spawn_weight": 20,
+        "extra_tags": [
+          "scrap",
+          "ether",
+          "reckless",
+          "buckler"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 10,
+          "agility": 12,
+          "endurance": 10,
+          "intellect": 8,
+          "memory": 6,
+          "mental": 7,
+          "perception": 9,
+          "projection": 6,
+          "prediction": 6
+        },
+        "fixed_loadout": {
+          "main_hand": "hatchet",
+          "off_hand": "buckler",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "leather_armor",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_shield_mastery",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "goblin_tribe.base.goblin_spearman",
+      "family": "goblin_tribe",
+      "role": "veteran",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "goblin_spearman",
+        "role": "veteran",
+        "narrative_hint": "Длинное копьё помогает небольшому гоблину держать противника подальше от себя.",
+        "spawn_weight": 50,
+        "extra_tags": [
+          "infantry",
+          "shield"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 13,
+          "agility": 14,
+          "endurance": 15,
+          "intellect": 11,
+          "memory": 9,
+          "mental": 10,
+          "perception": 12,
+          "projection": 8,
+          "prediction": 7
+        },
+        "fixed_loadout": {
+          "main_hand": "spear",
+          "off_hand": "shield",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "jerkin",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_polearms",
+          "skill_medium_armor",
+          "skill_shield_mastery"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "goblin_tribe.base.goblin_slinger",
+      "family": "goblin_tribe",
+      "role": "veteran",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "goblin_slinger",
+        "role": "veteran",
+        "narrative_hint": "Подвижный стрелок перебирает запас снарядов и высматривает удобную цель.",
+        "spawn_weight": 50,
+        "extra_tags": [
+          "ranged",
+          "archer",
+          "fast",
+          "quiver"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 12,
+          "agility": 15,
+          "endurance": 13,
+          "intellect": 11,
+          "memory": 10,
+          "mental": 9,
+          "perception": 14,
+          "projection": 7,
+          "prediction": 8
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "shortbow",
+          "head_armor": null,
+          "chest_armor": "leather_armor",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": "quiver_training"
+        },
+        "skills": [
+          "skill_archery",
+          "skill_ranged_combat",
+          "skill_light_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "goblin_tribe.base.goblin_scrapguard",
+      "family": "goblin_tribe",
+      "role": "veteran",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "goblin_scrapguard",
+        "role": "veteran",
+        "narrative_hint": "Пластины собранной защиты прикрывают гоблина, привыкшего стоять впереди остальных.",
+        "spawn_weight": 50,
+        "extra_tags": [
+          "shield",
+          "defender",
+          "scrap"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 14,
+          "agility": 13,
+          "endurance": 15,
+          "intellect": 10,
+          "memory": 9,
+          "mental": 11,
+          "perception": 12,
+          "projection": 8,
+          "prediction": 7
+        },
+        "fixed_loadout": {
+          "main_hand": "mace",
+          "off_hand": "shield",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "jerkin",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_medium_armor",
+          "skill_shield_mastery"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "goblin_tribe.base.goblin_tinkerer",
+      "family": "goblin_tribe",
+      "role": "elite",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "goblin_tinkerer",
+        "role": "elite",
+        "narrative_hint": "Опытный умелец чинит снаряжение и испытывает устройства сомнительной надёжности.",
+        "spawn_weight": 150,
+        "extra_tags": [
+          "engineer",
+          "duelist",
+          "scrap",
+          "buckler"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 11,
+          "agility": 15,
+          "endurance": 13,
+          "intellect": 16,
+          "memory": 12,
+          "mental": 10,
+          "perception": 14,
+          "projection": 9,
+          "prediction": 8
+        },
+        "fixed_loadout": {
+          "main_hand": "rapier",
+          "off_hand": "buckler",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "jerkin",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_shield_mastery",
+          "skill_medium_armor",
+          "skill_tactics"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "goblin_tribe.base.goblin_bomber",
+      "family": "goblin_tribe",
+      "role": "elite",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "goblin_bomber",
+        "role": "elite",
+        "narrative_hint": "Гоблин бережно несёт опасные самоделки и слишком радуется каждому взрыву.",
+        "spawn_weight": 150,
+        "extra_tags": [
+          "bomber",
+          "explosives",
+          "reckless",
+          "archer",
+          "fire_arrows"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 12,
+          "agility": 16,
+          "endurance": 15,
+          "intellect": 14,
+          "memory": 9,
+          "mental": 11,
+          "perception": 13,
+          "projection": 8,
+          "prediction": 10
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "shortbow",
+          "head_armor": null,
+          "chest_armor": "jerkin",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": "quiver_fire"
+        },
+        "skills": [
+          "skill_archery",
+          "skill_medium_armor",
+          "skill_ranged_combat",
+          "skill_tactics"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "goblin_tribe.base.goblin_trapmaster",
+      "family": "goblin_tribe",
+      "role": "elite",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "goblin_trapmaster",
+        "role": "elite",
+        "narrative_hint": "Хитрый мастер предпочитает заранее подготовленный путь прямой схватке.",
+        "spawn_weight": 150,
+        "extra_tags": [
+          "trapper",
+          "engineer",
+          "controller",
+          "dual_wield",
+          "precision"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 11,
+          "agility": 14,
+          "endurance": 13,
+          "intellect": 16,
+          "memory": 12,
+          "mental": 10,
+          "perception": 15,
+          "projection": 8,
+          "prediction": 9
+        },
+        "fixed_loadout": {
+          "main_hand": "stiletto",
+          "off_hand": "main_gauche",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "jerkin",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_dual_wield",
+          "skill_medium_armor",
+          "skill_tactics",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "goblin_tribe.base.goblin_chief",
+      "family": "goblin_tribe",
+      "role": "boss",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 45,
+      "mechanics": {
+        "id": "goblin_chief",
+        "role": "boss",
+        "narrative_hint": "Матёрый предводитель выделяется добротным оружием и привычкой распоряжаться другими.",
+        "spawn_weight": 600,
+        "extra_tags": [
+          "leader",
+          "commander",
+          "heavy_armor",
+          "shield"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 21,
+          "agility": 20,
+          "endurance": 22,
+          "intellect": 16,
+          "memory": 15,
+          "mental": 19,
+          "perception": 18,
+          "projection": 17,
+          "prediction": 14
+        },
+        "fixed_loadout": {
+          "main_hand": "battle_axe",
+          "off_hand": "kite_shield",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "plate_chest",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_shield_mastery",
+          "skill_heavy_armor",
+          "skill_tactics",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "goblin_tribe.base.scrap_king",
+      "family": "goblin_tribe",
+      "role": "boss",
+      "min_tier": 0,
+      "max_tier": 5,
+      "assembly_cost": 45,
+      "mechanics": {
+        "id": "scrap_king",
+        "role": "boss",
+        "narrative_hint": "Тяжело вооружённый главарь выходит вперёд сам, демонстрируя клану трофейную защиту и оружие.",
+        "spawn_weight": 600,
+        "extra_tags": [
+          "king",
+          "heavy_armor",
+          "engineer",
+          "two_handed",
+          "scrap"
+        ],
+        "min_tier": 0,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 21,
+          "agility": 15,
+          "endurance": 22,
+          "intellect": 20,
+          "memory": 17,
+          "mental": 19,
+          "perception": 16,
+          "projection": 18,
+          "prediction": 14
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "warhammer",
+          "head_armor": null,
+          "chest_armor": "plate_chest",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "amulet",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_heavy_armor",
+          "skill_two_handed",
+          "skill_tactics",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "golem_foundry.base.stone_worker",
+      "family": "golem_foundry",
+      "role": "minion",
+      "min_tier": 2,
+      "max_tier": 5,
+      "assembly_cost": 14,
+      "mechanics": {
+        "id": "stone_worker",
+        "role": "minion",
+        "narrative_hint": "Приземистый голем с широкими ладонями переносит камень и встречает врагов тяжёлыми ударами.",
+        "spawn_weight": 100,
+        "extra_tags": [
+          "paired"
+        ],
+        "min_tier": 2,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 22,
+          "agility": 8,
+          "endurance": 24,
+          "intellect": 7,
+          "memory": 8,
+          "mental": 12,
+          "perception": 9,
+          "projection": 6,
+          "prediction": 8
+        },
+        "fixed_loadout": {
+          "main_hand": "golem_fist",
+          "off_hand": "golem_grasp",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "golem_shell",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "golem_core",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_fencing",
+          "skill_dual_wield",
+          "skill_heavy_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "golem_foundry.base.stone_sentry",
+      "family": "golem_foundry",
+      "role": "minion",
+      "min_tier": 2,
+      "max_tier": 5,
+      "assembly_cost": 15,
+      "mechanics": {
+        "id": "stone_sentry",
+        "role": "minion",
+        "narrative_hint": "Стройный страж поворачивает корпус вслед за движением и закрывает проход щитовой плитой.",
+        "spawn_weight": 100,
+        "extra_tags": [
+          "shield"
+        ],
+        "min_tier": 2,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 20,
+          "agility": 10,
+          "endurance": 23,
+          "intellect": 9,
+          "memory": 10,
+          "mental": 13,
+          "perception": 15,
+          "projection": 7,
+          "prediction": 12
+        },
+        "fixed_loadout": {
+          "main_hand": "golem_fist",
+          "off_hand": "golem_slab",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "golem_shell",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "golem_core",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_shield_mastery",
+          "skill_heavy_armor",
+          "skill_parrying"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "golem_foundry.base.stone_thrower",
+      "family": "golem_foundry",
+      "role": "minion",
+      "min_tier": 2,
+      "max_tier": 5,
+      "assembly_cost": 13,
+      "mechanics": {
+        "id": "stone_thrower",
+        "role": "minion",
+        "narrative_hint": "Голем выбирает обломки из каменного запаса и обрушивает их на противника издалека.",
+        "spawn_weight": 100,
+        "extra_tags": [
+          "ranged"
+        ],
+        "min_tier": 2,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 19,
+          "agility": 12,
+          "endurance": 20,
+          "intellect": 8,
+          "memory": 9,
+          "mental": 12,
+          "perception": 18,
+          "projection": 9,
+          "prediction": 14
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "golem_stone_throw",
+          "head_armor": null,
+          "chest_armor": "golem_shell",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "golem_core",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": "golem_stone_reserve"
+        },
+        "skills": [
+          "skill_archery",
+          "skill_ranged_combat",
+          "skill_heavy_armor",
+          "skill_tactics"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "golem_foundry.base.stone_ram",
+      "family": "golem_foundry",
+      "role": "minion",
+      "min_tier": 2,
+      "max_tier": 5,
+      "assembly_cost": 16,
+      "mechanics": {
+        "id": "stone_ram",
+        "role": "minion",
+        "narrative_hint": "Плотно собранные плиты защищают короткую шею; голем давит противника всем корпусом.",
+        "spawn_weight": 100,
+        "extra_tags": [
+          "heavy"
+        ],
+        "min_tier": 2,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 25,
+          "agility": 7,
+          "endurance": 25,
+          "intellect": 6,
+          "memory": 7,
+          "mental": 13,
+          "perception": 10,
+          "projection": 6,
+          "prediction": 9
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "golem_crushing_arms",
+          "head_armor": null,
+          "chest_armor": "golem_shell",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "golem_core",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_two_handed",
+          "skill_heavy_armor",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "golem_foundry.base.stone_crusher",
+      "family": "golem_foundry",
+      "role": "veteran",
+      "min_tier": 2,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "stone_crusher",
+        "role": "veteran",
+        "narrative_hint": "Массивные предплечья сходятся над целью и разбивают защиту последовательными тяжёлыми ударами.",
+        "spawn_weight": 100,
+        "extra_tags": [
+          "heavy"
+        ],
+        "min_tier": 2,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 32,
+          "agility": 10,
+          "endurance": 31,
+          "intellect": 9,
+          "memory": 10,
+          "mental": 17,
+          "perception": 13,
+          "projection": 9,
+          "prediction": 13
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "golem_crushing_arms",
+          "head_armor": null,
+          "chest_armor": "golem_shell",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "golem_core",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_two_handed",
+          "skill_heavy_armor",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": [
+        "basic_break_stance"
+      ]
+    },
+    {
+      "id": "golem_foundry.base.stone_bulwark",
+      "family": "golem_foundry",
+      "role": "veteran",
+      "min_tier": 2,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "stone_bulwark",
+        "role": "veteran",
+        "narrative_hint": "Широкий корпус и цельная щитовая плита позволяют этому голему удерживать узкий проход.",
+        "spawn_weight": 100,
+        "extra_tags": [
+          "shield"
+        ],
+        "min_tier": 2,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 28,
+          "agility": 10,
+          "endurance": 35,
+          "intellect": 11,
+          "memory": 13,
+          "mental": 20,
+          "perception": 15,
+          "projection": 9,
+          "prediction": 15
+        },
+        "fixed_loadout": {
+          "main_hand": "golem_fist",
+          "off_hand": "golem_slab",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "golem_shell",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "golem_core",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_shield_mastery",
+          "skill_heavy_armor",
+          "skill_parrying"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "golem_foundry.base.stone_catcher",
+      "family": "golem_foundry",
+      "role": "veteran",
+      "min_tier": 2,
+      "max_tier": 5,
+      "assembly_cost": 23,
+      "mechanics": {
+        "id": "stone_catcher",
+        "role": "veteran",
+        "narrative_hint": "Длинные каменные захваты сходятся вокруг цели, мешая ей выбрать удобное положение.",
+        "spawn_weight": 100,
+        "extra_tags": [
+          "paired"
+        ],
+        "min_tier": 2,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 29,
+          "agility": 15,
+          "endurance": 30,
+          "intellect": 11,
+          "memory": 12,
+          "mental": 18,
+          "perception": 19,
+          "projection": 10,
+          "prediction": 17
+        },
+        "fixed_loadout": {
+          "main_hand": "golem_fist",
+          "off_hand": "golem_grasp",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "golem_shell",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "golem_core",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_fencing",
+          "skill_dual_wield",
+          "skill_heavy_armor"
+        ],
+        "member_model": null
+      },
+      "ability_ids": [
+        "basic_expose_weakness"
+      ]
+    },
+    {
+      "id": "golem_foundry.base.rune_guardian",
+      "family": "golem_foundry",
+      "role": "elite",
+      "min_tier": 2,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "rune_guardian",
+        "role": "elite",
+        "narrative_hint": "Подогнанные плиты окружают яркое ядро. Руны ненадолго уплотняют его каменную оболочку.",
+        "spawn_weight": 100,
+        "extra_tags": [
+          "shield"
+        ],
+        "min_tier": 2,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 32,
+          "agility": 12,
+          "endurance": 40,
+          "intellect": 16,
+          "memory": 18,
+          "mental": 25,
+          "perception": 18,
+          "projection": 17,
+          "prediction": 20
+        },
+        "fixed_loadout": {
+          "main_hand": "golem_fist",
+          "off_hand": "golem_slab",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "golem_shell",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "golem_core",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_shield_mastery",
+          "skill_heavy_armor",
+          "skill_tactics"
+        ],
+        "member_model": null
+      },
+      "ability_ids": [
+        "stone_skin"
+      ]
+    },
+    {
+      "id": "golem_foundry.base.rune_punisher",
+      "family": "golem_foundry",
+      "role": "elite",
+      "min_tier": 2,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "rune_punisher",
+        "role": "elite",
+        "narrative_hint": "Рунные сочленения направляют тяжёлые руки в слабое место защиты выбранного противника.",
+        "spawn_weight": 100,
+        "extra_tags": [
+          "heavy"
+        ],
+        "min_tier": 2,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 38,
+          "agility": 16,
+          "endurance": 34,
+          "intellect": 14,
+          "memory": 15,
+          "mental": 23,
+          "perception": 22,
+          "projection": 15,
+          "prediction": 22
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "golem_crushing_arms",
+          "head_armor": null,
+          "chest_armor": "golem_shell",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "golem_core",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_two_handed",
+          "skill_heavy_armor",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": [
+        "basic_break_stance"
+      ]
+    },
+    {
+      "id": "golem_foundry.base.rune_resonator",
+      "family": "golem_foundry",
+      "role": "elite",
+      "min_tier": 2,
+      "max_tier": 5,
+      "assembly_cost": 30,
+      "mechanics": {
+        "id": "rune_resonator",
+        "role": "elite",
+        "narrative_hint": "Открытое ядро пульсирует между каменными рёбрами. Пока оно поддерживает собственную защитную оболочку.",
+        "spawn_weight": 100,
+        "extra_tags": [
+          "paired"
+        ],
+        "min_tier": 2,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 29,
+          "agility": 13,
+          "endurance": 35,
+          "intellect": 23,
+          "memory": 22,
+          "mental": 26,
+          "perception": 20,
+          "projection": 24,
+          "prediction": 21
+        },
+        "fixed_loadout": {
+          "main_hand": "golem_fist",
+          "off_hand": "golem_grasp",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "golem_shell",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "golem_core",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_fencing",
+          "skill_dual_wield",
+          "skill_heavy_armor",
+          "skill_tactics"
+        ],
+        "member_model": null
+      },
+      "ability_ids": [
+        "stone_skin"
+      ]
+    },
+    {
+      "id": "golem_foundry.base.quarry_overseer",
+      "family": "golem_foundry",
+      "role": "boss",
+      "min_tier": 2,
+      "max_tier": 5,
+      "assembly_cost": 45,
+      "mechanics": {
+        "id": "quarry_overseer",
+        "role": "boss",
+        "narrative_hint": "Древний управляющий конструкт следит за полем боя и тяжёлыми захватами подавляет опасные цели.",
+        "spawn_weight": 100,
+        "extra_tags": [
+          "paired"
+        ],
+        "min_tier": 2,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 39,
+          "agility": 17,
+          "endurance": 42,
+          "intellect": 24,
+          "memory": 25,
+          "mental": 31,
+          "perception": 26,
+          "projection": 23,
+          "prediction": 26
+        },
+        "fixed_loadout": {
+          "main_hand": "golem_fist",
+          "off_hand": "golem_grasp",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "golem_shell",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "golem_core",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_fencing",
+          "skill_dual_wield",
+          "skill_heavy_armor",
+          "skill_tactics"
+        ],
+        "member_model": null
+      },
+      "ability_ids": [
+        "basic_break_stance",
+        "stone_skin"
+      ]
+    },
+    {
+      "id": "golem_foundry.base.stone_colossus",
+      "family": "golem_foundry",
+      "role": "boss",
+      "min_tier": 2,
+      "max_tier": 5,
+      "assembly_cost": 45,
+      "mechanics": {
+        "id": "stone_colossus",
+        "role": "boss",
+        "narrative_hint": "Огромный голем несёт следы обвалов и старых сражений; размашистые удары раскалывают строй противника.",
+        "spawn_weight": 100,
+        "extra_tags": [
+          "heavy"
+        ],
+        "min_tier": 2,
+        "max_tier": 5,
+        "base_stats": {
+          "strength": 46,
+          "agility": 11,
+          "endurance": 48,
+          "intellect": 14,
+          "memory": 17,
+          "mental": 30,
+          "perception": 20,
+          "projection": 16,
+          "prediction": 19
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "golem_crushing_arms",
+          "head_armor": null,
+          "chest_armor": "golem_shell",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": "golem_core",
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_two_handed",
+          "skill_heavy_armor",
+          "skill_anatomy"
+        ],
+        "member_model": null
+      },
+      "ability_ids": [
+        "basic_cleave_gift",
+        "stone_skin"
+      ]
+    },
+    {
+      "id": "anchor_sovereigns.base.north_stasis_sovereign",
+      "family": "anchor_sovereigns",
+      "role": "boss",
+      "min_tier": 7,
+      "max_tier": 7,
+      "assembly_cost": 120,
+      "mechanics": {
+        "id": "north_stasis_sovereign",
+        "role": "boss",
+        "narrative_hint": "Северный якорь стазиса. Его проекция не спешит: она отнимает у боя само движение.",
+        "spawn_weight": 2200,
+        "extra_tags": [
+          "north",
+          "stasis",
+          "frost",
+          "time_stasis",
+          "absolute_zero"
+        ],
+        "min_tier": 7,
+        "max_tier": 7,
+        "base_stats": {
+          "strength": 161,
+          "agility": 71,
+          "endurance": 221,
+          "intellect": 191,
+          "memory": 241,
+          "mental": 211,
+          "perception": 151,
+          "projection": 81,
+          "prediction": 41
+        },
+        "fixed_loadout": {
+          "main_hand": "anchor_stasis_crown_blade",
+          "off_hand": "shield",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "anchor_projection_aegis",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": null,
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_swords",
+          "skill_shield_mastery",
+          "skill_heavy_armor",
+          "skill_light_armor",
+          "skill_tactics",
+          "skill_anatomy",
+          "skill_parrying"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "anchor_sovereigns.base.south_entropy_sovereign",
+      "family": "anchor_sovereigns",
+      "role": "boss",
+      "min_tier": 7,
+      "max_tier": 7,
+      "assembly_cost": 120,
+      "mechanics": {
+        "id": "south_entropy_sovereign",
+        "role": "boss",
+        "narrative_hint": "Южный якорь энтропии. Его проекция завершает спор грубой ценой распада.",
+        "spawn_weight": 2400,
+        "extra_tags": [
+          "south",
+          "entropy",
+          "ash_storm",
+          "lava_veins",
+          "thermal_shock"
+        ],
+        "min_tier": 7,
+        "max_tier": 7,
+        "base_stats": {
+          "strength": 241,
+          "agility": 81,
+          "endurance": 231,
+          "intellect": 111,
+          "memory": 121,
+          "mental": 221,
+          "perception": 131,
+          "projection": 91,
+          "prediction": 31
+        },
+        "fixed_loadout": {
+          "main_hand": null,
+          "off_hand": null,
+          "two_hand": "anchor_entropy_cinder_maul",
+          "head_armor": null,
+          "chest_armor": "anchor_projection_aegis",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": null,
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_macing",
+          "skill_two_handed",
+          "skill_heavy_armor",
+          "skill_light_armor",
+          "skill_tactics",
+          "skill_anatomy",
+          "skill_parrying"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "anchor_sovereigns.base.west_gravity_sovereign",
+      "family": "anchor_sovereigns",
+      "role": "boss",
+      "min_tier": 7,
+      "max_tier": 7,
+      "assembly_cost": 120,
+      "mechanics": {
+        "id": "west_gravity_sovereign",
+        "role": "boss",
+        "narrative_hint": "Западный якорь гравитации. Его проекция выбирает направление, в котором падают враги.",
+        "spawn_weight": 2100,
+        "extra_tags": [
+          "west",
+          "gravity",
+          "floating_islands",
+          "reverse_gravity",
+          "lightning"
+        ],
+        "min_tier": 7,
+        "max_tier": 7,
+        "base_stats": {
+          "strength": 131,
+          "agility": 211,
+          "endurance": 171,
+          "intellect": 221,
+          "memory": 161,
+          "mental": 171,
+          "perception": 241,
+          "projection": 101,
+          "prediction": 91
+        },
+        "fixed_loadout": {
+          "main_hand": "anchor_gravity_storm_lance",
+          "off_hand": null,
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "anchor_projection_aegis",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": null,
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_polearms",
+          "skill_light_armor",
+          "skill_heavy_armor",
+          "skill_tactics",
+          "skill_anatomy",
+          "skill_parrying"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    },
+    {
+      "id": "anchor_sovereigns.base.east_evolution_sovereign",
+      "family": "anchor_sovereigns",
+      "role": "boss",
+      "min_tier": 7,
+      "max_tier": 7,
+      "assembly_cost": 120,
+      "mechanics": {
+        "id": "east_evolution_sovereign",
+        "role": "boss",
+        "narrative_hint": "Восточный якорь эволюции. Его проекция отвечает на застой быстрой мутацией боя.",
+        "spawn_weight": 2300,
+        "extra_tags": [
+          "east",
+          "evolution",
+          "living_jungle",
+          "toxic_spores",
+          "mutation_fog"
+        ],
+        "min_tier": 7,
+        "max_tier": 7,
+        "base_stats": {
+          "strength": 171,
+          "agility": 231,
+          "endurance": 191,
+          "intellect": 161,
+          "memory": 221,
+          "mental": 181,
+          "perception": 231,
+          "projection": 71,
+          "prediction": 121
+        },
+        "fixed_loadout": {
+          "main_hand": "anchor_evolution_bloom_talons",
+          "off_hand": "anchor_evolution_bloom_talons",
+          "two_hand": null,
+          "head_armor": null,
+          "chest_armor": "anchor_projection_aegis",
+          "arms_armor": null,
+          "legs_armor": null,
+          "feetwear": null,
+          "chest_garment": null,
+          "legs_garment": null,
+          "outer_garment": null,
+          "gloves_garment": null,
+          "amulet": null,
+          "ring_1": null,
+          "ring_2": null,
+          "belt_accessory": null,
+          "quiver": null
+        },
+        "skills": [
+          "skill_fencing",
+          "skill_dual_wield",
+          "skill_light_armor",
+          "skill_heavy_armor",
+          "skill_tactics",
+          "skill_anatomy",
+          "skill_parrying"
+        ],
+        "member_model": null
+      },
+      "ability_ids": []
+    }
+  ],
+  "profiles": [
+    {
+      "id": "solo.ordinary.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 36.326,
+        "base_points": 30,
+        "gs_bonus_max": 9,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 36.326,
+        "base_points": 45,
+        "gs_bonus_max": 15,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 36.326,
+        "base_points": 60,
+        "gs_bonus_max": 21,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 36.326,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 23,
+        "gs_bonus_max": 23,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 5
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 36.326,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 46,
+        "gs_bonus_max": 23,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 8
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 36.326,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 69,
+        "gs_bonus_max": 23,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 36.326,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 30,
+        "gs_bonus_max": 23,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 7
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 36.326,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 53,
+        "gs_bonus_max": 30,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 36.326,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 76,
+        "gs_bonus_max": 30,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 15
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 2
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 36.326,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 45,
+        "gs_bonus_max": 23,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 1
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 36.326,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 68,
+        "gs_bonus_max": 30,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 20
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 1
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 36.326,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 98,
+        "gs_bonus_max": 30,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 30
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 2
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 55.977,
+        "base_points": 30,
+        "gs_bonus_max": 9,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 55.0,
+        "gs_step_size": 8.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 55.977,
+        "base_points": 45,
+        "gs_bonus_max": 15,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 55.0,
+        "gs_step_size": 8.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 55.977,
+        "base_points": 60,
+        "gs_bonus_max": 21,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 55.0,
+        "gs_step_size": 8.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 55.977,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 23,
+        "gs_bonus_max": 23,
+        "gs_threshold": 55.0,
+        "gs_step_size": 8.0,
+        "gs_points_per_step": 5
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 55.977,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 46,
+        "gs_bonus_max": 23,
+        "gs_threshold": 55.0,
+        "gs_step_size": 8.0,
+        "gs_points_per_step": 8
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 55.977,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 69,
+        "gs_bonus_max": 23,
+        "gs_threshold": 55.0,
+        "gs_step_size": 8.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 55.977,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 30,
+        "gs_bonus_max": 23,
+        "gs_threshold": 55.0,
+        "gs_step_size": 8.0,
+        "gs_points_per_step": 7
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 55.977,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 53,
+        "gs_bonus_max": 30,
+        "gs_threshold": 55.0,
+        "gs_step_size": 8.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 55.977,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 76,
+        "gs_bonus_max": 30,
+        "gs_threshold": 55.0,
+        "gs_step_size": 8.0,
+        "gs_points_per_step": 15
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 2
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 55.977,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 45,
+        "gs_bonus_max": 23,
+        "gs_threshold": 55.0,
+        "gs_step_size": 8.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 1
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 55.977,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 68,
+        "gs_bonus_max": 30,
+        "gs_threshold": 55.0,
+        "gs_step_size": 8.0,
+        "gs_points_per_step": 20
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 1
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 55.977,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 98,
+        "gs_bonus_max": 30,
+        "gs_threshold": 55.0,
+        "gs_step_size": 8.0,
+        "gs_points_per_step": 30
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 2
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 66.664,
+        "base_points": 30,
+        "gs_bonus_max": 9,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 85.0,
+        "gs_step_size": 12.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 66.664,
+        "base_points": 45,
+        "gs_bonus_max": 15,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 85.0,
+        "gs_step_size": 12.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 66.664,
+        "base_points": 60,
+        "gs_bonus_max": 21,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 85.0,
+        "gs_step_size": 12.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 66.664,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 23,
+        "gs_bonus_max": 23,
+        "gs_threshold": 85.0,
+        "gs_step_size": 12.0,
+        "gs_points_per_step": 5
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 66.664,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 46,
+        "gs_bonus_max": 23,
+        "gs_threshold": 85.0,
+        "gs_step_size": 12.0,
+        "gs_points_per_step": 8
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 66.664,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 69,
+        "gs_bonus_max": 23,
+        "gs_threshold": 85.0,
+        "gs_step_size": 12.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 66.664,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 30,
+        "gs_bonus_max": 23,
+        "gs_threshold": 85.0,
+        "gs_step_size": 12.0,
+        "gs_points_per_step": 7
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 66.664,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 53,
+        "gs_bonus_max": 30,
+        "gs_threshold": 85.0,
+        "gs_step_size": 12.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 66.664,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 76,
+        "gs_bonus_max": 30,
+        "gs_threshold": 85.0,
+        "gs_step_size": 12.0,
+        "gs_points_per_step": 15
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 2
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 66.664,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 45,
+        "gs_bonus_max": 23,
+        "gs_threshold": 85.0,
+        "gs_step_size": 12.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 1
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 66.664,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 68,
+        "gs_bonus_max": 30,
+        "gs_threshold": 85.0,
+        "gs_step_size": 12.0,
+        "gs_points_per_step": 20
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 1
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 66.664,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 98,
+        "gs_bonus_max": 30,
+        "gs_threshold": 85.0,
+        "gs_step_size": 12.0,
+        "gs_points_per_step": 30
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 2
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 119.849,
+        "base_points": 30,
+        "gs_bonus_max": 9,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 120.0,
+        "gs_step_size": 15.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 119.849,
+        "base_points": 45,
+        "gs_bonus_max": 15,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 120.0,
+        "gs_step_size": 15.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 119.849,
+        "base_points": 60,
+        "gs_bonus_max": 21,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 120.0,
+        "gs_step_size": 15.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 119.849,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 23,
+        "gs_bonus_max": 23,
+        "gs_threshold": 120.0,
+        "gs_step_size": 15.0,
+        "gs_points_per_step": 5
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 119.849,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 46,
+        "gs_bonus_max": 23,
+        "gs_threshold": 120.0,
+        "gs_step_size": 15.0,
+        "gs_points_per_step": 8
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 119.849,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 69,
+        "gs_bonus_max": 23,
+        "gs_threshold": 120.0,
+        "gs_step_size": 15.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 119.849,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 30,
+        "gs_bonus_max": 23,
+        "gs_threshold": 120.0,
+        "gs_step_size": 15.0,
+        "gs_points_per_step": 7
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 119.849,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 53,
+        "gs_bonus_max": 30,
+        "gs_threshold": 120.0,
+        "gs_step_size": 15.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 119.849,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 76,
+        "gs_bonus_max": 30,
+        "gs_threshold": 120.0,
+        "gs_step_size": 15.0,
+        "gs_points_per_step": 15
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 2
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 119.849,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 45,
+        "gs_bonus_max": 23,
+        "gs_threshold": 120.0,
+        "gs_step_size": 15.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 1
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 119.849,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 68,
+        "gs_bonus_max": 30,
+        "gs_threshold": 120.0,
+        "gs_step_size": 15.0,
+        "gs_points_per_step": 20
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 1
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 119.849,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 98,
+        "gs_bonus_max": 30,
+        "gs_threshold": 120.0,
+        "gs_step_size": 15.0,
+        "gs_points_per_step": 30
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 2
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 171.053,
+        "base_points": 30,
+        "gs_bonus_max": 9,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 170.0,
+        "gs_step_size": 20.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 171.053,
+        "base_points": 45,
+        "gs_bonus_max": 15,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 170.0,
+        "gs_step_size": 20.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 171.053,
+        "base_points": 60,
+        "gs_bonus_max": 21,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 170.0,
+        "gs_step_size": 20.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 171.053,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 23,
+        "gs_bonus_max": 23,
+        "gs_threshold": 170.0,
+        "gs_step_size": 20.0,
+        "gs_points_per_step": 5
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 171.053,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 46,
+        "gs_bonus_max": 23,
+        "gs_threshold": 170.0,
+        "gs_step_size": 20.0,
+        "gs_points_per_step": 8
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 171.053,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 69,
+        "gs_bonus_max": 23,
+        "gs_threshold": 170.0,
+        "gs_step_size": 20.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 171.053,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 30,
+        "gs_bonus_max": 23,
+        "gs_threshold": 170.0,
+        "gs_step_size": 20.0,
+        "gs_points_per_step": 7
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 171.053,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 53,
+        "gs_bonus_max": 30,
+        "gs_threshold": 170.0,
+        "gs_step_size": 20.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 171.053,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 76,
+        "gs_bonus_max": 30,
+        "gs_threshold": 170.0,
+        "gs_step_size": 20.0,
+        "gs_points_per_step": 15
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 2
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 171.053,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 45,
+        "gs_bonus_max": 23,
+        "gs_threshold": 170.0,
+        "gs_step_size": 20.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 1
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 171.053,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 68,
+        "gs_bonus_max": 30,
+        "gs_threshold": 170.0,
+        "gs_step_size": 20.0,
+        "gs_points_per_step": 20
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 1
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 171.053,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 98,
+        "gs_bonus_max": 30,
+        "gs_threshold": 170.0,
+        "gs_step_size": 20.0,
+        "gs_points_per_step": 30
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 2
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 312.108,
+        "base_points": 30,
+        "gs_bonus_max": 9,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 230.0,
+        "gs_step_size": 25.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 312.108,
+        "base_points": 45,
+        "gs_bonus_max": 15,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 230.0,
+        "gs_step_size": 25.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.ordinary.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 312.108,
+        "base_points": 60,
+        "gs_bonus_max": 21,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 0,
+        "gs_bonus_max": 0,
+        "gs_threshold": 230.0,
+        "gs_step_size": 25.0,
+        "gs_points_per_step": 0
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 312.108,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 23,
+        "gs_bonus_max": 23,
+        "gs_threshold": 230.0,
+        "gs_step_size": 25.0,
+        "gs_points_per_step": 5
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 312.108,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 46,
+        "gs_bonus_max": 23,
+        "gs_threshold": 230.0,
+        "gs_step_size": 25.0,
+        "gs_points_per_step": 8
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.patrol.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 312.108,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 69,
+        "gs_bonus_max": 23,
+        "gs_threshold": 230.0,
+        "gs_step_size": 25.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 1,
+          "max_count": 3
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 312.108,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 30,
+        "gs_bonus_max": 23,
+        "gs_threshold": 230.0,
+        "gs_step_size": 25.0,
+        "gs_points_per_step": 7
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 312.108,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 53,
+        "gs_bonus_max": 30,
+        "gs_threshold": 230.0,
+        "gs_step_size": 25.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.guard.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 312.108,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 76,
+        "gs_bonus_max": 30,
+        "gs_threshold": 230.0,
+        "gs_step_size": 25.0,
+        "gs_points_per_step": 15
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 1,
+          "max_count": 2
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.easy",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 312.108,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 45,
+        "gs_bonus_max": 23,
+        "gs_threshold": 230.0,
+        "gs_step_size": 25.0,
+        "gs_points_per_step": 10
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 1
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.normal",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 312.108,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 68,
+        "gs_bonus_max": 30,
+        "gs_threshold": 230.0,
+        "gs_step_size": 25.0,
+        "gs_points_per_step": 20
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 1
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    },
+    {
+      "id": "solo.leader.hard",
+      "minions": {
+        "mode": "relative_gs",
+        "reference_gs": 312.108,
+        "base_points": 30,
+        "gs_bonus_max": 0,
+        "gs_threshold": 35.0,
+        "gs_step_size": 5.0,
+        "gs_points_per_step": 0
+      },
+      "seniors": {
+        "mode": "fixed",
+        "reference_gs": null,
+        "base_points": 98,
+        "gs_bonus_max": 30,
+        "gs_threshold": 230.0,
+        "gs_step_size": 25.0,
+        "gs_points_per_step": 30
+      },
+      "roles": [
+        {
+          "role": "minion",
+          "min_count": 0,
+          "max_count": 8
+        },
+        {
+          "role": "veteran",
+          "min_count": 0,
+          "max_count": 3
+        },
+        {
+          "role": "elite",
+          "min_count": 0,
+          "max_count": 2
+        },
+        {
+          "role": "boss",
+          "min_count": 1,
+          "max_count": 1
+        }
+      ],
+      "allow_repeated_members": true,
+      "min_members": 2,
+      "max_members": 8
+    }
+  ]
+}

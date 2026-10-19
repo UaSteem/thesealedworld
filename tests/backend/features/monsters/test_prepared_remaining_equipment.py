@@ -14,7 +14,9 @@ def test_complete_prepared_equipment_matches_authored_members(family_id):
     family, package = FAMILIES[family_id]
     loader = import_module(f"src.backend.features.monsters.catalog.families.{package}.equipment.prepared_loader")
     members = {member.variant_id: member for member in resolve_family(family)[2]}
-    refs = loader.list_prepared_equipment()
+    from src.backend.features.monsters.catalog.prepared_equipment import list_prepared_equipment
+
+    refs = list_prepared_equipment(family_id=family_id)
     expected = {
         (member.variant_id, tier) for member in members.values() for tier in range(member.min_tier, member.max_tier + 1)
     }
@@ -45,7 +47,7 @@ def test_complete_prepared_equipment_matches_authored_members(family_id):
         assert saved == copy
         assert saved.items[0] is not copy.items[0]
     result = validate(default_output(family_id), family_id)
-    assert result["sets"] == len(expected)
+    assert result["sets"] == len(loader.list_prepared_equipment())
 
 
 @pytest.mark.parametrize("family_id", tuple(FAMILIES))

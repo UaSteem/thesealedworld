@@ -1,7 +1,4 @@
-import hashlib
-import json
 from copy import deepcopy
-from pathlib import Path
 
 import pytest
 
@@ -12,20 +9,26 @@ from src.backend.features.monsters.inspection.services.equipment_stats_service i
 
 @pytest.mark.parametrize("family_id", ("goblin_tribe", "wolf_pack", "rat_swarm", "bandit_gang"))
 def test_extraction_preserves_every_prepared_preview(family_id):
-    hashes = json.loads((Path(__file__).parent / "fixtures/instance_extraction_preview_hashes.json").read_text())
+    from src.backend.features.monsters.catalog.prepared_equipment import list_prepared_equipment
+    from src.backend.features.monsters.instances.services.instance_builder import MonsterInstanceBuilder
+
     catalog = get_catalog()
-    for identity, expected in hashes.items():
-        member_id, tier = identity.rsplit(":", 1)
-        member = catalog.members[member_id]
-        if member.family_id != family_id:
-            continue
-        preview = MonsterEquipmentStatsService().preview(
-            member=member,
-            family=catalog.families[family_id],
-            prepared=get_prepared_equipment(family_id=family_id, variant_id=member.variant_id, tier=int(tier)),
-        )
-        encoded = json.dumps(preview.model_dump(mode="json"), sort_keys=True, ensure_ascii=False, separators=(",", ":"))
-        assert hashlib.sha256(encoded.encode()).hexdigest() == expected, identity
+    family = catalog.families[family_id]
+    refs = list_prepared_equipment(family_id=family_id)
+    assert refs
+    for variant_id, tier in refs:
+        member = catalog.members[f"{family_id}.base.{variant_id}"]
+        assert member.min_tier <= tier <= member.max_tier
+        equipment = get_prepared_equipment(family_id=family_id, variant_id=variant_id, tier=tier)
+        before = equipment.model_dump(mode="json")
+        kwargs = {"member": member, "family": family, "prepared": equipment}
+        built = MonsterInstanceBuilder().build(**kwargs)
+        preview = MonsterEquipmentStatsService().preview(**kwargs)
+        assert preview.technical["equipped_trace"]["raw"] == built.equipped.raw
+        assert preview.technical["equipped_trace"]["loadout"] == built.equipped.loadout
+        assert preview.technical["equipped"] == built.equipped.values
+        assert preview.technical["skills"] == built.skills
+        assert equipment.model_dump(mode="json") == before
 
 
 def test_inspection_uses_instance_builder(monkeypatch):

@@ -9,7 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 STALKER = MemberBaseDTO(
     id="stalker",
     role="veteran",
-    assembly_cost=27,
+    assembly_cost=23,
     stats=BaseStatsDTO(
         strength=16,
         agility=15,
@@ -22,9 +22,9 @@ STALKER = MemberBaseDTO(
         prediction=9,
     ),
     loadout=BaseLoadoutDTO(
-        main_hand="wolf_bite_claws", off_hand="wolf_raking_claws", chest_armor="wolf_hide", amulet="wolf_pack_mark"
+        main_hand="wolf_bite_claws", off_hand=None, chest_armor="wolf_hide", amulet="wolf_pack_mark"
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=1, max_tier=5),
     spawn_weight=50,
     default_image=ImageAssetReference(
         **{

@@ -12,8 +12,8 @@ def test_spearman_preview_includes_actual_equipment_and_keeps_catalog_immutable(
     preview = CatalogMonsterViewService().equipment(member_id=member.id, tier=4).stats_preview
     assert preview is not None
     naked, equipped = preview.technical["base"], preview.technical["equipped"]
-    assert naked["strength"] == round(before["strength"] * 1.4) == 18
-    assert preview.tier_multiplier == 1.4
+    assert naked["strength"] == round(before["strength"] * 2.7) == 35
+    assert preview.tier_multiplier == 2.7
     assert equipped["armor"] > naked["armor"]
     assert equipped["shield_guard_power"] > 0
     assert equipped["main_hand_damage_base"] > equipped["main_hand_weapon_power"] > 0
@@ -22,7 +22,7 @@ def test_spearman_preview_includes_actual_equipment_and_keeps_catalog_immutable(
     rows = {row.key: row for group in preview.groups for row in group.rows}
     assert rows["armor"].delta_value.startswith("+")
     assert rows["strength"].catalog_value == "13"
-    assert rows["strength"].base_value == "18"
+    assert rows["strength"].base_value == "35"
     assert rows["physical_resistance"].equipped_value.endswith("%")
     assert "off_hand_damage_spread" not in rows
 
@@ -50,7 +50,7 @@ def test_all_goblins_have_deterministic_inspection_math_without_item_generation(
         assert service.equipment(member_id=member.id, tier=tier).stats_preview == snapshot
 
 
-@pytest.mark.parametrize("tier,multiplier", enumerate([1, 1.1, 1.1, 1.3, 1.4, 1.6, 6.5, 10]))
+@pytest.mark.parametrize("tier,multiplier", enumerate([1, 1.2, 1.7, 2.2, 2.7, 3.2, 3.7, 4.2]))
 def test_existing_tier_growth_scales_attributes_only(tier, multiplier):
     from src.backend.features.monsters.encounters.resources.spawn_config import TIER_SCALING_CONFIG
     from src.backend.features.monsters.instances.runtime.tier_scaling import scale_monster_attributes

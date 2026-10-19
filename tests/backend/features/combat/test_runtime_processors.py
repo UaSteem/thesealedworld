@@ -6459,7 +6459,7 @@ def test_weapon_damage_spread_keeps_base_as_damage_cap(monkeypatch: pytest.Monke
 
 
 @pytest.mark.unit
-def test_physical_suppression_reduces_resistance_before_armor_power(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_temporary_resistance_bypass_preserves_physical_modifier_trace(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(MathCore, "random_range", staticmethod(lambda min_d, max_d: min_d))
     monkeypatch.setattr(MathCore, "check_chance", staticmethod(lambda chance: False))
 
@@ -6479,10 +6479,13 @@ def test_physical_suppression_reduces_resistance_before_armor_power(monkeypatch:
         result,
     )
 
-    assert damage == pytest.approx(90.0)
+    # The temporary alpha experiment retains modifiers but bypasses their damage layer.
+    assert damage == pytest.approx(100.0)
     assert result.damage_trace is not None
+    assert result.damage_trace.details["phys_res"] == pytest.approx(0.30)
     assert result.damage_trace.details["physical_suppression"] == pytest.approx(0.20)
-    assert result.damage_trace.details["after_resist"] == pytest.approx(90.0)
+    assert result.damage_trace.details["effective_phys_res"] == 0.0
+    assert result.damage_trace.details["after_resist"] == pytest.approx(100.0)
 
 
 @pytest.mark.unit
@@ -6539,7 +6542,7 @@ def test_armor_power_uses_type_cap_instead_of_flat_full_absorb(monkeypatch: pyte
 
 
 @pytest.mark.unit
-def test_magic_armor_reduces_elemental_damage_after_resistance(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_magic_armor_remains_active_during_temporary_elemental_resistance_bypass(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setattr(MathCore, "random_range", staticmethod(lambda min_d, max_d: min_d))
 
     ctx = PipelineContextDTO()
@@ -6555,12 +6558,14 @@ def test_magic_armor_reduces_elemental_damage_after_resistance(monkeypatch: pyte
         result,
     )
 
-    assert damage == pytest.approx(11.0)
-    assert result.damage_final == 11
+    # Elemental percentage resistance is bypassed; flat magic armor is still paid.
+    expected_damage = 20.0 - 4.0
+    assert damage == pytest.approx(expected_damage)
+    assert result.damage_final == int(expected_damage)
     assert result.damage_trace is not None
-    assert result.damage_trace.details["parts"]["fire"] == pytest.approx(15.0)
+    assert result.damage_trace.details["parts"]["fire"] == pytest.approx(20.0)
     assert result.damage_trace.details["magic_armor"] == pytest.approx(4.0)
-    assert result.damage_trace.details["after_magic_armor"] == pytest.approx(11.0)
+    assert result.damage_trace.details["after_magic_armor"] == pytest.approx(expected_damage)
 
 
 @pytest.mark.unit
@@ -6627,10 +6632,14 @@ def test_flat_armor_penetration_trigger_bonus_reduces_armor_power_only(
         result,
     )
 
-    assert damage == pytest.approx(55.147059)
+    # 50% penetration halves armor power, while full medium mastery retains it.
+    effective_armor = 40.0 * (1.0 - 0.5)
+    expected_damage = 100.0 / (1.0 + effective_armor * 0.018)
+    assert damage == pytest.approx(expected_damage)
     assert result.damage_trace is not None
-    assert result.damage_trace.details["after_resist"] == pytest.approx(75.0)
-    assert result.damage_trace.details["arm"]["effective_power"] == pytest.approx(20.0)
+    assert result.damage_trace.details["phys_res"] == pytest.approx(0.25)
+    assert result.damage_trace.details["after_resist"] == pytest.approx(100.0)
+    assert result.damage_trace.details["arm"]["effective_power"] == pytest.approx(effective_armor)
 
 
 @pytest.mark.unit
@@ -6985,7 +6994,7 @@ def test_successful_ranged_position_defense_awards_dodge_token(monkeypatch: pyte
 
 
 @pytest.mark.unit
-def test_physical_resistance_suppression_trigger_bonus_reduces_only_natural_layer(
+def test_temporary_natural_resistance_bypass_does_not_suppress_armor(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     monkeypatch.setattr(MathCore, "random_range", staticmethod(lambda min_d, max_d: min_d))
@@ -7003,7 +7012,15 @@ def test_physical_resistance_suppression_trigger_bonus_reduces_only_natural_laye
         result,
     )
 
-    assert damage == pytest.approx(73.09273640931933)
+    # Natural-layer suppression cannot penetrate armor: untrained heavy mastery is 0.35.
+    effective_armor = 10.0 * 0.35
+    expected_damage = 100.0 / (1.0 + effective_armor * 0.027)
+    assert damage == pytest.approx(expected_damage)
+    assert result.damage_trace is not None
+    assert result.damage_trace.details["phys_res"] == pytest.approx(0.40)
+    assert result.damage_trace.details["physical_resistance_suppression"] == pytest.approx(0.5)
+    assert result.damage_trace.details["effective_phys_res"] == 0.0
+    assert result.damage_trace.details["arm"]["effective_power"] == pytest.approx(effective_armor)
 
 
 @pytest.mark.unit

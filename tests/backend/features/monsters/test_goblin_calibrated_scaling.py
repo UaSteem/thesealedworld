@@ -53,8 +53,8 @@ def test_live_goblin_minions_use_calibrated_base_without_changing_prices(variant
     assert member.assembly_cost == cost
 
 
-@pytest.mark.parametrize("tier,multiplier", enumerate((1, 1.1, 1.1, 1.3, 1.4, 1.6, 6.5, 10)))
-def test_monster_attribute_curve_keeps_unreviewed_late_tiers(tier, multiplier):
+@pytest.mark.parametrize("tier,multiplier", enumerate((1, 1.2, 1.7, 2.2, 2.7, 3.2, 3.7, 4.2)))
+def test_monster_attribute_curve_uses_temporary_half_point_steps(tier, multiplier):
     original = {"strength": 13, "endurance": 11}
     assert scale_monster_attributes(original, tier) == {
         key: round(value * multiplier) for key, value in original.items()
@@ -67,7 +67,7 @@ def test_actual_t5_inspection_uses_calibrated_attributes_for_minion_and_veteran(
     for variant in ("goblin_scavenger", "goblin_spearman"):
         member = get_catalog().members[f"goblin_tribe.base.{variant}"]
         preview = service.equipment(member_id=member.id, tier=5).stats_preview
-        assert preview.tier_multiplier == 1.6
+        assert preview.tier_multiplier == 3.2
         assert {key: preview.technical["base"][key] for key in ATTRIBUTES} == {
-            key: round(value * 1.6) for key, value in member.base_stats.items()
+            key: round(value * 3.2) for key, value in member.base_stats.items()
         }

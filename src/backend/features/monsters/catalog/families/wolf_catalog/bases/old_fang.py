@@ -9,7 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 OLD_FANG = MemberBaseDTO(
     id="old_fang",
     role="elite",
-    assembly_cost=36,
+    assembly_cost=30,
     stats=BaseStatsDTO(
         strength=17,
         agility=13,
@@ -27,7 +27,7 @@ OLD_FANG = MemberBaseDTO(
         chest_armor="wolf_medium_hide",
         amulet="wolf_pack_mark",
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=1, max_tier=5),
     spawn_weight=150,
     default_image=ImageAssetReference(
         **{

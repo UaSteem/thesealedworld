@@ -184,6 +184,7 @@ def test_fifth_family_small_squad_is_selected_from_ready_golems(client):
             "order": json.dumps(
                 order(
                     family_ids=["golem_foundry"],
+                    location_tier=2,
                     difficulty="easy",
                     profile_override={
                         "id": "test.golems",
@@ -204,7 +205,9 @@ def test_fifth_family_small_squad_is_selected_from_ready_golems(client):
     assert all(
         member["family_id"] == "golem_foundry" and member["role"] == "minion" for member in data["selection"]["members"]
     )
-    assert data["budget_spent"] == 80
+    assert data["budget_spent"] == sum(m["assembly_cost"] for m in data["selection"]["members"])
+    assert 26 <= data["budget_spent"] <= 32
+    assert all(m["tier"] == 2 for m in data["selection"]["members"])
 
 
 def test_relative_builtin_requires_player_gs(client):

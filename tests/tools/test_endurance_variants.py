@@ -1,8 +1,6 @@
 """Contract checks for endurance variants, without running battles."""
 
-import json
 from copy import deepcopy
-from pathlib import Path
 
 import pytest
 from tools.monsters.probe_endurance_variants import TRANSFERS, lowered_player, saved_rosters
@@ -10,7 +8,10 @@ from tools.monsters.probe_endurance_variants import TRANSFERS, lowered_player, s
 
 @pytest.fixture(scope="module")
 def players():
-    return json.loads(Path("var/starter-style-goblins-t0-ordinary-verified/players.json").read_text(encoding="utf-8"))
+    from tools.monsters.balance_probe.players import _validate_payload
+    from tools.monsters.build_starter_style_suite import build_suite
+
+    return {key: _validate_payload(value, name=key) for key, value in build_suite()["resolved_players"].items()}
 
 
 @pytest.mark.parametrize("key", TRANSFERS)

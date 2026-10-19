@@ -24,7 +24,7 @@ def test_stone_golem_roster_is_complete_and_separates_basis_from_clan():
 
 def test_stone_golems_use_positive_draft_costs_current_stats_and_existing_skills():
     _, _, members = resolve_family(GOLEM_FAMILY)
-    expected_costs = {"minion": 40, "veteran": 60, "elite": 80, "boss": 120}
+    expected_costs = {"veteran": 23, "elite": 30, "boss": 45}
     expected_stats = {
         "strength",
         "agility",
@@ -37,10 +37,15 @@ def test_stone_golems_use_positive_draft_costs_current_stats_and_existing_skills
         "prediction",
     }
     for member in members:
-        assert member.assembly_cost == expected_costs[member.role]
+        price = (
+            {"stone_thrower": 13, "stone_worker": 14, "stone_sentry": 15, "stone_ram": 16}[member.variant_id]
+            if member.role == "minion"
+            else expected_costs[member.role]
+        )
+        assert member.assembly_cost == price
         assert set(member.base_stats) == expected_stats
         assert all(type(value) is int and value > 0 for value in member.base_stats.values())
-        assert member.min_tier == 0 and member.max_tier == 5
+        assert member.min_tier == 2 and member.max_tier == 5
         assert member.skills and set(member.skills) <= MONSTER_COMBAT_SKILL_KEYS
         assert all(get_ability_catalog_entry(key) is not None for key in member.ability_ids)
         assert "heal" not in member.ability_ids

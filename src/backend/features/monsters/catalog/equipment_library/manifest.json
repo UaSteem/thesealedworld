@@ -143,5 +143,30 @@
     "prepared/index.py": "19db586f0f384bc18393ebab738c283ac890444163798c3ed54a58a421306d9e"
   },
   "definition_count": 138,
-  "authoring": "Shared authored monster profiles, median rolls; existing tier/tick rules."
+  "authoring": "Shared authored monster profiles, median rolls; existing tier/tick rules.",
+  "accepted_generation_drift": {
+    "reason": "Player jewelry base support regeneration was added after these accepted authored monster kits. Kits intentionally remain frozen, not regenerated, to preserve tested balance. Fresh authoring follows current item rules.",
+    "path": "item.combat.implicit_bonuses.en_regen",
+    "saved_state": "key_absent",
+    "fresh_values": {
+      "amulet.amulet.bruiser.t0": 0.8,
+      "amulet.amulet.bruiser.t1": 1.0,
+      "amulet.amulet.bruiser.t2": 1.5,
+      "amulet.amulet.bruiser.t3": 2.2,
+      "amulet.amulet.bruiser.t4": 3.0,
+      "amulet.amulet.bruiser.t5": 4.0,
+      "amulet.amulet.duelist.t0": 0.8,
+      "amulet.amulet.duelist.t1": 1.0,
+      "amulet.amulet.duelist.t2": 1.5,
+      "amulet.amulet.duelist.t3": 2.2,
+      "amulet.amulet.duelist.t4": 3.0,
+      "amulet.amulet.duelist.t5": 4.0,
+      "amulet.amulet.nimble.t0": 0.8,
+      "amulet.amulet.nimble.t1": 1.0,
+      "amulet.amulet.nimble.t2": 1.5,
+      "amulet.amulet.nimble.t3": 2.2,
+      "amulet.amulet.nimble.t4": 3.0,
+      "amulet.amulet.nimble.t5": 4.0
+    }
+  }
 }

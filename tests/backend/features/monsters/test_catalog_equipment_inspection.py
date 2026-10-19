@@ -61,13 +61,16 @@ def test_equipment_endpoint_rejects_unknown_or_unavailable(equipment_client, mem
     }).status_code == status
 
 
-def test_other_family_has_explicit_unavailable_response(equipment_client):
+def test_golem_family_has_prepared_natural_equipment(equipment_client):
     member = next(member for member in get_catalog().members.values() if member.family_id not in {"goblin_tribe", "wolf_pack", "rat_swarm", "bandit_gang"})
     response = equipment_client.get("/api/admin/monsters/catalog/equipment", params={
         "member_id": member.id, "tier": member.min_tier,
     })
-    assert response.status_code == 404
-    assert "not available" in response.json()["detail"]
+    assert response.status_code == 200
+    data = response.json()
+    assert data["available_tiers"] == [2, 3, 4, 5]
+    assert data["items"] and len(data["items"]) == len(data["item_cards"])
+    assert all(item["generation"]["natural_key"] for item in data["items"])
 
 
 @pytest.mark.parametrize("key", [None, "wrong-key"])
@@ -88,7 +91,7 @@ def test_inspection_returns_independent_item_data():
     assert second.items[0].combat.power >= 0
 
 
-@pytest.mark.parametrize("tier", range(6))
+@pytest.mark.parametrize("tier", range(1, 6))
 def test_wolf_prepared_tiers_have_natural_cards_and_beast_stats(tier, monkeypatch):
     from src.backend.features.items.services.generation_service import ItemGenerationService
     from src.backend.features.monsters.catalog.resources.equipment_mapping import get_natural_equipment_mapping
@@ -103,8 +106,8 @@ def test_wolf_prepared_tiers_have_natural_cards_and_beast_stats(tier, monkeypatc
     for member in members:
         original = dict(member.base_stats)
         view = service.equipment(member_id=member.id, tier=tier)
-        assert view.available_tiers == list(range(6))
-        assert len(view.items) == len(view.item_cards) == 4
+        assert view.available_tiers == list(range(1, 6))
+        assert len(view.items) == len(view.item_cards) == (3 if member.role in {"minion", "veteran"} else 4)
         assert view.equipment_set_id == f"wolf_pack.{member.base_id}"
         assert view.base_stats == original == dict(member.base_stats)
         trace = view.stats_preview.technical["equipped_trace"]
@@ -128,8 +131,8 @@ def test_wolf_equipment_endpoint_is_read_only_and_returns_complete_cards(equipme
     assert response.status_code == 200
     data = response.json()
     assert data["tier"] == 3
-    assert data["available_tiers"] == [0, 1, 2, 3, 4, 5]
-    assert len(data["items"]) == len(data["item_cards"]) == 4
+    assert data["available_tiers"] == [1, 2, 3, 4, 5]
+    assert len(data["items"]) == len(data["item_cards"]) == 3
     assert any("клыки" in card["title"].lower() for card in data["item_cards"])
     assert data["stats_preview"]["technical"]["equipped_trace"]["raw"]["rules"]["attribute_profile"] == "monster:beast"
 
@@ -179,7 +182,7 @@ def test_remaining_equipment_endpoint_is_read_only(equipment_client, member_id):
     response = equipment_client.get("/api/admin/monsters/catalog/equipment", params={"member_id": member_id, "tier": 5})
     assert response.status_code == 200
     data = response.json()
-    assert data["available_tiers"] == list(range(6))
+    assert data["available_tiers"] == list(range(1 if member_id.startswith("bandit_gang") else 0, 6))
     assert len(data["items"]) == len(data["item_cards"])
     slots = {item["slot"] for item in data["items"]}
     if member_id.endswith("screecher"):

@@ -9,7 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 BANDIT_POACHER = MemberBaseDTO(
     id="bandit_poacher",
     role="minion",
-    assembly_cost=23,
+    assembly_cost=15,
     stats=BaseStatsDTO(
         strength=14,
         agility=16,
@@ -40,7 +40,7 @@ BANDIT_POACHER = MemberBaseDTO(
         belt_accessory=None,
         quiver="quiver_training",
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=1, max_tier=5),
     spawn_weight=20,
     default_image=ImageAssetReference(
         asset_id="bandit_gang.bandit_poacher",

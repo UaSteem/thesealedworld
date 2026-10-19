@@ -10,6 +10,13 @@ from src.backend.features.monsters.encounters.dto.selection import (
 from src.backend.features.monsters.encounters.profiles.registry import get_profile
 
 ENCOUNTER_PROFILE_KINDS = {kind: kind for kind in ("ordinary", "patrol", "guard", "leader")}
+BUILTIN_FAMILY_LIMITS = {
+    "goblin_tribe": (3, 6),
+    "rat_swarm": (4, 8),
+    "wolf_pack": (2, 5),
+    "bandit_gang": (2, 4),
+    "golem_foundry": (1, 2),
+}
 
 
 class MonsterCompositionPolicyResolver:
@@ -20,9 +27,16 @@ class MonsterCompositionPolicyResolver:
         if order.profile_override is not None:
             return order.profile_override
         profile = get_profile(order.party_mode, order.encounter_type, order.difficulty, order.location_tier)
-        if profile is not None and order.family_ids == ("goblin_tribe",):
+        limits = BUILTIN_FAMILY_LIMITS.get(order.family_ids[0]) if len(order.family_ids) == 1 else None
+        if profile is not None and order.family_ids == ("golem_foundry",):
+            allows_seniors = any(rule.role != "minion" and rule.max_count > 0 for rule in profile.roles)
+            limits = (1, 2) if allows_seniors else (2, 3)
+        if profile is not None and limits is not None:
             profile = profile.model_copy(
-                update={"min_members": max(3, profile.min_members), "max_members": min(6, profile.max_members)}
+                update={
+                    "min_members": limits[0],
+                    "max_members": min(limits[1], profile.max_members),
+                }
             )
         return profile
 

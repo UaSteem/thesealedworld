@@ -107,25 +107,33 @@ def test_conflicting_explicit_arsenals_are_rejected():
         _validate_payload(payload, name="conflict")
 
 
-def test_saved_style_suite_arsenal_reaches_runtime_hand():
-    from pathlib import Path
+def test_saved_style_suite_arsenal_reaches_runtime_hand(tmp_path):
+    import json
 
     from tools.monsters.balance_probe.players import resolve_players
     from tools.monsters.balance_probe.runner import _actor
+    from tools.monsters.build_starter_style_suite import build_suite
 
     from src.backend.features.combat.dto import FeintHandDTO
 
-    path = Path("var/starter-style-suite-18/players.json")
-    if not path.exists():
-        pytest.skip("Local style-suite artifact is not available")
-    players = resolve_players(parse_config([
-        "--player-input", str(path), "--player-key", "test18.two_handed.halberd.medium",
-    ]))
+    path = tmp_path / "players.json"
+    path.write_text(json.dumps(build_suite()), encoding="utf-8")
+    players = resolve_players(
+        parse_config(
+            [
+                "--player-input",
+                str(path),
+                "--player-key",
+                "test18.two_handed.halberd.medium",
+            ]
+        )
+    )
     payload = next(iter(players.values()))
     actor = _actor(payload, identity="player", kind="player")
     actor.meta.feints = FeintHandDTO(arsenal=payload["loadout"]["known_feints"], hand={})
     assert actor.meta.feints.arsenal
     assert set(actor.meta.feints.arsenal) == set(payload["known_feints"])
+
 
 @pytest.fixture(scope="module")
 def fixed_probe(tmp_path_factory):

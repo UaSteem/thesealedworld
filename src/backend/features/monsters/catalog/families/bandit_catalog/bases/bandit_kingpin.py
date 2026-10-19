@@ -9,7 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 BANDIT_KINGPIN = MemberBaseDTO(
     id="bandit_kingpin",
     role="elite",
-    assembly_cost=46,
+    assembly_cost=30,
     stats=BaseStatsDTO(
         strength=18,
         agility=16,
@@ -40,7 +40,7 @@ BANDIT_KINGPIN = MemberBaseDTO(
         belt_accessory=None,
         quiver=None,
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=1, max_tier=5),
     spawn_weight=150,
     default_image=ImageAssetReference(
         asset_id="bandit_gang.bandit_kingpin",

@@ -4,6 +4,6 @@ STALKER = MemberVariantDTO(
     text_id="wolf.member.stalker",
     id="stalker",
     base_id="stalker",
-    skills=("skill_fencing", "skill_dual_wield", "skill_light_armor"),
+    skills=("skill_fencing", "skill_light_armor"),
     tags=("stealth", "hunter"),
 )

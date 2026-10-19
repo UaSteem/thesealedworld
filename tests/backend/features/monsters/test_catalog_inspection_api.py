@@ -58,7 +58,7 @@ def test_stone_golems_are_inspectable_with_prepared_natural_equipment(catalog_cl
     assert clan["member_count"] == 12
     assert {member["role"] for member in clan["members"]} == {"minion", "veteran", "elite", "boss"}
     gear = catalog_client.get("/api/admin/monsters/catalog/equipment", params={
-        "member_id": "golem_foundry.base.stone_worker", "tier": 0,
+        "member_id": "golem_foundry.base.stone_worker", "tier": 2,
     })
     assert gear.status_code == 200
     assert "Каменный" in response.text

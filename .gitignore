@@ -203,6 +203,7 @@ pytest_output.txt
 /.pytest-export-legacy/
 /.pytest_tmp_monster_archive/
 /.codex_tmp/
+/.worktrees/
 /output/
 *~
 

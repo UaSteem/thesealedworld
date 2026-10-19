@@ -9,7 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 DIRE_WOLF = MemberBaseDTO(
     id="dire_wolf",
     role="elite",
-    assembly_cost=36,
+    assembly_cost=30,
     stats=BaseStatsDTO(
         strength=17,
         agility=14,
@@ -27,7 +27,7 @@ DIRE_WOLF = MemberBaseDTO(
         chest_armor="wolf_heavy_hide",
         amulet="wolf_pack_mark",
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=1, max_tier=5),
     spawn_weight=150,
     default_image=ImageAssetReference(
         **{

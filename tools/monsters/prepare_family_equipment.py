@@ -120,10 +120,22 @@ def validate(output: Path, family_id: str) -> dict[str, int]:
     manifest = json.loads((output / "manifest.json").read_text(encoding="utf-8"))
     if manifest["family_id"] != family_id:
         raise ValueError("Manifest family mismatch")
+    members = {member.variant_id: member for member in resolve_family(FAMILIES[family_id][0])[2]}
+    retained = manifest.get("retained_inactive_tiers", [])
+    if not isinstance(retained, list) or (
+        retained
+        and (
+            family_id != "bandit_gang"
+            or retained != [0]
+            or any(type(tier) is not int for tier in retained)
+            or any(member.min_tier <= 0 for member in members.values())
+        )
+    ):
+        raise ValueError("Unsupported historical tier coverage")
     expected_paths = {
         f"{member.variant_id}/tier_{tier}.py"
-        for member in resolve_family(FAMILIES[family_id][0])[2]
-        for tier in range(member.min_tier, member.max_tier + 1)
+        for member in members.values()
+        for tier in (*retained, *range(member.min_tier, member.max_tier + 1))
     }
     if set(manifest["files"]) != expected_paths:
         raise ValueError("Manifest does not cover the authored catalog")
@@ -146,6 +158,16 @@ def validate(output: Path, family_id: str) -> dict[str, int]:
             raise ValueError(f"Unsupported equipment data: {relative}")
         if data["family_id"] != family_id:
             raise ValueError("Payload family mismatch")
+        variant, tier_file = Path(relative).parts
+        tier = int(tier_file.removeprefix("tier_").removesuffix(".py"))
+        if (
+            data["variant_id"] != variant
+            or type(data["tier"]) is not int
+            or data["tier"] != tier
+            or data["clan_id"] != f"{family_id}.base"
+            or data["role"] != members[variant].role
+        ):
+            raise ValueError("Payload identity differs from its historical path/member")
         items = [RuntimeItemProjectionDTO.model_validate(item) for item in data["items"]]
         if len({item.slot for item in items}) != len(items) or len({item.item_id for item in items}) != len(items):
             raise ValueError(f"Duplicate equipment slot or identity: {relative}")

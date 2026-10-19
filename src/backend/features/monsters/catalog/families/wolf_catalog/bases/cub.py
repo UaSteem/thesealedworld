@@ -9,7 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 CUB = MemberBaseDTO(
     id="cub",
     role="minion",
-    assembly_cost=18,
+    assembly_cost=10,
     stats=BaseStatsDTO(
         strength=14,
         agility=15,
@@ -22,9 +22,9 @@ CUB = MemberBaseDTO(
         prediction=10,
     ),
     loadout=BaseLoadoutDTO(
-        main_hand="wolf_young_fangs", off_hand="wolf_young_claws", chest_armor="wolf_hide", amulet="wolf_pack_mark"
+        main_hand="wolf_young_fangs", off_hand=None, chest_armor="wolf_hide", amulet="wolf_pack_mark"
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=1, max_tier=5),
     spawn_weight=20,
     default_image=ImageAssetReference(
         **{

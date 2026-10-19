@@ -35,7 +35,23 @@ def test_bootstrap_has_locale_metadata_and_localized_hash():
     assert ru.locale == "ru" and de.locale == "de"
     assert ru.version != de.version
     assert all(m.description and m.name for m in ru.members.values())
-    assert all(m.image_source == "default_base" and m.base_id for m in ru.members.values())
+    from src.backend.features.monsters.catalog.registry import get_catalog
+
+    for member in ru.members.values():
+        authored = get_catalog().members[member.id]
+        assert member.base_id == authored.base_id
+        assert member.image_source == authored.image_source
+        if authored.image is None:
+            assert member.image is None
+        else:
+            assert member.image.asset_id == authored.image.asset_id
+            assert member.image.display_mirror == authored.image.display_mirror
+            from pathlib import PurePosixPath
+
+            assert member.image.image_url == (
+                f"/static/images/monsters/catalog/{authored.image.asset_id}{PurePosixPath(authored.image.source_path).suffix}"
+            )
+        assert (member.image_source is None) == (member.image is None)
 
 
 def test_missing_ru_and_unknown_resources_fail_explicitly():
@@ -72,8 +88,23 @@ def test_all_numeric_mechanics_and_asset_ids_preserved():
     from src.backend.features.monsters.catalog.registry import get_catalog
 
     baseline = json.loads(Path(__file__).with_name("catalog_mechanics_baseline.json").read_text(encoding="utf8"))
-    for member in get_catalog().members.values():
+    catalog = get_catalog()
+    # Golems were introduced after this localization migration fixture. Their
+    # authored stats/equipment are covered by test_golem_catalog, not invented
+    # as historical baseline entries here.
+    from tests.backend.features.monsters.catalog.alpha_expectations import GOLEM_STATS
+
+    assert set(catalog.members) - set(baseline) == {f"golem_foundry.base.{key}" for key in GOLEM_STATS}
+    assert set(baseline) <= set(catalog.members)
+    for member_id in baseline:
+        member = catalog.members[member_id]
+        from tests.backend.features.monsters.catalog.alpha_expectations import approved_mechanics
+
+        expected = approved_mechanics(member.family_id, member.variant_id, baseline[member.id]["mechanics"])
+        if member.family_id in {"wolf_pack", "bandit_gang", "golem_foundry"}:
+            assert baseline[member.id]["mechanics"]["min_tier"] == 0  # Frozen historical gate.
+            expected["min_tier"] = 2 if member.family_id == "golem_foundry" else 1
         assert {
             key: value for key, value in thaw_catalog_value(member.mechanics).items() if key != "narrative_hint"
-        } == baseline[member.id]["mechanics"]
+        } == expected
         assert (member.image.asset_id if member.image else None) == baseline[member.id]["image"]

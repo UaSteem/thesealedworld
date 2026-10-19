@@ -4,7 +4,6 @@ from src.backend.features.game_catalog.combat.resources.feints.availability impo
     ARCHERY_WEAPON_FEINTS,
     BASIC_ARCHERY_FEINTS,
     BASIC_FEINTS,
-    DUAL_WIELD_TACTICAL_FEINTS,
     FENCING_WEAPON_FEINTS,
     MACING_WEAPON_FEINTS,
     RANGED_TACTICAL_FEINTS,
@@ -447,9 +446,9 @@ def test_rat_swarm_uses_natural_loadouts_for_current_tactical_styles() -> None:
     assert family is not None
     assert family.resource_version == 1.4
     expected = {
-        "sewer_rat": ("dual", {"main_hand": "rat_bite_claws", "off_hand": "rat_offhand_bite"}),
-        "scavenger_rat": ("dual", {"main_hand": "rat_bite_claws", "off_hand": "rat_offhand_bite"}),
-        "swarm_rat": ("dual", {"main_hand": "rat_bite_claws", "off_hand": "rat_offhand_bite"}),
+        "sewer_rat": ("single", {"main_hand": "rat_bite_claws"}),
+        "scavenger_rat": ("single", {"main_hand": "rat_bite_claws"}),
+        "swarm_rat": ("single", {"main_hand": "rat_bite_claws"}),
         "tunnel_rat": ("dual", {"main_hand": "rat_veteran_claws", "off_hand": "rat_offhand_bite"}),
         "pack_rat": ("shield", {"main_hand": "rat_veteran_claws", "off_hand": "rat_bone_growth"}),
         "screecher": ("ranged", {"two_hand": "rat_poison_spit", "quiver": "rat_poison_glands"}),
@@ -461,6 +460,7 @@ def test_rat_swarm_uses_natural_loadouts_for_current_tactical_styles() -> None:
         "rat_king": ("ranged", {"two_hand": "rat_poison_spit", "quiver": "rat_poison_glands"}),
     }
     required_skills = {
+        "single": {"skill_fencing"},
         "dual": {"skill_fencing", "skill_dual_wield"},
         "shield": {"skill_fencing", "skill_shield_mastery"},
         "ranged": {"skill_archery", "skill_ranged_combat"},
@@ -561,50 +561,44 @@ def test_wolf_pack_uses_natural_loadouts_for_current_pack_styles() -> None:
     assert family.resource_version == 1.4
     expected = {
         "cub": (
-            "dual",
+            "single",
             {
                 "main_hand": "wolf_young_fangs",
-                "off_hand": "wolf_young_claws",
                 "chest_armor": "wolf_hide",
             },
         ),
         "runner": (
-            "dual",
+            "single",
             {
                 "main_hand": "wolf_young_fangs",
-                "off_hand": "wolf_young_claws",
                 "chest_armor": "wolf_hide",
             },
         ),
         "mangy_biter": (
-            "dual",
+            "single",
             {
                 "main_hand": "wolf_young_fangs",
-                "off_hand": "wolf_locking_fangs",
                 "chest_armor": "wolf_hide",
             },
         ),
         "stalker": (
-            "dual",
+            "single",
             {
                 "main_hand": "wolf_bite_claws",
-                "off_hand": "wolf_raking_claws",
                 "chest_armor": "wolf_hide",
             },
         ),
         "flanker": (
-            "dual",
+            "single",
             {
                 "main_hand": "wolf_bite_claws",
-                "off_hand": "wolf_raking_claws",
                 "chest_armor": "wolf_medium_hide",
             },
         ),
         "snapper": (
-            "dual",
+            "single",
             {
                 "main_hand": "wolf_bite_claws",
-                "off_hand": "wolf_locking_fangs",
                 "chest_armor": "wolf_hide",
             },
         ),
@@ -650,6 +644,7 @@ def test_wolf_pack_uses_natural_loadouts_for_current_pack_styles() -> None:
         ),
     }
     required_skills = {
+        "single": {"skill_fencing"},
         "dual": {"skill_fencing", "skill_dual_wield"},
         "shield": {"skill_fencing", "skill_shield_mastery"},
     }
@@ -658,7 +653,12 @@ def test_wolf_pack_uses_natural_loadouts_for_current_pack_styles() -> None:
         variant = family.variants[variant_key]
         loadout = variant.fixed_loadout.model_dump(exclude_none=True)
 
-        assert set(loadout) == {"main_hand", "off_hand", "chest_armor", "amulet"}
+        expected_slots = {"main_hand", "chest_armor", "amulet"}
+        if style != "single":
+            expected_slots.add("off_hand")
+        else:
+            assert "skill_dual_wield" not in variant.skills
+        assert set(loadout) == expected_slots
         assert loadout_subset.items() <= loadout.items()
         assert loadout["amulet"] == "wolf_pack_mark"
         assert required_skills[style] <= set(variant.skills)
@@ -763,18 +763,17 @@ async def test_rat_beast_profile_builds_combat_ready_context() -> None:
     assert combat["math_model"]["attributes"]["intellect"]["base"] >= 0
     assert combat["math_model"]["modifiers"]["main_hand_damage_base"]["base"] > 0
     assert combat["loadout"]["layout"]["main_hand"] == "skill_fencing"
-    assert combat["loadout"]["layout"]["off_hand"] == "skill_fencing"
+    assert "off_hand" not in combat["loadout"]["layout"]
     assert combat["loadout"]["layout"]["main_hand_trigger"] == "crit.weapon_flat_armor_gap_crit"
     assert combat["loadout"]["layout"]["body"] == "skill_light_armor"
     assert combat["loadout"]["equipment_layout"]["main_hand"]
-    assert combat["loadout"]["equipment_layout"]["off_hand"]
+    assert "off_hand" not in combat["loadout"]["equipment_layout"]
     assert combat["loadout"]["equipment_layout"]["chest_armor"]
     assert combat["loadout"]["equipment_layout"]["amulet"]
     assert combat["math_model"]["modifiers"]["magic_armor"]["base"] > 0
     assert combat["loadout"]["known_feints"] == [
         *_ORDINARY_BASIC_FEINTS,
         *FENCING_WEAPON_FEINTS,
-        *DUAL_WIELD_TACTICAL_FEINTS,
     ]
     assert combat["loadout"]["known_abilities"] == []
     assert combat["skills"]["skill_fencing"] == pytest.approx(0.1429)
@@ -823,10 +822,8 @@ async def test_rat_tactical_variants_build_expected_combat_layouts(
             "flanker",
             {
                 "main_hand": "skill_fencing",
-                "off_hand": "skill_fencing",
-                "tactical_style": "skill_dual_wield",
             },
-            [*_ORDINARY_BASIC_FEINTS, *FENCING_WEAPON_FEINTS, *DUAL_WIELD_TACTICAL_FEINTS],
+            [*_ORDINARY_BASIC_FEINTS, *FENCING_WEAPON_FEINTS],
         ),
         (
             "pack_leader",

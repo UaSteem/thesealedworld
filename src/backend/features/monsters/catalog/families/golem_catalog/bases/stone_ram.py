@@ -8,7 +8,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 STONE_RAM = MemberBaseDTO(
     id="stone_ram",
     role="minion",
-    assembly_cost=40,
+    assembly_cost=16,
     stats=BaseStatsDTO(
         strength=25,
         agility=7,
@@ -25,6 +25,6 @@ STONE_RAM = MemberBaseDTO(
         chest_armor="golem_shell",
         amulet="golem_core",
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=2, max_tier=5),
     spawn_weight=100,
 )

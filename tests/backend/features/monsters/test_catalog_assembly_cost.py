@@ -14,12 +14,12 @@ from src.backend.features.monsters.catalog.registry import get_catalog
 @pytest.mark.parametrize(
     "family_id,prices",
     (
-        ("rat_swarm", (11, 17, 22, 33)),
+        ("rat_swarm", (11, 23, 30, 45)),
         ("goblin_tribe", (15, 23, 30, 45)),
-        ("wolf_pack", (18, 27, 36, 54)),
-        ("bandit_gang", (23, 35, 46, 69)),
+        ("wolf_pack", (18, 23, 30, 45)),
+        ("bandit_gang", (23, 23, 30, 45)),
         ("anchor_sovereigns", (40, 60, 80, 120)),
-        ("golem_foundry", (40, 60, 80, 120)),
+        ("golem_foundry", (40, 23, 30, 45)),
     ),
 )
 def test_all_authored_members_have_explicit_prices(family_id, prices):
@@ -33,6 +33,16 @@ def test_all_authored_members_have_explicit_prices(family_id, prices):
             if family_id == "goblin_tribe" and member.role == "minion"
             else expected[member.role]
         )
+        if family_id == "rat_swarm" and member.role == "minion":
+            price = {"sewer_rat": 5, "scavenger_rat": 6, "swarm_rat": 7}[member.variant_id]
+        if family_id == "wolf_pack" and member.role == "minion":
+            price = {"cub": 10, "runner": 12, "mangy_biter": 14}[member.variant_id]
+        if family_id == "bandit_gang" and member.role == "minion":
+            price = {"bandit_thug": 13, "bandit_lookout": 14, "bandit_poacher": 15, "bandit_knife_rat": 16}[
+                member.variant_id
+            ]
+        if family_id == "golem_foundry" and member.role == "minion":
+            price = {"stone_thrower": 13, "stone_worker": 14, "stone_sentry": 15, "stone_ram": 16}[member.variant_id]
         assert member.assembly_cost == price
         assert "assembly_cost" not in member.mechanics
 

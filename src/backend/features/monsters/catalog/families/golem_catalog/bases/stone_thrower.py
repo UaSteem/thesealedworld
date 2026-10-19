@@ -8,7 +8,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 STONE_THROWER = MemberBaseDTO(
     id="stone_thrower",
     role="minion",
-    assembly_cost=40,
+    assembly_cost=13,
     stats=BaseStatsDTO(
         strength=19,
         agility=12,
@@ -26,6 +26,6 @@ STONE_THROWER = MemberBaseDTO(
         chest_armor="golem_shell",
         amulet="golem_core",
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=2, max_tier=5),
     spawn_weight=100,
 )

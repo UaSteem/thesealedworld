@@ -9,7 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 BANDIT_WARLORD = MemberBaseDTO(
     id="bandit_warlord",
     role="elite",
-    assembly_cost=46,
+    assembly_cost=30,
     stats=BaseStatsDTO(
         strength=15,
         agility=18,
@@ -40,7 +40,7 @@ BANDIT_WARLORD = MemberBaseDTO(
         belt_accessory=None,
         quiver="quiver_bodkin",
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=1, max_tier=5),
     spawn_weight=150,
     default_image=ImageAssetReference(
         asset_id="bandit_gang.bandit_warlord",

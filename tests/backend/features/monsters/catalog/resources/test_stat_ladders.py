@@ -14,6 +14,7 @@ CALIBRATED_GOBLIN_MINIONS = {
     "goblin_sneak": (9, 14, 9, 8, 6, 7, 12, 5, 7),
     "goblin_cutter": (11, 13, 11, 8, 6, 8, 11, 5, 7),
 }
+CALIBRATED_RAT_ATTRIBUTES = {'sewer_rat': (7, 10, 7, 3, 4, 6, 8, 3, 5), 'scavenger_rat': (9, 10, 8, 4, 4, 6, 8, 3, 5), 'swarm_rat': (8, 12, 8, 4, 6, 5, 9, 3, 7), 'tunnel_rat': (13, 15, 14, 9, 8, 11, 12, 7, 10), 'pack_rat': (14, 13, 15, 10, 8, 11, 12, 7, 9), 'screecher': (12, 15, 13, 10, 8, 11, 14, 7, 9), 'burrow_guard': (15, 14, 17, 11, 10, 13, 12, 9, 8), 'ironfang': (17, 15, 14, 11, 10, 12, 13, 8, 9), 'heavy_rat': (15, 13, 17, 11, 10, 14, 12, 9, 8), 'rat_brute': (23, 21, 24, 16, 15, 22, 20, 19, 18), 'brood_alpha': (22, 24, 23, 19, 16, 20, 21, 18, 15), 'rat_king': (23, 16, 24, 19, 18, 22, 21, 20, 15)}
 
 
 @pytest.mark.unit
@@ -27,6 +28,14 @@ def test_starter_monster_stats_use_role_ladder_contract() -> None:
         for variant in family.variants.values():
             role_base = role_attribute_base(variant.role, family.organization_type)
             values = variant.base_stats.model_dump(mode="json").values()
+            if family_id == "golem_foundry":
+                from tests.backend.features.monsters.catalog.alpha_expectations import GOLEM_STATS
+
+                assert tuple(variant.base_stats.model_dump(mode="json").values()) == GOLEM_STATS[variant.id]
+                continue
+            if family_id == "rat_swarm" and variant.id in CALIBRATED_RAT_ATTRIBUTES:
+                assert tuple(values) == CALIBRATED_RAT_ATTRIBUTES[variant.id]
+                continue
             if family_id == "goblin_tribe" and variant.id in CALIBRATED_GOBLIN_MINIONS:
                 assert tuple(values) == CALIBRATED_GOBLIN_MINIONS[variant.id]
                 continue
@@ -47,6 +56,16 @@ def test_starter_monster_role_stat_totals_include_organization_mass_offset() -> 
         assert family is not None
 
         for variant in family.variants.values():
+            if family_id == "golem_foundry":
+                from tests.backend.features.monsters.catalog.alpha_expectations import GOLEM_STATS
+
+                assert tuple(variant.base_stats.model_dump(mode="json").values()) == GOLEM_STATS[variant.id]
+                continue
+            if family_id == "rat_swarm" and variant.id in CALIBRATED_RAT_ATTRIBUTES:
+                assert sum(variant.base_stats.model_dump(mode="json").values()) == sum(
+                    CALIBRATED_RAT_ATTRIBUTES[variant.id]
+                )
+                continue
             if family_id == "goblin_tribe" and variant.id in CALIBRATED_GOBLIN_MINIONS:
                 assert sum(variant.base_stats.model_dump(mode="json").values()) == sum(
                     CALIBRATED_GOBLIN_MINIONS[variant.id]

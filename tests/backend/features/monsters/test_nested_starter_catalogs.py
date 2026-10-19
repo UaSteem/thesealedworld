@@ -106,9 +106,11 @@ def current_expected(family_id):
     from copy import deepcopy
 
     expected = deepcopy(BEFORE[family_id])
-    if family_id == "goblin_tribe":
+    if family_id == "bandit_gang":
         for member in expected[2]:
-            endurance = {"goblin_scavenger": 12, "goblin_sneak": 11}.get(member["variant_id"])
-            if endurance is not None:
-                member["mechanics"]["base_stats"]["endurance"] = endurance
+            member["min_tier"] = member["mechanics"]["min_tier"] = 1
+    from tests.backend.features.monsters.catalog.alpha_expectations import approved_mechanics
+
+    for member in expected[2]:
+        member["mechanics"] = approved_mechanics(family_id, member["variant_id"], member["mechanics"])
     return expected

@@ -23,7 +23,11 @@ def test_all_twelve_goblins_preserve_mechanics_and_art():
     members = resolve_family(GOBLIN_FAMILY)[2]
     assert len(members) == 12
     for member in members:
-        assert {"mechanics": normalize(member.mechanics), "image": normalize(member.image)} == BEFORE[member.variant_id]
+        from tests.backend.features.monsters.catalog.alpha_expectations import approved_mechanics
+
+        historical = BEFORE[member.variant_id]
+        expected = {**historical, "mechanics": approved_mechanics("goblin_tribe", member.variant_id, historical["mechanics"])}
+        assert {"mechanics": normalize(member.mechanics), "image": normalize(member.image)} == expected
         assert member.equipment_set_id
         assert member.equipment_source == "base_set"
     assert all(b.loadout is None and b.equipment_set_id for b in GOBLIN_FAMILY.bases)

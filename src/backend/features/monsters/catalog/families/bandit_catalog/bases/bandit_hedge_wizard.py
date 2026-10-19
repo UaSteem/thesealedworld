@@ -9,7 +9,7 @@ from src.backend.features.monsters.catalog.nested_contracts import (
 BANDIT_HEDGE_WIZARD = MemberBaseDTO(
     id="bandit_hedge_wizard",
     role="veteran",
-    assembly_cost=35,
+    assembly_cost=23,
     stats=BaseStatsDTO(
         strength=11,
         agility=14,
@@ -40,7 +40,7 @@ BANDIT_HEDGE_WIZARD = MemberBaseDTO(
         belt_accessory=None,
         quiver=None,
     ),
-    tiers=TierAvailabilityDTO(min_tier=0, max_tier=5),
+    tiers=TierAvailabilityDTO(min_tier=1, max_tier=5),
     spawn_weight=50,
     default_image=ImageAssetReference(
         asset_id="bandit_gang.bandit_hedge_wizard",
