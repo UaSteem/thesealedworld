@@ -19,7 +19,7 @@
 | 2 | Воспроизводимые миграции сайта на пустой PostgreSQL и обновление существующей схемы | A05-13 | Исправлено и проверено; остановка до команды на шаг 3 |
 | 3 | Токены и персональные данные в логах и метриках | A08-05/06/07 | Исправлено и проверено; остановка до команды на шаг 4 |
 | 4 | Logout, expiry/revoke открытых WebSocket и атомарная ротация refresh | A07-10/16, A05-12 | Исправлено и проверено; остановка до команды на шаг 5 |
-| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12 и 5.2 A06-12 исправлены; совместимые security updates по дополнительной команде; остановка |
+| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12, 5.2 A06-12 и 5.3 A06-05 исправлены; остальные задачи группы ждут команды |
 | 6 | Восстановление Streams pending с доказанной идемпотентностью эффектов | A05-05 | Ждёт команды |
 | 7 | Надёжное принятие и восстановление GenerationAI; срок жизни SQL-транзакций | A04-11/12/13/18, A05-07/08, A09-09 | Ждёт команды; перед реализацией разделить |
 | 8 | Производительность архива чата, backpressure, Mongo projection, предел истории вкладки | A09-03/04/08/11 | Ждёт команды; перед реализацией разделить |
@@ -329,3 +329,41 @@ frontend/shared/studio/tg_bot/backend core/realtime/chat/generation_ai —
 **946 passed, 17 skipped** (четыре warning). Прежних трёх сбоев больше нет.
 Это адресная проверка и повтор прежнего набора, не полный project gate.
 Локальный вывод: `var/audit/site_analytics_updated_tests.txt` (ignored).
+
+## Шаг 5.3
+
+**A06-05 — clean CI dependency install: исправлено и проверено.**
+
+Несуществующий sibling source `codex-ai` удалён в предыдущем security update;
+здесь подтверждена установка published `codex-ai==0.2.4` без соседнего checkout.
+В `ci.yml` и `build-images.yml` все dependency `uv sync` и последующие `uv run`
+используют `--locked`: manifest drift завершает job ошибкой, lock не обновляется.
+Версии библиотек, manifest и lock в этой задаче не менялись.
+
+Проверка 19.10.2026: новый одноразовый Linux-контейнер `python:3.13-slim`
+(Python 3.13.16, uv 0.11.19), без bind mounts, host venv, credentials и siblings.
+На момент установки скопированы только `pyproject.toml` и `uv.lock`:
+
+- `uv sync --locked` и `uv pip check`: **157 packages, compatible**.
+- `uv sync --locked --all-groups` и `uv pip check`: **176 packages, compatible**.
+- Затем скопированы только `src`, `tests`, `tools`; сеть отключена для smoke.
+  С project source path (`.:src`) прошли imports `codex_ai`, `codex_core`,
+  `codex_platform`, `aiogram`, backend AI, frontend analytics и GenerationAI executor.
+- `uv run --locked python` запускает pytest для `tests/shared`,
+  `tests/frontend/features/cabinet/test_site_analytics_module.py` и
+  `tests/backend/features/generation_ai`: **94 collected**, затем **94 passed**.
+- В отдельной disposable-копии совместимое изменение manifest
+  `rich>=13.9.4` → `rich>=13.9.3` при доступном registry: `uv sync --locked`
+  возвращает **1**, явно сообщает `The lockfile ... needs to be updated`.
+  SHA-256 lock не меняется; после восстановления manifest `uv lock --check --offline`
+  проходит. Предварительные offline negative attempts зависели от resolver cache
+  и не использованы как доказательство lock gate.
+
+Артефакты (ignored): `var/audit/a0605-clean-install.txt`,
+`a0605-clean-check.txt`, `a0605-clean-tests.txt`, `a0605-clean-negative.txt`.
+Smoke harness: `var/audit/a0605-clean/check.py`. Временные контейнеры/образы удалены.
+Hosted GitHub Actions и полный project gate не запускались; это доказательство
+clean Linux dependency install/import/collection и узкого поведения, не full sign-off.
+A06-06 behavioral gate, A06-09/A08-11 deploy gate, A08-09 action refs и более широкий
+A08-10 Docker source/artifact provenance остаются отдельными задачами.
+Production, gameplay, env и секреты не менялись. Остановка до следующей команды.

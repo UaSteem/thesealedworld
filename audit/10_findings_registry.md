@@ -1,5 +1,15 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Шаг 5.3 технической очереди — 19.10.2026
+
+- [x] **A06-05:** clean Linux Python 3.13 install без sibling/host venv подтверждён;
+  default и all-groups установки совместимы (157/176 packages), imports/collection
+  прошли, узкий набор **94 passed**. CI и image-quality commands используют `--locked`;
+  реальный manifest drift отклонён без изменения lock.
+- [Evidence и ограничения](plans/06_non_gameplay_hardening_progress.md#шаг-53).
+  Hosted workflow и полный quality gate не запускались. Более широкий A08-10
+  (Docker source/artifact identity) остаётся отдельной задачей.
+
 ## Шаг 5.2 технической очереди — 19.10.2026
 
 - [x] **A06-12:** pre-commit audit использует project `.venv` вместо hook
@@ -810,6 +820,7 @@ Canonical объединяет лишь полный дубль: одна при
 - **Домены / контракт:** CI; uv; codex-ai source. Single checkout+install получает все declared sources.
 - **Trigger / impact:** Clean runner uv sync без sibling checkout → Missing path dependency blocks gate.
 - **Необходимая проверка:** Clean Linux locked install/collect/full gate без venv/sibling. **Ограничения:** Hosted failure не запускался; ready local venv не proof.
+- **Статус 19.10.2026:** [x] Исправлено и проверено в границах clean dependency install/import/collection; см. шаг 5.3. Full project gate не заявляется.
 - **Canonical:** A06-05. **Связи:** Частичный A08-10: Docker source policy добавляет scope.
 
 ### A06-06 — Develop не имеет behavioral gate
