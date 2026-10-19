@@ -1,0 +1,2 @@
+# Portable alpha fixtures have byte-level provenance checks on every platform.
+tools/monsters/balance_probe/data/alpha/*.json text eol=lf
