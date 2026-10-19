@@ -28,12 +28,17 @@ permissions:
   actions: read
   packages: read
 
+concurrency:
+  group: production
+  cancel-in-progress: false
+
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
   verify-images:
     name: Verify successful image build
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     outputs:
       head_sha: ${{ steps.verify.outputs.head_sha }}
@@ -53,11 +58,31 @@ jobs:
           IMAGE_REF: ${{ inputs.image_ref }}
         run: python3 -I tools/deploy/verified_images.py verify --run-id "$BUILD_RUN_ID" --image-ref "$IMAGE_REF" --output "$GITHUB_OUTPUT"
 
-  preflight:
-    name: Check Server Availability
+      - name: Check production source and approval configuration
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ steps.verify.outputs.head_sha }}
+          DEPLOY_LAYER: ${{ inputs.layer }}
+        run: python3 -I tools/deploy/verified_images.py production-policy --source-sha "$SOURCE_SHA" --layer "$DEPLOY_LAYER"
+
+  deploy:
+    name: Deploy ${{ inputs.layer }}
     needs: verify-images
+    environment: production
     runs-on: ubuntu-latest
     steps:
+      # Execute current main policy, then use the selected verified release configs.
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - name: Recheck production policy after approval
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_SHA: ${{ needs.verify-images.outputs.head_sha }}
+          DEPLOY_LAYER: ${{ inputs.layer }}
+        run: python3 -I tools/deploy/verified_images.py production-policy --source-sha "$SOURCE_SHA" --layer "$DEPLOY_LAYER"
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ needs.verify-images.outputs.head_sha }}
+
       - name: Test SSH Connection
         uses: appleboy/ssh-action@0ff4204d59e8e51228ff73bce53f80d53301dee2 # v1.2.5
         with:
@@ -65,15 +90,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: echo "SSH connection successful"
-
-  deploy:
-    name: Deploy ${{ inputs.layer }}
-    needs: [verify-images, preflight]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
-        with:
-          ref: ${{ needs.verify-images.outputs.head_sha }}
 
       - name: Copy deploy configs to server
         uses: appleboy/scp-action@ff85246acaad7bdce478db94a363cd2bf7c90345 # v1.0.0

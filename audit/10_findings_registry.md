@@ -1,5 +1,17 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Шаг 5.8 технической очереди — 19.10.2026
+
+- [x] **A08-11, локальная часть:** dispatch/source main policy, protected production
+  job, runtime required-reviewer checks до SSH и после approval, общий concurrency
+  без отмены active run. **149 deploy tests passed**; независимый review подтвердил
+  код и точные claims.
+- [Файл задачи и ограничения](plans/06_non_gameplay_hardening_progress.md#шаг-58--файл-задачи-a08-11).
+- [ ] **Hosted governance:** реальные environment/main protections, secret scoping,
+  admin bypass и живая serialization не подтверждены: нет GitHub CLI auth.
+  Это unknown, не доказательство отсутствия защиты. Workflow отказывает при
+  недоступных/неполных required-reviewer rules. Настройки GitHub не менялись.
+
 ## Шаг 5.7 технической очереди — 19.10.2026
 
 - [x] **A08-10:** CI и Docker согласованы на uv 0.11.19, locked export без
@@ -1190,6 +1202,8 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A08-10. **Связи:** Частичный A06-05; Docker artifact identity scope не потерян.
 
 ### A08-11 — Production dispatch не привязан к отдельному approval/ref/provenance gate
+
+- **Статус 19.10.2026:** локальные approval/ref/concurrency gates реализованы и независимо проверены (шаг 5.8); реальные hosted protections/secret scoping остаются unverified. Полное operational закрытие не заявляется.
 
 - **Источник / аудит:** [audit/08_infrastructure_security.md:351](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/08_infrastructure_security.md:351); аудит 08. **Code anchors:** [.github/workflows/deploy-production.yml:3](D:/Workspace/personal/pets/TurnBasedMMORPG/.github/workflows/deploy-production.yml:3), [.github/workflows/build-images.yml:7](D:/Workspace/personal/pets/TurnBasedMMORPG/.github/workflows/build-images.yml:7)
 - **Исходная severity:** Medium. **Доказательность:** Гипотеза: исторический риск/неполный контракт; отдельные предпосылки не равны доказанному эффекту. **Стадия:** Shared infrastructure (intended Production). **Срочность:** До следующего публичного релиза при применимости поверхности; действующая экспозиция требует отдельной проверки.

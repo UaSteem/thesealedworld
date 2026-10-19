@@ -250,10 +250,10 @@ def test_malformed_api_metadata_blocks_promotion(metadata):
 
 def test_workflow_gate_dominates_all_ssh_and_uses_verified_source():
     deploy = yaml.safe_load((ROOT / ".github/workflows/deploy-production.yml").read_text())["jobs"]
-    assert deploy["preflight"]["needs"] == "verify-images"
-    assert set(deploy["deploy"]["needs"]) == {"verify-images", "preflight"}
-    assert "if" not in deploy["preflight"] and "if" not in deploy["deploy"]
-    assert deploy["deploy"]["steps"][0]["with"]["ref"] == "${{ needs.verify-images.outputs.head_sha }}"
+    assert deploy["deploy"]["needs"] == "verify-images"
+    assert "if" not in deploy["deploy"]
+    selected_checkout = [step for step in deploy["deploy"]["steps"] if step.get("with", {}).get("ref")]
+    assert selected_checkout[0]["with"]["ref"] == "${{ needs.verify-images.outputs.head_sha }}"
     for job in deploy.values():
         assert not job.get("continue-on-error")
         for step in job["steps"]:

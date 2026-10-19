@@ -142,8 +142,8 @@ fallback; сначала нужен новый successful Build Release Images. 
 использовать **Re-run all jobs**: gate требует оба успешных jobs одной попытки.
 
 Это связь результата quality/build с promotion, не криптографическая attestation
-всей supply chain: source/action-ref governance, approvals, concurrency и
-доступность образов в registry остаются отдельными operational gates.
+всей supply chain. Production ref/approval/concurrency policy описана ниже;
+реальные настройки GitHub и доступность образов требуют отдельной проверки.
 Hosted Actions и production этой локальной проверкой не подтверждаются.
 Форматы API: [artifacts](https://docs.github.com/en/rest/actions/artifacts),
 [workflow jobs](https://docs.github.com/en/rest/actions/workflow-jobs).
@@ -206,6 +206,55 @@ hosted runner и не полная воспроизводимость конеч
 Форматы: [uv locking/export](https://docs.astral.sh/uv/concepts/projects/sync/),
 [pip hash checking](https://pip.pypa.io/en/stable/topics/secure-installs/),
 [pip installation reports](https://pip.pypa.io/en/stable/reference/installation-report/).
+
+## Production ref, подтверждение и serialization
+
+`Deploy Production` запускают вручную из `main`. Проверка runtime context
+требует `workflow_dispatch` и `refs/heads/main`. Verified image source SHA должен
+быть текущим main или его предком: сравнение `<source_sha>...main` требует
+`ahead`/`identical` и merge-base, равный source SHA. Поэтому rollback на ранее
+проверенную main-сборку допускается, а develop/tag/divergent source — нет.
+
+Порядок: artifact verifier → проверка production policy → job с
+`environment: production` → повторная policy check после approval → SSH/SCP.
+Environment обязан уже иметь непустое `required_reviewers` rule с валидными
+User/Team reviewers и явной `prevent_self_review` policy. Отсутствие environment,
+пустые rules, malformed ответ, 403/404 или network error завершают gate ошибкой.
+Автоматически созданный environment без защиты не даёт обхода. Само подтверждение
+job обеспечивает GitHub; helper проверяет конфигурацию, а не подменяет approval.
+Значение self-review выводится без имён reviewers; требование второго оператора
+этот commit не вводит.
+
+После approval сначала checkout контрольного кода из dispatch commit; он повторно
+проверяет main ancestry и environment rules. Только затем checkout verified source SHA
+для передачи его `deploy/`. Старому rollback-релизу не требуется содержать новый helper.
+SSH preflight теперь шаг того же protected job, поэтому второго approval нет.
+Inputs `layer`, `build_run_id`, `image_ref` сохранены; layer дополнительно проверяется
+до обращения к серверу.
+
+Workflow использует один постоянный concurrency group `production` для всех
+слоёв и refs, `cancel-in-progress: false`. Следующий запуск не прерывает активный.
+Это не обещание FIFO: GitHub может заменить ожидающий pending run; внешние ручные
+SSH-действия и другие workflows без этой группы блокировкой не охвачены.
+
+### Настройка GitHub перед использованием
+
+В repository Settings → Environments проверить `production`: required reviewers,
+осознанный выбор self-review/admin-bypass policy и deployment branches только
+`main`. Production credentials (`HOST`, `USERNAME`, `SSH_KEY`, `ENV_FILE`) хранить
+в environment secrets и не дублировать без необходимости в repository secrets,
+иначе сторонний workflow может иметь отдельный путь к тем же credentials.
+Защиту main и права изменения workflow также администрирует владелец.
+Это checklist для владельца, не утверждение о текущих remote settings.
+
+Локально GitHub CLI не авторизован, поэтому реальные environment/branch rules
+не прочитаны и не менялись. Проверки используют fixtures по API contract; живые
+approval, concurrency и deployment не запускались. Деплой остаётся заблокированным,
+если проверка требуемых rules не проходит; считать remote protections активными
+только по наличию YAML нельзя.
+
+Контракты платформы: [environments API](https://docs.github.com/en/rest/deployments/environments),
+[approval и concurrency](https://docs.github.com/en/actions/how-tos/deploy/configure-and-manage-deployments/control-deployments).
 
 ## Env и Secrets
 

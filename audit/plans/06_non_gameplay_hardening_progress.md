@@ -19,7 +19,7 @@
 | 2 | Воспроизводимые миграции сайта на пустой PostgreSQL и обновление существующей схемы | A05-13 | Исправлено и проверено; остановка до команды на шаг 3 |
 | 3 | Токены и персональные данные в логах и метриках | A08-05/06/07 | Исправлено и проверено; остановка до команды на шаг 4 |
 | 4 | Logout, expiry/revoke открытых WebSocket и атомарная ротация refresh | A07-10/16, A05-12 | Исправлено и проверено; остановка до команды на шаг 5 |
-| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12, 5.2 A06-12, 5.3 A06-05, 5.4 A06-06, 5.5 A06-09 и 5.6 A08-09 и 5.7 A08-10 исправлены; A08-11 ждёт команды |
+| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12, 5.2 A06-12, 5.3 A06-05, 5.4 A06-06, 5.5 A06-09 и 5.6 A08-09 и 5.7 A08-10 исправлены; 5.8 A08-11: локальные gates исправлены, remote protections unverified |
 | 6 | Восстановление Streams pending с доказанной идемпотентностью эффектов | A05-05 | Ждёт команды |
 | 7 | Надёжное принятие и восстановление GenerationAI; срок жизни SQL-транзакций | A04-11/12/13/18, A05-07/08, A09-09 | Ждёт команды; перед реализацией разделить |
 | 8 | Производительность архива чата, backpressure, Mongo projection, предел истории вкладки | A09-03/04/08/11 | Ждёт команды; перед реализацией разделить |
@@ -610,3 +610,113 @@ negative cases; root 104 tests и reviewer 31 tests; границы hosted/runti
 
 Ожидается. После ревизии состояние `reviewed-awaiting-acceptance`; только явное
 принятие владельцем изменяет его на `accepted`.
+
+
+## Шаг 5.8 — файл задачи A08-11
+
+Режим: с ревизором. Состояние: reviewed-awaiting-acceptance.
+Операционная проверка remote protections: unverified.
+Каталог `D:/Workspace/personal/pets/TurnBasedMMORPG`, ветка `develop`,
+исходный commit `65b8cc5c`; начальное дерево чистое.
+
+### Исходное задание и уточнения
+
+«Давай следующую задачу шага 5 — A08-11, ограничения и подтверждение
+production-деплоя. С ревизором, так же по одной: исправляешь, проверяешь,
+коммитишь и ждёшь команды дальше».
+Ранее: без новой ветки, gameplay, push/deploy и production operations.
+Режим выбран явно; повторный выбор не нужен. Этот раздел — файл текущей задачи.
+
+### Требования и ограничения
+
+- [x] R1: исправить только A08-11, сохранить предыдущие artifact/digest/source
+  gates A06-09/A08-09/A08-10. Источник: запрос и очередь владельца.
+- [x] R2: ограничения доверенного dispatch/source ref до обращения к production;
+  main — production branch по действующему release-контракту. Источник: A08-11
+  и project release skill. Должен сохраняться rollback проверенных main ancestors.
+- [x] R3: отдельное подтверждение production через GitHub protected environment;
+  отсутствие обязательных reviewers/недоступная проверка защиты не допускает
+  SSH/SCP. Источник: approval-контракт A08-11; fail-closed — решение реализации.
+- [x] R4: исключить одновременные production-деплои всех слоёв и отмену активного
+  run новым run. Источник: serialization-контракт A08-11.
+- [x] R5: проверить positive/negative ref/approval/graph/serialization policy;
+  попытаться прочитать реальные GitHub protections и честно отделить локальные
+  доказательства от недоступных hosted settings. Источник: исходная находка.
+- [x] R6: требования и доказательства в MD, независимый reviewer без истории,
+  итоговые claims сверить отдельно. Источник: явный режим владельца.
+- [x] R7: текущая ветка, без gameplay/real env/secrets/production изменений;
+  проверить, commit, отчёт и остановка без push/deploy. Источник: порядок владельца.
+
+### Предположения и первоначальный план
+
+Сохранить ручные inputs layer/build_run_id/image_ref, immutable images и checkout
+configs по verified SHA. Dispatch только main; source SHA должен быть в истории
+main, чтобы не ломать rollback. Gate approval — protected production environment
+и проверка его реальных required reviewer rules перед SSH; только YAML environment
+не считается достаточной защитой. Не вводить обязательного второго человека без
+решения владельца: существующая self-review policy environment фиксируется как
+операционная настройка, а не выдумывается.
+Общий concurrency group на production, без per-layer/ref/run-id suffix, без
+cancel-in-progress. Live FIFO/двойной deploy не запускать ради проверки.
+Прочитать цепочку, реализовать минимальный fail-closed gate и тесты, проверить
+предыдущие deploy-контракты, независимая ревизия, commit и остановка.
+
+### Журнал уточнений и диагностики
+
+Локальная read-only попытка `gh api` environment production и main protection
+для CodexDLC/thesealedworld: gh exit 4, нет gh auth login/GH_TOKEN.
+Секреты не искались и не выводились. Реальные rules остаются unknown;
+эта недоступность не доказывает отсутствие защиты. GitHub connector fetch также
+не поддерживает environment API URL. Настройки GitHub не менялись.
+
+### Выполнение и доказательства
+
+| ID | Реализация | Ревизия | Доказательство |
+| --- | --- | --- | --- |
+| R1 | done | pass | Artifact/digest/source gates сохранены |
+| R2 | done | pass | Dispatch main, source main ancestor, control/config checkouts разделены |
+| R3 | done | pass-local; remote unverified | required reviewers gate, remote settings unverified |
+| R4 | done | pass-local; remote unverified | global concurrency policy, hosted serialization unverified |
+| R5 | done | pass-local; remote unverified | локальные cases проверены; remote read недоступен |
+| R6 | done | pass | Первичная ревизия и отдельная сверка C1–C7 подтверждены |
+| R7 | done | pass | Reviewer проверил task commit на develop и чистоту дерева |
+
+### Независимая ревизия и разбор замечаний
+
+Отдельный fresh reviewer `a0811_independent_review`, `fork_turns=none`,
+получил исходное задание, R1–R7 и первоначальный план без отчёта исполнителя.
+Первичная ревизия окончательного кода: блокирующих findings нет.
+R1/R2 pass; R3/R4/R5 pass локально с remote/hosted unverified; R6 partial до
+сверки claims, R7 partial до commit. Reviewer независимо выполнил **82 tests**,
+изучил цепочку context/ref → artifact outputs → environment rules → protected
+job → повторная policy → selected configs → SSH/SCP, сверил официальный API
+schema и Actions read permission. Diff-check прошёл. Remote protections, secret
+scoping, admin bypass и живая serialization не подтверждены.
+
+Наблюдения ведущего: окончательный полный `pytest tests/deploy --no-cov -q`
+с RUN_ENV_FILE_CONTAINER_TEST=1 и RUN_NGINX_CONTAINER_TEST=1 — **149 passed**.
+Scoped mypy helper, Ruff check/format прошли. Это local fixture/isolated Docker
+checks; два production run ради проверки не запускались. Секреты и GitHub
+settings не менялись. Evidence (ignored): `var/audit/a0811-deploy-tests.txt`,
+`a0811-mypy.txt`, `a0811-implementer-tests.txt`; reviewer temp — `a0811-review*`.
+После собственного первого заключения reviewer получил точные claims C1–C7:
+trusted refs/rollback, environment и runtime checks, native concurrency без FIFO,
+сохранение предыдущих gates, root 149 tests/mypy и reviewer 82 tests, реальные
+remote settings unknown, self-review policy без обязательного второго человека.
+Все подтверждены в заявленных пределах. R6 pass. R3–R5 отмечены только в границах
+локального контракта; состояние настоящих GitHub protections остаётся открытым.
+Финальные production approval/parallel runs и перемещение secrets не выполнялись.
+После commit reviewer независимо проверил R7: commit существует на develop,
+рабочее дерево чистое, семь файлов соответствуют A08-11. R7 pass. Commit hooks,
+включая pip-audit, прошли. Фиксация этого заключения выполняется MD-only amend
+того же local task commit; reviewer подтвердил отсутствие необходимости повторять
+ревизию неизменённого кода. Итоговый SHA читается через git log после amend.
+Локальные R1–R7 подтверждены в описанных пределах. Настоящие environment/main
+protections, secret scoping/admin bypass и hosted serialization по-прежнему
+unverified; полное operational закрытие A08-11 не заявляется. Следующие задачи
+очереди не начинались; push/deploy/изменения GitHub settings не выполнялись.
+
+### Принятие пользователем
+
+Ожидается; после независимой ревизии — reviewed-awaiting-acceptance,
+accepted только по явному принятию владельца.
