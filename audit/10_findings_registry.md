@@ -1,5 +1,15 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Шаг 5.4 технической очереди — 19.10.2026
+
+- [x] **A06-06:** отдельный behavioral status для push develop и PR base develop,
+  включая fork; прежний lint/types сохранён, main full quality/docs и Docker scope
+  сохранены. Exact command на чистом Linux Python 3.13: **946 passed, 17 skipped**;
+  один deliberate failing test в выбранном наборе даёт exit **1**.
+- [Evidence и ограничения](plans/06_non_gameplay_hardening_progress.md#шаг-54).
+  Hosted runs и required-check settings не подтверждались; это selected suite,
+  не полный project gate и не подтверждение real storage adapters.
+
 ## Шаг 5.3 технической очереди — 19.10.2026
 
 - [x] **A06-05:** clean Linux Python 3.13 install без sibling/host venv подтверждён;
@@ -824,6 +834,8 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A06-05. **Связи:** Частичный A08-10: Docker source policy добавляет scope.
 
 ### A06-06 — Develop не имеет behavioral gate
+
+- **Статус 19.10.2026:** [x] Исправлено и проверено в границах selected behavioral suite и event/ref matrix; см. шаг 5.4. Hosted required-check settings неизвестны.
 
 - **Источник / аудит:** [audit/06_testing_quality.md:431](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/06_testing_quality.md:431); аудит 06. **Code anchors:** [.github/workflows/ci.yml:3](D:/Workspace/personal/pets/TurnBasedMMORPG/.github/workflows/ci.yml:3)
 - **Исходная severity:** Medium. **Доказательность:** Подтверждено статическим анализом в исходном аудите; полного повторного анализа сейчас нет. **Стадия:** Shared infrastructure (Pre-alpha). **Срочность:** При стабилизации домена.

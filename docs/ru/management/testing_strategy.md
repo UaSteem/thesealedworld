@@ -62,6 +62,36 @@ updates. `codex-ai==0.2.4` resolves from its published distribution, matching th
 Docker source policy; the obsolete sibling-checkout path is removed. The dev-only
 `graphifyy` dependency is installed only on Python <3.14, as required by its metadata.
 
+## Develop Behavioral Gate
+
+`CI / Develop Behavioral Tests` runs independently of lint/types on pushes to
+`develop` and pull requests targeting `develop`, including fork PRs. Its fixed
+suite covers frontend, shared contracts, Studio, Telegram adapters, backend
+core/realtime/chat and GenerationAI. It uses only checked-in source plus a clean
+`uv sync --locked`; no local `.env`, GitHub secrets or external services are
+required. Tests requiring disposable PostgreSQL/Redis/Mongo URLs skip when those
+URLs are absent; this gate does not attest real storage adapter semantics.
+
+The isolated application profile sets `ENVIRONMENT=testing`, a public test-only
+`SECRET_KEY`, and `DEBUG=True`. The explicit debug profile allows development
+signer defaults without production credentials; production validation tests
+still construct their own strict settings. It does not change application or
+production configuration.
+
+The exact command is:
+
+```sh
+uv run --locked python -m pytest tests/frontend tests/shared tests/studio tests/tg_bot tests/backend/core tests/backend/realtime tests/backend/chat tests/backend/features/generation_ai --no-cov -q
+```
+
+Any nonzero pytest exit fails this separate status; it has no dependency on the
+lint job and no `continue-on-error`. This is a selected behavioral suite, so
+`--no-cov` avoids applying the repository-wide coverage target to partial paths.
+The full quality/docs job and its existing coverage policy remain on pushes to
+`main` and PRs targeting `main`; Docker verification remains push-to-main only.
+Repository required-check/branch-protection settings and hosted runs must be
+verified separately; defining this status does not enforce a merge restriction.
+
 ## Test Layout
 
 Tests live outside `src/` under the repository-level `tests/` package.
