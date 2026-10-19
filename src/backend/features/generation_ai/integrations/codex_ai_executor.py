@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 from typing import TYPE_CHECKING, Any
 
 from loguru import logger as log
@@ -88,7 +89,8 @@ class CodexAIExecutor:
             raise RuntimeError(f"AI image provider returned no binary content for task_type={task.task_type}")
         actual_content_type = _validate_image_content_type(task, content_type or requested_content_type)
         text_validation = await _inspect_generated_image_text(task, self.ai, content, actual_content_type)
-        normalized = normalize_generated_image(
+        normalized = await asyncio.to_thread(
+            normalize_generated_image,
             content,
             actual_content_type,
             target_content_type=requested_content_type,

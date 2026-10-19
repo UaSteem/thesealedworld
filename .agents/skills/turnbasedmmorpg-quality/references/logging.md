@@ -49,10 +49,11 @@ Never log tokens, passwords, request/response bodies, or API keys.
 Every async task function registered in `*_TASKS` lists must be decorated
 with `@logged_task` from `src.shared.log_task_wrapper`.
 
-### 7. correlation_id in event handlers
+### 7. Correlation context binding (SG10-K5)
 
-Every `@router.on()` handler must propagate `correlation_id` via
-`set_log_context(correlation_id=event.correlation_id)` and clear in finally.
+- **HTTP Requests**: `LogContextMiddleware` binds `correlation_id` automatically. Endpoint handlers must NOT manually overwrite it.
+- **EventBus Streams**: Verify context binding in the installed bus consumer wrapper. Bind event metadata once at that boundary if absent, preserve it through handlers/services, and restore/clear context afterward. Do not assume automatic binding without checking the provider.
+- **Standalone Tasks / CLI**: Establish context at standalone entrypoints when no wrapper provides it; `@logged_task` already binds task metadata. Avoid overwriting existing context, and restore/clear manual bindings in `finally`.
 
 ### 8. No emoji in log messages
 

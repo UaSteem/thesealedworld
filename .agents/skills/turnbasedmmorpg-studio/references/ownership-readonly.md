@@ -60,20 +60,15 @@ Current split is committed:
 - Studio `CABINET_MODULES` (`src/studio/cabinet.py`): `content_ops`,
   `scenario`, `exploration`, `combat`, `combat_ai_testing`.
 
-## Read-Only-On-Prod Contract
+## Read-Only Source vs Local Compute Boundary (SG10-K4)
 
-Studio is **strictly read-only against the prod source.** It must not:
+Studio must **never mutate the selected data source** (`LOCAL` or `PROD`). When connected to any data source, it must not:
 
-- POST to prod endpoints (no triggering image regeneration, AI simulations,
-  monster rebuilds, etc.);
-- write to prod Postgres or prod Redis;
-- enqueue arq jobs on prod queues.
+- POST to endpoints that mutate the selected source (no triggering image regeneration, AI updates, monster rebuilds against the source);
+- write to Postgres or Redis of the selected source;
+- enqueue arq jobs on the selected source's queues.
 
-Heavy compute that studio surfaces (AI simulations, monster regeneration) runs
-on **local** stacks only, via the developer's local `docker-compose.yml`. The
-prod `combat-ai-simulation-worker` in `deploy/compose.game.yml` is gated by
-the `combat-ai-simulation` profile and is not part of the default prod
-composition.
+Local analytical compute or explicitly triggered local dev simulation jobs are permitted **only when the effective selected source is local (`request.state.source.kind`; the source cookie takes precedence over the `STUDIO_SOURCE` fallback)** and must be strictly blocked when inspecting a read-only or remote source. The prod `combat-ai-simulation-worker` in `deploy/compose.game.yml` is gated by the `combat-ai-simulation` profile and is not part of the default prod composition.
 
 The future intended workflow for prod data is:
 

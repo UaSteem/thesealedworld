@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: tbmmorpg_dev  # pragma: allowlist secret
       POSTGRES_DB: tbmmorpg_site
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - tbmmorpg-postgres-data:/var/lib/postgresql/data
       - ./postgres/init:/docker-entrypoint-initdb.d:ro

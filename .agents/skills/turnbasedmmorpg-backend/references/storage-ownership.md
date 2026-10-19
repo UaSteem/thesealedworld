@@ -12,6 +12,14 @@ Do not make MongoDB the authority for game-critical facts such as account
 ownership, character ownership, inventory, currency, rewards, combat result,
 progression, permissions, or membership.
 
+## Authority, Checkpoint & Rebuild Matrix (SG10-K3)
+
+| Storage Layer | Authority & Lifecycle Role | Checkpoint & Rebuild Behavior |
+| --- | --- | --- |
+| **PostgreSQL (`tbmmorpg_game`)** | **Durable Authority** for characters, inventory items, progression, economy, and combat finalization metadata. | Permanent source of truth. Checkpoints hot runtime state; target of rehydration and restore drills. |
+| **RedisJSON (`game:ac:*`, `combat:rbc:*`)** | **Hot Runtime Authority** during active gameplay sessions and live combat. | Mutations to `game:ac:*` must call `mark_dirty(char_id, reason=..., paths=...)`, which updates and tracks `sync_dirty.generation`. `ActiveCharacterDirtySyncMiddleware` and ARQ sync tasks flush dirty state to PostgreSQL and clear `sync_dirty` only when `generation` matches. On crash/reconnect, active session is rehydrated from PostgreSQL. |
+| **MongoDB (`tbmmorpg_analytics`)** | **Durable Document Store** for combat finalization payloads, battle logs, simulation traces, and chat message buckets. | Use stable IDs/pointers such as `combat_id` or `mongo_document_id` according to the owning document contract. Version new persisted payload contracts explicitly; inspect existing schemas rather than assuming every document already has a `schema_version`. |
+
 ## PostgreSQL Owns
 
 Keep stable facts, relationships, and fast indexes in PostgreSQL:

@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: tbmmorpg_dev  # pragma: allowlist secret
       POSTGRES_DB: tbmmorpg_site
     ports:
-      - "5432:5432"
+      - "127.0.0.1:5432:5432"
     volumes:
       - tbmmorpg-postgres-data:/var/lib/postgresql/data
       - ./postgres/init:/docker-entrypoint-initdb.d:ro
@@ -31,7 +31,7 @@ services:
       REDIS_PASSWORD: ${REDIS_PASSWORD:-dev_redis_password}
     command: ["redis-stack-server", "--requirepass", "${REDIS_PASSWORD:-dev_redis_password}"]
     ports:
-      - "6380:6379"
+      - "127.0.0.1:6380:6379"
     volumes:
       - tbmmorpg-redis-data:/data
     healthcheck:
@@ -48,7 +48,7 @@ services:
     restart: unless-stopped
     command: ["mongod", "--quiet"]
     ports:
-      - "27017:27017"
+      - "127.0.0.1:27017:27017"
     volumes:
       - tbmmorpg-mongo-data:/data/db
     healthcheck:
@@ -64,8 +64,8 @@ services:
     container_name: tbmmorpg-mailpit
     restart: unless-stopped
     ports:
-      - "8025:8025"
-      - "1025:1025"
+      - "127.0.0.1:8025:8025"
+      - "127.0.0.1:1025:1025"
     networks:
       - tbmmorpg-network
 
@@ -91,7 +91,7 @@ services:
     entrypoint:
       - sh
       - -c
-      - python src/backend/manage.py upgrade && python src/backend/manage.py ensure-mongo-indexes
+      - python src/backend/manage.py upgrade && python src/backend/manage.py ensure-mongo-indexes && python src/backend/manage.py rebuild-monsters --apply
     depends_on:
       postgres:
         condition: service_healthy
@@ -115,7 +115,7 @@ services:
       MONGO_URL: mongodb://mongo:27017
       MONGO_DATABASE: tbmmorpg_analytics
     ports:
-      - "8001:8001"
+      - "127.0.0.1:8001:8001"
     volumes:
       - ../src/backend:/app/src/backend
       - ../src/shared:/app/src/shared
@@ -195,7 +195,7 @@ services:
       EMAIL_FROM: noreply@tbmmorpg.local
       EMAIL_ADMIN: admin@tbmmorpg.local
     ports:
-      - "8000:8000"
+      - "127.0.0.1:8000:8000"
     volumes:
       - ../src/frontend:/app/src/frontend
       - ../src/fastapi_cabinet:/app/src/fastapi_cabinet
@@ -244,7 +244,7 @@ services:
       EMAIL_FROM: noreply@tbmmorpg.local
       EMAIL_ADMIN: admin@tbmmorpg.local
     ports:
-      - "8003:8000"
+      - "127.0.0.1:8003:8000"
     volumes:
       - ../src/frontend:/app/src/frontend
       - ../src/fastapi_cabinet:/app/src/fastapi_cabinet
@@ -292,7 +292,7 @@ services:
       PYTHONPATH: /app:/app/src
       DEBUG: "True"
     ports:
-      - "9100:9100"
+      - "127.0.0.1:9100:9100"
     volumes:
       - ../src/studio:/app/src/studio
       - ../src/frontend:/app/src/frontend
@@ -331,7 +331,7 @@ services:
       STREAM_CONSUMER_GROUP: chat
       WORKER_NAME: chat_worker_1
     ports:
-      - "8002:8002"
+      - "127.0.0.1:8002:8002"
     volumes:
       - ../src/backend:/app/src/backend
       - ../src/shared:/app/src/shared

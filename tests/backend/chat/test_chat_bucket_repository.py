@@ -5,8 +5,54 @@ from datetime import UTC, datetime
 from typing import Any
 
 import pytest
+from pymongo.errors import DuplicateKeyError
 
 from src.backend.infrastructure.mongo.chat_buckets import ChatBucketRepository
+
+
+@pytest.mark.unit
+async def test_replay_returns_original_reference_even_after_rollover() -> None:
+    database = _FakeMongoDatabase()
+    repo = ChatBucketRepository(database, max_bucket_messages=1)
+    arguments = dict(
+        thread_id="t",
+        thread_type="world",
+        scope_id="global",
+        created_at=datetime(2026, 6, 4, tzinfo=UTC),
+        message={"id": "stable"},
+    )
+    original = await repo.append_message(**arguments)
+    repeated = await repo.append_message(**arguments)
+    assert repeated == original
+    assert database[original.collection].docs[original.bucket_id]["message_count"] == 1
+
+
+@pytest.mark.unit
+async def test_concurrent_replay_loses_atomic_predicate_without_duplicate() -> None:
+    database = _FakeMongoDatabase()
+    repo = ChatBucketRepository(database)
+    arguments = dict(
+        thread_id="t",
+        thread_type="world",
+        scope_id="global",
+        created_at=datetime(2026, 6, 4, tzinfo=UTC),
+        message={"id": "stable"},
+    )
+    original = await repo.append_message(**arguments)
+    collection = database[original.collection]
+    read = collection.find_one
+    first_read = True
+
+    async def stale_read(query, projection=None):
+        nonlocal first_read
+        if first_read:
+            first_read = False
+            return None
+        return await read(query, projection)
+
+    collection.find_one = stale_read
+    assert await repo.append_message(**arguments) == original
+    assert collection.docs[original.bucket_id]["message_count"] == 1
 
 
 @pytest.mark.unit
@@ -118,6 +164,8 @@ class _FakeMongoCollection:
         upsert: bool,
         return_document: Any,
     ) -> dict[str, Any] | None:
+        paths = [key for operation in update.values() for key in operation]
+        assert len(paths) == len(set(paths)), "Mongo rejects overlapping modifier paths"
         doc_id = str(query["_id"])
         doc = self.docs.get(doc_id)
         if doc is None:
@@ -125,8 +173,13 @@ class _FakeMongoCollection:
                 return None
             doc = dict(update.get("$setOnInsert") or {})
             self.docs[doc_id] = doc
-        if doc.get("closed") is True and query.get("closed") == {"$ne": True}:
-            return None
+        if (doc.get("closed") is True and query.get("closed") == {"$ne": True}) or (
+            "message_count" in query and int(doc.get("message_count") or 0) != query["message_count"]
+        ):
+            raise DuplicateKeyError("conditional upsert lost CAS")
+        excluded = query.get("messages.id", {}).get("$ne")
+        if excluded is not None and any(item.get("id") == excluded for item in doc.get("messages", [])):
+            raise DuplicateKeyError("duplicate _id from conditional upsert")
         for key, value in (update.get("$push") or {}).items():
             doc.setdefault(key, []).append(deepcopy(value))
         for key, value in (update.get("$inc") or {}).items():

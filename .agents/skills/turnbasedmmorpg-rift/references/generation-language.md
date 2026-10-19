@@ -13,8 +13,8 @@ stabilize.
 
 - `.agents/skills/turnbasedmmorpg-project/references/repository-operations.md`
 - `.agents/skills/turnbasedmmorpg-project/references/agent-skill-maintenance.md` when editing this skill
-- `docs/planning/tasks/rift/approved_stages/README.md`
-- `docs/planning/tasks/rift/transition_and_node_data_design.md`
+- `docs/planning/tasks/rift/README.md`
+- `docs/planning/tasks/rift/00_core_current_state.md`
 
 For backend/API/service work, also read:
 
@@ -30,9 +30,8 @@ For frontend/game UI work, also read:
 Use sources in this order:
 
 1. Direct project-owner decisions in the current conversation.
-2. `docs/planning/tasks/rift/approved_stages/`.
-3. `docs/planning/tasks/rift/transition_and_node_data_design.md` as a working design base.
-4. Other `docs/planning/tasks/rift/*` files only as idea drafts, not contracts.
+2. `docs/planning/tasks/rift/README.md` and established codebase anchors (`src/backend/features/rift/`).
+3. Other `docs/planning/tasks/rift/*` files only as idea drafts, not contracts.
 
 If these sources conflict, pause and ask the project owner. Do not resolve the
 conflict by inventing a permanent rule.

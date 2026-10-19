@@ -39,24 +39,46 @@ async def archive_chat_buffers(ctx: dict) -> None:
         if not entries:
             continue
 
-        new_last_id = last_id
+        last_safe_id = last_id
+        interrupted = False
         for _stream, records in entries:
             for entry_id, fields in records:
-                new_last_id = entry_id
                 try:
                     payload = json.loads(fields.get("data", "{}"))
-                    if not isinstance(payload, dict):
-                        continue
+                except (ValueError, TypeError):
+                    log.bind(entry_id=entry_id).warning("ChatBufferMalformedEntrySkipped")
+                    last_safe_id = entry_id
+                    continue
+                if not isinstance(payload, dict):
+                    log.bind(entry_id=entry_id).warning("ChatBufferMalformedEntrySkipped")
+                    last_safe_id = entry_id
+                    continue
+                # Stream identity survives retries even for legacy messages without IDs.
+                if _optional_uuid(payload.get("id")) is None:
+                    payload["id"] = str(uuid.uuid5(uuid.NAMESPACE_URL, f"{stream_key}:{entry_id}"))
+                try:
+                    datetime.fromisoformat(str(payload.get("created_at")))
+                except (ValueError, TypeError):
+                    payload["created_at"] = datetime.fromtimestamp(
+                        int(entry_id.split("-", 1)[0]) / 1000, UTC
+                    ).isoformat()
+                try:
                     status = await _archive_payload(payload, mongo_repo=mongo_repo)
-                    if status == "stored":
-                        archived_count += 1
-                    else:
+                    if status != "stored":
                         failed_count += 1
+                        interrupted = True
+                        break
+                    archived_count += 1
+                    last_safe_id = entry_id
                 except Exception:
                     failed_count += 1
                     log.bind(entry_id=entry_id).exception("ChatBufferEntryArchiveFailed")
-
-        await redis.set(cursor_field, new_last_id)
+                    interrupted = True
+                    break
+            if interrupted:
+                break
+        if last_safe_id != last_id:
+            await redis.set(cursor_field, last_safe_id)
 
     if archived_count or failed_count:
         log.bind(archived_count=archived_count, failed_count=failed_count).info("ChatMessagesArchived")

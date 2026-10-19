@@ -25,12 +25,13 @@ If the task changes UI design, choose the surface-specific design skill before e
 
 ## Core Rules
 
-- Frontend renders UI and calls backend APIs.
-- Frontend must not access databases or import backend feature internals.
+- Frontend renders UI, manages the site domain, and calls backend APIs.
+- Frontend directly owns the site database (`tbmmorpg_site`: accounts, auth, news, surveys, site Alembic migrations, site-owned repositories).
+- Frontend is strictly forbidden from directly accessing the game database (`tbmmorpg_game`), Redis game state (`game:*`, `combat:*`), or Mongo game collections (`tbmmorpg_analytics`), and must never import backend feature internals.
+- Game data access must go through typed HTTP/WS API clients under `src/frontend/integrations/backend_api/`.
 - Treat `src/frontend` as the server-side site service: user layer, auth, cabinet, library, public site, templates, site-owned repositories, and site Alembic belong here.
 - Site-owned feature folders live under `src/frontend/features/<feature>/`.
-- Site-owned repositories may live inside the owning frontend feature folder; do not add a broad shared repository layer until real model count or reuse justifies it.
-- Game data access must go through typed clients under `src/frontend/integrations/backend_api/`.
+- Site-owned repositories live inside the owning frontend feature folder; do not add a broad shared repository layer until real model count or reuse justifies it.
 - Game backend downtime must be rendered as unavailable or maintenance UI instead of breaking the site.
 - Put gameplay page and fragment routes in `src/frontend/game_features/<feature>/routes/`.
 - Put site/account/public page routes in `src/frontend/features/<feature>/routes/`.

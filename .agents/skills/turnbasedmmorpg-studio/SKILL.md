@@ -5,7 +5,8 @@ description: Local analytical studio ownership, source switching, and read-only 
 
 # TurnBasedMMORPG Studio
 
-Studio is a local analytical cabinet. It must not write to a selected source, including local and production.
+Studio is a local analytical cabinet.
+**Read-Only Source vs Local Compute Boundary (SG10-K4)**: Studio must never mutate the selected data source (`LOCAL` or `PROD` PostgreSQL/Redis/HTTP endpoints). Local analytical compute or explicitly triggered local dev simulation jobs are permitted only when the effective selected source is local (`request.state.source.kind`; the source cookie takes precedence over the `STUDIO_SOURCE` fallback) and must be blocked when inspecting a read-only/remote source.
 Modules use the source switcher contract instead of coupling to local or production endpoints.
 
 ## Read the relevant reference

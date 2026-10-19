@@ -2,6 +2,7 @@ from pathlib import Path
 from typing import Literal
 
 from codex_core.settings import BaseCommonSettings
+from pydantic import model_validator
 from pydantic_settings import SettingsConfigDict
 
 # Root directory of the project
@@ -96,6 +97,19 @@ class FrontendSettings(BaseCommonSettings):
     asset_s3_endpoint_url: str | None = None
     asset_s3_access_key_id: str | None = None
     asset_s3_secret_access_key: str | None = None
+
+    @model_validator(mode="after")
+    def validate_production_secrets(self) -> "FrontendSettings":
+        if not self.debug and (
+            not self.secret_key.strip()
+            or self.secret_key.strip().startswith("change-me-")
+            or self.secret_key.strip().startswith("dev-")
+            or not self.backend_internal_service_key.strip()
+            or self.backend_internal_service_key.strip().startswith("change-me-")
+            or self.backend_internal_service_key.strip().startswith("dev-")
+        ):
+            raise ValueError("Production settings cannot use default or development secret keys")
+        return self
 
     model_config = SettingsConfigDict(
         env_file=BASE_DIR / ".env",

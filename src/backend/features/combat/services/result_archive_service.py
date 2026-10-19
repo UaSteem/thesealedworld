@@ -150,7 +150,17 @@ class CombatResultArchiveService:
             row = await repo.get_by_combat_id(combat_id) if combat_id else await repo.get_latest_for_character(char_id)
             if row is None:
                 return None
-            return dict(row.finalization or {})  # type: ignore
+            if char_id not in (row.participant_char_ids or []):
+                return None
+            # SQL stores a small summary; full actor/team payloads live in Mongo.
+            return {
+                "combat_id": row.combat_id,
+                "winner_team": row.winner_team,
+                "participant_char_ids": list(row.participant_char_ids or []),
+                "player_win": row.player_win,
+                "report": {"turns": row.turns, "last_turn": row.turns},
+                "meta": {**dict(row.metadata_ or {}), "battle_type": row.battle_type, "source": row.source},
+            }
 
     @staticmethod
     def _outcome_for_actor(finalization: dict[str, Any], *, char_id: int) -> str:
@@ -161,6 +171,9 @@ class CombatResultArchiveService:
             return "draw"
         viewer_team = CombatResultArchiveService._viewer_team(finalization, char_id)
         if not viewer_team:
+            # Aggregate player_win cannot identify the winning player in PvP.
+            if finalization.get("participant_char_ids") == [char_id]:
+                return "victory" if finalization.get("player_win") is True else "defeat"
             return "unknown"
         return "victory" if viewer_team == winner else "defeat"
 

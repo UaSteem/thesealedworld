@@ -5,7 +5,8 @@ description: Frontend routes, templates, design system, game UI, public site, an
 
 # TurnBasedMMORPG Frontend
 
-Frontend owns browser routes, page and fragment orchestration, view models, templates, and static assets. Keep backend internals behind API clients.
+Frontend owns browser routes, page and fragment orchestration, view models, templates, static assets, and the site database (`tbmmorpg_site`: accounts, auth, news, surveys, site Alembic migrations).
+Frontend is strictly forbidden from directly accessing the game database (`tbmmorpg_game`), Redis game state, or Mongo game collections; all game interaction must go through typed Backend HTTP/WS API clients.
 Reuse shared design classes before creating new CSS; preserve the established shell and component ownership.
 
 ## Read the relevant reference

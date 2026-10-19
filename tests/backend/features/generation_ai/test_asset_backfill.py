@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 
 import pytest
-from scripts.backfill_generated_assets_to_s3 import (
+from tools.assets.backfill_generated_assets_to_s3 import (
     backfill_generated_assets,
     content_type_for_path,
     storage_key_for_file,
@@ -39,6 +39,17 @@ def test_backfill_storage_key_preserves_relative_path(tmp_path) -> None:
 
     assert storage_key_for_file(root, path) == "monsters/clan.webp"
     assert content_type_for_path(path) == "image/webp"
+
+
+@pytest.mark.unit
+def test_backfill_storage_key_rejects_path_outside_root(tmp_path) -> None:
+    root = tmp_path / "generated"
+    root.mkdir()
+    outside = tmp_path / "private.webp"
+    outside.write_bytes(b"private")
+
+    with pytest.raises(ValueError):
+        storage_key_for_file(root, outside)
 
 
 @pytest.mark.unit

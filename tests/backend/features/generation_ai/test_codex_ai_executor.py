@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import threading
 from io import BytesIO
 from types import SimpleNamespace
 from unittest.mock import AsyncMock
@@ -9,6 +10,44 @@ from PIL import Image
 
 from src.backend.features.generation_ai.image_prompt_contract import NO_TEXT_IMAGE_CONTRACT
 from src.backend.features.generation_ai.integrations.codex_ai_executor import CodexAIExecutor
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("fail", [False, True])
+async def test_image_normalization_runs_off_loop_and_preserves_errors(monkeypatch, fail):
+    from src.backend.features.generation_ai.integrations import codex_ai_executor as module
+
+    original = module.normalize_generated_image
+    loop_thread = threading.get_ident()
+    threads = []
+
+    def normalize(*args, **kwargs):
+        threads.append(threading.get_ident())
+        if fail:
+            raise ValueError("bad image")
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(module, "normalize_generated_image", normalize)
+    storage = FakeAssetStorage()
+    executor = CodexAIExecutor(_ai_with_image_result((_tiny_png(), "image/png")), asset_storage=storage)
+    task = SimpleNamespace(
+        task_type="monster.clan_image", entity_type="monster_clan", entity_id="c", output_kind="image"
+    )
+    request = {
+        "kind": "image",
+        "prompt": "monster",
+        "model": "gemini-2.5-flash-image",
+        "content_type": "image/webp",
+        "storage_key": "monsters/test.webp",
+    }
+    if fail:
+        with pytest.raises(ValueError, match="bad image"):
+            await executor.generate(task, request)
+        storage.put_bytes.assert_not_awaited()
+    else:
+        await executor.generate(task, request)
+        storage.put_bytes.assert_awaited_once()
+    assert threads and threads[0] != loop_thread
 
 
 class FakeAssetRef:

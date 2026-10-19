@@ -107,6 +107,21 @@ class BackendSettings(BaseCommonSettings):
             raise ValueError("Partial enabled_groups cannot use 'monolith' consumer group")
         return self
 
+    @model_validator(mode="after")
+    def validate_production_secrets(self) -> "BackendSettings":
+        if not self.debug:
+            effective_key = self.frontend_internal_service_key or self.site_to_game_service_key
+            if (
+                not self.secret_key.strip()
+                or self.secret_key.strip().startswith("change-me-")
+                or self.secret_key.strip().startswith("dev-")
+                or not effective_key.strip()
+                or effective_key.strip().startswith("change-me-")
+                or effective_key.strip().startswith("dev-")
+            ):
+                raise ValueError("Production settings cannot use default or development secret keys")
+        return self
+
     world_auto_generate: bool = False
     world_generation_mode: str = "test"
     bootstrap_content_materialization_enabled: bool = True

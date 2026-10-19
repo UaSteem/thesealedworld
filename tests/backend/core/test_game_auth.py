@@ -18,6 +18,24 @@ from src.backend.core.game_auth import (
 )
 
 
+@pytest.mark.parametrize("configured", ["", "   ", "change-me-example", "dev-example"])
+async def test_internal_service_key_fails_closed_in_production(monkeypatch, configured):
+    monkeypatch.setattr(settings, "debug", False)
+    monkeypatch.setattr(settings, "frontend_internal_service_key", configured)
+    monkeypatch.setattr(settings, "site_to_game_service_key", "")
+    with pytest.raises(PermissionDeniedException, match="not configured"):
+        await require_internal_service_key(configured)
+
+
+async def test_internal_key_primary_precedence_and_debug_key(monkeypatch):
+    monkeypatch.setattr(settings, "debug", True)
+    monkeypatch.setattr(settings, "frontend_internal_service_key", "dev-test-primary")
+    monkeypatch.setattr(settings, "site_to_game_service_key", "legacy-test-key")
+    assert (await require_internal_service_key("dev-test-primary")).name == "frontend-site"
+    with pytest.raises(PermissionDeniedException, match="Invalid"):
+        await require_internal_service_key("legacy-test-key")
+
+
 @pytest.mark.unit
 def test_game_access_token_encode_decode() -> None:
     user_id = uuid4()
@@ -157,7 +175,9 @@ def test_looks_like_game_token_requires_audience() -> None:
 def test_game_character_scope_rejects_mismatched_character() -> None:
     user_id = uuid4()
     request = SimpleNamespace(
-        state=SimpleNamespace(game_token_claims=decode_game_access_token(create_game_access_token(user_id=user_id, character_id=42)))
+        state=SimpleNamespace(
+            game_token_claims=decode_game_access_token(create_game_access_token(user_id=user_id, character_id=42))
+        )
     )
     user = SimpleNamespace(id=user_id)
 

@@ -5,6 +5,7 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from pymongo import ASCENDING, ReturnDocument
+from pymongo.errors import DuplicateKeyError
 
 CHAT_BUCKET_DOCUMENT_KIND = "chat_message_bucket"
 CHAT_BUCKET_SCHEMA_VERSION = 1
@@ -42,44 +43,61 @@ class ChatBucketRepository:
         collection_name = policy["collection"]
         collection = self.database[collection_name]
         await self._ensure_indexes(collection_name)
+        message_id = message.get("id")
 
-        for shard_no in range(100):
+        shard_no = 0
+        for _attempt in range(10000):
+            if shard_no >= 100:
+                break
             bucket_id = _bucket_id(thread_id, bucket_start, shard_no)
             current = await collection.find_one(
                 {"_id": bucket_id},
-                {"message_count": 1, "closed": 1},
+                {"message_count": 1, "closed": 1, "messages.id": 1, "messages.seq": 1},
             )
+            existing = _existing_message_ref(current, message.get("id"), collection_name, bucket_id)
+            if existing is not None:
+                return existing
             current_count = int((current or {}).get("message_count") or 0)
             if current and (current.get("closed") or current_count >= self.max_bucket_messages):
                 await collection.update_one({"_id": bucket_id}, {"$set": {"closed": True}})
+                shard_no += 1
                 continue
             seq = current_count + 1
             message_with_seq = {**message, "seq": seq}
 
-            stored = await collection.find_one_and_update(
-                {"_id": bucket_id, "closed": {"$ne": True}},
-                {
-                    "$setOnInsert": {
+            try:
+                stored = await collection.find_one_and_update(
+                    {
                         "_id": bucket_id,
-                        "document_kind": CHAT_BUCKET_DOCUMENT_KIND,
-                        "schema_version": CHAT_BUCKET_SCHEMA_VERSION,
-                        "thread_id": str(thread_id),
-                        "thread_type": str(thread_type),
-                        "scope_id": scope_id,
-                        "bucket_start": bucket_start,
-                        "bucket_end": bucket_end,
-                        "bucket_granularity": policy["granularity"],
-                        "shard_no": shard_no,
-                        "closed": False,
-                        "messages": [],
+                        "closed": {"$ne": True},
+                        "message_count": current_count,
+                        **({"messages.id": {"$ne": message_id}} if message_id else {}),
                     },
-                    "$push": {"messages": message_with_seq},
-                    "$inc": {"message_count": 1},
-                    "$set": {"updated_at": datetime.now(UTC)},
-                },
-                upsert=True,
-                return_document=ReturnDocument.AFTER,
-            )
+                    {
+                        "$setOnInsert": {
+                            "_id": bucket_id,
+                            "document_kind": CHAT_BUCKET_DOCUMENT_KIND,
+                            "schema_version": CHAT_BUCKET_SCHEMA_VERSION,
+                            "thread_id": str(thread_id),
+                            "thread_type": str(thread_type),
+                            "scope_id": scope_id,
+                            "bucket_start": bucket_start,
+                            "bucket_end": bucket_end,
+                            "bucket_granularity": policy["granularity"],
+                            "shard_no": shard_no,
+                            "closed": False,
+                        },
+                        "$push": {"messages": message_with_seq},
+                        "$inc": {"message_count": 1},
+                        "$set": {"updated_at": datetime.now(UTC)},
+                    },
+                    upsert=True,
+                    return_document=ReturnDocument.AFTER,
+                )
+            except DuplicateKeyError:
+                # Optimistic CAS lost to another writer. Re-read this shard,
+                # deduplicate by ID, then retry with its current count/sequence.
+                continue
             seq = int((stored or {}).get("message_count") or seq)
             if seq >= self.max_bucket_messages:
                 await collection.update_one({"_id": bucket_id}, {"$set": {"closed": True}})
@@ -152,3 +170,12 @@ def _bucket_start(value: datetime, granularity: str) -> datetime:
 
 def _bucket_id(thread_id: str, bucket_start: datetime, shard_no: int) -> str:
     return f"chat-bucket:{thread_id}:{bucket_start.isoformat()}:{shard_no}"
+
+
+def _existing_message_ref(document: Any, message_id: Any, collection: str, bucket_id: str) -> ChatBucketRef | None:
+    if not message_id or not isinstance(document, dict):
+        return None
+    for item in document.get("messages") or []:
+        if isinstance(item, dict) and item.get("id") == message_id:
+            return ChatBucketRef(collection=collection, bucket_id=bucket_id, seq=int(item["seq"]))
+    return None

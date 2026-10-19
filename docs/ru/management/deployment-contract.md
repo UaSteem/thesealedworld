@@ -54,6 +54,18 @@ DOCKER_IMAGE_NGINX=ghcr.io/<repo>-nginx:<image_ref>
 
 ## Env и Secrets
 
+При `DEBUG=False` backend и frontend отказываются запускаться с пустыми,
+пробельными, `change-me-*` или `dev-*` ключами подписи и межсервисной авторизации.
+На backend явно заданный primary internal key имеет приоритет; legacy key
+используется только при отсутствии primary. Невалидный primary не обходится
+через legacy fallback. В debug-режиме остаются локальные dev-настройки.
+
+В локальных `docker-compose.yml`, `docker-compose.db.yml` и observability overlay
+публикация внутренних сервисов ограничена `127.0.0.1`. Публичный Nginx на обоих
+host-ах возвращает 404 для служебных API `/api/internal`, `/api/admin` и
+Swagger/OpenAPI; кабинет `/admin`, публичный API и WebSocket-маршруты сохраняются.
+Проверка конфигурации не является деплоем или разрешением перезапуска сервисов.
+
 Deploy workflow получает production `.env` из GitHub secret `ENV_FILE` и записывает его на сервер перед запуском Compose.
 
 Правила:

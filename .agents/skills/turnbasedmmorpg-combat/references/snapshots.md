@@ -5,7 +5,7 @@ belongs, and how to avoid duplicating resolver or waterfall work in catalogs or
 actor builders.
 
 Read this skill before touching:
-- `src/backend/features/combat/runtime/engine/resolver.py`
+- `src/backend/features/combat/runtime/engine/resolver/`
 - `src/backend/features/combat/runtime/engine/context_builder.py`
 - `src/shared/schemas/modifier_dto.py`
 - `src/backend/features/character/runtime/combat_math_model.py`

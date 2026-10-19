@@ -4,6 +4,10 @@ Detailed milestone history for the `src/backend` game runtime layer.
 
 ## [Unreleased]
 
+- Finished platform hardening: production key validation, loopback-only local
+  service ports, protected Nginx routes, retry-safe chat archival, SQL combat
+  result recovery and image normalization off the event loop.
+
 - Frozen the five-family Monsters alpha catalog, tier admissions, two-pool
   composition and portable benchmark evidence; documented actor issuance, Rift and Exploration migrations still needed
   for gameplay.

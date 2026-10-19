@@ -19,10 +19,11 @@ For PostgreSQL/MongoDB storage boundaries, read .agents/skills/turnbasedmmorpg-b
 ## Core Rules
 
 - Backend is a FastAPI monolith with explicit feature ownership.
-- Treat `src/backend` as the game backend: gameplay APIs, runtime state, workers, Redis streams, game schema, and backend-owned chat belong here.
-- Site auth, user/account, cabinet, library, public site rendering, and site Alembic belong to the frontend/site service, not backend.
+- Treat `src/backend` as the game backend: gameplay APIs, runtime state, workers, Redis streams, game database (`tbmmorpg_game`), Redis game state (`game:*`, `combat:*`), MongoDB collections (`tbmmorpg_analytics`), backend Alembic migrations, and backend-owned chat belong here.
+- Frontend directly owns the site database (`tbmmorpg_site`: accounts, auth, news, surveys, site Alembic migrations), but is strictly forbidden from directly accessing `tbmmorpg_game`, Redis game state, or MongoDB collections; all frontend game interactions must call Backend HTTP/WS APIs.
 - Chat should be absorbed into backend ownership as a backend feature/module; a separate chat container may still run, but it should use the backend codebase instead of a duplicated app/config/database layer.
-- Backend Alembic should own only game and chat schemas after site auth is moved out.
+- Backend Alembic owns only game and chat schemas (`tbmmorpg_game`).
+- Shared policy: `src/shared` contains cross-service enums, DTO contracts, and shared infrastructure helpers (`logging_config`, `log_middleware`, `metrics_middleware`), but must not contain domain business logic, ORM models, or service state.
 - Game APIs that receive `character_id` must verify `current_user.id == character.user_id`; do not rely on client-provided ownership.
 - FastAPI endpoint signatures are runtime contracts. Do not hide endpoint parameter, response, or dependency annotation types behind `if TYPE_CHECKING:` in `api/router.py` or dependency signatures. Import those types at runtime; if that creates an import cycle, fix the module boundary or dependency alias instead of making FastAPI introspection see an unresolved type.
 - A feature owns its DTOs, API/services, integrations, events, runtime code, workers, and feature-specific orchestration.

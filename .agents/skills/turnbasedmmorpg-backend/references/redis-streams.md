@@ -95,6 +95,8 @@ async def on_combat_snapshot_requested(payload: dict) -> None:
 
 The service method internally parses `player_ids`, builds snapshots, and publishes the reply. The handler does not touch `correlation_id`, `redis.lpush`, payload parsing, or error formatting.
 
+**Correlation ID Context (SG10-K5)**: `LogContextMiddleware` owns HTTP correlation context. For stream consumers, inspect the installed bus wrapper before relying on automatic binding: bind event metadata at the consumer boundary if it is not already bound, preserve it downstream, and clear/restore context after processing. Avoid duplicate or conflicting handler-level binding. Standalone tasks/CLI must establish context at their entrypoint; `@logged_task` already binds task metadata.
+
 **Never put reply mechanics, error recovery, or payload parsing in a handler.** All of that belongs in the service or integration layer.
 
 `character.combat_snapshots_requested` prepares temporary combat actor projections from `game:ac:<char_id>` and monster runtime sources. It must not be used as the live character session itself. The live selected-character runtime document is `game:ac:<char_id>`; snapshot keys such as `game:actor:snapshot:*` are derived transport/cache objects for combat sessions.

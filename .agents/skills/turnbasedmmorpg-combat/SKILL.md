@@ -8,6 +8,14 @@ description: Combat snapshots, resolver formulas, modifiers, triggers, and log r
 Keep snapshot construction, resolver calculations, and modifier aggregation in their owning layers. Do not precompute resolver-only values in catalogs or actor builders.
 Preserve trigger DTO, catalog, merge, weapon, and event-text contracts when changing combat logs.
 
+## Lifecycle, Fencing & Determinism (SG10-W1, SG10-W4)
+
+Apply these principles to affected runtime work; verify the owning manager/commit contract rather than assuming all existing paths already meet them.
+
+- **Lock Fencing & Revision Checks (SG10-W1)**: Combat session commits and state exchanges must verify lease ownership and snapshot revisions (`combat:rbc:*`) before writing to prevent stale workers from overwriting active rounds.
+- **Deterministic Simulation (SG10-W4)**: The combat resolver and all combat simulations must use isolated `random.Random(seed)` instances. Never invoke global `random.seed()`. Stabilize unordered candidate collections before random selection; preserve deliberate action priority and execution order.
+- **Bounded Redis Batch Writes (SG10-W4)**: Combat logs, actor projection snapshots, and round queues in Redis must enforce bounded batching and trimmed queues to prevent unbounded memory growth.
+
 ## Read the relevant reference
 
 | Task | Reference |

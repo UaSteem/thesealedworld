@@ -63,7 +63,11 @@ async def require_internal_service_key(
     x_internal_service_key: str | None = Header(default=None, alias="X-Internal-Service-Key"),
 ) -> InternalServiceIdentity:
     configured = _service_key()
-    if not configured or configured.startswith("change-me-"):
+    if (
+        not configured.strip()
+        or configured.strip().startswith("change-me-")
+        or (not settings.debug and configured.strip().startswith("dev-"))
+    ):
         raise PermissionDeniedException("Internal service key is not configured")
     if not x_internal_service_key or not secrets.compare_digest(x_internal_service_key, configured):
         raise PermissionDeniedException("Invalid internal service key")

@@ -229,7 +229,7 @@ content: публичный контракт сайта остаётся `/stati
 Перед переносом production assets сначала выполнить dry-run:
 
 ```powershell
-uv run python scripts/backfill_generated_assets_to_s3.py --local-root var/generated-assets --dry-run
+uv run python -m tools.assets.backfill_generated_assets_to_s3 --local-root var/generated-assets --dry-run
 ```
 
 Реальный backfill должен копировать файлы, а не регенерировать изображения. Старый volume нужно оставить
