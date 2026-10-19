@@ -787,3 +787,45 @@ credential migration or gameplay change occurred. develop remains unprotected an
 writable intentionally for existing one-task-at-a-time workflow. Admin retains
 ability to edit settings; enforcement covers ordinary branch/deployment operations.
 State: reviewed-awaiting-acceptance for configuration, A08-11 operational partial.
+
+### Следующий отдельный шаг: подключение workflow (2026-10-20)
+
+Исходный запрос: «подключим workflow к защите production. С ревизором,
+так же по одной задаче: проверяешь, коммитишь и ждёшь команды.
+Сам деплой пока не запускай».
+R13: проверить и подготовить подключение всех production SSH/SCP операций к
+protected environment production; сохранить ручной запуск без deployment run.
+R14: независимый reviewer; проверка, local commit, остановка. Secrets не менять.
+R15: публикация не подразумевается из прежнего local-only порядка: выбор между
+отдельным published PR (без merge) и local-only проверкой запрошен кнопками;
+до ответа внешних git writes не выполнять.
+План: сверить текущий local/remote workflow, проверить gate и тесты, независимая
+ревизия; после выбора владельца выполнить только разрешённую часть и commit.
+Наблюдение: local blob d0efd7a3cb59be932f508229d5b02f69fa771bdb уже содержит
+подключение, remote main blob cec3408611b7a8952003c77230f53eb9030a80e5 отличается.
+R13 implementation pending verification; R14/R15 pending.
+
+### Отложено владельцем: обязательная проверка перед выпуском
+
+2026-10-20 владелец решил: «можно пока пропустить этот этап, develop в main
+пока рано заливать», затем остановил работу. По отдельному поручению оставлена
+эта заметка для подготовки будущего выпуска. Публикация подключения отложена;
+само наличие заметки не разрешает merge, push или deployment.
+
+- [ ] При подготовке PR develop → main проверить, что итоговый
+  `.github/workflows/deploy-production.yml` содержит `environment: production`
+  у job со ВСЕМИ SSH/SCP операциями, включая проверку подключения.
+- [ ] Перед выпуском повторно проверить реальные production rules: reviewer
+  CodexDLC, разрешённая branch main, отсутствие admin bypass и выбранный self-review.
+- [ ] После разрешённого слияния проверить опубликованный workflow в main;
+  до этого НЕ считать approval действующим для старого remote workflow.
+- [ ] Отдельно решить перенос ENV_FILE/HOST/SSH_KEY/USERNAME из repository secrets
+  в production environment; значения GitHub обратно не отдаёт. Не удалять старые
+  secrets до подготовки и проверки замены. Это остаётся открытым пунктом A08-11.
+
+Подключение локально уже реализовано в d5218eef. Повторная проверка ведущего:
+82 tests passed. Независимый workflow_connection_review подтвердил локальную
+цепочку и отдельно выполнил 82 tests (exit 0); remote main без environment.
+R13 local pass / remote deferred; R14 review pass; R15 pass (публикация отложена).
+Новых изменений workflow, push/PR/merge/deploy не было. Эта запись — напоминание
+в том же плане, а не завершение operational A08-11 и не новый этап реализации.
