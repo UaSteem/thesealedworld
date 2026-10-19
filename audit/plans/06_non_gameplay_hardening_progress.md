@@ -317,3 +317,15 @@ Live project hook: `No known vulnerabilities found`; только сам unpubli
 Commit subject: `fix(quality): audit project dependencies and apply security updates`.
 Production и `.env` не менялись. Другие задачи группы 5 не выполняются без команды;
 удаление broken source выше — prerequisite одобренного обновления, не аттестация CI.
+
+
+### Дополнение: актуализация тестов аналитики сайта
+
+По отдельному поручению владельца заменены три устаревшие проверки числовых
+счётчиков боёв/сценариев/путешествий. Проверяется текущий контракт: `—`, пояснение
+про Studio, корректные key/title и отсутствие HTTP-запросов через backend client.
+Runtime не менялся. Проверки: модуль аналитики **7 passed**; прежний широкий набор
+frontend/shared/studio/tg_bot/backend core/realtime/chat/generation_ai —
+**946 passed, 17 skipped** (четыре warning). Прежних трёх сбоев больше нет.
+Это адресная проверка и повтор прежнего набора, не полный project gate.
+Локальный вывод: `var/audit/site_analytics_updated_tests.txt` (ignored).

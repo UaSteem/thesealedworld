@@ -76,56 +76,32 @@ async def test_registrations_provider_counts_site_users(monkeypatch) -> None:
 
 
 @pytest.mark.unit
-async def test_active_combats_provider_counts_backend_sessions(monkeypatch) -> None:
-    class FakeCombatSessionsApi:
-        def __init__(self, *, client: object, base_url: str) -> None:
-            self.client = client
-            self.base_url = base_url
+@pytest.mark.parametrize(
+    ("provider_name", "key", "title"),
+    [
+        ("_active_combats_provider", "active_combats", "Активных боёв"),
+        ("_active_scenarios_provider", "active_scenarios", "Активных сценариев"),
+        ("_active_travels_provider", "active_travels", "Активных путешествий"),
+    ],
+)
+async def test_active_sessions_provider_defers_to_studio_without_http_requests(provider_name, key, title) -> None:
+    requests = []
 
-        async def list_active(self) -> list[dict]:
-            return [{"session_id": "c1"}, {"session_id": "c2"}]
+    def record_request(request: httpx.Request) -> httpx.Response:
+        requests.append(request)
+        return httpx.Response(200, json=[])
 
-    monkeypatch.setattr(site_analytics, "CombatSessionsApi", FakeCombatSessionsApi, raising=False)
+    async with httpx.AsyncClient(transport=httpx.MockTransport(record_request)) as client:
+        request = _provider_request()
+        request.app.state.backend_http_client = client
 
-    metric = await site_analytics._active_combats_provider(_provider_request())
+        metric = await getattr(site_analytics, provider_name)(request)
 
-    assert metric.value == "2"
-    assert metric.subtitle == "game backend"
-
-
-@pytest.mark.unit
-async def test_active_scenarios_provider_counts_backend_sessions(monkeypatch) -> None:
-    class FakeScenarioSessionsApi:
-        def __init__(self, *, client: object, base_url: str) -> None:
-            self.client = client
-            self.base_url = base_url
-
-        async def list_active(self) -> list[dict]:
-            return [{"session_id": "s1"}]
-
-    monkeypatch.setattr(site_analytics, "ScenarioSessionsApi", FakeScenarioSessionsApi, raising=False)
-
-    metric = await site_analytics._active_scenarios_provider(_provider_request())
-
-    assert metric.value == "1"
-    assert metric.subtitle == "game backend"
-
-
-@pytest.mark.unit
-async def test_active_travels_provider_reports_backend_unavailable(monkeypatch) -> None:
-    class FakeExplorationSessionsApi:
-        def __init__(self, *, client: object, base_url: str) -> None:
-            pass
-
-        async def list_active(self) -> list[dict]:
-            raise httpx.RequestError("offline")
-
-    monkeypatch.setattr(site_analytics, "ExplorationSessionsApi", FakeExplorationSessionsApi, raising=False)
-
-    metric = await site_analytics._active_travels_provider(_provider_request())
-
-    assert metric.value == "0"
-    assert metric.subtitle == "game backend недоступен"
+    assert metric.key == key
+    assert metric.title == title
+    assert metric.value == "—"
+    assert metric.subtitle == "Операторская диагностика доступна в Studio"
+    assert requests == []
 
 
 async def _ok_response(request: Request) -> Response:
