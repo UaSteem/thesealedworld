@@ -25,7 +25,12 @@ chmod 755 /opt /opt/turnbasedmmorpg /opt/turnbasedmmorpg/deploy
 cd /opt/turnbasedmmorpg/deploy
 export ENV_FILE_CONTENT='TEST_VALUE=canary-env-content
 DOCKER_IMAGE_SITE=old-image'
-export REPO_LOWER=example/project IMAGE_REF=synthetic-sha
+export IMAGE_SITE=ghcr.io/example/project-site@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+export IMAGE_GAME=ghcr.io/example/project-game@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+export IMAGE_CHAT=ghcr.io/example/project-chat@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+export IMAGE_WORKER=ghcr.io/example/project-worker@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+export IMAGE_TG_BOT=ghcr.io/example/project-tg-bot@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
+export IMAGE_NGINX=ghcr.io/example/project-nginx@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 """
     if existing != "missing":
         setup += "echo old-content > /tmp/original-env\nchmod 666 /tmp/original-env\n"
@@ -52,7 +57,7 @@ printf() {
 [ "$(stat -c '%a' .env)" = 600 ]
 [ "$(stat -c '%u' .env)" = "$(id -u)" ]
 grep -Fxq 'TEST_VALUE=canary-env-content' .env
-grep -Fxq 'DOCKER_IMAGE_SITE=ghcr.io/example/project-site:synthetic-sha' .env
+grep -Fxq 'DOCKER_IMAGE_SITE=ghcr.io/example/project-site@sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb' .env
 [ "$(grep -c '^DOCKER_IMAGE_' .env)" = 6 ]
 su -s /bin/sh nobody -c '[ "$(id -u)" != 0 ]'
 ! su -s /bin/sh nobody -c 'cat /opt/turnbasedmmorpg/deploy/.env >/dev/null 2>&1'

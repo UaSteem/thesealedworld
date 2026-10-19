@@ -19,7 +19,7 @@
 | 2 | Воспроизводимые миграции сайта на пустой PostgreSQL и обновление существующей схемы | A05-13 | Исправлено и проверено; остановка до команды на шаг 3 |
 | 3 | Токены и персональные данные в логах и метриках | A08-05/06/07 | Исправлено и проверено; остановка до команды на шаг 4 |
 | 4 | Logout, expiry/revoke открытых WebSocket и атомарная ротация refresh | A07-10/16, A05-12 | Исправлено и проверено; остановка до команды на шаг 5 |
-| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12, 5.2 A06-12, 5.3 A06-05 и 5.4 A06-06 исправлены; остальные задачи группы ждут команды |
+| 5 | Источники зависимостей, develop behavioral gate, artifact-to-deploy gate и права env-файла | A06-05/06/09/12, A08-09/10/11/12 | 5.1 A08-12, 5.2 A06-12, 5.3 A06-05, 5.4 A06-06 и 5.5 A06-09 исправлены; остальные задачи группы ждут команды |
 | 6 | Восстановление Streams pending с доказанной идемпотентностью эффектов | A05-05 | Ждёт команды |
 | 7 | Надёжное принятие и восстановление GenerationAI; срок жизни SQL-транзакций | A04-11/12/13/18, A05-07/08, A09-09 | Ждёт команды; перед реализацией разделить |
 | 8 | Производительность архива чата, backpressure, Mongo projection, предел истории вкладки | A09-03/04/08/11 | Ждёт команды; перед реализацией разделить |
@@ -411,3 +411,43 @@ Hosted workflow и required-check/branch-protection settings не запуска
 версии библиотек, env-файлы и секреты не менялись. A06-09/A08-11 deploy gate,
 A08-09 action refs и более широкий A08-10 artifact provenance остаются отдельными
 задачами. Остановка до следующей команды.
+
+
+## Шаг 5.5
+
+**A06-09 — привязка deploy к successful quality/build: исправлено локально.**
+
+`Build Release Images` после Quality Gate и шести успешных build/push шагов
+публикует manifest `release-images-<run_attempt>`. Он фиксирует repository,
+run/attempt, source SHA, version и шесть digest outputs build action.
+Manual deploy сохраняет `image_ref`, дополнительно требует `build_run_id`.
+Первый job проверяет через authenticated Actions API точный workflow/repository,
+completed success run, оба успешных jobs одной attempt, artifact origin/digest,
+manifest identity и соответствие image_ref. Неизвестные, failed/cancelled,
+foreign, просроченные, неполные и подменённые данные блокируются до SSH/SCP.
+Bounded ZIP читается без extraction, API bearer не уходит signed storage URL.
+
+В `.env` передаются immutable `ghcr.io/...@sha256:...`, deploy configs checkout
+по проверенному build SHA. Tags после проверки не могут подменить deployment.
+Старые builds без manifest больше не подходят: нужен новый successful build.
+Retention 90 дней с учётом организации, rerun требует Re-run all jobs.
+A08-09 mutable action roots, A08-11 approvals/ref/concurrency и более широкий
+A08-10 source policy остаются отдельными задачами.
+
+Проверка 19.10.2026: `pytest tests/deploy --no-cov -q` с
+`RUN_ENV_FILE_CONTAINER_TEST=1 RUN_NGINX_CONTAINER_TEST=1` — **73 passed**.
+В том числе 37 тестов promotion: successful SHA/version, failed/cancelled/pending,
+foreign workflow/repository, skipped quality/failed build, wrong attempt,
+expired/missing manifest, ref/source/digest mismatch, invalid immutable refs,
+ZIP traversal, rerun race, malformed API, network failure без вывода токенов,
+manifest CLI и запрет пересылки bearer signed download. Workflow graph проверяет
+обязательный gate для обоих SSH jobs и config checkout по verified SHA.
+Ruff check/format и focused mypy helper (1 source file) прошли.
+Итоговая приёмка включает все Docker opt-in tests: настоящие Linux env
+permissions и Nginx, а также положительный verify-CLI output test.
+Evidence: `var/audit/a0609-deploy-tests.txt` и `a0609-mypy.txt` (ignored).
+
+Hosted Actions, реальные GHCR build/push/download и production не запускались;
+проверки API используют локальные fixtures по official API contract. Полный
+project gate не заявляется. Gameplay, зависимости, production env и secrets
+не менялись. После commit остановка до следующей команды владельца.

@@ -1,5 +1,16 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Шаг 5.5 технической очереди — 19.10.2026
+
+- [x] **A06-09:** successful quality/build текущей attempt и manifest всех шести
+  image digests обязательны до SSH/SCP. `build_run_id` связан с `image_ref`,
+  deploy использует immutable digests и configs того же verified source SHA.
+- **72 passed** с Docker env permissions и Nginx, затем **37 passed** в финальном
+  узком gate-наборе с дополнительной positive CLI проверкой; Ruff и focused mypy
+  прошли. [Evidence и ограничения](plans/06_non_gameplay_hardening_progress.md#шаг-55).
+- Hosted Actions/GHCR и production не запускались. A08-09 action roots,
+  A08-10 source policy и A08-11 governance/concurrency отдельно.
+
 ## Шаг 5.4 технической очереди — 19.10.2026
 
 - [x] **A06-06:** отдельный behavioral status для push develop и PR base develop,
@@ -870,6 +881,8 @@ Canonical объединяет лишь полный дубль: одна при
 - **Trigger / impact:** Manual image_ref без gate/provenance verification → Непроверенный artifact eligible к deploy.
 - **Необходимая проверка:** Reject unknown/failed artifact before SSH; tested immutable ref accepted. **Ограничения:** External organisational controls не установлены; deploy не запускался.
 - **Canonical:** A06-09. **Связи:** Частичные A08-11 governance и A08-09 mutable chain.
+
+- **Статус 19.10.2026:** Исправлено локально: deploy требует successful build run + текущую attempt, оба quality/build jobs и manifest с шестью immutable digests; любые несовпадения блокируются до SSH/SCP. Config checkout по тому же SHA. Проверка и ограничения: `audit/plans/06_non_gameplay_hardening_progress.md`, шаг 5.5. Hosted Actions/production не запускались; A08-11 governance и A08-09 mutable action roots остаются отдельными.
 
 ### A06-10 — Coverage защищает общий объём statements, не patch/branches
 

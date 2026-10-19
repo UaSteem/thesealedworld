@@ -103,18 +103,50 @@ deploy/compose.prod.yml
 
 ## Image Contract
 
-Production deploy принимает один `image_ref` и выставляет layer images:
+Production deploy требует `build_run_id` успешного **Build Release Images** и
+`image_ref`: полный commit SHA или version из manifest именно этого run.
+`latest`, сокращённый SHA и произвольный tag не принимаются.
+
+После Quality Gate и успешной публикации всех шести образов build workflow
+сохраняет artifact `release-images-<run_attempt>` с `release-images.json`.
+Manifest содержит repository, run ID/attempt, source SHA, version и digest каждого
+образа из outputs `docker/build-push-action`. Публикация manifest при ошибке
+любого build step не выполняется.
+
+Первый job deploy обращается к authenticated GitHub Actions API с `actions: read`.
+До любого SSH/SCP он проверяет repository и workflow identity, successful completed
+run, успешные Quality Gate и Build and Push Images текущей попытки, origin и
+SHA-256 архива manifest, совпадение manifest с run и выбранным `image_ref`.
+Любая API/network ошибка, отсутствующий/просроченный artifact, неполный список
+(более 100 jobs/artifacts) или несовпадение блокируют продолжение. Manifest
+читается из ограниченного ZIP без извлечения файлов; API token не передаётся
+на signed storage URL. Перед выдачей разрешения повторно проверяется run attempt.
+
+В `.env` попадают только проверенные immutable references, например:
 
 ```text
-DOCKER_IMAGE_SITE=ghcr.io/<repo>-site:<image_ref>
-DOCKER_IMAGE_GAME=ghcr.io/<repo>-game:<image_ref>
-DOCKER_IMAGE_CHAT=ghcr.io/<repo>-chat:<image_ref>
-DOCKER_IMAGE_WORKER=ghcr.io/<repo>-worker:<image_ref>
-DOCKER_IMAGE_TG_BOT=ghcr.io/<repo>-tg-bot:<image_ref>
-DOCKER_IMAGE_NGINX=ghcr.io/<repo>-nginx:<image_ref>
+DOCKER_IMAGE_SITE=ghcr.io/<repo>-site@sha256:<64 hex characters>
+DOCKER_IMAGE_GAME=ghcr.io/<repo>-game@sha256:<64 hex characters>
+DOCKER_IMAGE_CHAT=ghcr.io/<repo>-chat@sha256:<64 hex characters>
+DOCKER_IMAGE_WORKER=ghcr.io/<repo>-worker@sha256:<64 hex characters>
+DOCKER_IMAGE_TG_BOT=ghcr.io/<repo>-tg-bot@sha256:<64 hex characters>
+DOCKER_IMAGE_NGINX=ghcr.io/<repo>-nginx@sha256:<64 hex characters>
 ```
 
-Для production rollback использовать commit SHA или release tag. `latest` может существовать как удобный alias, но не должен быть единственным production target.
+Deploy configs checkout использует проверенный source SHA того же build,
+а не текущий HEAD dispatch branch. Изменение GHCR tag после проверки не меняет
+выбранные image digests. Rollback выбирает предыдущий успешный build run с
+доступным manifest, а также его SHA/version. Старые builds без manifest не имеют
+fallback; сначала нужен новый successful Build Release Images. Artifact хранится
+90 дней (организационная retention policy может сократить срок). Для rerun
+использовать **Re-run all jobs**: gate требует оба успешных jobs одной попытки.
+
+Это связь результата quality/build с promotion, не криптографическая attestation
+всей supply chain: source/action-ref governance, approvals, concurrency и
+доступность образов в registry остаются отдельными operational gates.
+Hosted Actions и production этой локальной проверкой не подтверждаются.
+Форматы API: [artifacts](https://docs.github.com/en/rest/actions/artifacts),
+[workflow jobs](https://docs.github.com/en/rest/actions/workflow-jobs).
 
 ## Env и Secrets
 

@@ -14,20 +14,48 @@ on:
           - tg-bot
           - full
       image_ref:
-        description: "Image tag or commit SHA to deploy"
+        description: "Release version or full commit SHA from the selected successful build"
+        required: true
+        type: string
+
+      build_run_id:
+        description: "Successful Build Release Images run ID (must include image manifest)"
         required: true
         type: string
 
 permissions:
   contents: read
+  actions: read
   packages: read
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 jobs:
+  verify-images:
+    name: Verify successful image build
+    runs-on: ubuntu-latest
+    outputs:
+      head_sha: ${{ steps.verify.outputs.head_sha }}
+      image_site: ${{ steps.verify.outputs.image_site }}
+      image_game: ${{ steps.verify.outputs.image_game }}
+      image_chat: ${{ steps.verify.outputs.image_chat }}
+      image_worker: ${{ steps.verify.outputs.image_worker }}
+      image_tg_bot: ${{ steps.verify.outputs.image_tg_bot }}
+      image_nginx: ${{ steps.verify.outputs.image_nginx }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Verify build and immutable image manifest
+        id: verify
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BUILD_RUN_ID: ${{ inputs.build_run_id }}
+          IMAGE_REF: ${{ inputs.image_ref }}
+        run: python3 -I tools/deploy/verified_images.py verify --run-id "$BUILD_RUN_ID" --image-ref "$IMAGE_REF" --output "$GITHUB_OUTPUT"
+
   preflight:
     name: Check Server Availability
+    needs: verify-images
     runs-on: ubuntu-latest
     steps:
       - name: Test SSH Connection
@@ -40,14 +68,12 @@ jobs:
 
   deploy:
     name: Deploy ${{ inputs.layer }}
-    needs: preflight
+    needs: [verify-images, preflight]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-
-      - name: Lowercase repo name
-        shell: bash
-        run: echo "REPO_LOWER=${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+        with:
+          ref: ${{ needs.verify-images.outputs.head_sha }}
 
       - name: Copy deploy configs to server
         uses: appleboy/scp-action@v1.0.0
@@ -65,8 +91,12 @@ jobs:
         uses: appleboy/ssh-action@v1.2.5
         env:
           DEPLOY_LAYER: ${{ inputs.layer }}
-          IMAGE_REF: ${{ inputs.image_ref }}
-          REPO_LOWER: ${{ env.REPO_LOWER }}
+          IMAGE_SITE: ${{ needs.verify-images.outputs.image_site }}
+          IMAGE_GAME: ${{ needs.verify-images.outputs.image_game }}
+          IMAGE_CHAT: ${{ needs.verify-images.outputs.image_chat }}
+          IMAGE_WORKER: ${{ needs.verify-images.outputs.image_worker }}
+          IMAGE_TG_BOT: ${{ needs.verify-images.outputs.image_tg_bot }}
+          IMAGE_NGINX: ${{ needs.verify-images.outputs.image_nginx }}
           GITHUB_ACTOR: ${{ github.actor }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENV_FILE_CONTENT: ${{ secrets.ENV_FILE }}
@@ -74,7 +104,7 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
-          envs: DEPLOY_LAYER,IMAGE_REF,REPO_LOWER,GITHUB_ACTOR,GITHUB_TOKEN,ENV_FILE_CONTENT
+          envs: DEPLOY_LAYER,IMAGE_SITE,IMAGE_GAME,IMAGE_CHAT,IMAGE_WORKER,IMAGE_TG_BOT,IMAGE_NGINX,GITHUB_ACTOR,GITHUB_TOKEN,ENV_FILE_CONTENT
           script: |
             set -euo pipefail
 
@@ -97,12 +127,12 @@ jobs:
               fi
             }
 
-            update_var "DOCKER_IMAGE_SITE" "ghcr.io/${REPO_LOWER}-site:${IMAGE_REF}"
-            update_var "DOCKER_IMAGE_GAME" "ghcr.io/${REPO_LOWER}-game:${IMAGE_REF}"
-            update_var "DOCKER_IMAGE_CHAT" "ghcr.io/${REPO_LOWER}-chat:${IMAGE_REF}"
-            update_var "DOCKER_IMAGE_WORKER" "ghcr.io/${REPO_LOWER}-worker:${IMAGE_REF}"
-            update_var "DOCKER_IMAGE_TG_BOT" "ghcr.io/${REPO_LOWER}-tg-bot:${IMAGE_REF}"
-            update_var "DOCKER_IMAGE_NGINX" "ghcr.io/${REPO_LOWER}-nginx:${IMAGE_REF}"
+            update_var "DOCKER_IMAGE_SITE" "${IMAGE_SITE}"
+            update_var "DOCKER_IMAGE_GAME" "${IMAGE_GAME}"
+            update_var "DOCKER_IMAGE_CHAT" "${IMAGE_CHAT}"
+            update_var "DOCKER_IMAGE_WORKER" "${IMAGE_WORKER}"
+            update_var "DOCKER_IMAGE_TG_BOT" "${IMAGE_TG_BOT}"
+            update_var "DOCKER_IMAGE_NGINX" "${IMAGE_NGINX}"
 
             chmod 600 "$env_tmp"
             mv -fT -- "$env_tmp" .env

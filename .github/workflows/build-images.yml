@@ -66,6 +66,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and Push Site
+        id: image_site
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -79,6 +80,7 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ env.REPO_LOWER }}-site:buildcache,mode=max
 
       - name: Build and Push Game
+        id: image_game
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -92,6 +94,7 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ env.REPO_LOWER }}-game:buildcache,mode=max
 
       - name: Build and Push Chat
+        id: image_chat
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -105,6 +108,7 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ env.REPO_LOWER }}-chat:buildcache,mode=max
 
       - name: Build and Push Worker
+        id: image_worker
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -118,6 +122,7 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ env.REPO_LOWER }}-worker:buildcache,mode=max
 
       - name: Build and Push Telegram Bot
+        id: image_tg_bot
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -131,6 +136,7 @@ jobs:
           cache-to: type=registry,ref=ghcr.io/${{ env.REPO_LOWER }}-tg-bot:buildcache,mode=max
 
       - name: Build and Push Nginx
+        id: image_nginx
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -142,3 +148,21 @@ jobs:
             ghcr.io/${{ env.REPO_LOWER }}-nginx:latest
           cache-from: type=registry,ref=ghcr.io/${{ env.REPO_LOWER }}-nginx:buildcache
           cache-to: type=registry,ref=ghcr.io/${{ env.REPO_LOWER }}-nginx:buildcache,mode=max
+
+      - name: Record verified image digests
+        env:
+          DIGEST_SITE: ${{ steps.image_site.outputs.digest }}
+          DIGEST_GAME: ${{ steps.image_game.outputs.digest }}
+          DIGEST_CHAT: ${{ steps.image_chat.outputs.digest }}
+          DIGEST_WORKER: ${{ steps.image_worker.outputs.digest }}
+          DIGEST_TG_BOT: ${{ steps.image_tg_bot.outputs.digest }}
+          DIGEST_NGINX: ${{ steps.image_nginx.outputs.digest }}
+        run: python3 -I tools/deploy/verified_images.py manifest --run-id "$GITHUB_RUN_ID" --output release-images.json
+
+      - name: Publish verified image manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-images-${{ github.run_attempt }}
+          path: release-images.json
+          if-no-files-found: error
+          retention-days: 90
