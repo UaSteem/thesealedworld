@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any
 
-from src.frontend.core.api import BaseApiClient
+from src.frontend.integrations.backend_api.operator import OperatorApiClient
 
 
 @dataclass(frozen=True)
@@ -47,7 +47,7 @@ class ConfigEntryDTO:
         )
 
 
-class GameConfigApi(BaseApiClient):
+class GameConfigApi(OperatorApiClient):
     async def list_namespace(self, namespace: str) -> list[ConfigEntryDTO]:
         raw = await self._request("GET", f"/api/internal/config/{namespace}")
         items: list[dict] = raw.get("data", raw) if isinstance(raw, dict) and "data" in raw else raw  # type: ignore[assignment]

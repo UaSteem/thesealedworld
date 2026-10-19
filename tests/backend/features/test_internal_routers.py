@@ -6,7 +6,7 @@ import pytest
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from src.backend.core.operator_auth import require_operator_read
+from src.backend.core.operator_auth import require_operator_read, require_operator_write
 from src.backend.features.combat.api.internal_router import router as combat_internal_router
 from src.backend.features.exploration.api.internal_router import router as exploration_internal_router
 from src.backend.features.game_config.api.router import router as game_config_router
@@ -16,6 +16,7 @@ from src.backend.features.scenario.api.internal_router import router as scenario
 def _make_app(*routers) -> FastAPI:
     app = FastAPI()
     app.dependency_overrides[require_operator_read] = lambda: None
+    app.dependency_overrides[require_operator_write] = lambda: None
     for r in routers:
         app.include_router(r)
     return app

@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Annotated, cast
 from fastapi import APIRouter, Depends, Request
 
 from src.backend.core.database import get_db
+from src.backend.core.operator_auth import require_operator_read, require_operator_write
 from src.backend.features.generation_ai.bootstrap import build_generation_ai_registry
 from src.backend.features.generation_ai.dto import (
     AIGenerationOutputKind,
@@ -20,14 +21,18 @@ from src.backend.features.generation_ai.tasks_news import build_news_cover_image
 if TYPE_CHECKING:
     from src.backend.features.generation_ai.models import AIGenerationTask
 
-router = APIRouter(prefix="/api/admin/generation-ai", tags=["generation-ai-admin"])
+router = APIRouter(
+    prefix="/api/admin/generation-ai", tags=["generation-ai-admin"], dependencies=[Depends(require_operator_read)]
+)
 
 
 def get_generation_task_repository(db_session=Depends(get_db)) -> AIGenerationTaskRepository:
     return AIGenerationTaskRepository(db_session)
 
 
-@router.post("/news-covers", response_model=AIGenerationTaskCreateResponseDTO)
+@router.post(
+    "/news-covers", response_model=AIGenerationTaskCreateResponseDTO, dependencies=[Depends(require_operator_write)]
+)
 async def request_news_cover_generation(
     payload: NewsCoverGenerationRequestDTO,
     request: Request,

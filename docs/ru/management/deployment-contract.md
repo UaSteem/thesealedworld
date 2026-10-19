@@ -18,7 +18,25 @@ read/write ключей отключает write-доступ. Без настр
 закрыты даже при прямом обращении к backend. Значения ключей задаются оператором
 в окружении, не сохраняются в репозитории.
 
-Studio передаёт только read key выбранного источника: `LOCAL_OPERATOR_READ_KEY`
+Те же права обязательны на `/api/internal/config`,
+`/api/admin/generation-ai` и `/api/admin/combat-ai`: GET требует read-capability,
+PATCH/DELETE/POST (включая reset, запуск/очистку симуляций и генерацию обложек)
+требует write-capability. Gate находится на backend router и действует также
+при прямом обращении, до работы с хранилищем или очередью.
+
+Frontend admin callers получают явные серверные `BACKEND_OPERATOR_READ_KEY` и
+`BACKEND_OPERATOR_WRITE_KEY`, соответствующие backend operator keys. Они не
+подставляются из обычного site-service key, не приходят из браузерных форм и
+не публикуются в HTML. Существующий `/admin` gate по superuser остаётся обязательным.
+Пустые настройки оставляют privileged API закрытыми; реальные значения задаются
+оператором отдельно, автоматического изменения `.env` нет.
+
+Для локальных операций Studio дополнительно допускается `LOCAL_OPERATOR_WRITE_KEY`.
+У production source write key отсутствует; simulation/config clients запрещают
+мутации выбранного удалённого источника до HTTP-запроса. Это не заменяет отдельную
+задачу общего входа в Studio и read-only enforcement инфраструктурных клиентов.
+
+При чтении диагностики Studio передаёт read key выбранного источника: `LOCAL_OPERATOR_READ_KEY`
 или `PROD_OPERATOR_READ_KEY`. При переключении источника ключ другого источника
 не используется. Обычный frontend service key не предоставляет диагностических
 прав; site widgets не запрашивают операторские endpoints и показывают «—»

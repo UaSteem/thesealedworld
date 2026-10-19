@@ -27,16 +27,16 @@ def _keys() -> tuple[str, str]:
 
 
 async def require_operator_read(
-    key: Annotated[str | None, Header(alias="X-Operator-Key")] = None,
+    operator_key: Annotated[str | None, Header(alias="X-Operator-Key")] = None,
 ) -> None:
     allowed = tuple(value for value in _keys() if value)
-    if not key or not any(secrets.compare_digest(key.encode(), value.encode()) for value in allowed):
+    if not operator_key or not any(secrets.compare_digest(operator_key.encode(), value.encode()) for value in allowed):
         raise PermissionDeniedException("Operator read access required")
 
 
 async def require_operator_write(
-    key: Annotated[str | None, Header(alias="X-Operator-Key")] = None,
+    operator_key: Annotated[str | None, Header(alias="X-Operator-Key")] = None,
 ) -> None:
     _, write = _keys()
-    if not write or not key or not secrets.compare_digest(key.encode(), write.encode()):
+    if not write or not operator_key or not secrets.compare_digest(operator_key.encode(), write.encode()):
         raise PermissionDeniedException("Operator write access required")

@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import Literal
 
 from codex_core.settings import BaseCommonSettings
-from pydantic import model_validator
+from pydantic import Field, model_validator
 from pydantic_settings import SettingsConfigDict
 
 # Root directory of the project
@@ -30,6 +30,8 @@ class FrontendSettings(BaseCommonSettings):
     play_health_timeout_seconds: float = 1.0
     backend_internal_service_key: str = "dev-site-to-game-service-key"  # pragma: allowlist secret
     backend_internal_service_header: str = "X-Internal-Service-Key"
+    backend_operator_read_key: str = Field(default="", repr=False)
+    backend_operator_write_key: str = Field(default="", repr=False)
     active_character_cookie_secure: bool = False
     game_token_cookie_secure: bool = False
     auth_cookie_secure: bool = False

@@ -56,7 +56,14 @@ _TACTICAL_SKILL_CHARTS = {
 
 def _api(request: Request) -> CombatAiTestingApi:
     client: httpx.AsyncClient = request.app.state.backend_http_client
-    return CombatAiTestingApi(client=client, base_url=request.state.source.api_base)
+    source = request.state.source
+    return CombatAiTestingApi(
+        client=client,
+        base_url=source.api_base,
+        operator_read_key=source.operator_read_key,
+        operator_write_key=source.operator_write_key if source.kind == "local" else "",
+        read_only=source.kind != "local",
+    )
 
 
 async def _run_launcher_provider(request: Request) -> TableWidgetMap:

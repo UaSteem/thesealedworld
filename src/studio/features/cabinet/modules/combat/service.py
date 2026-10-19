@@ -30,7 +30,12 @@ class CombatCabinetService:
 
     async def get_config(self, request: Request) -> list[ConfigEntryDTO]:
         client: httpx.AsyncClient = request.app.state.backend_http_client
-        api = GameConfigApi(client=client, base_url=request.state.source.api_base)
+        api = GameConfigApi(
+            client=client,
+            base_url=request.state.source.api_base,
+            operator_read_key=request.state.source.operator_read_key,
+            read_only=True,
+        )
         try:
             return await api.list_namespace("combat")
         except (httpx.HTTPStatusError, httpx.RequestError):

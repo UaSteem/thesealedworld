@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Any
 
-from src.frontend.core.api import BaseApiClient
+from src.frontend.integrations.backend_api.operator import OperatorApiClient
 
 
 @dataclass(frozen=True)
@@ -43,7 +43,7 @@ class CombatAiSimulationRun:
         )
 
 
-class CombatAiTestingApi(BaseApiClient):
+class CombatAiTestingApi(OperatorApiClient):
     async def list_runs(self, *, limit: int = 50, run_kind: str | None = None) -> list[CombatAiSimulationRun]:
         params: dict[str, Any] = {"limit": limit}
         if run_kind:

@@ -1,9 +1,10 @@
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 
+from src.backend.core.operator_auth import require_operator_read, require_operator_write
 from src.backend.infrastructure.game_config.manager import ConfigEntry, ConfigValidationError, GameConfigManager
 
-router = APIRouter(prefix="/api/internal/config", tags=["game-config"])
+router = APIRouter(prefix="/api/internal/config", tags=["game-config"], dependencies=[Depends(require_operator_read)])
 
 
 def _manager(request: Request) -> GameConfigManager:
@@ -30,7 +31,7 @@ async def list_namespace(namespace: str, request: Request) -> list[dict]:
     return [_entry_dict(e) for e in entries]
 
 
-@router.patch("/{namespace}/{key}")
+@router.patch("/{namespace}/{key}", dependencies=[Depends(require_operator_write)])
 async def set_value(namespace: str, key: str, body: SetValueBody, request: Request) -> dict:
     mgr = _manager(request)
     try:
@@ -42,7 +43,7 @@ async def set_value(namespace: str, key: str, body: SetValueBody, request: Reque
     return {"namespace": namespace, "key": key, "value": body.value}
 
 
-@router.delete("/{namespace}/{key}")
+@router.delete("/{namespace}/{key}", dependencies=[Depends(require_operator_write)])
 async def reset_key(namespace: str, key: str, request: Request) -> dict:
     mgr = _manager(request)
     ok = await mgr.reset(namespace, key)
@@ -51,7 +52,7 @@ async def reset_key(namespace: str, key: str, request: Request) -> dict:
     return {"namespace": namespace, "key": key, "reset": True}
 
 
-@router.delete("/{namespace}")
+@router.delete("/{namespace}", dependencies=[Depends(require_operator_write)])
 async def reset_namespace(namespace: str, request: Request) -> dict:
     mgr = _manager(request)
     ok = await mgr.reset_namespace(namespace)

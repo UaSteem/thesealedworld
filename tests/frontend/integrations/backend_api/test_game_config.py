@@ -142,16 +142,16 @@ class TestGameConfigApi:
         assert req.method == "DELETE"
         assert req.url.path == "/api/internal/config/combat"
 
-    async def test_internal_service_header_is_attached(self, captured: dict[str, httpx.Request | None]) -> None:
+    async def test_operator_read_header_is_attached(self, captured: dict[str, httpx.Request | None]) -> None:
         async with self._client_for(captured, []) as http:
             api = GameConfigApi(
                 client=http,
                 base_url=BASE_URL,
-                internal_service_key="test-key",  # pragma: allowlist secret
-                internal_service_header="X-Test-Header",
+                operator_read_key="test-key",  # pragma: allowlist secret
             )
             await api.list_namespace("combat")
 
         req = captured["last"]
         assert req is not None
-        assert req.headers["X-Test-Header"] == "test-key"
+        assert req.headers["X-Operator-Key"] == "test-key"
+        assert "X-Internal-Service-Key" not in req.headers

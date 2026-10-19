@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.backend.core.arq import COMBAT_AI_SIMULATION_ARQ_QUEUE, clear_arq_queue
 from src.backend.core.database import get_db
+from src.backend.core.operator_auth import require_operator_read, require_operator_write
 from src.backend.features.combat.dto.ai_simulation import CombatAiSimulationRunDTO, CombatAiSimulationRunListDTO
 from src.backend.features.combat.runtime.simulation import (
     STARTER_SKILL_PROFILE_BASELINE,
@@ -33,7 +34,9 @@ from src.backend.infrastructure.combat.repositories import CombatAiSimulationRun
 if TYPE_CHECKING:
     from src.backend.infrastructure.combat.models import CombatAiSimulationRun
 
-router = APIRouter(prefix="/api/admin/combat-ai", tags=["combat-ai-admin"])
+router = APIRouter(
+    prefix="/api/admin/combat-ai", tags=["combat-ai-admin"], dependencies=[Depends(require_operator_read)]
+)
 
 
 def _service(db_session: AsyncSession) -> CombatAiSimulationRunService:
@@ -63,7 +66,7 @@ async def list_simulation_runs(
     return CombatAiSimulationRunListDTO(runs=views[:limit])
 
 
-@router.post("/simulation-runs/clear")
+@router.post("/simulation-runs/clear", dependencies=[Depends(require_operator_write)])
 async def clear_simulation_runs(
     request: Request,
     db_session: Annotated[AsyncSession, Depends(get_db)],
@@ -74,7 +77,7 @@ async def clear_simulation_runs(
     return {"deleted": deleted, **runtime_deleted}
 
 
-@router.post("/simulation-runs/clear-training")
+@router.post("/simulation-runs/clear-training", dependencies=[Depends(require_operator_write)])
 async def clear_training_runs(
     request: Request,
     db_session: Annotated[AsyncSession, Depends(get_db)],
@@ -85,7 +88,7 @@ async def clear_training_runs(
     return {"deleted": deleted, **runtime_deleted}
 
 
-@router.post("/simulation-runs/cleanup-stale")
+@router.post("/simulation-runs/cleanup-stale", dependencies=[Depends(require_operator_write)])
 async def cleanup_stale_simulation_runs(
     request: Request,
     db_session: Annotated[AsyncSession, Depends(get_db)],
@@ -122,7 +125,9 @@ async def get_simulation_run(
     return _view(row, progress)
 
 
-@router.post("/simulation-runs/demo", response_model=CombatAiSimulationRunDTO)
+@router.post(
+    "/simulation-runs/demo", response_model=CombatAiSimulationRunDTO, dependencies=[Depends(require_operator_write)]
+)
 async def run_demo_simulation(
     db_session: Annotated[AsyncSession, Depends(get_db)],
     seed: Annotated[int, Query(ge=0, le=1_000_000)] = 0,
@@ -134,7 +139,11 @@ async def run_demo_simulation(
     return _view(row)
 
 
-@router.post("/simulation-runs/family-pressure", response_model=CombatAiSimulationRunDTO)
+@router.post(
+    "/simulation-runs/family-pressure",
+    response_model=CombatAiSimulationRunDTO,
+    dependencies=[Depends(require_operator_write)],
+)
 async def run_family_pressure_simulation(
     request: Request,
     db_session: Annotated[AsyncSession, Depends(get_db)],
@@ -172,7 +181,11 @@ async def run_family_pressure_simulation(
     return _view_redis_run(progress)
 
 
-@router.post("/simulation-runs/family-pressure-batch", response_model=CombatAiSimulationRunListDTO)
+@router.post(
+    "/simulation-runs/family-pressure-batch",
+    response_model=CombatAiSimulationRunListDTO,
+    dependencies=[Depends(require_operator_write)],
+)
 async def run_family_pressure_batch_simulation(
     request: Request,
     db_session: Annotated[AsyncSession, Depends(get_db)],
@@ -226,7 +239,11 @@ async def run_family_pressure_batch_simulation(
     return CombatAiSimulationRunListDTO(runs=[_view_redis_run(progress) for progress in progresses])
 
 
-@router.post("/simulation-runs/live-demo", response_model=CombatAiSimulationRunDTO)
+@router.post(
+    "/simulation-runs/live-demo",
+    response_model=CombatAiSimulationRunDTO,
+    dependencies=[Depends(require_operator_write)],
+)
 async def run_live_demo_simulation(
     request: Request,
     db_session: Annotated[AsyncSession, Depends(get_db)],
@@ -271,7 +288,11 @@ async def run_live_demo_simulation(
     return _view(row)
 
 
-@router.post("/simulation-runs/live-demo-batch", response_model=CombatAiSimulationRunListDTO)
+@router.post(
+    "/simulation-runs/live-demo-batch",
+    response_model=CombatAiSimulationRunListDTO,
+    dependencies=[Depends(require_operator_write)],
+)
 async def run_live_demo_simulation_batch(
     request: Request,
     db_session: Annotated[AsyncSession, Depends(get_db)],
@@ -319,7 +340,11 @@ async def run_live_demo_simulation_batch(
     return CombatAiSimulationRunListDTO(runs=[_view(row) for row in rows])
 
 
-@router.post("/simulation-runs/train-synthetic", response_model=CombatAiSimulationRunDTO)
+@router.post(
+    "/simulation-runs/train-synthetic",
+    response_model=CombatAiSimulationRunDTO,
+    dependencies=[Depends(require_operator_write)],
+)
 async def run_synthetic_training(
     request: Request,
     db_session: Annotated[AsyncSession, Depends(get_db)],
@@ -356,7 +381,11 @@ async def run_synthetic_training(
     return _view(row)
 
 
-@router.post("/simulation-runs/train-battle", response_model=CombatAiSimulationRunDTO)
+@router.post(
+    "/simulation-runs/train-battle",
+    response_model=CombatAiSimulationRunDTO,
+    dependencies=[Depends(require_operator_write)],
+)
 async def run_battle_training(
     request: Request,
     db_session: Annotated[AsyncSession, Depends(get_db)],

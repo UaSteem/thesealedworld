@@ -4,6 +4,11 @@ Detailed milestone history for the `src/backend` game runtime layer.
 
 ## [Unreleased]
 
+- Require operator read/write capabilities on config, GenerationAI admin and
+  simulation APIs, including direct backend access. Existing admin clients use
+  explicit server-side credentials; Studio remote sources cannot mutate through
+  these clients. Simulation algorithms and game rules are unchanged.
+
 - Closed remaining audit contracts for operator diagnostics and chat archive:
   separate read/write operator keys, bounded session pages and explicit detail
   projection; durable thread identity survives SQL index rollback after Mongo

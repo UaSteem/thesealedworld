@@ -29,7 +29,12 @@ def _config_provider(
 ) -> Callable:
     async def provider(request: Request) -> EditableConfigWidgetMap:
         client: httpx.AsyncClient = request.app.state.backend_http_client
-        api = GameConfigApi(client=client, base_url=settings.backend_base_url)
+        api = GameConfigApi(
+            client=client,
+            base_url=settings.backend_base_url,
+            operator_read_key=settings.backend_operator_read_key,
+            operator_write_key=settings.backend_operator_write_key,
+        )
         try:
             entries = await api.list_namespace(namespace)
         except (httpx.HTTPStatusError, httpx.RequestError):
@@ -74,7 +79,12 @@ async def _config_choices(request: Request, namespace: str) -> dict[str, list[di
     if namespace != "combat_ai":
         return {}
     client: httpx.AsyncClient = request.app.state.backend_http_client
-    api = CombatAiTestingApi(client=client, base_url=settings.backend_base_url)
+    api = CombatAiTestingApi(
+        client=client,
+        base_url=settings.backend_base_url,
+        operator_read_key=settings.backend_operator_read_key,
+        operator_write_key=settings.backend_operator_write_key,
+    )
     try:
         runs = await api.list_runs(limit=50, run_kind="training")
     except (AttributeError, httpx.HTTPStatusError, httpx.RequestError):
@@ -235,7 +245,12 @@ class GameSettingsAdmin(CabinetAdmin):
         namespace = str(form.get("namespace", ""))
         redirect_to = str(form.get("redirect_to", "/admin/game-settings"))
         client: httpx.AsyncClient = request.app.state.backend_http_client
-        api = GameConfigApi(client=client, base_url=settings.backend_base_url)
+        api = GameConfigApi(
+            client=client,
+            base_url=settings.backend_base_url,
+            operator_read_key=settings.backend_operator_read_key,
+            operator_write_key=settings.backend_operator_write_key,
+        )
         # Dedupe values per key — last occurrence wins. Needed for boolean
         # checkboxes which submit a hidden "false" followed by "true" when
         # checked (template uses this trick to send a value even when unchecked).
@@ -254,7 +269,12 @@ class GameSettingsAdmin(CabinetAdmin):
         key = str(form.get("key", ""))
         redirect_to = str(form.get("redirect_to", "/admin/game-settings"))
         client: httpx.AsyncClient = request.app.state.backend_http_client
-        api = GameConfigApi(client=client, base_url=settings.backend_base_url)
+        api = GameConfigApi(
+            client=client,
+            base_url=settings.backend_base_url,
+            operator_read_key=settings.backend_operator_read_key,
+            operator_write_key=settings.backend_operator_write_key,
+        )
         with contextlib.suppress(httpx.HTTPStatusError, httpx.RequestError):
             await api.reset_key(namespace, key)
         return RedirectResponse(url=redirect_to, status_code=303)
@@ -264,7 +284,12 @@ class GameSettingsAdmin(CabinetAdmin):
         namespace = str(form.get("namespace", ""))
         redirect_to = str(form.get("redirect_to", "/admin/game-settings"))
         client: httpx.AsyncClient = request.app.state.backend_http_client
-        api = GameConfigApi(client=client, base_url=settings.backend_base_url)
+        api = GameConfigApi(
+            client=client,
+            base_url=settings.backend_base_url,
+            operator_read_key=settings.backend_operator_read_key,
+            operator_write_key=settings.backend_operator_write_key,
+        )
         with contextlib.suppress(httpx.HTTPStatusError, httpx.RequestError):
             await api.reset_namespace(namespace)
         return RedirectResponse(url=redirect_to, status_code=303)

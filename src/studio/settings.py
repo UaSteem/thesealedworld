@@ -43,6 +43,7 @@ class Source:
     pg_dsn: str  # asyncpg-compatible Postgres DSN (read-only role for prod).
     redis_url: str  # redis-py URL.
     operator_read_key: str = field(default="", repr=False)
+    operator_write_key: str = field(default="", repr=False)
     ssh_host: str | None = None  # ~/.ssh/config alias for programmatic tunnel.
     ssh_forwards: tuple[tuple[int, str, int], ...] = field(default_factory=tuple)
     # ssh_forwards: ((local_port, remote_host, remote_port), ...) — applied at
@@ -69,6 +70,7 @@ class StudioSettings(BaseCommonSettings):
 
     # Local source — reuses frontend defaults.
     local_operator_read_key: str = ""
+    local_operator_write_key: str = ""
     prod_operator_read_key: str = ""
     local_api_base: str = "http://127.0.0.1:8001"
     local_pg_dsn: str = "postgresql://tbmmorpg:tbmmorpg_dev@127.0.0.1:5432/tbmmorpg_game"  # pragma: allowlist secret
@@ -122,6 +124,7 @@ class StudioSettings(BaseCommonSettings):
                 badge_color="green",
                 api_base=self.local_api_base,
                 operator_read_key=self.local_operator_read_key,
+                operator_write_key=self.local_operator_write_key,
                 pg_dsn=self.local_pg_dsn,
                 redis_url=self.local_redis_url,
             ),

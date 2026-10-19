@@ -1,5 +1,20 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Шаг 1 технической очереди — 19.10.2026
+
+- [x] **A07-02 и оставшаяся часть A07-03:** `/api/internal/config`,
+  `/api/admin/generation-ai`, `/api/admin/combat-ai` защищены operator read;
+  все POST/PATCH/DELETE дополнительно требуют operator write. Обычные site/game
+  credentials не принимаются, в том числе при direct backend access.
+- Существующие admin callers используют server-side operator credentials;
+  production source Studio не отправляет мутации. Monsters gates сохранены.
+- **287 passed**: отрицательная HTTP-матрица всех routes и положительные операции,
+  frontend superuser boundary, method-specific keys, совместимость диагностических
+  и существующих admin tests. Ruff/scoped mypy прошли. Полный gate/production не запускались.
+- Commit subject: `fix(security): authorize privileged operational APIs`.
+  Порядок и проверенные файлы: [план очереди](plans/06_non_gameplay_hardening_progress.md#шаг-1).
+  Остальные задачи не выполнялись; следующий шаг требует команды владельца.
+
 ## Быстрая сверка исправлений — 19.10.2026
 
 База сверки: `12811132`. Проверены история, соответствующие diff и выборочно текущие исходники/тесты. `[x]` означает исправление указанного контракта в репозитории по статической сверке; это не повторный успешный запуск тестов и не подтверждение production. `Частично` не закрывает всю находку. Остальные карточки ниже — исторические; отсутствие отметки означает «в этой сверке не проверено», а не «дефект точно сохраняется».
