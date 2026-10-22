@@ -1,7 +1,8 @@
 # ruff: noqa: E402
+from src.backend.config.runtime import runtime_settings
 from src.backend.core.arq_logging import setup_arq_worker_logging
 
-setup_arq_worker_logging("combat-worker")
+setup_arq_worker_logging("combat-worker", config=runtime_settings)
 
 from loguru import logger as log
 

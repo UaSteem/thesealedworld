@@ -156,16 +156,13 @@ def test_world_bootstrap_keeps_world_and_rift_catalog_without_monster_materializ
         "WorldDataIntegration",
         "WorldLocationIntegration",
         "WorldCacheService",
-        "AIGenerationTaskRepository",
-        "GenerationAIService",
-        "LLMWorldGenerator",
+        "WorldGenerator",
         "RiftResourceLoader",
         "RiftSettingRepository",
         "RiftNodePoolRepository",
         "RiftCatalogDocumentRepository",
     ):
         monkeypatch.setattr(game, name, lambda *args, **kwargs: SimpleNamespace())
-    monkeypatch.setattr(game, "build_generation_ai_registry", lambda **kwargs: SimpleNamespace())
     monkeypatch.setattr(game, "WorldBootstrapService", lambda **kwargs: world_bootstrap)
     monkeypatch.setattr(game, "RiftCatalogBootstrapService", lambda **kwargs: rift_bootstrap)
     monkeypatch.setattr(game, "get_mongo_provider", lambda: SimpleNamespace(database=lambda: object()))
@@ -179,7 +176,6 @@ def test_world_bootstrap_keeps_world_and_rift_catalog_without_monster_materializ
         monkeypatch.setattr(game, name, forbidden, raising=False)
     monkeypatch.setattr(game.settings, "bootstrap_content_materialization_enabled", True)
     container = game.GameFeatureContainer()
-    monkeypatch.setattr(container, "_schedule_bootstrap_generation_ai", AsyncMock(return_value=0))
     app = SimpleNamespace(state=SimpleNamespace(world_locations=object()))
     asyncio.run(container._bootstrap_world(app))
     world_bootstrap.bootstrap.assert_awaited_once()

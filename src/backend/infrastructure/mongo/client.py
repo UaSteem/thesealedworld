@@ -1,6 +1,6 @@
 from typing import Any
 
-from src.backend.config.settings import settings
+from src.backend.config.runtime import runtime_settings as settings
 
 
 class MongoClientProvider:

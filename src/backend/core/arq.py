@@ -5,7 +5,7 @@ from typing import Any
 
 from loguru import logger
 
-from src.backend.config.settings import settings
+from src.backend.config.runtime import runtime_settings as settings
 from src.backend.core.arq_container import ArqWorkerContainer
 
 COMBAT_ARQ_QUEUE = "tbmmorpg:arq:combat"

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from contextlib import asynccontextmanager
+from copy import deepcopy
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -20,7 +22,7 @@ class FakeTask:
     task_type: str
     entity_type: str = "item"
     entity_id: str = "item-1"
-    output_kind: str = "text"
+    output_kind: str = "json"
     status: str = "pending"
     attempts: int = 0
     max_attempts: int = 3
@@ -95,6 +97,17 @@ class FakeRepository:
     async def get(self, task_id: str) -> FakeTask | None:
         return self.by_id.get(task_id)
 
+    async def retire_unsupported_by_id(self, task_id: str) -> bool:
+        task = self.by_id.get(task_id)
+        if (
+            task
+            and task.status in {"pending", "cooldown"}
+            and (task.task_type != "items.text" or task.output_kind != "json")
+        ):
+            await self.mark_failed(task_id, {"type": "RetiredTaskType"})
+            return True
+        return False
+
     async def claim_by_id(self, task_id: str) -> FakeTask | None:
         task = self.by_id.get(task_id)
         if task is None or task.status not in {"pending", "cooldown"}:
@@ -102,6 +115,22 @@ class FakeRepository:
         task.status = "running"
         task.attempts += 1
         return task
+
+    async def commit_claim_for_provider(self, task: FakeTask) -> str:
+        return task.id
+
+    async def reacquire_claim(self, task_id: str) -> FakeTask | None:
+        task = self.by_id.get(task_id)
+        return task if task is not None and task.status == "running" else None
+
+    @asynccontextmanager
+    async def application_transaction(self):
+        snapshot = deepcopy((self.by_identity, self.by_id, self.done, self.cooldown, self.failed))
+        try:
+            yield
+        except BaseException:
+            self.by_identity, self.by_id, self.done, self.cooldown, self.failed = snapshot
+            raise
 
     async def mark_done(self, task_id: str, result: AIGenerationTaskResultDTO) -> FakeTask | None:
         task = self.by_id.get(task_id)
@@ -158,30 +187,20 @@ class FakeArq:
 
 
 class FakeHandler(AIGenerationTaskHandler):
-    task_type = "item.description"
+    task_type = "items.text"
 
     def __init__(self) -> None:
         self.applied: list[str] = []
 
     async def build_request(self, task: FakeTask) -> dict[str, Any]:
-        return {"kind": "text", "prompt": task.input_payload}
+        return {"kind": "json", "prompt": task.input_payload, "schema": _SimpleJsonSchema}
 
     async def apply_result(self, task: FakeTask, result: AIGenerationTaskResultDTO) -> None:
         self.applied.append(task.id)
 
 
-class FakeImageHandler(AIGenerationTaskHandler):
-    task_type = "item.image"
-
-    async def build_request(self, task: FakeTask) -> dict[str, Any]:
-        return {"kind": "image", "input": task.input_payload}
-
-    async def apply_result(self, task: FakeTask, result: AIGenerationTaskResultDTO) -> None:
-        return None
-
-
 class FakeJsonWithoutSchemaHandler(AIGenerationTaskHandler):
-    task_type = "item.bad_json"
+    task_type = "items.text"
 
     async def build_request(self, task: FakeTask) -> dict[str, Any]:
         return {"kind": "json", "prompt": "Return JSON"}
@@ -191,26 +210,10 @@ class FakeJsonWithoutSchemaHandler(AIGenerationTaskHandler):
 
 
 class FakeMismatchedKindHandler(AIGenerationTaskHandler):
-    task_type = "item.mismatched_kind"
+    task_type = "items.text"
 
     async def build_request(self, task: FakeTask) -> dict[str, Any]:
         return {"kind": "text", "prompt": "Return text"}
-
-    async def apply_result(self, task: FakeTask, result: AIGenerationTaskResultDTO) -> None:
-        return None
-
-
-class FakeBadImageModelHandler(AIGenerationTaskHandler):
-    task_type = "item.bad_image_model"
-
-    async def build_request(self, task: FakeTask) -> dict[str, Any]:
-        return {
-            "kind": "image",
-            "prompt": "Create item image",
-            "model": "imagen-3.0-generate-002",
-            "content_type": "image/webp",
-            "storage_key": "items/generated/item.webp",
-        }
 
     async def apply_result(self, task: FakeTask, result: AIGenerationTaskResultDTO) -> None:
         return None
@@ -221,7 +224,7 @@ class _SimpleJsonSchema(BaseModel):
 
 
 class FakeSchemaJsonHandler(AIGenerationTaskHandler):
-    task_type = "item.schema_json"
+    task_type = "items.text"
 
     async def build_request(self, task: FakeTask) -> dict[str, Any]:
         return {"kind": "json", "prompt": "Return JSON", "schema": _SimpleJsonSchema}
@@ -239,10 +242,10 @@ class FakeChainedHandler(FakeHandler):
         self.applied.append(task.id)
         return [
             AIGenerationTaskSpecDTO(
-                task_type="item.image",
+                task_type="items.text",
                 entity_type="item",
-                entity_id=task.input_payload["item_id"],
-                output_kind="image",
+                entity_id="followup-item",
+                output_kind="json",
                 input_payload={
                     "item_id": task.input_payload["item_id"],
                     "description": result.output_payload,
@@ -253,7 +256,9 @@ class FakeChainedHandler(FakeHandler):
 
 class FakeExecutor:
     async def generate(self, task: FakeTask, request: dict[str, Any]) -> AIGenerationTaskResultDTO:
-        return AIGenerationTaskResultDTO(output_payload={"request": request, "task_id": task.id})
+        return AIGenerationTaskResultDTO(
+            output_payload={"request": {k: v for k, v in request.items() if k != "schema"}, "task_id": task.id}
+        )
 
 
 class FailingExecutor:
@@ -267,24 +272,22 @@ class LLMProviderError(RuntimeError):
 
 class SchemaFailingExecutor:
     async def generate(self, task: FakeTask, request: dict[str, Any]) -> AIGenerationTaskResultDTO:
-        raise LLMProviderError(
-            "Gemini JSON generation failed schema validation: 1 validation error for DemoDTO"
-        )
+        raise LLMProviderError("Gemini JSON generation failed schema validation: 1 validation error for DemoDTO")
 
 
 def _spec(entity_id: str = "item-1") -> AIGenerationTaskSpecDTO:
     return AIGenerationTaskSpecDTO(
-        task_type="item.description",
+        task_type="items.text",
         entity_type="item",
         entity_id=entity_id,
-        output_kind="text",
+        output_kind="json",
         input_payload={"item_id": entity_id},
     )
 
 
 def _bad_json_spec() -> AIGenerationTaskSpecDTO:
     return AIGenerationTaskSpecDTO(
-        task_type="item.bad_json",
+        task_type="items.text",
         entity_type="item",
         entity_id="item-1",
         output_kind="json",
@@ -294,7 +297,7 @@ def _bad_json_spec() -> AIGenerationTaskSpecDTO:
 
 def _mismatched_kind_spec() -> AIGenerationTaskSpecDTO:
     return AIGenerationTaskSpecDTO(
-        task_type="item.mismatched_kind",
+        task_type="items.text",
         entity_type="item",
         entity_id="item-1",
         output_kind="json",
@@ -302,19 +305,9 @@ def _mismatched_kind_spec() -> AIGenerationTaskSpecDTO:
     )
 
 
-def _bad_image_model_spec() -> AIGenerationTaskSpecDTO:
-    return AIGenerationTaskSpecDTO(
-        task_type="item.bad_image_model",
-        entity_type="item",
-        entity_id="item-1",
-        output_kind="image",
-        input_payload={"item_id": "item-1"},
-    )
-
-
 def _schema_json_spec() -> AIGenerationTaskSpecDTO:
     return AIGenerationTaskSpecDTO(
-        task_type="item.schema_json",
+        task_type="items.text",
         entity_type="item",
         entity_id="item-1",
         output_kind="json",
@@ -499,26 +492,6 @@ async def test_process_task_rejects_output_kind_mismatch() -> None:
 
 
 @pytest.mark.asyncio
-async def test_process_task_rejects_unsupported_image_model_before_executor() -> None:
-    registry = AIGenerationTaskRegistry()
-    registry.register(FakeBadImageModelHandler())
-    repository = FakeRepository()
-    service = GenerationAIService(
-        repository=repository,
-        registry=registry,
-        executor=FakeExecutor(),
-    )
-    task = await repository.create(_bad_image_model_spec(), batch_id="batch-1", identity_key="identity-1")
-
-    result = await service.process_task(task.id)
-
-    assert result is None
-    assert task.status == "cooldown"
-    assert repository.cooldown == [task.id]
-    assert "Unsupported image model" in task.error["message"]
-
-
-@pytest.mark.asyncio
 async def test_process_task_extends_retry_budget_for_json_schema_provider_errors() -> None:
     registry = AIGenerationTaskRegistry()
     registry.register(FakeSchemaJsonHandler())
@@ -537,6 +510,7 @@ async def test_process_task_extends_retry_budget_for_json_schema_provider_errors
     assert task.status == "cooldown"
     assert repository.cooldown == [task.id]
     assert task.attempts == 3
+    assert task.max_attempts == 8
     assert task.error["type"] == "LLMProviderError"
 
 
@@ -545,7 +519,6 @@ async def test_process_task_enqueues_followup_specs_returned_by_handler() -> Non
     handler = FakeChainedHandler()
     registry = AIGenerationTaskRegistry()
     registry.register(handler)
-    registry.register(FakeImageHandler())
     repository = FakeRepository()
     arq = FakeArq()
     service = GenerationAIService(
@@ -563,7 +536,7 @@ async def test_process_task_enqueues_followup_specs_returned_by_handler() -> Non
     assert handler.applied == [task.id]
     assert len(repository.by_id) == 2
     followup = repository.by_id["task-2"]
-    assert followup.task_type == "item.image"
+    assert followup.task_type == "items.text"
     assert followup.input_payload["item_id"] == "item-1"
     assert followup.status == "pending"
     assert arq.jobs == [(GENERATION_AI_ARQ_TASK, followup.id)]

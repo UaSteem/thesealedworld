@@ -1,3 +1,6 @@
+from pydantic import TypeAdapter
+
+from src.frontend.game_features.scenario.view_models.scenario import ScenarioPageVM
 from src.frontend.game_features.session.view_models.nav import build_game_nav
 from src.shared.enums import CoreDomain
 
@@ -106,3 +109,9 @@ def test_combat_nav_uses_tactical_drawer_slots():
     assert nav["r2"]["label"] == "LOG"
     assert nav["r2"]["panel"] == "right"
     assert nav["r2"]["panel_view"] == "log"
+
+
+def test_scenario_view_model_accepts_existing_empty_navigation_payload():
+    nav = build_game_nav(state=CoreDomain.SCENARIO, char_id=7)
+    adapter = TypeAdapter(ScenarioPageVM.model_fields["nav"].annotation)
+    assert adapter.validate_python(nav) == nav

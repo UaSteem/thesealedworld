@@ -5,7 +5,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.schema import CreateSchema
 
-from src.frontend.config.settings import settings
+from src.frontend.config.database import database_settings as settings
 from src.frontend.core.database.base import Base
 
 async_engine = create_async_engine(settings.database_url, echo=settings.database_echo, pool_pre_ping=True)

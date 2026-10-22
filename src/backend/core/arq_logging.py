@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from src.backend.config.settings import settings
+from codex_core.settings import BaseCommonSettings
+
 from src.shared.infrastructure.logging_config import setup_logging
 
 ARQ_INTERCEPT_LOGGERS = [
@@ -12,9 +13,14 @@ ARQ_INTERCEPT_LOGGERS = [
 ]
 
 
-def setup_arq_worker_logging(service_name: str) -> None:
+def setup_arq_worker_logging(service_name: str, *, config: BaseCommonSettings | None = None) -> None:
+    if config is None:
+        # Authenticated workers keep their existing production validation gate.
+        from src.backend.config.settings import settings
+
+        config = settings
     setup_logging(
-        settings=settings,
+        settings=config,
         service_name=service_name,
         intercept_loggers=ARQ_INTERCEPT_LOGGERS,
         include_runtime_instance=True,

@@ -3,7 +3,7 @@ from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.backend.config.settings import settings
+from src.backend.config.runtime import runtime_settings as settings
 from src.backend.features.character.models import CharacterSymbiote
 
 

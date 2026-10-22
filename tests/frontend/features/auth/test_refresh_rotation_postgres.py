@@ -22,11 +22,12 @@ from src.frontend.features.auth.repositories.user_repository import UserReposito
 from src.frontend.features.auth.services import site_auth_service as module
 from tests.frontend.migrations.test_site_migrations_postgres import database, migrate, postgres, sql  # noqa: F401
 
-pytestmark = pytest.mark.skipif(
+_service_opt_in = pytest.mark.skipif(
     os.getenv("RUN_SITE_AUTH_POSTGRES") != "1", reason="explicit disposable PostgreSQL opt-in required"
 )
 OLD = "synthetic-old-refresh"
 USER_ID = uuid.UUID("eaedc035-e892-4aa6-b438-ec63f01ff96b")
+pytestmark = [_service_opt_in, pytest.mark.external]
 
 
 @pytest.fixture

@@ -2,7 +2,7 @@
 set -eu
 
 PROJECT_NAME="${PROJECT_NAME:-tbmmorpg}"
-COMPOSE_NETWORK="${COMPOSE_NETWORK:-tbmmorpg-network}"
+COMPOSE_NETWORK="${COMPOSE_NETWORK:-tbmmorpg-edge}"
 CERTS_VOLUME="${CERTS_VOLUME:-tbmmorpg-certs}"
 CHALLENGE_VOLUME="${CHALLENGE_VOLUME:-tbmmorpg-certbot-challenge}"
 NGINX_CONTAINER="${NGINX_CONTAINER:-tbmmorpg-nginx}"

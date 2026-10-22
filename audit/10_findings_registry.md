@@ -1,5 +1,78 @@
 # 10 — Сводный реестр находок аудитов 02–09
 
+## Проверка зависимостей — 20.10.2026
+
+- [x] Отдельным шагом Pillow12.3.0 →13.0.0: floor/uv.lock/.venv согласованы,
+  другие package versions не менялись. pip-audit Passed с прежними исключениями;
+  lock/pip check,28 профильных tests и actual64-tile slicer/format smoke прошли.
+  Предыдущие8 advisory: var/audit/running-recovery-hooks.txt; итоговый scanner:
+  var/audit/pillow13-pip-audit.txt. Без ревизора/commit/push/deploy.
+
+## Running recovery GenerationAI — 20.10.2026
+
+- [x] Live items.text/json running имеет fixed lease10min (DB clock), recovery
+  startup/every minute, bounded100 SKIP LOCKED. Requeue сохраняет attempts, повышает
+  revision и использует A05-08 delivery. Expired owner не может apply/retry.
+  Budget exhausted/missing input/stored result дают explicit SQL failure/review,
+  Mongo payload не меняется. 17 новых checks, итог448passed, mypy5sources pass.
+  Без ревизора/commit/push/deploy. Последующий Pillow update снял dependency blocker выше.
+
+## Шаг 7.3 — durable input items.text — 20.10.2026
+
+- [x] **A04-12/A05-07:** initial input подтверждается до SQL insertion;
+  reuse/claim требуют свежий valid Mongo input до attempts/status. Независимый review.
+  372 tests passed, включая44 новых realSQL/Mongo и20 priorPG cases.
+- Без SQL/Mongo atomicity; result durability/A04-13, scheduling/A05-08 и
+  orphan reconciliation/A04-18 остаются отдельными. Реальные данные не менялись.
+- [x] Отдельным шагом обновлён certifi2026.4.22 → 2026.10.19 для
+  GHSA-6q48-6c7w-9gw2; security floor, uv.lock и .venv согласованы.
+  Другие версии не менялись. pip-audit hook Passed с прежними исключениями;
+  pip check, lock check, CA/TLS smoke и 29 профильных тестов прошли.
+  Обычная проверка без ревизора; без commit/push/deploy.
+
+## Уточнение проверки каталога украшений — 20.10.2026
+
+- [x] Устаревший jewelry test согласован с текущими intrinsic regen-профилями.
+  Весь items suite163passed, независимый target1passed; source баланс не менялся.
+  Ранее записанный единственный jewelry failure широкого retirement прогона
+  устранён. Весь тот прогон повторно не запускался; facade mypy error остаётся.
+
+## Изменение scope GenerationAI — 20.10.2026
+
+- [x] По решению владельца live registry ограничен items.text JSON (название и
+  описание предмета). World text/image, news cover API, vision и image CLI
+  перенесены в archive с зеркальными путями; 48 исходников проверены SHA256.
+- [x] Готовые маскоты/ручной cover picker, static world и asset storage сохранены.
+  Старые доставленные removed jobs завершаются до provider, realdata не менялась.
+- Независимая приёмка выполнена; root broad519passed/9skipped/1несвязанный
+  jewelryfailure, не full-project pass. Ограничения и baseline typing error:
+  [файл задачи, шаг7.2](plans/06_non_gameplay_hardening_progress.md).
+- A04-12/13/18, A05-07/08, A09-09 остаются применимы к оставленному items.text;
+  retirement world/images не является закрытием shared durable queue contracts.
+
+## Шаг 7.1 технической очереди — 20.10.2026
+
+- [x] **A04-11:** эффективный retry budget JSON schema failures сохраняется
+  вместе с cooldown; обе SQL claim-ветки достигают следующих попыток до terminal.
+  **52 tests passed**, включая 11 isolated PostgreSQL cases; независимый review.
+- Существующий budget8 и больший explicit limit сохранены, ordinary/nonJSON
+  errors расширение не получают. Старые stranded строки требуют явного
+  re-enqueue с повышенным budget; live rows автоматически не изменялись.
+- A04-12/13/18, A05-07/08 и A09-09 этим исправлением не закрыты.
+  [Файл задачи](plans/06_non_gameplay_hardening_progress.md).
+
+## Шаг 6 технической очереди — 20.10.2026
+
+- [x] **A05-05, transport/quarantine scope:** независимо проверено;
+  230 tests passed в broader прогоне (3 unrelated opt-in skipped), reviewer 19 passed.
+Проектный адаптер сохраняет зависшие PEL deliveries в quarantine hash с
+source stream/group/id и payload перед ACK; неизвестный исход не проигрывается
+повторно. Старый отсутствующий payload получает tombstone. Слепой MAXLEN shared
+bus отключён, пока не введена безопасная политика retention.
+Это не end-to-end exactly-once и не автоматическое завершение gameplay;
+reconciliation результатов и domain-specific idempotency остаются отдельными.
+Без commit/push/deploy; [файл задачи](plans/06_non_gameplay_hardening_progress.md#шаг-6--a05-05-streams-pending-20102026).
+
 ## Шаг 5.8 технической очереди — 19.10.2026
 
 - [x] **A08-11, локальная часть:** dispatch/source main policy, protected production
@@ -7,10 +80,14 @@
   без отмены active run. **149 deploy tests passed**; независимый review подтвердил
   код и точные claims.
 - [Файл задачи и ограничения](plans/06_non_gameplay_hardening_progress.md#шаг-58--файл-задачи-a08-11).
-- [ ] **Hosted governance:** реальные environment/main protections, secret scoping,
-  admin bypass и живая serialization не подтверждены: нет GitHub CLI auth.
-  Это unknown, не доказательство отсутствия защиты. Workflow отказывает при
-  недоступных/неполных required-reviewer rules. Настройки GitHub не менялись.
+- [x] **GitHub protections, 20.10.2026:** main требует PR и strict quality check,
+  force/delete запрещены с enforce admins; production — reviewer CodexDLC,
+  self-approval разрешён, admin bypass выключен, только branch main.
+  Настройки независимо прочитаны обратно; evidence и ограничения в файле задачи.
+- [ ] **Подключение опубликованного workflow:** отложено владельцем до подготовки
+  develop → main. Локально готово; старый remote workflow environment не использует.
+- [ ] **Secret scoping и hosted runtime:** перенос repository secrets в production
+  environment и живая проверка approval/serialization не выполнены. Деплой не запускался.
 
 ## Шаг 5.7 технической очереди — 19.10.2026
 
@@ -592,6 +669,10 @@ Canonical объединяет лишь полный дубль: одна при
 
 ### A04-11 — несовместимые лимиты повторов GenerationAI
 
+- **Статус 20.10.2026:** [x] Исправлено и независимо проверено в локальном коде,
+  шаг 7.1; persisted budget/cooldown и terminal проверены реальной PostgreSQL.
+  Legacy stranded rows не ремонтируются автоматически, production не затронут.
+
 - **Источник / аудит:** [audit/04_rift_world_generation.md:215](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/04_rift_world_generation.md:215); аудит 04. **Code anchors:** [src/backend/features/generation_ai/services.py:216](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/services.py:216), [src/backend/features/generation_ai/repositories.py:142](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/repositories.py:142), [src/backend/features/world/tasks_ai.py:169](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/world/tasks_ai.py:169)
 - **Исходная severity:** High. **Доказательность:** Исторически воспроизведено локальной проверкой/тестом исходного аудита; сейчас не повторялось. **Стадия:** Shared infrastructure (Pre-alpha). **Срочность:** При стабилизации домена.
 - **Домены / контракт:** GenerationAI; World JSON; SQL; ARQ. Cooldown достижим следующим claim либо task terminal.
@@ -600,6 +681,8 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A04-11. **Связи:** Независим от commit→enqueue A05-08.
 
 ### A04-12 — первоначальный payload может быть потерян
+- **Статус 20.10.2026:** [x] Исправлено и независимо проверено для оставленного
+  items.text, шаг7.3. Strict confirmed input без fallback; прочие AI-пути retired.
 
 - **Источник / аудит:** [audit/04_rift_world_generation.md:232](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/04_rift_world_generation.md:232); аудит 04. **Code anchors:** [src/backend/features/generation_ai/repositories.py:221](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/repositories.py:221), [src/backend/features/generation_ai/repositories.py:249](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/repositories.py:249), [src/backend/features/world/tasks_ai.py:55](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/world/tasks_ai.py:55)
 - **Исходная severity:** High. **Доказательность:** Подтверждён failure window по исходному отчёту; реальное межхранилищное воспроизведение не выполнено. Сейчас выборочно подтверждены только указанные статические предпосылки. **Стадия:** Shared infrastructure (Pre-alpha). **Срочность:** При стабилизации домена.
@@ -609,6 +692,13 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A04-12. **Связи:** Полный дубль A05-07; canonical A04-12.
 
 ### A04-13 — done возможен без сохранённого результата
+
+- [x] **20.10.2026, items.text:** подтверждение result write/readback предшествует
+  SQL completion; ошибки больше не подавляются. Result update без upsert, с
+  проверкой исходного документа/pointer/schema/identity. 13 новых realSQL/Mongo
+  regression cases; общий прогон385passed. Проверка ведущего без ревизора.
+  Историческое описание ниже сохранено; cross-store atomicity и running recovery
+  не заявлены. Изменения локальные, без commit/push/deploy.
 
 - **Источник / аудит:** [audit/04_rift_world_generation.md:240](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/04_rift_world_generation.md:240); аудит 04. **Code anchors:** [src/backend/features/generation_ai/repositories.py:159](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/repositories.py:159), [src/backend/features/generation_ai/repositories.py:261](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/repositories.py:261), [src/backend/features/generation_ai/workers/tasks.py:31](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/workers/tasks.py:31)
 - **Исходная severity:** Medium. **Доказательность:** Подтверждён failure window по исходному отчёту; реальное межхранилищное воспроизведение не выполнено. **Стадия:** Shared infrastructure (Pre-alpha). **Срочность:** При стабилизации домена.
@@ -654,6 +744,14 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A04-17. **Связи:** Полный дубль A05-09; canonical A04-17.
 
 ### A04-18 — После SQL commit не выполняется ARQ enqueue; либо asset/Mongo write выполнен, а SQL откатился. Проверить recovery очереди и очистку несвязанных результатов
+
+- [x] **20.10.2026, live items.text/json Mongo:** bounded reconciliation cron
+  startup/every5min с grace1h; missing pointer восстанавливается только у existing
+  valid SQL task, с row lock и conditional Mongo marker. Orphan/conflict/result
+  without committed done сохраняются для разбора, без delete/SQL recreation/provider.
+  20 новых tests; итог412passed, mypy6sources/hooks/pip-audit pass. Проверил ведущий,
+  без ревизора/commit/push/deploy. A05-08 queue recovery выполнен ранее; исторические
+  image/assets, running recovery и cross-store atomicity этим не закрываются.
 
 - **Источник / аудит:** [audit/04_rift_world_generation.md:317](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/04_rift_world_generation.md:317); аудит 04. **Code anchors:** [src/backend/features/generation_ai/workers/tasks.py:33](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/workers/tasks.py:33), [src/backend/features/generation_ai/services.py:169](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/services.py:169), [src/backend/features/generation_ai/repositories.py:55](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/repositories.py:55)
 - **Исходная severity:** Medium. **Доказательность:** Гипотеза: исторический риск/неполный контракт; отдельные предпосылки не равны доказанному эффекту. **Стадия:** Shared infrastructure (Pre-alpha). **Срочность:** При стабилизации домена.
@@ -729,6 +827,10 @@ Canonical объединяет лишь полный дубль: одна при
 
 ### A05-05 — Streams pending не восстанавливаются
 
+- **Статус 20.10.2026:** [x] Транспортный PEL recovery в quarantine реализован и
+  независимо проверен (шаг 6). Без автоматического replay; business completion,
+  reconciliation и безопасный retention остаются отдельными ограничениями.
+
 - **Источник / аудит:** [audit/05_persistence_consistency.md:300](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/05_persistence_consistency.md:300); аудит 05. **Code anchors:** [src/backend/core/containers/redis.py:136](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/core/containers/redis.py:136), [.venv/Lib/site-packages/codex_platform/streams/processor.py:180](D:/Workspace/personal/pets/TurnBasedMMORPG/.venv/Lib/site-packages/codex_platform/streams/processor.py:180), [src/backend/core/bus/producer.py:60](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/core/bus/producer.py:60)
 - **Исходная severity:** High. **Доказательность:** Подтверждён failure window по исходному отчёту; реальное межхранилищное воспроизведение не выполнено. **Стадия:** Shared infrastructure (Pre-alpha / Legacy). **Срочность:** Не исправлять без архитектурного решения о поддержке/выводе Legacy; при текущей публикации сначала проверить экспозицию.
 - **Домены / контракт:** Core bus consumers; codex-platform; Redis. Accepted message завершён либо retry/DLQ доступен.
@@ -746,6 +848,8 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A05-06. **Связи:** Independent от throughput A09-03 и append-seq A05-15.
 
 ### A05-07 — GenerationAI принимает task без сохранённого input
+- **Статус 20.10.2026:** [x] Исправлено и независимо проверено для оставленного
+  items.text, шаг7.3. Strict confirmed input без fallback; прочие AI-пути retired.
 
 - **Источник / аудит:** [audit/05_persistence_consistency.md:316](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/05_persistence_consistency.md:316); аудит 05. **Code anchors:** [src/backend/features/generation_ai/repositories.py:228](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/repositories.py:228), [src/backend/features/generation_ai/tasks_news.py:18](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/tasks_news.py:18)
 - **Исходная severity:** Medium. **Доказательность:** Подтверждён failure window по исходному отчёту; реальное межхранилищное воспроизведение не выполнено. Сейчас выборочно подтверждены только указанные статические предпосылки. **Стадия:** Shared infrastructure (Pre-alpha). **Срочность:** При стабилизации домена.
@@ -755,6 +859,13 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A04-12. **Связи:** Полный дубль A04-12; canonical A04-12.
 
 ### A05-08 — GenerationAI pending/cooldown теряется между commit и enqueue
+
+- [x] **20.10.2026, live items.text/json:** GenerationAI cron startup/every30s
+  повторно доставляет committed due pending/cooldown из SQL, страницы100/keyset.
+  Stable ARQ recovery ID + обычный SQL claim; enqueue failure не удаляет intent.
+  7 новых проверок, включая realSQL/Mongo/Redis replay/queue loss/concurrent scans;
+  общий прогон392passed. Проверил ведущий, без ревизора/commit/push/deploy.
+  Running crash recovery и orphan reconciliation остаются отдельно; ниже история.
 
 - **Источник / аудит:** [audit/05_persistence_consistency.md:324](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/05_persistence_consistency.md:324); аудит 05. **Code anchors:** [src/backend/features/generation_ai/api.py:52](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/api.py:52), [src/backend/features/generation_ai/workers/tasks.py:32](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/workers/tasks.py:32)
 - **Исходная severity:** Medium. **Доказательность:** Подтверждён failure window по исходному отчёту; реальное межхранилищное воспроизведение не выполнено. **Стадия:** Shared infrastructure (Pre-alpha). **Срочность:** При стабилизации домена.
@@ -848,6 +959,16 @@ Canonical объединяет лишь полный дубль: одна при
 
 ### A06-03 — Нет доказательной защиты реальных storage/broker contracts
 
+- [x] **20.10.2026 — добавлены и проверены representative real adapter contracts.**
+  Новые RedisJSON3 + Mongo index/BSON2:5passed. Existing Streams/SQL/Mongo:
+  86passed; recovery/transaction/reconciliation:56passed. Итого147passed без
+  повторного учёта отдельного RedisJSON smoke. Unique disposable containers,
+  external opt-in, без src/gameplay changes. Исполнитель проверил без ревизора.
+  Отсутствие real-suite больше не актуально; это не полная сертификация каждого
+  Legacy/gameplay SQL predicate, ownership, всех Mongo families или business
+  effect-idempotency при replay. Streams намеренно quarantine без effect replay.
+  Подробности и команды — testing_strategy и шаг9.5 progress; ниже история аудита.
+
 - **Источник / аудит:** [audit/06_testing_quality.md:401](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/06_testing_quality.md:401); аудит 06. **Code anchors:** [tests/backend/conftest.py:10](D:/Workspace/personal/pets/TurnBasedMMORPG/tests/backend/conftest.py:10), [tests/backend/features/items/test_instance_repository.py:16](D:/Workspace/personal/pets/TurnBasedMMORPG/tests/backend/features/items/test_instance_repository.py:16), [tests/backend/features/scenario/test_scenario_repository.py:12](D:/Workspace/personal/pets/TurnBasedMMORPG/tests/backend/features/scenario/test_scenario_repository.py:12)
 - **Исходная severity:** High. **Доказательность:** Подтверждено статическим анализом в исходном аудите; полного повторного анализа сейчас нет. **Стадия:** Shared infrastructure (Pre-alpha / Legacy). **Срочность:** Не исправлять без архитектурного решения о поддержке/выводе Legacy; при текущей публикации сначала проверить экспозицию.
 - **Домены / контракт:** Test adapters; SQL; RedisJSON; Mongo; Streams. Server-dependent contracts имеют representative real boundary proof.
@@ -887,6 +1008,14 @@ Canonical объединяет лишь полный дубль: одна при
 
 ### A06-07 — Frontend/backend проверяются раздельно с независимыми fixtures
 
+- [x] **20.10.2026, config HTTP scope:** реальный frontend GameConfigApi через
+  httpx ASGITransport вызывает реальный backend router/auth/serializer/manager.
+  Только Redis storage — double; synthetic config не меняет balance. 41 новых
+  contract cases, общий прогон207passed; producer-current rename убивает обычный
+  positive test (ожидаемый KeyError), hooks/pip-audit Passed. Проверил ведущий,
+  без ревизора/commit/push/deploy. Это sampled config contract, не все HTTP APIs,
+  Redis wire/storage или browser E2E. Production код не менялся.
+
 - **Источник / аудит:** [audit/06_testing_quality.md:441](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/06_testing_quality.md:441); аудит 06. **Code anchors:** [tests/frontend/features/cabinet/test_game_settings_module.py:18](D:/Workspace/personal/pets/TurnBasedMMORPG/tests/frontend/features/cabinet/test_game_settings_module.py:18), [tests/backend/features/test_internal_routers.py:105](D:/Workspace/personal/pets/TurnBasedMMORPG/tests/backend/features/test_internal_routers.py:105), [tests/frontend/features/cabinet/test_cabinet_integration.py:9](D:/Workspace/personal/pets/TurnBasedMMORPG/tests/frontend/features/cabinet/test_cabinet_integration.py:9)
 - **Исходная severity:** Medium. **Доказательность:** Подтверждено статическим анализом в исходном аудите; полного повторного анализа сейчас нет. **Стадия:** Shared infrastructure (Pre-alpha). **Срочность:** При стабилизации домена.
 - **Домены / контракт:** Frontend; Backend; HTTP contract tests. Producer/consumer jointly проверяют critical wire contract.
@@ -895,6 +1024,15 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A06-07. **Связи:** Partial A06-03 storage/broker; разные boundaries.
 
 ### A06-08 — Архитектурный gate проверяет только часть объявленных invariants
+
+- [x] **20.10.2026, bounded static gate:** AST source ownership checks заменили
+  literal6-prefix scan/Rift skip; frontend→backend/shared→service imports и raw
+  Redis client imports в features запрещены. Game/combat/loot roots покрывают новые
+  subspaces, semantic DTO identity допускается без file exceptions. Synthetic27
+  cases + existing8 source/location checks прошли; итог219passed/6opt-in skipped.
+  Gate включён в develop behavioral и full validator. Mypy/hooks/pip-audit Passed,
+  без ревизора/commit/push/deploy. Не полный data-flow/ORM/domain invariants proof;
+  игровые/Legacy/monster contracts не менялись. Историческое описание ниже сохранено.
 
 - **Источник / аудит:** [audit/06_testing_quality.md:451](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/06_testing_quality.md:451); аудит 06. **Code anchors:** [tests/backend/features/test_infrastructure_boundaries.py:9](D:/Workspace/personal/pets/TurnBasedMMORPG/tests/backend/features/test_infrastructure_boundaries.py:9), [.agents/skills/turnbasedmmorpg-project/references/project-rules.md:17](D:/Workspace/personal/pets/TurnBasedMMORPG/.agents/skills/turnbasedmmorpg-project/references/project-rules.md:17)
 - **Исходная severity:** Medium. **Доказательность:** Подтверждено статическим анализом в исходном аудите; полного повторного анализа сейчас нет. **Стадия:** Shared infrastructure (Pre-alpha / Legacy). **Срочность:** Не исправлять без архитектурного решения о поддержке/выводе Legacy; при текущей публикации сначала проверить экспозицию.
@@ -924,6 +1062,21 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A06-10. **Связи:** Самостоятельный measurement/policy; не дефект precondition A06-02.
 
 ### A06-11 — Stage «unit» не отделяет уровни тестирования
+
+- **Дополнение 20.10.2026:** последующей отдельной задачей переименован monster
+  test в `test_monster_combat_actor_input.py` без изменения содержимого. Теперь
+  обычный full collection без исключений успешен:4558tests; оба модуля15passed.
+  Прежнее ограничение collection ниже относится к состоянию до переименования.
+  Полное исполнение suite/coverage по-прежнему не проверено.
+
+- [x] **20.10.2026 — разделение runner stages проверено локально.** Unit/integration/
+  regression имеют явные selectors; suite объединяет их с исходным coverage74%.
+  External opt-in исключён из automatic stages. Matrix:1682unit/41integration/
+  2661regression/170external,4554collected; один конфликтующий monster-модуль
+  исключён только в диагностической команде. Без исключения collection падает;
+  это не исправлено и не скрыто в config. 276passed/170deselected, hooks/pip-audit
+  Passed. Full suite/coverage и реальная storage семантика не проверялись.
+  Без ревизора/commit/push/deploy; историческая находка ниже сохранена.
 
 - **Источник / аудит:** [audit/06_testing_quality.md:481](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/06_testing_quality.md:481); аудит 06. **Code anchors:** [pyproject.toml:200](D:/Workspace/personal/pets/TurnBasedMMORPG/pyproject.toml:200), [pyproject.toml:158](D:/Workspace/personal/pets/TurnBasedMMORPG/pyproject.toml:158)
 - **Исходная severity:** Low. **Доказательность:** Подтверждено статическим анализом в исходном аудите; полного повторного анализа сейчас нет. **Стадия:** Shared infrastructure (Pre-alpha). **Срочность:** При стабилизации домена.
@@ -1044,6 +1197,14 @@ Canonical объединяет лишь полный дубль: одна при
 
 ### A07-12 — Studio не обеспечивает auth/read-only contract
 
+- **22.10.2026 — локально исправлено и проверено.** Studio token/Basic auth,
+  Host/Origin boundary, production-source unsafe-method deny и selected-source
+  HTTP guard; SQL read-only transactions и Redis read-command facade. 49 tests
+  Passed, 1 opt-in skipped; отдельный disposable PostgreSQL drill Passed, запрет
+  CTE/function writes доказан реальным сервером. Mypy35files и Ruff Passed.
+  Separate read-only DB roles/Redis ACL и рабочий rollout не аттестованы.
+
+
 - **Источник / аудит:** [audit/07_application_security.md:275](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/07_application_security.md:275); аудит 07. **Code anchors:** [src/studio/app.py:137](D:/Workspace/personal/pets/TurnBasedMMORPG/src/studio/app.py:137), [src/fastapi_cabinet/site.py:27](D:/Workspace/personal/pets/TurnBasedMMORPG/src/fastapi_cabinet/site.py:27), [src/studio/features/source_selector/middleware.py:25](D:/Workspace/personal/pets/TurnBasedMMORPG/src/studio/features/source_selector/middleware.py:25)
 - **Исходная severity:** High. **Доказательность:** Подтверждено статическим анализом в исходном аудите; полного повторного анализа сейчас нет. **Стадия:** Dev-only. **Срочность:** Немедленно проверить или ограничить доступ при Studio рядом с live source; actual tunnel/access неизвестны.
 - **Домены / контракт:** Studio; Source selector; Cabinet; Backend HTTP. Analytical Studio auth/read-only действует до backend call.
@@ -1117,6 +1278,192 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A07-14. **Связи:** Полный дубль A07-14; canonical A07-14; cookie/dev-off дополнительные условия не поглощают A07-15.
 
 ### A08-02 — Общие secrets и сеть расширяют последствия компрометации
+
+- **22.10.2026 — финальный локальный пакет.** Backend/site migrations отделены
+  от API auth; backend-migrate11 и site-migrate8 DB/runtime настроек. Archive
+  SITE_DATABASE_URL исключён, allowlist12. HTTP auth validators сохранены.
+  Mongo opt-in provisioning создаёт только нового пользователя readWrite одной
+  application DB; disposable real-wire CRUD/index и cross-DB/admin deny Passed.
+  55 environment cases, 24 runtime/DB tests, scoped mypy6sources и Ruff Passed.
+  PG ownership/PUBLIC/default privileges и реальные Redis key/command ACL требуют
+  server inventory: без live правок и фиктивного заявления least privilege.
+  Operational A08-02 partial; единый release checklist описывает применение.
+
+
+- **22.10.2026 — chat-archive-worker без API auth dependency.** Единственный
+  configuration import переведён на RuntimeSettings; три auth-ключа исключены,
+  allowlist16→13. SITE_DATABASE_URL пока сохранён в прежнем mapping.
+  Алгоритм архивирования, cron10min и max_jobs1 не менялись. 108 archive/ARQ/API
+  регрессий Passed с fake adapters; рабочие streams и данные не затрагивались.
+  API auth остаётся строгой; роли хранилищ и rollout остаются отдельной работой,
+  A08-02 partial (план 10.3u).
+  19 runtime/auth, 8 environment и 157 deploy tests, mypy/Ruff Passed.
+  Scoped hooks, включая pip-audit и detect-secrets, Passed.
+
+- **22.10.2026 — combat-ai-simulation-worker без API auth dependency.**
+  Entrypoint использует RuntimeSettings; allowlist сокращён с 20 до 17 полей:
+  SECRET_KEY, FRONTEND_INTERNAL_SERVICE_KEY и SITE_TO_GAME_SERVICE_KEY исключены.
+  Профиль, очередь, четыре задачи, таймауты и ограничения выполнения сохранены.
+  Игровой код не менялся; симуляции, обучение и рабочие данные не запускались.
+  103 ARQ/API regression, 12 environment и 157 deploy tests Passed; mypy/Ruff
+  Passed. Роли хранилищ и operational rollout
+  остаются отдельной работой; A08-02 partial (план 10.3t).
+  16 runtime/auth contracts и scoped hooks, включая pip-audit/detect-secrets, Passed.
+
+- **22.10.2026 — combat-worker без API auth dependency.** Entrypoint явно
+  получает RuntimeSettings; его allowlist сокращён с 20 до 17 полей: SECRET_KEY,
+  FRONTEND_INTERNAL_SERVICE_KEY и SITE_TO_GAME_SERVICE_KEY не доставляются.
+  Очередь, 7 задач, max_jobs30/timeout60/keep_result0, local policy и хранилища
+  сохранены. Игровой код не менялся; 114 ARQ/API/combat регрессий Passed.
+  14 runtime/auth, 12 combat environment и 157 deploy tests Passed; mypy Passed.
+  Actual startup/shutdown проверены с fakes без рабочих БД и сетевых запросов.
+  Simulation worker и остальные сервисы не менялись. Роли хранилищ и rollout
+  остаются отдельной работой; A08-02 partial (план 10.3s).
+  Scoped hooks, включая pip-audit и detect-secrets, Passed.
+
+- **22.10.2026 — system-worker без API auth dependency.** Entrypoint явно
+  получает RuntimeSettings, его allowlist сокращён с 20 до 17 полей: SECRET_KEY,
+  FRONTEND_INTERNAL_SERVICE_KEY и SITE_TO_GAME_SERVICE_KEY не доставляются.
+  SQL/Mongo/Redis, очередь, 8 задач, 2 cron и параметры выполнения сохранены.
+  12 runtime/auth и 12 system environment contracts, 157 deploy и 106 адресных
+  system/API/queue regression tests Passed. Startup/shutdown проверены с fakes,
+  без рабочих БД и сетевых запросов; API и прочие authenticated entrypoints
+  сохраняют строгую проверку ключей. Роли хранилищ, остальные сервисы и rollout
+  остаются отдельной работой; A08-02 partial (план 10.3r).
+  Scoped hooks, включая pip-audit и detect-secrets, Passed; mypy/Ruff Passed.
+
+- **22.10.2026 — GenerationAI runtime/auth settings split.** Worker получает
+  19 настроек без SECRET_KEY/FRONTEND_INTERNAL_SERVICE_KEY/SITE_TO_GAME_SERVICE_KEY.
+  Общие инфраструктурные consumers используют RuntimeSettings без auth-полей;
+  BackendSettings сохраняет строгие API validators, прочие entrypoints — прежний
+  auth gate. Gemini, SQL/Mongo/Redis, очереди/cron и gameplay не менялись.
+  10 runtime/auth contracts, 13 GenerationAI Compose tests, 14 cross-service env
+  cases и 157 deploy tests Passed; mypy18sourcefiles Passed. Parent regression
+  234passed135opt-in skipped; реальные хранилища/provider requests не запускались.
+  Роли БД, auth остальных сервисов и operational применение остаются A08-02 partial.
+  Scoped hooks/pip-audit Passed; synthetic Gemini false positive закрыт одной
+  inline pragma и повторной проверкой без изменения baseline (план 10.3q).
+
+- **22.10.2026 — frontend-play allowlist.** Общий env_file заменён 48 явными
+  настройками. Site SQL/auth/JWT/cookie/CSRF, game-cookie flags, realtime/backend
+  URL, renderer/paths/S3 и play overrides сохранены. Game SQL/Mongo/Redis,
+  SMTP/operator/AI/bot/root credentials исключены после trace actual consumers.
+  15 адресных и 157 deploy tests Passed; 47 play regression tests Passed.
+  Actual play app/cookies/Fake S3 проверены без lifespan/сетевых запросов и БД.
+  Frontend(site) не менялся; shared keys/DB roles и operational применение
+  остаются отдельной работой, A08-02 partial.
+  Scoped hooks, включая pip-audit и detect-secrets, Passed (план 10.3p).
+
+- **22.10.2026 — frontend(site) allowlist.** Общий env_file заменён 60 явными
+  настройками. Site SQL/Redis, auth/cookie/CSRF, SMTP/S3 и backend API/operator
+  credentials сохранены; game SQL/MongoDB/AI/bot/root credentials исключены.
+  14 адресных и 156 deploy tests Passed; 44 site regression tests Passed.
+  Actual site app import использует root+src PYTHONPATH как контейнер, socket guard,
+  временный generated-assets каталог и Fake boto3; lifespan/SMTP/S3 requests нет.
+  Frontend-play не менялся; shared keys/DB roles остаются, A08-02 partial.
+  Hooks/pip-audit Passed; detect-secrets false positives на synthetic test literals
+  закрыты двумя inline pragma, повтор Passed без изменения baseline (план 10.3o).
+
+- **22.10.2026 — backend allowlist.** Общий env_file заменён 40 явными
+  настройками. Gemini, operator/catalog keys, JWT, world/runtime/Streams overrides
+  сохранены по actual consumers. Site DB, S3/Openrouter/SMTP/bot/root credentials
+  исключены. 19 адресных и 155 deploy tests Passed; 102 API-access/queue regression
+  tests Passed. Проверки не запускали lifespan, рабочие БД и provider requests.
+  Shared auth/settings split/DB roles и другие сервисы остаются, A08-02 partial.
+  Scoped hooks Passed кроме pip-audit: virtualenv21.14.7/CVE-2026-113722,
+  сканер указывает fix21.14.9. Dependency follow-up открыт отдельно; зависимости
+  и audit exceptions в backend-заходе не менялись (план 10.3m).
+  Follow-up закрыт в 10.3n: virtualenv обновлён до21.14.9, остальные lock blocks
+  сохранены. Compatibility smoke/fresh Python pre-commit hook и pip-audit Passed
+  без новых исключений. Исходный failure10.3m сохранён как историческое evidence.
+
+- **21.10.2026 — chat allowlist.** Общий env_file заменён 30 явными настройками.
+  Сохранены game SQL/MongoDB/Redis, JWT/auth, WS origins/ping, stream recovery и
+  aliases consumer group/worker name, buffer/logging. Site DB и посторонние
+  AI/S3/SMTP/bot/operator/root credentials исключены. 16 адресных и 154 deploy
+  tests Passed; realtime/chat regression 78passed2skipped (real Redis opt-in).
+  Lifespan/рабочие сервисы/данные не запускались, source/gameplay не менялись.
+  JSON origins contract сохранён; shared auth/DB roles/другие сервисы остаются.
+  Scoped hooks, включая pip-audit и detect-secrets, Passed (план 10.3l).
+
+- **21.10.2026 — combat-ai-simulation-worker allowlist.** Общий env_file
+  заменён 20 явными настройками. Site DB и чужие AI/S3/SMTP/bot/operator/root
+  credentials исключены, используемые shared overrides сохранены. Профиль,
+  четыре задачи, queue/timeouts/maxtries/concurrency не менялись. 12 адресных
+  и 153 deploy tests Passed; startup/training/tasks/сеть не запускались.
+  Scoped hooks, включая pip-audit и detect-secrets, Passed (план 10.3k).
+  Shared auth, DB roles и остальные сервисы остаются, A08-02 partial.
+
+- **21.10.2026 — следующий частичный заход: combat-worker allowlist.**
+  Общий env_file заменён 20 явными настройками game SQL/Mongo/Redis/shared auth,
+  logging, streams, local policy path, symbiote name и lock TTL. Site DB и ключи
+  AI/S3/SMTP/bot/operator/root исключены. 12 адресных и 152 deploy tests Passed;
+  startup/боевые задачи/сетевые подключения не запускались. Simulation worker
+  остаётся отдельным scope. Scoped hooks, pip-audit и detect-secrets Passed.
+  Shared auth/DB roles/другие сервисы остаются, A08-02 partial.
+
+- **21.10.2026 — следующий частичный заход: system-worker allowlist.**
+  Общий env_file заменён 20 явными настройками. Game SQL/Mongo/Redis/shared auth,
+  logging, streams/policy и используемые имя symbiote/TTL lock сохранены.
+  Site DB и AI/S3/SMTP/bot/operator/root credentials исключены. 12 адресных и
+  151 deploy tests Passed; startup/задачи/сетевые подключения не запускались.
+  Scoped hooks, включая pip-audit и detect-secrets, Passed. Follow-up Generation
+  worker из 10.3h выполнен в 10.3i: allowlist расширен до 22 настроек, сохранены
+  DEFAULT_SYMBIOTE_NAME и GAME_REFRESH_TOKEN_EXPIRE_MINUTES. 13 адресных и
+  151 deploy tests Passed; реальные данные и source/gameplay не менялись.
+  Shared auth, роли БД и оставшиеся сервисы не разделены; A08-02 partial.
+
+- **21.10.2026 — следующий частичный заход: generation-ai-worker allowlist.**
+  Общий env_file заменён 20 явными настройками. Gemini для items.text и нужные
+  SQL/Mongo/Redis/shared auth/logging settings сохранены; site DB и секреты чужих
+  интеграций исключены. 12 адресных и 150 deploy tests Passed; scoped hooks,
+  включая pip-audit и detect-secrets, Passed. Startup/provider requests не было.
+  Shared auth, роли БД и другие сервисы остаются; применение при будущем recreate.
+
+- **21.10.2026 — следующий частичный заход: backend-migrate allowlist.**
+  Общий env_file заменён14настройками game SQL/Mongo/production validation и
+  поддерживаемого logging. Site DB/Redis/provider/S3/SMTP/bot/operator secrets
+  исключены.10synthetic settings/Compose/offline baseline/startup tests Passed.
+  Mongo registration проверена на stub DB, настоящие индексы не создавались;
+  online SQL migration не выполнялась. Sharedauth/DBroles/other services остаются.
+
+- **21.10.2026 — следующий частичный заход: site-migrate allowlist.** Общий
+  env_file заменён10explicit settings. Game DB/Redis/API URL и AI/S3/SMTP/bot/
+  operator/root credentials не передаются; site DB и shared FrontendSettings
+  production-validator authkeys сохранены.8synthetic Compose/settings/offline
+  baseline Alembic tests Passed; production migrations/DB не запускались.
+  Fullhead offline неподдержан0002data reads — это ограничение проверки, не
+  изменение миграций. Остальные services/sharedauth/DBroles остаются A08-02.
+
+- **21.10.2026 — следующий частичный заход: chat-archive-worker allowlist.**
+  Общий env_file удалён только у архиватора. Существующие DB/Redis/Mongo bindings,
+  logging/SQL echo/Mongo timeout и необходимые shared production-validator auth
+  keys передаются явно; AI/S3/SMTP/bot/operator secrets исключены. Код архивации,
+  реальные credentials, shared settings и permissions не менялись. Runtime
+  применение потребует будущего recreate; остальные services/env_file и broad
+  database/shared auth credentials остаются отдельными пунктами A08-02.
+
+- **21.10.2026 — следующий частичный заход: tg-bot environment allowlist.**
+  У production bot удалён broad env_file; передаются только текущие BotSettings
+  через явный environment. Sanitized Compose config с credential canaries и
+  fresh BotSettings parsing проверяет defaults/overrides/empty/missing semantics.
+  Нужные SECRET_KEY/Redis/backend credentials сохранены, значения не ротировались.
+  Остальные сервисы/env_file и shared credential scopes не разделены. Изменение
+  вступит в силу при будущем recreate bot; текущие runtime env не менялись.
+  Functional tests прошли; полный hook gate не green: pip-audit отдельно отметил
+  virtualenv21.7.13 с4advisories (dependency follow-up, не часть env isolation).
+  **Follow-up21.10.2026 выполнен:** virtualenv21.14.7 + required distlib/packaging
+  обновлены, lock/pip check, real venv+fresh pre-commit hook,7dependency tests и
+  pip-audit Passed без новых exceptions. Исторический failure выше устранён.
+
+- **21.10.2026 — частично исправлено: edge/data Compose isolation.** Nginx/certbot
+  только tbmmorpg-edge, stores/workers/migrations/bot — tbmmorpg-network;
+  frontend/frontend-play/backend/chat подключены к обеим. Volume init без сети.
+  Certbot issue/renew defaults согласованы.5sanitized Compose resolutions и
+  negative topology mutations проверены. Это configuration proof, не live firewall
+  или network reachability certification; работающие контейнеры не изменялись.
+  Общие env secrets, DB roles/Redis ACL и broad application store access остаются.
+  Future rollout требует recreate и проверки фактических attachments; no deploy.
 
 - **Источник / аудит:** [audit/08_infrastructure_security.md:249](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/08_infrastructure_security.md:249); аудит 08. **Code anchors:** [deploy/compose.site.yml:39](D:/Workspace/personal/pets/TurnBasedMMORPG/deploy/compose.site.yml:39), [deploy/compose.game.yml:43](D:/Workspace/personal/pets/TurnBasedMMORPG/deploy/compose.game.yml:43), [deploy/compose.tg-bot.yml:8](D:/Workspace/personal/pets/TurnBasedMMORPG/deploy/compose.tg-bot.yml:8)
 - **Исходная severity:** Medium. **Доказательность:** Подтверждено статическим анализом в исходном аудите; полного повторного анализа сейчас нет. **Стадия:** Shared infrastructure (intended Production). **Срочность:** До следующего публичного релиза при применимости поверхности; действующая экспозиция требует отдельной проверки.
@@ -1203,7 +1550,7 @@ Canonical объединяет лишь полный дубль: одна при
 
 ### A08-11 — Production dispatch не привязан к отдельному approval/ref/provenance gate
 
-- **Статус 19.10.2026:** локальные approval/ref/concurrency gates реализованы и независимо проверены (шаг 5.8); реальные hosted protections/secret scoping остаются unverified. Полное operational закрытие не заявляется.
+- **Статус 19.10.2026:** локальные approval/ref/concurrency gates реализованы и независимо проверены (шаг 5.8). Дополнение 20.10.2026: реальные main/environment rules настроены и независимо проверены; публикация workflow отложена владельцем, secret scoping и hosted runtime остаются открытыми. Полное operational закрытие не заявляется.
 
 - **Источник / аудит:** [audit/08_infrastructure_security.md:351](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/08_infrastructure_security.md:351); аудит 08. **Code anchors:** [.github/workflows/deploy-production.yml:3](D:/Workspace/personal/pets/TurnBasedMMORPG/.github/workflows/deploy-production.yml:3), [.github/workflows/build-images.yml:7](D:/Workspace/personal/pets/TurnBasedMMORPG/.github/workflows/build-images.yml:7)
 - **Исходная severity:** Medium. **Доказательность:** Гипотеза: исторический риск/неполный контракт; отдельные предпосылки не равны доказанному эффекту. **Стадия:** Shared infrastructure (intended Production). **Срочность:** До следующего публичного релиза при применимости поверхности; действующая экспозиция требует отдельной проверки.
@@ -1232,6 +1579,14 @@ Canonical объединяет лишь полный дубль: одна при
 
 ### A08-14 — Недоверенные forwarded headers могут давать HTTP-ссылки с токеном
 
+- **22.10.2026 — локально исправлено и проверено.** Token email URL строится
+  только из canonical SITE_BASE_URL: production email требует HTTPS origin без
+  userinfo/path/query/fragment. Debug допускает loopback HTTP; request Host и
+  forwarded headers origin не выбирают. 33 route/service/settings/proxy contracts
+  Passed; Ruff и mypy4sourcefiles Passed. Реальная отправка и production proxy
+  не проверялись, изменение не требует доверять произвольным forwarded headers.
+
+
 - **Источник / аудит:** [audit/08_infrastructure_security.md:369](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/08_infrastructure_security.md:369); аудит 08. **Code anchors:** [deploy/nginx/site.conf.template:179](D:/Workspace/personal/pets/TurnBasedMMORPG/deploy/nginx/site.conf.template:179), [deploy/compose.site.yml:55](D:/Workspace/personal/pets/TurnBasedMMORPG/deploy/compose.site.yml:55), [.venv/Lib/site-packages/uvicorn/config.py:340](D:/Workspace/personal/pets/TurnBasedMMORPG/.venv/Lib/site-packages/uvicorn/config.py:340)
 - **Исходная severity:** Medium. **Доказательность:** Гипотеза: исторический риск/неполный контракт; отдельные предпосылки не равны доказанному эффекту. **Стадия:** Shared infrastructure (intended Production; feature-dependent). **Срочность:** До следующего публичного релиза при применимости поверхности; действующая экспозиция требует отдельной проверки.
 - **Домены / контракт:** Proxy trust; Email canonical origin; Uvicorn. Security link HTTPS canonical origin with bounded proxy trust.
@@ -1240,6 +1595,37 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A08-14. **Связи:** Independent token logs A08-06; generation/origin cause иной.
 
 ### A08-15 — Recovery и security monitoring не доказаны operational evidence
+
+- **22.10.2026 — финальный локальный пакет.** Все три isolated restore drills
+  повторены: 3Passed59.91s. Добавлен read-only recovery_evidence CLI с явными
+  policy thresholds, hash binding к восстановленному backup и проверкой возраста/
+  длительности; 32negative/positive contracts Passed, mypy/Ruff Passed. Не читает
+  сервисы и не создаёт backup/alerts. Manifest — аттестация, не proof restore сам
+  по себе; offsite/schedule/retention/RPO/RTO/alert delivery остаются operational.
+
+
+- **Шаг10.2b, 21.10.2026 — Redis Stack isolated RDB drill:** SAVE snapshot
+  загружается новым процессом; проверены string/hash/set/list/zset/RedisJSON,
+  Streams entries/group/cursor/pending и absolute TTL/expired key. Corrupt RDB
+  не стартует с пустой базой: nonzero exit/no PONG/ошибка загрузки.
+  Только собственные containers/volumes/synthetic bytes; network none/no ports,
+  pull never, cleanup проверяется. AOF/ACL/replica failover/upgrade и безопасный
+  replay игровых эффектов не проверяются. Operational A08-15 остаётся partial.
+
+- **Шаг10.2, 21.10.2026 — MongoDB isolated drill:** mongodump archive/gzip →
+  mongorestore в новый namespace на собственных synthetic documents. Проверены
+  canonical BSON ObjectId/date/int64, Unicode/nested/null, compound unique
+  rejection, TTL index metadata, source unchanged и corrupt archive failure.
+  Контейнер mongo:8 без сети/портов/рабочих volumes, tmpfs и verified cleanup.
+  Это локальный proof, не production backup, PITR или cross-store consistency.
+  Operational evidence A08-15 остаётся незакрытым; детали progress10.2.
+
+- **21.10.2026 — частичный локальный proof:** добавлен opt-in synthetic PostgreSQL
+  pg_dump(custom)/pg_restore drill для раздельных site/game баз в своём disposable
+  container (--network=none, no ports, tmpfs, --pull=never, cleanup verified).
+  Unicode/данные/indexes/constraints/sequence и corrupt archive отказ проверены.
+  Это не operational production backup/restore: schedule/offsite/retention/RPO/RTO,
+  Mongo/Redis/assets и alerts evidence остаются. Подробнее progress10.1/deployment.
 
 - **Источник / аудит:** [audit/08_infrastructure_security.md:377](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/08_infrastructure_security.md:377); аудит 08. **Code anchors:** [docs/ru/management/deployment.md:179](D:/Workspace/personal/pets/TurnBasedMMORPG/docs/ru/management/deployment.md:179), [.github/workflows/deploy-production.yml:104](D:/Workspace/personal/pets/TurnBasedMMORPG/.github/workflows/deploy-production.yml:104), [src/backend/app.py:97](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/app.py:97)
 - **Исходная severity:** Observation. **Доказательность:** Гипотеза: исторический риск/неполный контракт; отдельные предпосылки не равны доказанному эффекту. **Стадия:** Shared infrastructure (intended Production). **Срочность:** При стабилизации домена.
@@ -1324,6 +1710,14 @@ Canonical объединяет лишь полный дубль: одна при
 
 ### A09-09 — GenerationAI удерживает SQL connection/transaction через долгую внешнюю работу
 
+- [x] **20.10.2026, live items.text:** claim/request transaction committed, task
+  snapshot detached и connection возвращается в pool перед provider await. Result
+  и retry выполняются в новой transaction после claim-token fencing. Проверены
+  свободный row lock/pool, expire_on_commit, stale response/error и настоящий worker.
+  19 новых checks, итог431passed; mypy3sources/hooks/pip-audit pass. Проверил ведущий,
+  без ревизора/commit/push/deploy. Running recovery добавлен следующим шагом; Mongo storage IO
+  финализации не вынесен из SQL transaction. Ниже сохранено историческое описание.
+
 - **Источник / аудит:** [audit/09_performance_scalability.md:126](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/09_performance_scalability.md:126); аудит 09. **Code anchors:** [src/backend/features/generation_ai/repositories.py:132](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/repositories.py:132), [src/backend/features/generation_ai/workers/tasks.py:20](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/generation_ai/workers/tasks.py:20)
 - **Исходная severity:** Medium. **Доказательность:** Подтверждено статическим анализом в исходном аудите; полного повторного анализа сейчас нет. Сейчас выборочно подтверждены только указанные статические предпосылки. **Стадия:** Shared infrastructure (Pre-alpha). **Срочность:** При стабилизации домена.
 - **Домены / контракт:** GenerationAI SQL claim; Provider; Asset/Mongo. Connection/transaction lifetime limited separately external work.
@@ -1400,3 +1794,49 @@ Canonical объединяет лишь полный дубль: одна при
 ## Пределы использования реестра
 
 Реестр сохраняет source severity, независимо классифицирует evidence/stage и связывает контракты. Он не устанавливает актуальную production-достижимость, не обещает прохождение всей suite и не подтверждает инциденты по историческим failure windows. Перед выбором реализации необходима узкая повторная проверка актуального пути, guards, owner decision и окружения. Ни объединённая группа, ни предложенная regression-проверка не разрешают правки исходников, installs, deployments, migrations или чтение production.
+
+
+## Итог локального инфраструктурного пакета — 22.10.2026
+
+Сверены оставшиеся пункты шагов10–11; локальные migration/env/auth, Studio
+read-only/access и canonical email origin изменения проверены. Recovery evidence
+checker и единый release checklist добавлены. Общий nonexternal прогон:
+4490passed/3failed/316deselected,599.08s. Три ранее существовавших игровых сбоя:
+inventory metrics expectations(2) и отсутствующий golem_foundry loot profile(1).
+Их source/test contracts в инфраструктурном пакете не менялись; подтверждение
+var/audit/final-gameplay-diagnosis.txt. Scoped hooks/pip-audit/secret scan, mypy
+изменённых участков, fixture validators и MkDocs Passed. Полный coverage gate
+не заявлен. A08-02/A08-15 остаются operational partial: реальные grants/ACL,
+backup schedule/offsite/retention/alerts и rollout не выполнялись. Studio требует
+STUDIO_ACCESS_TOKEN. Детали — финальный блок progress и infrastructure release checklist.
+Без commit/push/deploy, рабочих данных, gameplay edits и независимого ревизора.
+
+
+## Независимая ревизия накопленного пакета — 22.10.2026
+
+Initial verdict: changes required. Подтверждены IR-01 Medium (SQL apply сохраняется
+при отказе Mongo result), IR-02 Medium (strict CI quality env не содержит service
+keys), затем supplement IR-03 High (site migration test fixture патчит прежний
+settings module, новый DatabaseSettings может выбрать inherited URL). IR03 выявлен
+pre-connect interception без реальной связи/миграции; реальные opt-in migration/
+auth tests остановлены до harness fix и независимой перепроверки. Это риск теста,
+не доказательство изменения рабочих данных. Исправления и финальный verdict
+записываются в разделе общей ревизии audit/plans/06_non_gameplay_hardening_progress.md.
+Первоначальная прежняя формулировка локальной готовности требует уточнения до fixes.
+
+
+### Окончательная независимая перепроверка — 22.10.2026
+
+IR01/IR02/IR03 закрыты новым независимым ревизором после исправлений. IR01 SQL
+rollback и сохранение ambiguous Mongo evidence проверены настоящими хранилищами
+и вторым retry; оба claim пути не повторяют provider при сохранённом raw output.
+IR02 synthetic CI env сохраняет strict production validation. IR03 guards
+подтверждены до connection, затем14realmigration/auth testsPassed. Независимо
+200GenerationAI и136env/import testsPassed; final13filehooks/pip-audit/secret scan
+Passed. Финальная таблица требований и claims — раздел REV в progress file,
+полный local report var/audit/independent-infrastructure-final.md.
+
+Новых actionable defects в проверенном infrastructure scope не установлено;
+local reviewed-awaiting-acceptance. Это не закрытие operational A08-02/A08-15 и
+не full project quality/coverage/remote CI sign-off. Три старых игровых failures,
+chat alpha и AG-05 отложены. Без commit/push/deploy и рабочих данных этой ревизии.

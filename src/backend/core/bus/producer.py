@@ -58,10 +58,7 @@ class GameEventProducer:
         return mid, cid
 
     async def _trim_stream(self) -> None:
-        if not self._maxlen or self._maxlen <= 0:
-            return
-        client = getattr(self._producer, "client", None)
-        stream_name = getattr(self._producer, "stream_name", None)
-        if client is None or stream_name is None:
-            return
-        await client.xtrim(stream_name, maxlen=self._maxlen, approximate=True)
+        # MAXLEN can delete PEL payloads and unread entries of slower groups.
+        # Retain data until an operator reconciles deliveries; maxlen remains a
+        # compatibility argument, not a destructive retention policy.
+        return

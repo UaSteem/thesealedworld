@@ -6,24 +6,53 @@ Run with RUN_SITE_MIGRATION_POSTGRES=1; no real database URL or .env is read.
 import asyncio
 import hashlib
 import os
+import re
 import subprocess
 import sys
 import time
 import uuid
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import asyncpg
 import pytest
 from alembic.config import Config
 from alembic.script import ScriptDirectory
 
-pytestmark = pytest.mark.skipif(
+_service_opt_in = pytest.mark.skipif(
     os.getenv("RUN_SITE_MIGRATION_POSTGRES") != "1", reason="explicit disposable PostgreSQL opt-in required"
 )
 ROOT = Path(__file__).resolve().parents[3]
 BASELINE = "0001_site_schema_baseline"
 HEAD = ScriptDirectory.from_config(Config(str(ROOT / "src/frontend/alembic.ini"))).get_current_head()
 USER_ID = "77ed3260-511e-45ec-967f-dd5290123248"
+pytestmark = [_service_opt_in, pytest.mark.external]
+_DISPOSABLE_DATABASES: set[str] = set()
+
+
+def _disposable_url(url: str) -> str:
+    normalized = url.replace("postgresql+asyncpg://", "postgresql://", 1)
+    parsed = urlsplit(normalized)
+    if (
+        parsed.scheme != "postgresql"
+        or parsed.hostname != "127.0.0.1"
+        or parsed.username != "postgres"
+        or parsed.password is not None
+        or not parsed.port
+        or parsed.port == 5432
+        or parsed.query
+        or parsed.fragment
+        or re.fullmatch(r"/site_migration_[0-9a-f]{12}", parsed.path) is None
+    ):
+        raise ValueError("Only disposable PostgreSQL fixture URLs are allowed")
+    if normalized not in _DISPOSABLE_DATABASES:
+        raise ValueError("URL is not registered by the disposable PostgreSQL fixture")
+    return normalized
+
+
+def _subprocess_env():
+    allowed = {"SYSTEMROOT", "WINDIR", "PATH", "TEMP", "TMP", "USERPROFILE", "COMSPEC", "PATHEXT"}
+    return {key: value for key, value in os.environ.items() if key.upper() in allowed}
 
 
 def docker(*args):
@@ -66,10 +95,14 @@ def database(postgres):
     name, port = postgres
     db = "site_migration_" + uuid.uuid4().hex[:12]
     docker("exec", name, "createdb", "-U", "postgres", db)
-    return f"postgresql://postgres@127.0.0.1:{port}/{db}"
+    url = f"postgresql://postgres@127.0.0.1:{port}/{db}"
+    _DISPOSABLE_DATABASES.add(url)
+    return url
 
 
 def sql(url, query, *args):
+    url = _disposable_url(url)
+
     async def run():
         connection = await asyncpg.connect(url)
         try:
@@ -81,18 +114,53 @@ def sql(url, query, *args):
 
 
 BOOTSTRAP = r"""
-import sys, types
-from types import SimpleNamespace
+import os, re, sys
+from urllib.parse import urlsplit
+# Drop every inherited application/PG env source before importing settings.
+allowed = {'SYSTEMROOT', 'WINDIR', 'PATH', 'TEMP', 'TMP', 'USERPROFILE', 'COMSPEC', 'PATHEXT', 'PYTHONPATH'}
+for key in list(os.environ):
+    if key.upper() not in allowed:
+        os.environ.pop(key, None)
+import pydantic_settings
+original_settings_config = pydantic_settings.SettingsConfigDict
+def without_dotenv(*args, **kwargs):
+    kwargs['env_file'] = None
+    return original_settings_config(*args, **kwargs)
+pydantic_settings.SettingsConfigDict = without_dotenv
+raw_url = sys.argv[1]
+parsed = urlsplit(raw_url)
+if (parsed.scheme != 'postgresql' or parsed.hostname != '127.0.0.1'
+    or parsed.username != 'postgres' or parsed.password is not None
+    or not parsed.port or parsed.port == 5432 or parsed.query or parsed.fragment
+    or re.fullmatch(r'/site_migration_[0-9a-f]{12}', parsed.path) is None):
+    raise ValueError('URL outside disposable PostgreSQL fixture')
+expected_url = raw_url.replace('postgresql://', 'postgresql+asyncpg://', 1)
+import src.frontend.config.database as database_module
+database_module.database_settings = database_module.DatabaseSettings(
+    _env_file=None, database_url=expected_url, site_database_url=expected_url, database_echo=False)
+assert database_module.database_settings.database_url == expected_url
+import sqlalchemy.ext.asyncio as sa
+original_create_engine = sa.create_async_engine
+original_engine_from_config = sa.async_engine_from_config
+def require_expected_url(url):
+    if str(url) != expected_url:
+        raise ValueError('Engine URL outside disposable PostgreSQL fixture')
+def guarded_create_engine(url, *args, **kwargs):
+    require_expected_url(url)
+    return original_create_engine(url, *args, **kwargs)
+def guarded_engine_from_config(configuration, prefix='sqlalchemy.', **kwargs):
+    require_expected_url(configuration.get(prefix + 'url'))
+    return original_engine_from_config(configuration, prefix=prefix, **kwargs)
+sa.create_async_engine = guarded_create_engine
+sa.async_engine_from_config = guarded_engine_from_config
 from alembic.config import Config
 from alembic import command
-module = types.ModuleType('src.frontend.config.settings')
-module.settings = SimpleNamespace(database_url=sys.argv[1].replace('postgresql://', 'postgresql+asyncpg://'), database_echo=False)
-sys.modules['src.frontend.config.settings'] = module
 config = Config('src/frontend/alembic.ini')
 """
 
 
 def migrate(url, direction="upgrade", revision="head", *, check=True):
+    url = _disposable_url(url)
     result = subprocess.run(
         [
             sys.executable,
@@ -103,6 +171,8 @@ def migrate(url, direction="upgrade", revision="head", *, check=True):
             revision,
         ],
         cwd=ROOT,
+        env=_subprocess_env(),
+        timeout=120,
         capture_output=True,
         text=True,
     )
@@ -112,6 +182,7 @@ def migrate(url, direction="upgrade", revision="head", *, check=True):
 
 
 def schema_diff(url):
+    url = _disposable_url(url)
     script = (
         BOOTSTRAP
         + r"""
@@ -121,7 +192,7 @@ from alembic.migration import MigrationContext
 from sqlalchemy.ext.asyncio import create_async_engine
 from src.frontend.core.database import Base, model_imports
 async def check():
-    engine = create_async_engine(module.settings.database_url)
+    engine = create_async_engine(database_module.database_settings.database_url)
     def compare(connection):
         context = MigrationContext.configure(connection, opts={
             'include_schemas': True, 'compare_type': True, 'compare_server_default': True,
@@ -137,7 +208,14 @@ async def check():
 asyncio.run(check())
 """
     )
-    result = subprocess.run([sys.executable, "-c", script, url], cwd=ROOT, capture_output=True, text=True)
+    result = subprocess.run(
+        [sys.executable, "-c", script, url],
+        cwd=ROOT,
+        env=_subprocess_env(),
+        timeout=120,
+        capture_output=True,
+        text=True,
+    )
     assert result.returncode == 0, result.stderr
 
 

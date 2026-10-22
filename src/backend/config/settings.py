@@ -1,32 +1,25 @@
-import os
-from pathlib import Path
 from typing import Any, Literal
 
-from codex_core.settings import BaseCommonSettings
-from pydantic import field_validator, model_validator
-from pydantic_settings import SettingsConfigDict
+from pydantic import Field, field_validator, model_validator
 
-# Root directory of the project
-BASE_DIR = Path(__file__).parent.parent.parent.parent
-_BUNDLED_TRAINED_COMBAT_AI_POLICY = (
-    Path(__file__).resolve().parents[1]
-    / "features"
-    / "combat"
-    / "runtime"
-    / "ai"
-    / "policies"
-    / "trained_g500_seed0.json"
+from src.backend.config.runtime import (
+    _BUNDLED_TRAINED_COMBAT_AI_POLICY as _BUNDLED_TRAINED_COMBAT_AI_POLICY,
+)
+from src.backend.config.runtime import (
+    BASE_DIR as BASE_DIR,
+)
+from src.backend.config.runtime import (
+    RuntimeSettings,
+)
+from src.backend.config.runtime import (
+    apply_runtime_environment_overrides as apply_runtime_environment_overrides,
 )
 
+# Root directory of the project
 
-class BackendSettings(BaseCommonSettings):
-    """Backend-specific settings for game logic and events."""
 
-    debug: bool = True
-    log_level_console: str = "DEBUG"
-    log_level_file: str = "DEBUG"
-    log_rotation: str = "10 MB"
-    log_dir: str = "logs"
+class BackendSettings(RuntimeSettings):
+    """Authenticated backend/API settings, extending shared runtime configuration."""
 
     # Server Settings
     app_host: str = "0.0.0.0"  # nosec
@@ -36,14 +29,6 @@ class BackendSettings(BaseCommonSettings):
     site_database_url: str = (
         "postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@127.0.0.1:5432/tbmmorpg_site"  # pragma: allowlist secret
     )
-    game_database_url: str = (
-        "postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@127.0.0.1:5432/tbmmorpg_game"  # pragma: allowlist secret
-    )
-    database_url: str = game_database_url
-    database_echo: bool = False
-    mongo_url: str = "mongodb://127.0.0.1:27017"
-    mongo_database: str = "tbmmorpg_analytics"
-    mongo_server_selection_timeout_ms: int = 5_000
     monster_migration_backfill_batch_size: int = 200
     monster_mongo_write_retry_attempts: int = 3
     secret_key: str = "change-me-in-env-change-me-in-env-32-bytes"  # pragma: allowlist secret
@@ -58,8 +43,6 @@ class BackendSettings(BaseCommonSettings):
     operator_read_key: str = ""
     operator_write_key: str = ""
     game_access_token_expire_minutes: int = 15
-    game_refresh_token_expire_minutes: int = 12 * 60
-    default_symbiote_name: str = "SYSTEM"
     enable_dev_rift_routes: bool = True
 
     # Realtime gateway (/ws/realtime)
@@ -81,8 +64,8 @@ class BackendSettings(BaseCommonSettings):
     realtime_ping_timeout_seconds: float = 120.0  # 4 missed pings -> close; survives Chrome background throttling
 
     # Event Streams
-    game_stream_name: str = "game_events"
-    game_stream_maxlen: int = 10_000
+    stream_pending_min_idle_ms: int = Field(default=300_000, gt=0)
+    stream_pending_scan_count: int = Field(default=100, gt=0, le=1000)
     stream_consumer_group: str = "monolith"
     worker_name: str = "worker_1"
     stream_enabled_groups: list[str] | None = None  # None means all groups (monolith mode)
@@ -125,9 +108,8 @@ class BackendSettings(BaseCommonSettings):
         return self
 
     world_auto_generate: bool = False
-    world_generation_mode: str = "test"
+    world_generation_mode: Literal["test", "full"] = "test"
     bootstrap_content_materialization_enabled: bool = True
-    bootstrap_ai_generation_enabled: bool = False
 
     # Generated asset storage. Local dev can serve a mirror of these keys; prod can map them to S3/CDN.
     asset_storage_backend: Literal["local", "s3"] = "local"
@@ -140,41 +122,9 @@ class BackendSettings(BaseCommonSettings):
     asset_s3_secret_access_key: str | None = None
 
     # LLM Settings
-    gemini_api_key: str | None = None
-    gemini_model: str = "gemini-2.5-flash"
-    gemini_image_model: str = "gemini-2.5-flash-image"
-    gemini_location_image_model: str = "gemini-2.5-flash-image"
-    gemini_avatar_image_model: str = "gemini-2.5-flash-image"
     monster_clan_flavor_ai_interval_seconds: float = 30.0
-    gemini_token: str | None = None
     openrouter_api_key: str | None = None
-    combat_ai_policy_path: str | None = None
     # Removed: bug_report_channel_id (per user request)
-
-    model_config = SettingsConfigDict(
-        env_file=BASE_DIR / ".env",
-        env_file_encoding="utf-8",
-        extra="ignore",
-    )
-
-    @property
-    def effective_redis_url(self) -> str:
-        return os.getenv("REDIS_URL") or self.redis_url
 
 
 settings = BackendSettings()
-
-
-def apply_runtime_environment_overrides() -> None:
-    """Export runtime-only settings consumed by lower-level modules.
-
-    PolicyStore intentionally reads process env or explicit paths only, so
-    tests and tools keep the bundled default unless the application process
-    opts into a live policy at startup.
-    """
-
-    policy_path = settings.combat_ai_policy_path
-    if not policy_path and _BUNDLED_TRAINED_COMBAT_AI_POLICY.exists():
-        policy_path = str(_BUNDLED_TRAINED_COMBAT_AI_POLICY)
-    if policy_path:
-        os.environ.setdefault("COMBAT_AI_POLICY_PATH", policy_path)

@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[2]
 CANARY = "synthetic-private-url-canary"
 
 
+@pytest.mark.external
 @pytest.mark.skipif(os.getenv("RUN_NGINX_CONTAINER_TEST") != "1", reason="Opt-in isolated Docker check")
 def test_access_and_request_errors_do_not_retain_url_secrets(tmp_path):
     main = (ROOT / "deploy/nginx/nginx.conf").read_text()

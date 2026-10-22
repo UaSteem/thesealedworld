@@ -11,6 +11,7 @@ from sqlalchemy import select, update
 
 from src.frontend.features.auth.models import EmailVerificationToken, User
 from src.frontend.features.auth.security.passwords import verify_password
+from src.frontend.features.email.origin import canonical_email_origin
 from src.shared.exceptions import AuthException, BusinessLogicException
 
 if TYPE_CHECKING:
@@ -38,12 +39,13 @@ class EmailVerificationService:
         email_service: EmailService,
         *,
         site_base_url: str,
+        allow_local_http: bool = False,
     ) -> None:
         self._session = session
         self._users = users
         self._tokens = tokens
         self._email = email_service
-        self._site_base_url = site_base_url.rstrip("/")
+        self._site_base_url = canonical_email_origin(site_base_url, allow_local_http=allow_local_http)
 
     async def start_verify_current(self, user: User) -> None:
         token = await self._issue_token(user.id, PURPOSE_VERIFY, new_email=None)

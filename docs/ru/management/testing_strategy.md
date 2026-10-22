@@ -206,3 +206,121 @@ uv run pytest tests/backend/features/game_lobby -m unit
 ```
 
 Before merging larger feature work, run the full quality gate and include integration tests for every touched external boundary.
+
+
+## Joint config HTTP contract (A06-07)
+
+`tests/frontend/integrations/backend_api/test_game_config_http_contract.py` connects
+real `GameConfigApi` / `OperatorApiClient` / `BaseApiClient` to the real backend
+config router through `httpx.ASGITransport`. Backend auth dependencies, JSON body
+validation, serialization and `GameConfigManager` run together. Only Redis storage
+is an in-memory get/set/NX double. Fixtures register synthetic config namespaces;
+no gameplay defaults, real keys, application lifespan or external stores are used.
+
+The suite covers DTO metadata and types, update/readback, key/namespace reset,
+namespace isolation, read/write capability separation, 403/404/422 propagation,
+read-only source denial and required-field producer drift. Denied mutations must
+not reach storage; invalid values must leave state unchanged. This is HTTP-boundary
+proof, not Redis wire/persistence proof or browser E2E coverage. Other clients and
+routers require their own joint contracts.
+
+Run from the repository root without Docker or opt-in environment flags:
+
+```powershell
+uv run --locked pytest tests/frontend/integrations/backend_api/test_game_config_http_contract.py --no-cov -q
+```
+
+These tests are marked integration and are included by the existing behavioral CI
+selection of `tests/frontend`. Global coverage configuration is unchanged.
+
+
+## Static ownership gate (A06-08)
+
+`tools/validators/architecture.py` parses Python AST without importing application
+modules. It checks frontend imports of backend internals, shared imports of service
+code, feature imports of raw Redis clients, and executable Redis-root literals
+(`game:`, `combat:`, `loot:`) in frontend/shared/backend feature code. New subspaces of these roots
+are covered without adding literal prefixes. Rift has no blanket exclusion;
+comments/docstrings do not count as executable key construction.
+
+A narrow semantic exception permits combat operation identity in
+`CombatDurabilityDamageRequest.idempotency_key`; it does not permit Redis calls
+nested in that value, other game roots, or arbitrary file-level exceptions.
+Infrastructure managers and semantic feature integrations remain allowed.
+The checker handles static/relative imports, aliases and literal importlib imports;
+it reports file/line/rule and fails on syntax errors in the checked surfaces.
+
+`tests/backend/core/test_architecture_validator.py` exercises synthetic forbidden
+and allowed sources. `tests/backend/features/test_infrastructure_boundaries.py`
+scans the current source tree and retains manager-location regression checks.
+Both are included in develop behavioral CI. The full fixture validator also calls
+this gate; no application startup, real stores or generated archive scan is needed.
+
+```powershell
+uv run --locked pytest tests/backend/core/test_architecture_validator.py tests/backend/features/test_infrastructure_boundaries.py --no-cov -q
+```
+
+This is a bounded static rule set, not a Python sandbox or complete architecture
+proof. Computed imports, arbitrary runtime key factories, Lua/TTL data flow and
+domain/ORM ownership semantics require separate analysis and tests. It does not
+approve Legacy refactors or change gameplay boundaries.
+
+
+## Уровни запуска (A06-11)
+
+`tools/dev/check.py` использует установленные команды `codex_core`: unit,
+integration, regression, затем suite. В интерактивном режиме integration остаётся
+подтверждаемой стадией; `--ci` запускает все четыре без вопроса.
+
+| Стадия | Выборка pytest | Покрытие |
+| --- | --- | --- |
+| unit | `unit and not integration and not external` | `--no-cov` |
+| integration | `integration and not external` | `--no-cov` |
+| regression | `not unit and not integration and not external` | `--no-cov` |
+| suite | `not external` | Общее покрытие, исходный порог 74% |
+
+Если тест помечен одновременно unit/integration, он относится к integration.
+Неразмеченные тесты остаются в regression: это backlog классификации, а не
+утверждение об их изолированности. Suite намеренно повторяет объединение трёх
+выборок ради общего coverage gate. Существующие unit labels не переаттестованы.
+
+Для выборочного запуска: `.venv/Scripts/python -m pytest -m unit --no-cov`;
+используйте полное выражение из таблицы для точной выборки стадии runner.
+Docker/реальные PostgreSQL, MongoDB и Redis отмечены `external`, включая проверки
+Compose CLI. Запускать их отдельно: `pytest -m external --no-cov` и включить
+соответствующий `RUN_*` opt-in из docstring теста. По умолчанию многие такие тесты
+пропускаются; skipped не означает проверенный контракт. External не входит в
+автоматические стадии, даже если в окружении уже выставлен opt-in.
+Прямой `pytest` без selector сохраняет прежнее поведение и существующие skip guards.
+
+Разделение выборок не исправляет ошибки collection или упавшие тесты. Полный
+coverage gate считается пройденным только после успешного исполнения suite.
+
+
+## Реальные storage/broker contracts (A06-03)
+
+Набор подтверждает репрезентативные инфраструктурные границы. Он не сертифицирует
+каждый gameplay/Legacy repository, ownership predicate или distributed transaction.
+Все перечисленные suites отмечены `external`; запускать отдельно с `--no-cov`.
+
+| Граница | Тесты | Что проверяется |
+| --- | --- | --- |
+| RedisJSON | `tests/backend/core/redis/test_redisjson_contract.py` | ActorCommitmentManager wire, sections/batch, TTL, WRONGTYPE partial pipeline |
+| MongoDB | `tests/backend/infrastructure/mongo/test_task_document_index_contract.py` | Настоящий unique index, concurrent duplicate rejection, bootstrap, BSON |
+| SQL/Mongo | GenerationAI `test_input_durability.py`, `test_retry_budget_postgres.py` | Durable input/result, SQL claim/retry, write denial |
+| SQL/Mongo/queue | GenerationAI recovery/transaction/reconciliation suites | Rollback, row locks, concurrent recovery, stale owner, post-commit enqueue |
+| Redis Streams | `tests/backend/core/bus/test_pending_quarantine_redis.py` | Pending quarantine, restart, competing scanners, ACK failure, no blind replay |
+
+Для RedisJSON включить `RUN_REDISJSON_CONTRACT_TESTS=1`; используется
+`redis/redis-stack-server:7.2.0-v14`. Для Mongo suite включить
+`RUN_GENERATION_INPUT_STORE_TESTS=1`: переиспользуются disposable PostgreSQL/Mongo
+fixtures, не application connection URLs. Retry SQL требует
+`RUN_GENERATION_RETRY_POSTGRES_TESTS=1`; Streams — `RUN_STREAM_RECOVERY_REDIS_TESTS=1`.
+Контейнеры имеют уникальные имена и случайные loopback-порты, очищаются в `finally`.
+Не передавать рабочие URL. Эти tests не запускают AI provider и не меняют баланс.
+
+Пример: `pytest tests/backend/core/redis/test_redisjson_contract.py -m external --no-cov`
+после явного включения соответствующего opt-in. Green unit/fake tests по-прежнему
+не доказывают SQL dialect, BSON wire или server atomicity. Ошибка Redis pipeline
+проверяется настоящим WRONGTYPE; отказ Mongo write в GenerationAI дополнительно
+инъецируется поверх настоящих хранилищ и не моделирует сетевой partition сервера.

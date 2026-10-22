@@ -37,7 +37,7 @@ from src.backend.features.world.runtime.node_graph import (  # noqa: E402
     RegionNodeGenerationInput,
     WorldRegionNodeGenerator,
 )
-from src.backend.features.world.services.generator_service import D4_RIFT_PROFILES, LLMWorldGenerator  # noqa: E402
+from src.backend.features.world.services.generator_service import D4_RIFT_PROFILES, WorldGenerator  # noqa: E402
 from src.backend.features.world.services.navigation_service import WorldNavigationService  # noqa: E402
 
 
@@ -235,7 +235,7 @@ def parse_args() -> argparse.Namespace:
 async def main() -> None:
     args = parse_args()
     data = InMemoryWorldData()
-    generator = LLMWorldGenerator(data, ai=None)  # no AI path: static generator only
+    generator = WorldGenerator(data)
     await generator.run(args.mode)
 
     start = parse_coord(args.start)

@@ -1,12 +1,13 @@
 from contextlib import asynccontextmanager
 
 import redis.asyncio as redis
-from codex_platform.streams import StreamRuntime, StreamRuntimeConfig
+from codex_platform.streams import StreamRuntimeConfig
 from fastapi import FastAPI
 from loguru import logger
 
 from src.backend.config.settings import settings
 from src.backend.core.bus import GameEventProducer
+from src.backend.core.bus.recovery import GameStreamRuntime as StreamRuntime
 from src.backend.core.containers import AIContainer, DatabaseContainer, GameFeatureContainer, RedisContainer
 from src.backend.features.arena.events import router as arena_router
 from src.backend.features.character.events import router as character_router
@@ -46,6 +47,8 @@ async def start_event_bus(app: FastAPI) -> None:
 
     runtime = StreamRuntime(
         redis=app.state.redis_client,
+        min_idle_ms=settings.stream_pending_min_idle_ms,
+        scan_count=settings.stream_pending_scan_count,
         config=StreamRuntimeConfig(
             stream_name=settings.game_stream_name,
             consumer_group=settings.stream_consumer_group,

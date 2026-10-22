@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, cast
 
-from src.backend.config.settings import settings
+from src.backend.config.runtime import runtime_settings as settings
 from src.backend.infrastructure.redis.keys import GameSessionLockKey
 
 if TYPE_CHECKING:

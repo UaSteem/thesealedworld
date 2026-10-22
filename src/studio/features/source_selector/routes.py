@@ -28,6 +28,8 @@ async def set_source(
 
     Invalid sources are silently rejected — the cookie is left as-is.
     """
+    if not next_url.startswith("/") or next_url.startswith("//") or "\\" in next_url:
+        next_url = "/"
     response: Response
     if source in _VALID_KINDS:
         response = RedirectResponse(url=next_url, status_code=303)

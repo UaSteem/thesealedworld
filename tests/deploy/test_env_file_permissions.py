@@ -10,6 +10,7 @@ import yaml
 ROOT = Path(__file__).resolve().parents[2]
 
 
+@pytest.mark.external
 @pytest.mark.skipif(os.getenv("RUN_ENV_FILE_CONTAINER_TEST") != "1", reason="Opt-in isolated Docker check")
 @pytest.mark.parametrize("existing", ["missing", "regular", "symlink", "failed_update"])
 def test_workflow_env_is_private_from_first_write_and_replaced_safely(existing):

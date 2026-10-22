@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from dataclasses import dataclass
+from datetime import datetime
 from typing import Any, Literal
 
 from pydantic import BaseModel, Field, model_validator
@@ -64,30 +66,10 @@ class AIGenerationTaskViewDTO(BaseModel):
     error: dict[str, Any] = Field(default_factory=dict)
 
 
-class AIGenerationTaskCreateResponseDTO(BaseModel):
+@dataclass(frozen=True)
+class AIGenerationClaimToken:
     task_id: str
-    status: AIGenerationTaskStatus
-    created: bool
-    scheduled: int = 0
-    storage_key: str | None = None
-    generated_url: str | None = None
-
-
-class NewsCoverGenerationRequestDTO(BaseModel):
-    article_id: str
-    slug: str
-    title: str
-    preview: str = ""
-    body_excerpt: str = ""
-    prompt: str
-    content_type: str = "image/webp"
-
-    @model_validator(mode="after")
-    def validate_news_cover_request(self) -> NewsCoverGenerationRequestDTO:
-        if not self.article_id.strip():
-            raise ValueError("article_id must not be empty")
-        if not self.slug.strip():
-            raise ValueError("slug must not be empty")
-        if not self.prompt.strip():
-            raise ValueError("prompt must not be empty")
-        return self
+    revision: int
+    attempts: int
+    claimed_at: datetime | None
+    identity_key: str

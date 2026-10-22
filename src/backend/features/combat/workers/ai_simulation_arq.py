@@ -1,9 +1,10 @@
 # ruff: noqa: E402
 from __future__ import annotations
 
+from src.backend.config.runtime import runtime_settings
 from src.backend.core.arq_logging import setup_arq_worker_logging
 
-setup_arq_worker_logging("combat-ai-simulation-worker")
+setup_arq_worker_logging("combat-ai-simulation-worker", config=runtime_settings)
 
 from typing import Any
 

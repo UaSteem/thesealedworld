@@ -38,6 +38,9 @@ jobs:
           SECRET_KEY: test-secret-key-for-ci-32-bytes # pragma: allowlist secret
           ENVIRONMENT: testing
           DEBUG: "False"
+          FRONTEND_INTERNAL_SERVICE_KEY: ci-site-game-synthetic-key-for-tests # pragma: allowlist secret
+          SITE_TO_GAME_SERVICE_KEY: ci-site-game-synthetic-key-for-tests # pragma: allowlist secret
+          BACKEND_INTERNAL_SERVICE_KEY: ci-site-game-synthetic-key-for-tests # pragma: allowlist secret
         run: uv run --locked python tools/dev/check.py --ci
 
   build-images:

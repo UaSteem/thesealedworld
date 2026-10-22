@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 from pydantic import ValidationError
 
-from src.backend.config.settings import settings
+from src.backend.config.runtime import runtime_settings as settings
 from src.backend.core.exceptions import BusinessLogicException
 from src.backend.features.character.runtime import CharacterVitalsCalculator
 from src.backend.features.character.runtime.combat_actor_input import CharacterCombatActorInputBuilder

@@ -1,9 +1,7 @@
-from collections.abc import Iterable
 from typing import Any
 
 from loguru import logger as log
 
-from src.backend.features.generation_ai import GenerationAIService
 from src.backend.features.world.integrations import WorldDataIntegration
 from src.backend.features.world.loaders.village_loader import VillageLoader
 from src.backend.features.world.resources.static.d4_city_map import build_d4_city_map_node_metadata
@@ -18,12 +16,7 @@ from src.backend.features.world.runtime.profiles import (
 from src.backend.features.world.runtime.theme import WorldThemeService
 from src.backend.features.world.runtime.threat import ThreatService
 from src.backend.features.world.services.navigation_service import WorldNavigationService
-from src.backend.features.world.tasks_ai import (
-    build_world_location_batch_task_spec,
-    build_world_zone_lore_task_spec,
-)
 
-D4_CONTENT_BATCH_SIZE = 5
 D4_FALLBACK_TITLE = "Руины Старой Столицы"
 D4_FALLBACK_DESCRIPTION = (
     "Мертвый квартал древней столицы. Координата описывает не размер, а отдельную "
@@ -159,37 +152,21 @@ D4_CORNER_ZONE_TAGS: dict[str, list[str]] = {
 }
 
 
-class LLMWorldGenerator:
-    """Orchestrates world generation using static loaders and AI-driven content."""
+class WorldGenerator:
+    """Builds deterministic world geometry and loads prepared static content."""
 
-    def __init__(self, data: WorldDataIntegration, generation_ai: GenerationAIService | None = None) -> None:
+    def __init__(self, data: WorldDataIntegration) -> None:
         self.data = data
         self.village_loader = VillageLoader(data)
-        self.generation_ai = generation_ai
 
     async def run(self, mode: str = "test") -> None:
-        """Runs the generation process.
-
-        ``test`` is static refresh only. ``full`` is the first-run world
-        generation mode and includes AI enrichment after the fallback seed is
-        committed.
-        """
+        """Refresh static content, optionally creating the complete world shell."""
+        if mode not in {"test", "full"}:
+            raise ValueError(f"Unsupported world generation mode: {mode}")
         log.bind(mode=mode).info("WorldGenerationStarted")
-
-        generate_shell = mode in {"full", "full_ai"}
-        generate_seed = mode in {"test", "full", "full_ai"}
-        run_ai_enrichment = mode in {"ai", "enrich", "enrich_ai", "full", "full_ai"}
-
-        if generate_shell:
+        if mode == "full":
             await self._generate_world_shell()
-
-        if generate_seed:
-            await self.village_loader.load_village(STATIC_LOCATIONS)
-
-        if self.generation_ai and run_ai_enrichment:
-            await self.data.commit()
-            log.info("WorldFallbackSeedCommitted")
-            await self._enqueue_world_ai_tasks()
+        await self.village_loader.load_village(STATIC_LOCATIONS)
 
     async def _generate_d4_capital(self) -> None:
         """Generate D4 city gameplay nodes: playable 15x15 inside a loadable 17x17 visual map."""
@@ -501,188 +478,6 @@ class LLMWorldGenerator:
             "flags": flags,
         }
 
-    async def _enqueue_world_ai_tasks(self) -> None:
-        if self.generation_ai is None:
-            return
-
-        specs = []
-        zone = await self.data.get_zone("D4_1_1")
-        if zone is not None:
-            specs.append(build_world_zone_lore_task_spec(zone))
-        specs.extend(await self._build_d4_location_batch_task_specs())
-        if not specs:
-            return
-
-        result = await self.generation_ai.enqueue_many(specs)
-        log.bind(
-            batch_id=result.batch_id,
-            created_count=result.created,
-            reused_count=result.reused,
-            scheduled_count=result.scheduled,
-        ).info("WorldAiTasksEnqueued")
-
-    async def _build_d4_location_batch_task_specs(self) -> list:
-        """Build async tasks for D4 node titles/descriptions using typed district batches."""
-
-        min_x = (4 - 1) * REGION_SIZE
-        min_y = REGION_ROWS.index("D") * REGION_SIZE
-        nodes = await self.data.get_nodes_in_rect(min_x - 1, min_y - 1, REGION_SIZE + 2, REGION_SIZE + 2)
-        node_map = {(node.x, node.y): node for node in nodes}
-        payload_items_by_district: dict[str, list[dict[str, Any]]] = {}
-        static_coords = set(STATIC_LOCATIONS)
-        specs = []
-
-        for x in range(min_x, min_x + REGION_SIZE):
-            for y in range(min_y, min_y + REGION_SIZE):
-                if (x, y) in static_coords:
-                    continue
-
-                node = node_map.get((x, y))
-                if node is None:
-                    continue
-                flags = node.flags if isinstance(node.flags, dict) else {}
-                if flags.get("is_rift"):
-                    continue
-
-                tags = self._collect_location_tags(
-                    x=x,
-                    y=y,
-                    node=node,
-                    chunk_start_x=min_x,
-                    chunk_start_y=min_y,
-                )
-                context = self._scan_d4_surroundings(x, y, node_map)
-                district_key = str(getattr(node, "zone_id", "") or "D4_unknown")
-                district_context = self._build_district_context(node)
-                payload_items_by_district.setdefault(district_key, []).append(
-                    {
-                        "id": f"{x}_{y}",
-                        "tags": tags,
-                        "context": context,
-                        "district_context": district_context,
-                        "route_context": self._build_route_context(node),
-                        "boundary_context": self._build_boundary_context(node),
-                    }
-                )
-
-        for district_key in sorted(payload_items_by_district):
-            for batch in self._chunks(payload_items_by_district[district_key], D4_CONTENT_BATCH_SIZE):
-                specs.append(build_world_location_batch_task_spec(batch=batch, district_key=district_key))
-        return specs
-
-    def _collect_location_tags(self, *, x: int, y: int, node: Any, chunk_start_x: int, chunk_start_y: int) -> list[str]:
-        content = node.content if isinstance(node.content, dict) else {}
-        base_tags = list(content.get("environment_tags") or [])
-        structural_tags = self._get_structural_tags(
-            x=x,
-            y=y,
-            start_x=chunk_start_x,
-            start_y=chunk_start_y,
-            chunk_size=REGION_SIZE,
-            main_biome="city_ruins",
-        )
-        influence_tags = ThreatService.get_narrative_tags(x, y)
-        flags = node.flags if isinstance(node.flags, dict) else {}
-        movement = node.movement_profile if isinstance(getattr(node, "movement_profile", None), dict) else {}
-        road_tags = ["road"] if movement.get("has_road") else []
-        route = movement.get("route", {})
-        route_tags = route.get("tags", []) if isinstance(route, dict) else []
-        boundary_tags = []
-        boundary_features = flags.get("boundary_features", {})
-        if isinstance(boundary_features, dict):
-            for feature in boundary_features.values():
-                if isinstance(feature, dict):
-                    boundary_tags.extend(feature.get("tags", []))
-        return list(
-            dict.fromkeys([*base_tags, *structural_tags, *influence_tags, *road_tags, *route_tags, *boundary_tags])
-        )
-
-    @staticmethod
-    def _build_district_context(node: Any) -> dict[str, Any] | None:
-        flags = node.flags if isinstance(node.flags, dict) else {}
-        profile = flags.get("district_profile")
-        if not isinstance(profile, dict):
-            return None
-        return {
-            "key": flags.get("district_key"),
-            "name": profile.get("name"),
-            "role": profile.get("role"),
-            "tags": profile.get("tags", []),
-        }
-
-    @staticmethod
-    def _build_route_context(node: Any) -> dict[str, Any] | None:
-        movement = node.movement_profile if isinstance(getattr(node, "movement_profile", None), dict) else {}
-        route = movement.get("route")
-        if not isinstance(route, dict):
-            return None
-        return {
-            "type": route.get("type"),
-            "role": route.get("role"),
-            "tags": route.get("tags", []),
-            "must_describe": True,
-        }
-
-    @staticmethod
-    def _build_boundary_context(node: Any) -> dict[str, Any]:
-        flags = node.flags if isinstance(node.flags, dict) else {}
-        boundary_features = flags.get("boundary_features", {})
-        return boundary_features if isinstance(boundary_features, dict) else {}
-
-    @staticmethod
-    def _get_structural_tags(
-        *, x: int, y: int, start_x: int, start_y: int, chunk_size: int, main_biome: str
-    ) -> list[str]:
-        local_x = x - start_x
-        local_y = y - start_y
-        center = chunk_size // 2
-        is_edge = local_x == 0 or local_x == chunk_size - 1 or local_y == 0 or local_y == chunk_size - 1
-        if local_x == center and local_y == center:
-            return [f"{main_biome}_center"]
-        if is_edge:
-            return [f"{main_biome}_edge"]
-        return [f"deep_{main_biome}"]
-
-    @staticmethod
-    def _scan_d4_surroundings(x: int, y: int, node_map: dict[tuple[int, int], Any]) -> list[str]:
-        hints = []
-        directions = [
-            (0, -1, "севере"),
-            (0, 1, "юге"),
-            (-1, 0, "западе"),
-            (1, 0, "востоке"),
-            (1, 1, "юго-востоке"),
-            (1, -1, "северо-востоке"),
-            (-1, 1, "юго-западе"),
-            (-1, -1, "северо-западе"),
-        ]
-        visual_tags = {
-            "gate",
-            "bastion",
-            "portal",
-            "wall",
-            "ruins",
-            "ancient_highway",
-            "monolithic_wall",
-            "locked_exit",
-            "safe_zone",
-        }
-        for dx, dy, side_name in directions:
-            neighbor = node_map.get((x + dx, y + dy))
-            if neighbor is None:
-                continue
-
-            content = neighbor.content if isinstance(neighbor.content, dict) else {}
-            tags = content.get("environment_tags") or []
-            for tag in tags:
-                if tag in visual_tags:
-                    hints.append(f"На {side_name} виднеется {tag}")
-                    break
-
-        if abs(x - HUB_CENTER["x"]) <= 7 and abs(y - HUB_CENTER["y"]) <= 7:
-            hints.append("Неподалеку виднеется Шпиль Хаба.")
-        return list(dict.fromkeys(hints))
-
     @staticmethod
     def _preserve_existing_d4_content(node: dict[str, Any], existing_node: Any | None) -> None:
         if existing_node is None:
@@ -705,11 +500,6 @@ class LLMWorldGenerator:
         content = dict(node.get("content") or {})
         content.update(existing_content)
         node["content"] = content
-
-    @staticmethod
-    def _chunks(items: list[dict[str, Any]], size: int) -> Iterable[list[dict[str, Any]]]:
-        for i in range(0, len(items), size):
-            yield items[i : i + size]
 
     @staticmethod
     def _build_d4_road_cells(*, min_x: int, min_y: int, max_x: int, max_y: int) -> set[tuple[int, int]]:

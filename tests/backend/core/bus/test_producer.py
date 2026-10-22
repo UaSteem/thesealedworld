@@ -25,7 +25,7 @@ class TestGameEventProducer:
         mock_stream_producer.publish.assert_called_once_with("test_event", {"foo": "bar"}, correlation_id=None)
 
     @pytest.mark.asyncio
-    async def test_publish_trims_stream_when_maxlen_configured(self, mock_stream_producer):
+    async def test_publish_preserves_pending_payloads_even_when_maxlen_configured(self, mock_stream_producer):
         mock_stream_producer.publish = AsyncMock(return_value="msg-123")
         mock_stream_producer.client = AsyncMock()
         mock_stream_producer.stream_name = "game_events"
@@ -33,7 +33,7 @@ class TestGameEventProducer:
 
         await producer.publish("test_event", {"foo": "bar"})
 
-        mock_stream_producer.client.xtrim.assert_awaited_once_with("game_events", maxlen=10_000, approximate=True)
+        mock_stream_producer.client.xtrim.assert_not_awaited()
 
     @pytest.mark.asyncio
     async def test_publish_with_explicit_correlation(self, producer, mock_stream_producer):

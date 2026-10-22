@@ -2,20 +2,26 @@
 
 - Must not import from `src.backend.*` directly (always go through HTTP API,
   even for read-only data).
-- Must not write to any source. Even for `local`, treat the source as
-  read-only by convention; the studio is for analysis, not data entry.
+- Must not write to selected storage. SQL pools enforce read-only transactions;
+  Redis exposes a read-command facade. HTTP permits only reads and an explicit
+  allowlist of local compute jobs. Separate database read-only roles remain required.
 - Must not couple cabinet modules to a specific source kind. A module must
   work against `local`, `prod`, and future `prod_snapshot` interchangeably
   via `request.state.source.api_base`.
 - Must not be added to any `deploy/compose.*.yml` other than the local
   dev `docker-compose.yml`.
 - Must not register routes that mutate prod state when the active source is
-  `prod`. (When the read-only guard middleware lands, this will be enforced
-  in code; until then it's a contract the module authors must respect.)
+  `prod`: middleware blocks unsafe methods and the outbound HTTP guard checks
+  selected-source context and destination before dispatch.
 
 ## Running Locally
 
-Studio comes up automatically with the rest of the local dev stack:
+Configure a distinct `STUDIO_ACCESS_TOKEN` in your private local environment first.
+Studio fails closed with 503 if it is missing. HTTP Basic username is `studio`;
+use the token as its password. Use loopback/SSH tunnel or HTTPS, an allowed Host
+and same-origin forms. Never print the token in logs.
+
+Studio comes up with the rest of the local dev stack:
 
 ```powershell
 docker compose -f deploy/docker-compose.yml up -d --build

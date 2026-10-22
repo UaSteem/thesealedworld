@@ -1,12 +1,13 @@
 import redis.asyncio as redis
 from codex_platform.redis_service import RedisService
-from codex_platform.streams import StreamRuntime, StreamRuntimeConfig
+from codex_platform.streams import StreamRuntimeConfig
 from fastapi import FastAPI
 from loguru import logger as log
 
 from src.backend.config.settings import settings
 from src.backend.core.arq import COMBAT_AI_SIMULATION_ARQ_QUEUE, GENERATION_AI_ARQ_QUEUE, SYSTEM_ARQ_QUEUE, ArqService
 from src.backend.core.bus import GameEventProducer
+from src.backend.core.bus.recovery import GameStreamRuntime as StreamRuntime
 from src.backend.core.game_config import CoreConfig
 from src.backend.features.arena.events import bind as bind_arena_events
 from src.backend.features.arena.events import router as arena_router
@@ -137,6 +138,8 @@ class RedisContainer:
         if settings.stream_enabled_groups is not None:
             runtime = StreamRuntime(
                 redis=app.state.redis_client,
+                min_idle_ms=settings.stream_pending_min_idle_ms,
+                scan_count=settings.stream_pending_scan_count,
                 config=StreamRuntimeConfig(
                     stream_name=settings.game_stream_name,
                     consumer_group=settings.stream_consumer_group,
@@ -151,6 +154,8 @@ class RedisContainer:
         for group, router in EVENT_ROUTER_GROUPS:
             runtime = StreamRuntime(
                 redis=app.state.redis_client,
+                min_idle_ms=settings.stream_pending_min_idle_ms,
+                scan_count=settings.stream_pending_scan_count,
                 config=StreamRuntimeConfig(
                     stream_name=settings.game_stream_name,
                     consumer_group=group,

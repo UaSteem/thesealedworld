@@ -390,9 +390,9 @@ def test_offhand_defense_items_keep_guard_or_parry_but_no_offense_profile() -> N
 def test_jewelry_power_is_flat_magic_armor_and_implicits_are_slot_profiles() -> None:
     catalog = ItemCatalogService.load_default()
     expected_profiles = {
-        "ring": ("ring_1", 1.0, {"mental_resistance"}),
-        "amulet": ("amulet", 2.0, {"debuff_avoidance"}),
-        "earring": ("earring", 1.0, {"initiative"}),
+        "ring": ("ring_1", 1.0, {"mental_resistance", "hp_regen"}),
+        "amulet": ("amulet", 2.0, {"debuff_avoidance", "en_regen"}),
+        "earring": ("earring", 1.0, {"initiative", "stamina_regen"}),
     }
 
     for item_id, (slot, power, implicit_keys) in expected_profiles.items():

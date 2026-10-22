@@ -233,15 +233,15 @@ class CombatAnalyticsRepository:
         start: datetime | None,
         end: datetime | None,
     ) -> dict[str, Any]:
-        subq = select(
+        source_query = select(
             CombatExchangeFact.combat_id,
             CombatFinalization.turns.label("turns"),
         ).where(CombatFinalization.turns.is_not(None))
         if start is not None:
-            subq = subq.where(CombatFinalization.finished_at >= start)
+            source_query = source_query.where(CombatFinalization.finished_at >= start)
         if end is not None:
-            subq = subq.where(CombatFinalization.finished_at < end)
-        subq = subq.subquery()
+            source_query = source_query.where(CombatFinalization.finished_at < end)
+        subq = source_query.subquery()
         stmt = select(
             func.avg(subq.c.max_turn).label("avg"),
             func.min(subq.c.max_turn).label("min"),

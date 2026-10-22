@@ -57,21 +57,8 @@ def test_rift_redis_managers_are_in_infrastructure() -> None:
     assert not list(Path("src/backend/features/rift/redis").glob("*.py"))
 
 
-def test_features_do_not_build_inventory_redis_keys() -> None:
-    offenders = []
-    for path in Path("src/backend/features").rglob("*.py"):
-        if "rift" in path.parts:
-            continue
-        text = path.read_text(encoding="utf-8")
-        forbidden_prefixes = (
-            "game:inventory:",
-            "game:encounter:",
-            "game:exploration:knowledge",
-            "game:monster:",
-            "loot:pending",
-            "combat:announcement:",
-        )
-        if any(prefix in text for prefix in forbidden_prefixes):
-            offenders.append(path.as_posix())
+def test_source_ownership_boundaries() -> None:
+    from tools.validators.architecture import validate_architecture
 
-    assert offenders == []
+    root = Path(__file__).resolve().parents[3]
+    assert validate_architecture(root) == []

@@ -6,7 +6,7 @@ After=docker.service network-online.target
 [Service]
 Type=oneshot
 Environment=PROJECT_NAME=tbmmorpg
-Environment=COMPOSE_NETWORK=tbmmorpg-network
+Environment=COMPOSE_NETWORK=tbmmorpg-edge
 Environment=CERTS_VOLUME=tbmmorpg-certs
 Environment=CHALLENGE_VOLUME=tbmmorpg-certbot-challenge
 Environment=NGINX_CONTAINER=tbmmorpg-nginx

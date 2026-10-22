@@ -13,6 +13,7 @@ from pymongo import AsyncMongoClient
 from src.backend.infrastructure.mongo.chat_buckets import ChatBucketRepository
 
 
+@pytest.mark.external
 @pytest.mark.asyncio
 async def test_disposable_mongo_concurrent_replay_and_capacity() -> None:
     url = os.environ.get("TEST_MONGO_URL")

@@ -7,7 +7,8 @@ from codex_platform.redis_service import RedisService
 from codex_platform.streams.producer import StreamProducer
 from loguru import logger
 
-from src.backend.config.settings import apply_runtime_environment_overrides, settings
+from src.backend.config.runtime import apply_runtime_environment_overrides
+from src.backend.config.runtime import runtime_settings as settings
 from src.backend.core.bus import GameEventProducer
 from src.backend.core.database import load_orm_models
 from src.backend.core.game_config import CoreConfig

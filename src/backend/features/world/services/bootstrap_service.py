@@ -16,8 +16,8 @@ class WorldGenerator(Protocol):
 class WorldBootstrapService:
     """Startup coordinator for persistent world data and runtime cache.
 
-    Generation is intentionally optional. Normal app startup should not drop
-    schemas, call LLMs, or rewrite the world unless explicitly configured.
+    World shell creation is optional; prepared static content and the runtime
+    cache are refreshed according to startup configuration.
     """
 
     def __init__(

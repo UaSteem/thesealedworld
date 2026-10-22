@@ -26,7 +26,7 @@ from typing import Any, Protocol
 
 from codex_platform.streams.codec import encode_stream_payload
 
-from src.backend.config.settings import settings
+from src.backend.config.runtime import runtime_settings as settings
 
 PLAYER_NOTICE_EVENT = "player.notice"
 
@@ -109,8 +109,6 @@ class RawStreamNoticeProducer:
         await self._redis.xadd(
             settings.game_stream_name,
             encode_stream_payload({"type": event_type, **data}),
-            maxlen=settings.game_stream_maxlen,
-            approximate=True,
         )
 
 

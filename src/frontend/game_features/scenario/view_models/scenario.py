@@ -32,7 +32,7 @@ class ScenarioPageVM(BaseModel):
     domain: str
     char_id: int | None = None
     character_status: CharacterActorCoreDTO | None = None
-    nav: dict[str, dict[str, Any]] = Field(default_factory=dict)
+    nav: dict[str, dict[str, Any] | None] = Field(default_factory=dict)
     user: Any | None = None
 
 

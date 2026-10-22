@@ -139,6 +139,7 @@ def test_normalized_internal_paths_cannot_fall_through_to_upstreams(public_serve
         (("compose.prod.yml",), {"nginx"}),
     ],
 )
+@pytest.mark.external
 def test_resolved_compose_publishes_only_intended_interfaces(tmp_path, filenames, public_services):
     docker = shutil.which("docker")
     if docker is None:
@@ -181,6 +182,7 @@ def test_resolved_compose_publishes_only_intended_interfaces(tmp_path, filenames
         assert published
 
 
+@pytest.mark.external
 @pytest.mark.skipif(os.environ.get("RUN_NGINX_CONTAINER_TEST") != "1", reason="Opt-in isolated Docker check")
 def test_real_nginx_denies_private_routes_on_both_public_hosts(tmp_path):
     """Use only an existing image, no published ports, network or working stack."""

@@ -2,6 +2,7 @@ name: tbmmorpg
 
 services:
   generated-assets-init:
+    network_mode: none
     image: alpine:3.20@sha256:d9e853e87e55526f6b2917df91a2115c36dd7c696a35be12163d44e6e2a4b6bc
     restart: "no"
     command:
@@ -18,16 +19,15 @@ services:
     image: ${DOCKER_IMAGE_SITE:?DOCKER_IMAGE_SITE is required}
     container_name: tbmmorpg-site-migrate
     restart: "no"
-    env_file:
-      - path: ${DEPLOY_ENV_FILE:-.env}
-        required: false
     environment:
       DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
       SITE_DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
-      GAME_DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
-      REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
-      BACKEND_BASE_URL: ${BACKEND_BASE_URL:-http://backend:8001}
       DEBUG: "False"
+      DATABASE_ECHO: ${DATABASE_ECHO-false}
+      LOG_LEVEL_CONSOLE: ${LOG_LEVEL_CONSOLE-DEBUG}
+      LOG_LEVEL_FILE: ${LOG_LEVEL_FILE-INFO}
+      LOG_ROTATION: ${LOG_ROTATION-10 MB}
+      LOG_DIR: ${LOG_DIR-logs}
     entrypoint: ["alembic", "-c", "src/frontend/alembic.ini", "upgrade", "head"]
     networks:
       - tbmmorpg-network
@@ -36,14 +36,10 @@ services:
     image: ${DOCKER_IMAGE_SITE:?DOCKER_IMAGE_SITE is required}
     container_name: tbmmorpg-frontend-site
     restart: unless-stopped
-    env_file:
-      - path: ${DEPLOY_ENV_FILE:-.env}
-        required: false
     environment:
       FRONTEND_SURFACE: site
       DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
       SITE_DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
-      GAME_DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
       REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
       BACKEND_BASE_URL: ${BACKEND_BASE_URL:-http://backend:8001}
       SITE_BASE_URL: ${SITE_BASE_URL:?SITE_BASE_URL is required}
@@ -52,6 +48,56 @@ services:
       AUTH_COOKIE_DOMAIN: ${AUTH_COOKIE_DOMAIN:?AUTH_COOKIE_DOMAIN is required}
       PYTHONPATH: /app:/app/src
       DEBUG: "False"
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+      BACKEND_INTERNAL_SERVICE_KEY: ${BACKEND_INTERNAL_SERVICE_KEY:?BACKEND_INTERNAL_SERVICE_KEY is required}
+      # Null passthrough retains Python defaults when absent and explicit empty values when set.
+      LOG_LEVEL_CONSOLE:
+      LOG_LEVEL_FILE:
+      LOG_ROTATION:
+      LOG_DIR:
+      PLAY_HEALTH_TIMEOUT_SECONDS:
+      BACKEND_INTERNAL_SERVICE_HEADER:
+      BACKEND_OPERATOR_READ_KEY:
+      BACKEND_OPERATOR_WRITE_KEY:
+      AUTH_COOKIE_SECURE:
+      AUTH_USER_CACHE_TTL_SECONDS:
+      ENABLE_EMAIL_VERIFICATION:
+      CSRF_COOKIE_NAME:
+      CSRF_HEADER_NAME:
+      CSRF_FIELD_NAME:
+      RELEASE_STAGE:
+      RELEASE_VERSION:
+      RELEASE_PROGRESS_POLICY:
+      DATABASE_ECHO:
+      ACCESS_TOKEN_EXPIRE_MINUTES:
+      REFRESH_TOKEN_EXPIRE_DAYS:
+      AUTHX_JWT_ALGORITHM:
+      AUTHX_JWT_TOKEN_LOCATIONS:
+      SMTP_HOST:
+      SMTP_PORT:
+      SMTP_START_TLS:
+      SMTP_USER:
+      SMTP_PASSWORD:
+      EMAIL_FROM:
+      EMAIL_ADMIN:
+      SITE_NAME:
+      SITE_META_TITLE:
+      SITE_META_DESCRIPTION:
+      SITE_META_IMAGE:
+      GOOGLE_TAG_MANAGER_ID:
+      GOOGLE_ANALYTICS_ID:
+      GOOGLE_SITE_VERIFICATION:
+      TEMPLATES_DIR:
+      STATIC_DIR:
+      GENERATED_ASSETS_DIR:
+      ASSET_STORAGE_BACKEND:
+      ASSET_PUBLIC_BASE_URL:
+      ASSET_LOCAL_ROOT:
+      ASSET_S3_BUCKET:
+      ASSET_S3_REGION:
+      ASSET_S3_ENDPOINT_URL:
+      ASSET_S3_ACCESS_KEY_ID:
+      ASSET_S3_SECRET_ACCESS_KEY:
     entrypoint:
       - uvicorn
       - src.frontend.app:app
@@ -77,26 +123,62 @@ services:
       retries: 6
     networks:
       - tbmmorpg-network
+      - tbmmorpg-edge
 
   frontend-play:
     image: ${DOCKER_IMAGE_SITE:?DOCKER_IMAGE_SITE is required}
     container_name: tbmmorpg-frontend-play
     restart: unless-stopped
-    env_file:
-      - path: ${DEPLOY_ENV_FILE:-.env}
-        required: false
     environment:
       FRONTEND_SURFACE: play
       DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
       SITE_DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
-      GAME_DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
-      REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
       BACKEND_BASE_URL: ${BACKEND_BASE_URL:-http://backend:8001}
       SITE_BASE_URL: ${SITE_BASE_URL:?SITE_BASE_URL is required}
       REALTIME_WS_URL: ${REALTIME_WS_URL:-${PLAY_PUBLIC_BASE_URL:?PLAY_PUBLIC_BASE_URL is required}}
       AUTH_COOKIE_DOMAIN: ${AUTH_COOKIE_DOMAIN:?AUTH_COOKIE_DOMAIN is required}
       PYTHONPATH: /app:/app/src
       DEBUG: "False"
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+      BACKEND_INTERNAL_SERVICE_KEY: ${BACKEND_INTERNAL_SERVICE_KEY:?BACKEND_INTERNAL_SERVICE_KEY is required}
+      # Null passthrough retains Python defaults and explicitly configured empty values.
+      LOG_LEVEL_CONSOLE:
+      LOG_LEVEL_FILE:
+      LOG_ROTATION:
+      LOG_DIR:
+      BACKEND_INTERNAL_SERVICE_HEADER:
+      AUTH_COOKIE_SECURE:
+      CSRF_COOKIE_NAME:
+      CSRF_HEADER_NAME:
+      CSRF_FIELD_NAME:
+      RELEASE_STAGE:
+      RELEASE_VERSION:
+      RELEASE_PROGRESS_POLICY:
+      DATABASE_ECHO:
+      ACCESS_TOKEN_EXPIRE_MINUTES:
+      REFRESH_TOKEN_EXPIRE_DAYS:
+      AUTHX_JWT_ALGORITHM:
+      AUTHX_JWT_TOKEN_LOCATIONS:
+      SITE_NAME:
+      SITE_META_TITLE:
+      SITE_META_DESCRIPTION:
+      SITE_META_IMAGE:
+      GOOGLE_TAG_MANAGER_ID:
+      GOOGLE_ANALYTICS_ID:
+      GOOGLE_SITE_VERIFICATION:
+      TEMPLATES_DIR:
+      STATIC_DIR:
+      GENERATED_ASSETS_DIR:
+      ASSET_STORAGE_BACKEND:
+      ASSET_S3_BUCKET:
+      ASSET_S3_REGION:
+      ASSET_S3_ENDPOINT_URL:
+      ASSET_S3_ACCESS_KEY_ID:
+      ASSET_S3_SECRET_ACCESS_KEY:
+      ACTIVE_CHARACTER_COOKIE_SECURE:
+      GAME_TOKEN_COOKIE_SECURE:
+      DEFAULT_SYMBIOTE_NAME:
+      ENABLE_DEV_RIFT_ROUTES:
     entrypoint:
       - uvicorn
       - src.frontend.app:app
@@ -122,6 +204,7 @@ services:
       retries: 6
     networks:
       - tbmmorpg-network
+      - tbmmorpg-edge
 
 volumes:
   tbmmorpg-generated-assets:
@@ -130,4 +213,7 @@ volumes:
 networks:
   tbmmorpg-network:
     name: tbmmorpg-network
+    driver: bridge
+  tbmmorpg-edge:
+    name: tbmmorpg-edge
     driver: bridge

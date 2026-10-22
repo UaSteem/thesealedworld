@@ -6,7 +6,7 @@ from sqlalchemy import ForeignKey, Integer, String
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from src.backend.config.settings import settings
+from src.backend.config.runtime import runtime_settings as settings
 from src.backend.core.database import Base, MetadataContextMixin, RevisionMixin, SchemaVersionMixin, TimestampMixin
 
 if TYPE_CHECKING:

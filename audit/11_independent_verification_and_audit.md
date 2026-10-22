@@ -4,6 +4,31 @@
 > API получили backend read/write gates; 287 адресных тестов прошли.
 > Статусы A07-02/03 и доказательства — в [реестре 10](10_findings_registry.md#шаг-1-технической-очереди--19102026).
 
+## Текущий прогресс технических исправлений — 20.10.2026
+
+- [x] Шаги 1–4: privileged API, миграции сайта, защита логов/метрик,
+  жизненный цикл сессий и WebSocket — исправлены в заявленных границах.
+- [x] Шаг 5: A08-12, A06-12/05/06/09, A08-09/10 и локальная часть A08-11.
+- [x] Реальные GitHub main/production rules настроены и независимо проверены.
+- [ ] Публикация workflow с production environment отложена до выпуска;
+  перенос секретов и hosted runtime проверка остаются открытыми.
+- [x] Шаг 6, транспортная часть A05-05: PEL quarantine без replay независимо
+  проверен. Доменное восстановление и ограничение роста retention не закрыты.
+- [x] Шаг 7.1, A04-11: согласован сохранённый лимит повторов GenerationAI;
+  52 tests passed, включая 11 isolated PostgreSQL cases; независимый review.
+- [x] Шаг7.2: не-item генеративный AI выведен в archive с проверкой48hash;
+  оставлен items.text JSON. Маскоты и статическая генерация мира сохранены.
+- [x] Шаг7.3 A04-12/A05-07: durable input items.text,372tests/independentreview.
+  Pip-audit отдельно выявил certifi advisory; clean full gate не заявляется.
+- [ ] Остальные находки шага 7 (для items.text) и шаги 8–11 остаются в очереди.
+  Чат — ранняя альфа по оценке владельца;
+  дальнейшая работа над ним планируется отдельно. Шаг 8 не означает полный
+  scope разработки или готовность всей системы чата.
+
+Подробности, тесты и ограничения: [рабочий файл задачи](plans/06_non_gameplay_hardening_progress.md).
+Текущие статусы исходных находок: [реестр 10](10_findings_registry.md).
+Историческое заключение ниже не заменяется новым аудитом.
+
 ## Быстрая сверка исправлений — 19.10.2026
 
 База: `12811132`. `[x]` — исправление в репозитории подтверждается коммитом и статической сверкой текущего кода/регрессионных тестов; тесты в этой сверке не запускались. Исторический текст и статистика ниже сохранены, они не являются текущим списком открытых дефектов.
@@ -395,6 +420,39 @@
 ### 3.2. Собственные находки в остальной кодовой базе проекта (пропущенные Астрой)
 
 #### `AG-05` (High) — Массовое подавление ошибок типизации (`ignore_errors = true`) в `pyproject.toml` для 36 ключевых модулей бэкенда
+
+- **Шестой заход 21.10.2026:** item prompt router использует typed LLMMessage;
+  override снят, осталось28entries. Full DTO equality4samples и37existing tests
+  Passed; focused mypy/negative shadow проверены. Prompt/gameplay неизменны;
+  wide330errors идентичны. AG-05 частично исправлена, подробнее progress9.11.
+
+- **Пятый заход 21.10.2026:** nav return type и ScenarioPageVM.nav допускают
+  существующие None slots; nav override снят.71session tests Passed, negative
+  shadow detected. Осталось29entries; broad330errors идентичны. AG-05 частично.
+  Payload/UI button logic не менялась; Pydantic schema исправлена для empty nav.
+
+- **Четвёртый заход 21.10.2026:** снят feedback HTTP pages override; raw form
+  mapping валидируется FeedbackCreate.model_validate.24tests и focused mypy Passed,
+  invalid priority/file не доходят до persistence. Осталось30entries; весь AG-05
+  частично исправлен. Broad330errors идентичны baseline; подробнее progress9.9.
+
+- **Третий заход 21.10.2026:** снят infrastructure CombatAnalyticsRepository override;
+  Select/Subquery разделены именами переменных, SQL сохранён (AST equivalence).
+  Focused mypy и7related tests Passed; shadow mutation detected. Осталось31entry,
+  AG-05 частично исправлена. Broad330errors диагностически идентичны baseline.
+  Отдельное подозрение turns/max_turn в query_avg_rounds оставлено follow-up9.8.
+
+- **Второй заход 20.10.2026:** снято подавление site UserRepository;2метода
+  согласованы с list[User] contract без изменений SQL. Focused mypy и105tests
+  Passed, negative shadow probe detected; общий baseline330errors идентичен.
+  Осталось32ignore_errors entries. AG-05 по-прежнему частично исправлена.
+
+- **20.10.2026 — частично исправлено, адресный заход без игровой логики.**
+  Сняты подавления core.ai и GenerationAI CodexAIExecutor; direct typed provider
+  import устраняет2ранее скрытые ошибки. Focused mypy2files и37tests Passed;
+  negative shadow-file probes обнаружены в обоих модулях. Остались33entries
+  ignore_errors; весь AG-05 не закрыт. Общий mypy до/после330errors/61files,
+  диагностические ошибки идентичны. Подробнее: progress шаг9.6.
 
 - **Файлы и строки:** [`pyproject.toml:112-150`](file:///d:/Workspace/personal/pets/TurnBasedMMORPG/pyproject.toml#L112-L150)
 - **Техническое обоснование:**

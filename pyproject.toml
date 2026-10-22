@@ -33,6 +33,7 @@ dependencies = [
 constraint-dependencies = [
     "aiohttp>=3.14.4",
     "anyio>=4.14.2",
+    "certifi>=2026.10.19",
     "cryptography>=50.0.0",
     "idna>=3.15",
     "msgpack>=1.2.1",
@@ -42,7 +43,7 @@ constraint-dependencies = [
     "pyasn1>=0.6.4",
     "pyjwt>=2.15.0",
     "starlette>=1.3.1",
-    "virtualenv>=21.7.13",
+    "virtualenv>=21.14.9",
 ]
 default-groups = ["dev", "backend-runtime", "frontend-runtime", "tg-bot"]
 
@@ -59,7 +60,7 @@ backend-runtime = [
     "boto3>=1.35.0",
     "google-genai>=0.3.0",
     "codex-ai[gemini]==0.2.4",
-    "pillow>=12.3.0",
+    "pillow>=13.0.0",
     "pymongo>=4.18.2",
 ]
 docs = [
@@ -123,15 +124,10 @@ exclude = ["src/backend/alembic/"]
 [[tool.mypy.overrides]]
 module = [
     "src.backend.features.combat.runtime.services.durability_policy",
-    "src.frontend.game_features.session.view_models.nav",
     "src.backend.features.combat.runtime.support.analytics_builder",
     "src.backend.features.game_catalog.combat.resources.text_templates.definitions",
     "src.backend.features.world.prompts.router",
     "src.backend.features.monsters.prompts.router",
-    "src.backend.features.items.prompts.router",
-    "src.backend.core.ai",
-    "src.backend.infrastructure.combat.repositories.analytics_repository",
-    "src.backend.features.generation_ai.integrations.codex_ai_executor",
     "src.backend.features.scenario.handlers.tutorial_handler",
     "src.backend.features.scenario.handlers.dialogue_handler",
     "src.backend.features.combat.runtime.analytics.ingestion",
@@ -155,8 +151,6 @@ module = [
     "tools.world_static_audit",
     "src.backend.features.arena.services.arena_service",
     "src.backend.features.game_session.dependencies",
-    "src.frontend.features.auth.repositories.user_repository",
-    "src.frontend.features.feedback.routes.pages",
 ]
 ignore_errors = true
 
@@ -171,7 +165,8 @@ python_functions = ["test_*"]
 pythonpath = [".", "src"]
 markers = [
     "unit: Unit tests (fast, isolated)",
-    "integration: Integration tests",
+    "integration: Component and in-process HTTP contract tests",
+    "external: Explicit opt-in tests requiring Docker or real services",
 ]
 addopts = "-v --tb=short --cov=src --cov-report=term-missing"
 
@@ -208,12 +203,13 @@ types-command = "uv run mypy --explicit-package-bases src tools"
 test-command = "uv run pytest"
 security-command = "uv run pip-audit --skip-editable --ignore-vuln CVE-2026-3219 --ignore-vuln CVE-2026-6357 --ignore-vuln CVE-2026-45409 --ignore-vuln PYSEC-2025-183 --ignore-vuln PYSEC-2026-89 --ignore-vuln PYSEC-2026-196 --ignore-vuln CVE-2026-34993 --ignore-vuln CVE-2026-47265"
 audit-flags = "--skip-editable --ignore-vuln CVE-2026-3219 --ignore-vuln CVE-2026-6357 --ignore-vuln CVE-2026-45409 --ignore-vuln PYSEC-2025-183 --ignore-vuln PYSEC-2026-89 --ignore-vuln PYSEC-2026-196 --ignore-vuln CVE-2026-34993 --ignore-vuln CVE-2026-47265"
-test-stages = ["unit"]
+test-stages = ["unit", "integration", "regression", "suite"]
+integration-requires = "in-process component and HTTP contracts; no external services"
 test-paths = ["tests"]
 types-paths = ["src", "tools"]
-no-cov-test-stages = []
+no-cov-test-stages = ["unit", "integration", "regression"]
 live-output-test-stages = ["unit"]
-test-markers = { unit = "" }
+test-markers = { unit = "unit and not integration and not external", integration = "integration and not external", regression = "not unit and not integration and not external", suite = "not external" }
 
 # === djLint ===
 [tool.djlint]

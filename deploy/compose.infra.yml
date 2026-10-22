@@ -73,7 +73,7 @@ services:
       - tbmmorpg-certs:/etc/letsencrypt:ro
       - tbmmorpg-certbot-challenge:/var/www/certbot:ro
     networks:
-      - tbmmorpg-network
+      - tbmmorpg-edge
     logging:
       driver: json-file
       options:
@@ -91,7 +91,7 @@ services:
       - tbmmorpg-certbot-challenge:/var/www/certbot
     command: ["--help"]
     networks:
-      - tbmmorpg-network
+      - tbmmorpg-edge
 
 volumes:
   tbmmorpg-postgres-data:
@@ -108,4 +108,7 @@ volumes:
 networks:
   tbmmorpg-network:
     name: tbmmorpg-network
+    driver: bridge
+  tbmmorpg-edge:
+    name: tbmmorpg-edge
     driver: bridge

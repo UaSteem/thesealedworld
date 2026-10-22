@@ -4,7 +4,6 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 
 from src.backend.features.world.loaders.village_loader import VillageLoader
-from src.backend.features.world.prompts.router import build_batch_location_desc
 from src.backend.features.world.resources.static import (
     d4_east,
     d4_north,
@@ -21,17 +20,8 @@ from src.backend.features.world.resources.static.d4_city_map import (
     build_d4_city_map_tile_manifest,
 )
 from src.backend.features.world.resources.static.start_village import START_VILLAGE_LOCATIONS, STATIC_LOCATIONS
-from src.backend.features.world.services.generator_service import LLMWorldGenerator
+from src.backend.features.world.services.generator_service import WorldGenerator
 from src.backend.features.world.services.navigation_service import WorldNavigationService
-
-
-class FakeGenerationAI:
-    def __init__(self) -> None:
-        self.specs = None
-
-    async def enqueue_many(self, specs):
-        self.specs = list(specs)
-        return SimpleNamespace(batch_id="batch-1", created=len(self.specs), reused=0, scheduled=len(self.specs))
 
 
 def _runtime_node_map(raw_nodes: list[dict]) -> dict[str, SimpleNamespace]:
@@ -108,7 +98,7 @@ async def test_generate_world_shell_uses_anchor_influence():
     data = MagicMock()
     data.upsert_region = AsyncMock()
     data.upsert_zone = AsyncMock()
-    generator = LLMWorldGenerator(data, generation_ai=None)
+    generator = WorldGenerator(data)
 
     await generator._generate_world_shell()
 
@@ -142,7 +132,7 @@ async def test_generate_d4_capital_creates_first_playable_territory():
     data.bulk_upsert_nodes = AsyncMock()
     data.flush = AsyncMock()
     data.get_nodes_in_rect = AsyncMock(return_value=[])
-    generator = LLMWorldGenerator(data, generation_ai=None)
+    generator = WorldGenerator(data)
 
     await generator._generate_d4_capital()
 
@@ -245,7 +235,7 @@ async def test_generate_d4_capital_movement_profile_keeps_all_nodes_reachable():
     data.bulk_upsert_nodes = AsyncMock()
     data.flush = AsyncMock()
     data.get_nodes_in_rect = AsyncMock(return_value=[])
-    generator = LLMWorldGenerator(data, generation_ai=None)
+    generator = WorldGenerator(data)
 
     await generator._generate_d4_capital()
 
@@ -263,7 +253,7 @@ async def test_generate_d4_capital_has_no_four_way_navigation_nodes_outside_safe
     data.bulk_upsert_nodes = AsyncMock()
     data.flush = AsyncMock()
     data.get_nodes_in_rect = AsyncMock(return_value=[])
-    generator = LLMWorldGenerator(data, generation_ai=None)
+    generator = WorldGenerator(data)
 
     await generator._generate_d4_capital()
 
@@ -279,7 +269,7 @@ async def test_d4_static_seed_has_no_four_way_navigation_nodes_outside_safe_zone
     data.bulk_upsert_nodes = AsyncMock()
     data.flush = AsyncMock()
     data.get_nodes_in_rect = AsyncMock(return_value=[])
-    generator = LLMWorldGenerator(data, generation_ai=None)
+    generator = WorldGenerator(data)
 
     await generator._generate_d4_capital()
     generated_nodes = data.bulk_upsert_nodes.await_args.args[0]
@@ -337,7 +327,7 @@ async def test_generate_d4_capital_does_not_preserve_existing_content_for_static
             ),
         ]
     )
-    generator = LLMWorldGenerator(data, generation_ai=None)
+    generator = WorldGenerator(data)
 
     await generator._generate_d4_capital()
 
@@ -574,7 +564,7 @@ async def test_run_test_mode_loads_static_d4_seed_without_generated_location_con
     data.get_nodes_in_rect = AsyncMock(return_value=[])
     data.region_exists = AsyncMock(return_value=True)
     data.get_zone = AsyncMock(return_value=True)
-    generator = LLMWorldGenerator(data, generation_ai=None)
+    generator = WorldGenerator(data)
     generator._generate_d4_capital = AsyncMock()
     generator.village_loader.load_village = AsyncMock()
 
@@ -585,187 +575,25 @@ async def test_run_test_mode_loads_static_d4_seed_without_generated_location_con
 
 
 @pytest.mark.unit
-async def test_batch_location_desc_prompt_uses_typed_district_contract():
-    result = await build_batch_location_desc(
-        [
-            {
-                "id": "45_52",
-                "tags": ["ancient_city", "city_ruins", "city_ruins_edge", "gate", "road"],
-                "context": ["На востоке виднеется ancient_highway"],
-                "district_context": {
-                    "name": "Северный тракт и ворота",
-                    "role": "main road to the sealed northern gate",
-                    "tags": ["north_gate", "ancient_highway"],
-                },
-            }
-        ]
-    )
-
-    system = result.messages[0].content
-    user = result.messages[1].content
-
-    assert "batch_location_desc" not in system
-    assert "ROLE: Narrative Designer for 'Echo of Ancients'" in system
-    assert "tags" in user
-    assert "context" in user
-    assert "district_context" in user
-    assert "45_52" in user
-    assert result.max_tokens == 5000
-    assert result.temperature == 0.7
-    assert "up to 5 nearby locations" in system
-    assert "locations array" in system
-    assert "route_context" in system
-    assert "Boundary tags are literal" in system
-    assert "No markdown fences" in system
-
-
-@pytest.mark.unit
-async def test_build_d4_location_batch_tasks_skip_static_manual_d4_nodes():
+async def test_full_generation_keeps_static_seed_without_ai_dependencies():
     data = MagicMock()
-    data.commit = AsyncMock()
-    data.get_zone = AsyncMock(return_value=None)
-    data.get_nodes_in_rect = AsyncMock()
-    data.update_content = AsyncMock()
-    data.update_flags = AsyncMock()
-
-    target = MagicMock(
-        x=45,
-        y=52,
-        zone_id="D4_0_1",
-        terrain_type="city_gate_outer",
-        content={"environment_tags": ["ancient_city", "city_ruins", "gate", "locked_exit"]},
-        flags={
-            "is_gate": True,
-            "district_key": "D4_0_1",
-            "district_profile": {
-                "name": "Западный рынок обломков",
-                "role": "scavenged stalls and side streets",
-                "tags": ["broken_market"],
-            },
-        },
-        movement_profile={
-            "has_road": True,
-            "route": {"type": "ancient_highway", "tags": ["road", "ancient_highway", "main_route"]},
-        },
-    )
-    neighbor = MagicMock(
-        x=46,
-        y=52,
-        zone_id="D4_0_1",
-        content={"environment_tags": ["ancient_city", "ancient_highway"]},
-        flags={},
-        movement_profile={
-            "has_road": True,
-            "route": {"type": "ancient_highway", "tags": ["road", "ancient_highway", "main_route"]},
-        },
-    )
-    data.get_nodes_in_rect.return_value = [target, neighbor]
-    generator = LLMWorldGenerator(data, generation_ai=None)
-
-    specs = await generator._build_d4_location_batch_task_specs()
-
-    assert specs == []
-    data.update_content.assert_not_awaited()
-    data.update_flags.assert_not_awaited()
-
-
-@pytest.mark.unit
-async def test_run_full_mode_commits_seed_before_ai_enrichment():
-    events = []
-    data = MagicMock()
-    data.commit = AsyncMock(side_effect=lambda: events.append("commit"))
-    generation_ai = FakeGenerationAI()
-    generator = LLMWorldGenerator(data, generation_ai=generation_ai)
+    generator = WorldGenerator(data)
     generator._generate_world_shell = AsyncMock()
-    generator._generate_d4_capital = AsyncMock()
     generator.village_loader.load_village = AsyncMock()
-    generator._enqueue_world_ai_tasks = AsyncMock(side_effect=lambda: events.append("enqueue_ai"))
-
     await generator.run("full")
-
-    data.commit.assert_awaited_once()
-    assert events == ["commit", "enqueue_ai"]
     generator._generate_world_shell.assert_awaited_once()
-    generator._generate_d4_capital.assert_not_awaited()
-    generator.village_loader.load_village.assert_awaited_once()
-    generator._enqueue_world_ai_tasks.assert_awaited_once()
+    generator.village_loader.load_village.assert_awaited_once_with(STATIC_LOCATIONS)
+    assert not hasattr(generator, "generation_ai")
 
 
 @pytest.mark.unit
-async def test_run_full_ai_mode_commits_seed_before_ai_enrichment():
-    events = []
+@pytest.mark.parametrize("mode", ["ai", "enrich", "enrich_ai", "full_ai", "unknown"])
+async def test_generation_rejects_removed_modes_before_writing(mode):
     data = MagicMock()
-    data.commit = AsyncMock(side_effect=lambda: events.append("commit"))
-    generator = LLMWorldGenerator(data, generation_ai=FakeGenerationAI())
+    generator = WorldGenerator(data)
     generator._generate_world_shell = AsyncMock()
-    generator._generate_d4_capital = AsyncMock()
     generator.village_loader.load_village = AsyncMock()
-    generator._enqueue_world_ai_tasks = AsyncMock(side_effect=lambda: events.append("enqueue_ai"))
-
-    await generator.run("full_ai")
-
-    data.commit.assert_awaited_once()
-    assert events == ["commit", "enqueue_ai"]
-    generator._enqueue_world_ai_tasks.assert_awaited_once()
-
-
-@pytest.mark.unit
-async def test_build_d4_location_batch_tasks_do_not_enqueue_static_outer_blocks():
-    data = MagicMock()
-    data.commit = AsyncMock()
-    data.get_zone = AsyncMock(return_value=None)
-    data.get_nodes_in_rect = AsyncMock()
-    data.update_content = AsyncMock()
-    data.update_flags = AsyncMock()
-
-    nodes = [
-        MagicMock(
-            x=x,
-            y=y,
-            zone_id="D4_0_0",
-            terrain_type="city_ruins",
-            content={"environment_tags": ["ancient_city", "city_ruins"]},
-            flags={},
-        )
-        for x in range(45, 50)
-        for y in range(45, 50)
-    ]
-    data.get_nodes_in_rect.return_value = nodes
-    generator = LLMWorldGenerator(data, generation_ai=None)
-
-    specs = await generator._build_d4_location_batch_task_specs()
-    assert specs == []
-
-
-@pytest.mark.unit
-async def test_run_ai_mode_enqueues_world_ai_tasks_without_provider_calls():
-    data = MagicMock()
-    data.commit = AsyncMock()
-    data.get_zone = AsyncMock(
-        return_value=SimpleNamespace(
-            id="D4_1_1",
-            region_id="D4",
-            biome_id="city_ruins",
-            tier=0,
-            flags={"narrative_context": "Former capital safe hub."},
-        )
-    )
-    data.get_nodes_in_rect = AsyncMock(return_value=[
-        MagicMock(
-            x=45,
-            y=45,
-            zone_id="D4_0_0",
-            terrain_type="outer_monolith_wall_walk",
-            content={"environment_tags": ["ancient_city", "outer_monolith_wall"]},
-            flags={},
-        )
-    ])
-    generation_ai = FakeGenerationAI()
-    generator = LLMWorldGenerator(data, generation_ai=generation_ai)
-
-    await generator.run("ai")
-
-    assert generation_ai.specs is not None
-    assert {spec.task_type for spec in generation_ai.specs} == {"world.zone_lore"}
-    data.update_content.assert_not_called()
-    data.update_flags.assert_not_called()
+    with pytest.raises(ValueError):
+        await generator.run(mode)
+    generator._generate_world_shell.assert_not_awaited()
+    generator.village_loader.load_village.assert_not_awaited()

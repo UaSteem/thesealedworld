@@ -11,7 +11,7 @@ from alembic import context  # noqa: E402
 from sqlalchemy import pool  # noqa: E402
 from sqlalchemy.ext.asyncio import async_engine_from_config  # noqa: E402
 
-from src.frontend.config.settings import settings  # noqa: E402
+from src.frontend.config.database import database_settings as settings  # noqa: E402
 from src.frontend.core.database import Base, model_imports  # noqa: E402, F401
 
 config = context.config

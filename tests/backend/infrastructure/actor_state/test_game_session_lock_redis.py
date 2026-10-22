@@ -17,6 +17,7 @@ from src.backend.features.game_lobby.api.router import router
 from src.backend.infrastructure.redis.managers import build_redis_managers
 
 
+@pytest.mark.external
 @pytest.mark.integration
 async def test_real_redis_logout_refresh_races_and_captured_http_credentials(monkeypatch):
     url = os.environ.get("TEST_REDIS_URL")

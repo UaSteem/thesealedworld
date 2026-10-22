@@ -182,6 +182,7 @@ def test_revoke_while_outbound_delivery_is_waiting_cancels_send(socket_app):
         assert not app.state.chat_manager._by_ws
 
 
+@pytest.mark.external
 @pytest.mark.skipif(not os.environ.get("TEST_REALTIME_REDIS_URL"), reason="Requires disposable TEST_REALTIME_REDIS_URL")
 @pytest.mark.parametrize("action", ["replacement", "logout"])
 def test_real_redis_session_revocation_closes_actual_asgi_socket(socket_app, monkeypatch, action):

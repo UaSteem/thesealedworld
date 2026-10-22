@@ -13,7 +13,7 @@ from arq.connections import RedisSettings
 from loguru import logger as log
 
 from src.backend.chat.repositories.message_repo import ChatThreadRepository
-from src.backend.config.settings import settings
+from src.backend.config.runtime import runtime_settings as settings
 from src.backend.core.database import get_session_context
 from src.backend.infrastructure.mongo import ChatBucketRepository, get_mongo_provider
 

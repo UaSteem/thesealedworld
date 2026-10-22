@@ -19,6 +19,7 @@ from pathlib import Path
 from typing import Literal
 
 from codex_core.settings import BaseCommonSettings
+from pydantic import Field
 from pydantic_settings import SettingsConfigDict
 
 BASE_DIR = Path(__file__).parent.parent.parent
@@ -53,6 +54,9 @@ class Source:
 class StudioSettings(BaseCommonSettings):
     monster_catalog_read_key: str = ""
     """Studio-specific settings inheriting from codex-core base."""
+
+    studio_access_token: str = Field(default="", repr=False)
+    studio_allowed_hosts: list[str] = ["localhost", "127.0.0.1", "::1"]
 
     # Server
     app_host: str = "127.0.0.1"

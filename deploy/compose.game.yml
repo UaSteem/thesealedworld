@@ -2,6 +2,7 @@ name: tbmmorpg
 
 services:
   generated-assets-init:
+    network_mode: none
     image: alpine:3.20@sha256:d9e853e87e55526f6b2917df91a2115c36dd7c696a35be12163d44e6e2a4b6bc
     restart: "no"
     command:
@@ -18,17 +19,18 @@ services:
     image: ${DOCKER_IMAGE_GAME:?DOCKER_IMAGE_GAME is required}
     container_name: tbmmorpg-backend-migrate
     restart: "no"
-    env_file:
-      - path: ${DEPLOY_ENV_FILE:-.env}
-        required: false
     environment:
       DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
-      SITE_DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
       GAME_DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
-      REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
       MONGO_URL: ${MONGO_URL:?MONGO_URL is required}
       MONGO_DATABASE: ${MONGO_DATABASE:-tbmmorpg_analytics}
       DEBUG: "False"
+      DATABASE_ECHO: ${DATABASE_ECHO-false}
+      MONGO_SERVER_SELECTION_TIMEOUT_MS: ${MONGO_SERVER_SELECTION_TIMEOUT_MS-5000}
+      LOG_LEVEL_CONSOLE: ${LOG_LEVEL_CONSOLE-DEBUG}
+      LOG_LEVEL_FILE: ${LOG_LEVEL_FILE-DEBUG}
+      LOG_ROTATION: ${LOG_ROTATION-10 MB}
+      LOG_DIR: ${LOG_DIR-logs}
     entrypoint:
       - sh
       - -c
@@ -40,18 +42,47 @@ services:
     image: ${DOCKER_IMAGE_GAME:?DOCKER_IMAGE_GAME is required}
     container_name: tbmmorpg-backend
     restart: unless-stopped
-    env_file:
-      - path: ${DEPLOY_ENV_FILE:-.env}
-        required: false
     environment:
       DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
-      SITE_DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
       GAME_DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
       REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
       MONGO_URL: ${MONGO_URL:?MONGO_URL is required}
       MONGO_DATABASE: ${MONGO_DATABASE:-tbmmorpg_analytics}
       REALTIME_ALLOWED_ORIGINS: ${REALTIME_ALLOWED_ORIGINS}
       DEBUG: "False"
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+      FRONTEND_INTERNAL_SERVICE_KEY:
+      SITE_TO_GAME_SERVICE_KEY:
+      DATABASE_ECHO: ${DATABASE_ECHO-false}
+      MONGO_SERVER_SELECTION_TIMEOUT_MS: ${MONGO_SERVER_SELECTION_TIMEOUT_MS-5000}
+      LOG_LEVEL_CONSOLE: ${LOG_LEVEL_CONSOLE-DEBUG}
+      LOG_LEVEL_FILE: ${LOG_LEVEL_FILE-DEBUG}
+      LOG_ROTATION: ${LOG_ROTATION-10 MB}
+      LOG_DIR: ${LOG_DIR-logs}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES-30}
+      REFRESH_TOKEN_EXPIRE_DAYS: ${REFRESH_TOKEN_EXPIRE_DAYS-30}
+      AUTHX_JWT_ALGORITHM: ${AUTHX_JWT_ALGORITHM-HS256}
+      AUTHX_JWT_TOKEN_LOCATIONS:
+      GAME_ACCESS_TOKEN_EXPIRE_MINUTES: ${GAME_ACCESS_TOKEN_EXPIRE_MINUTES-15}
+      GAME_REFRESH_TOKEN_EXPIRE_MINUTES: ${GAME_REFRESH_TOKEN_EXPIRE_MINUTES-720}
+      DEFAULT_SYMBIOTE_NAME: ${DEFAULT_SYMBIOTE_NAME-SYSTEM}
+      ENABLE_DEV_RIFT_ROUTES: ${ENABLE_DEV_RIFT_ROUTES-true}
+      MONSTER_CATALOG_READ_KEY: ${MONSTER_CATALOG_READ_KEY-}
+      MONSTER_CATALOG_WRITE_KEY: ${MONSTER_CATALOG_WRITE_KEY-}
+      OPERATOR_READ_KEY: ${OPERATOR_READ_KEY-}
+      OPERATOR_WRITE_KEY: ${OPERATOR_WRITE_KEY-}
+      GAME_STREAM_NAME: ${GAME_STREAM_NAME-game_events}
+      GAME_STREAM_MAXLEN: ${GAME_STREAM_MAXLEN-10000}
+      STREAM_PENDING_MIN_IDLE_MS: ${STREAM_PENDING_MIN_IDLE_MS-300000}
+      STREAM_PENDING_SCAN_COUNT: ${STREAM_PENDING_SCAN_COUNT-100}
+      STREAM_CONSUMER_GROUP: ${STREAM_CONSUMER_GROUP-monolith}
+      WORKER_NAME: ${WORKER_NAME-worker_1}
+      STREAM_ENABLED_GROUPS:
+      WORLD_AUTO_GENERATE: ${WORLD_AUTO_GENERATE-false}
+      WORLD_GENERATION_MODE: ${WORLD_GENERATION_MODE-test}
+      GEMINI_API_KEY:
+      GEMINI_MODEL: ${GEMINI_MODEL-gemini-2.5-flash}
+      COMBAT_AI_POLICY_PATH:
     entrypoint:
       - uvicorn
       - src.backend.app:app
@@ -77,17 +108,14 @@ services:
       retries: 6
     networks:
       - tbmmorpg-network
+      - tbmmorpg-edge
 
   chat:
     image: ${DOCKER_IMAGE_CHAT:?DOCKER_IMAGE_CHAT is required}
     container_name: tbmmorpg-chat
     restart: unless-stopped
-    env_file:
-      - path: ${DEPLOY_ENV_FILE:-.env}
-        required: false
     environment:
       DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
-      SITE_DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
       GAME_DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
       REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
       MONGO_URL: ${MONGO_URL:?MONGO_URL is required}
@@ -96,6 +124,27 @@ services:
       WORKER_NAME: ${CHAT_WORKER_NAME:-chat_worker_1}
       REALTIME_ALLOWED_ORIGINS: ${REALTIME_ALLOWED_ORIGINS}
       DEBUG: "False"
+      SECRET_KEY: ${SECRET_KEY:?SECRET_KEY is required}
+      FRONTEND_INTERNAL_SERVICE_KEY:
+      SITE_TO_GAME_SERVICE_KEY:
+      DATABASE_ECHO: ${DATABASE_ECHO-false}
+      MONGO_SERVER_SELECTION_TIMEOUT_MS: ${MONGO_SERVER_SELECTION_TIMEOUT_MS-5000}
+      LOG_LEVEL_CONSOLE: ${LOG_LEVEL_CONSOLE-DEBUG}
+      LOG_LEVEL_FILE: ${LOG_LEVEL_FILE-DEBUG}
+      LOG_ROTATION: ${LOG_ROTATION-10 MB}
+      LOG_DIR: ${LOG_DIR-logs}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES-30}
+      REFRESH_TOKEN_EXPIRE_DAYS: ${REFRESH_TOKEN_EXPIRE_DAYS-30}
+      AUTHX_JWT_ALGORITHM: ${AUTHX_JWT_ALGORITHM-HS256}
+      AUTHX_JWT_TOKEN_LOCATIONS:
+      GAME_ACCESS_TOKEN_EXPIRE_MINUTES: ${GAME_ACCESS_TOKEN_EXPIRE_MINUTES-15}
+      GAME_REFRESH_TOKEN_EXPIRE_MINUTES: ${GAME_REFRESH_TOKEN_EXPIRE_MINUTES-720}
+      REALTIME_PING_INTERVAL_SECONDS: ${REALTIME_PING_INTERVAL_SECONDS-30.0}
+      REALTIME_PING_TIMEOUT_SECONDS: ${REALTIME_PING_TIMEOUT_SECONDS-120.0}
+      GAME_STREAM_NAME: ${GAME_STREAM_NAME-game_events}
+      STREAM_PENDING_MIN_IDLE_MS: ${STREAM_PENDING_MIN_IDLE_MS-300000}
+      STREAM_PENDING_SCAN_COUNT: ${STREAM_PENDING_SCAN_COUNT-100}
+      CHAT_BUFFER_MAXLEN: ${CHAT_BUFFER_MAXLEN-5000}
     command:
       - uvicorn
       - src.backend.chat.app:app
@@ -117,21 +166,24 @@ services:
       retries: 6
     networks:
       - tbmmorpg-network
+      - tbmmorpg-edge
 
   chat-archive-worker:
     image: ${DOCKER_IMAGE_WORKER:?DOCKER_IMAGE_WORKER is required}
     restart: unless-stopped
-    env_file:
-      - path: ${DEPLOY_ENV_FILE:-.env}
-        required: false
     environment:
       DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
-      SITE_DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
       GAME_DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
       REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
       MONGO_URL: ${MONGO_URL:?MONGO_URL is required}
       MONGO_DATABASE: ${MONGO_DATABASE:-tbmmorpg_analytics}
       DEBUG: "False"
+      DATABASE_ECHO: ${DATABASE_ECHO-false}
+      MONGO_SERVER_SELECTION_TIMEOUT_MS: ${MONGO_SERVER_SELECTION_TIMEOUT_MS-5000}
+      LOG_LEVEL_CONSOLE: ${LOG_LEVEL_CONSOLE-DEBUG}
+      LOG_LEVEL_FILE: ${LOG_LEVEL_FILE-DEBUG}
+      LOG_ROTATION: ${LOG_ROTATION-10 MB}
+      LOG_DIR: ${LOG_DIR-logs}
     command: ["arq", "src.backend.chat.workers.archive.ChatArchiveWorkerSettings"]
     depends_on:
       backend-migrate:
@@ -142,17 +194,24 @@ services:
   combat-worker:
     image: ${DOCKER_IMAGE_WORKER:?DOCKER_IMAGE_WORKER is required}
     restart: unless-stopped
-    env_file:
-      - path: ${DEPLOY_ENV_FILE:-.env}
-        required: false
     environment:
       DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
-      SITE_DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
       GAME_DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
       REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
       MONGO_URL: ${MONGO_URL:?MONGO_URL is required}
       MONGO_DATABASE: ${MONGO_DATABASE:-tbmmorpg_analytics}
       DEBUG: "False"
+      DATABASE_ECHO: ${DATABASE_ECHO-false}
+      MONGO_SERVER_SELECTION_TIMEOUT_MS: ${MONGO_SERVER_SELECTION_TIMEOUT_MS-5000}
+      LOG_LEVEL_CONSOLE: ${LOG_LEVEL_CONSOLE-DEBUG}
+      LOG_LEVEL_FILE: ${LOG_LEVEL_FILE-DEBUG}
+      LOG_ROTATION: ${LOG_ROTATION-10 MB}
+      LOG_DIR: ${LOG_DIR-logs}
+      GAME_STREAM_NAME: ${GAME_STREAM_NAME-game_events}
+      GAME_STREAM_MAXLEN: ${GAME_STREAM_MAXLEN-10000}
+      COMBAT_AI_POLICY_PATH:
+      GAME_REFRESH_TOKEN_EXPIRE_MINUTES: ${GAME_REFRESH_TOKEN_EXPIRE_MINUTES-720}
+      DEFAULT_SYMBIOTE_NAME: ${DEFAULT_SYMBIOTE_NAME-SYSTEM}
     command: ["arq", "src.backend.features.combat.workers.arq.CombatArqSettings"]
     depends_on:
       backend-migrate:
@@ -165,17 +224,24 @@ services:
     restart: unless-stopped
     profiles:
       - combat-ai-simulation
-    env_file:
-      - path: ${DEPLOY_ENV_FILE:-.env}
-        required: false
     environment:
       DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
-      SITE_DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
       GAME_DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
       REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
       MONGO_URL: ${MONGO_URL:?MONGO_URL is required}
       MONGO_DATABASE: ${MONGO_DATABASE:-tbmmorpg_analytics}
       DEBUG: "False"
+      DATABASE_ECHO: ${DATABASE_ECHO-false}
+      MONGO_SERVER_SELECTION_TIMEOUT_MS: ${MONGO_SERVER_SELECTION_TIMEOUT_MS-5000}
+      LOG_LEVEL_CONSOLE: ${LOG_LEVEL_CONSOLE-DEBUG}
+      LOG_LEVEL_FILE: ${LOG_LEVEL_FILE-DEBUG}
+      LOG_ROTATION: ${LOG_ROTATION-10 MB}
+      LOG_DIR: ${LOG_DIR-logs}
+      GAME_STREAM_NAME: ${GAME_STREAM_NAME-game_events}
+      GAME_STREAM_MAXLEN: ${GAME_STREAM_MAXLEN-10000}
+      COMBAT_AI_POLICY_PATH:
+      GAME_REFRESH_TOKEN_EXPIRE_MINUTES: ${GAME_REFRESH_TOKEN_EXPIRE_MINUTES-720}
+      DEFAULT_SYMBIOTE_NAME: ${DEFAULT_SYMBIOTE_NAME-SYSTEM}
     command: ["arq", "src.backend.features.combat.workers.ai_simulation_arq.CombatAiSimulationArqSettings"]
     depends_on:
       backend-migrate:
@@ -186,17 +252,24 @@ services:
   system-worker:
     image: ${DOCKER_IMAGE_WORKER:?DOCKER_IMAGE_WORKER is required}
     restart: unless-stopped
-    env_file:
-      - path: ${DEPLOY_ENV_FILE:-.env}
-        required: false
     environment:
       DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
-      SITE_DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
       GAME_DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
       REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
       MONGO_URL: ${MONGO_URL:?MONGO_URL is required}
       MONGO_DATABASE: ${MONGO_DATABASE:-tbmmorpg_analytics}
       DEBUG: "False"
+      DATABASE_ECHO: ${DATABASE_ECHO-false}
+      MONGO_SERVER_SELECTION_TIMEOUT_MS: ${MONGO_SERVER_SELECTION_TIMEOUT_MS-5000}
+      LOG_LEVEL_CONSOLE: ${LOG_LEVEL_CONSOLE-DEBUG}
+      LOG_LEVEL_FILE: ${LOG_LEVEL_FILE-DEBUG}
+      LOG_ROTATION: ${LOG_ROTATION-10 MB}
+      LOG_DIR: ${LOG_DIR-logs}
+      GAME_STREAM_NAME: ${GAME_STREAM_NAME-game_events}
+      GAME_STREAM_MAXLEN: ${GAME_STREAM_MAXLEN-10000}
+      COMBAT_AI_POLICY_PATH:
+      GAME_REFRESH_TOKEN_EXPIRE_MINUTES: ${GAME_REFRESH_TOKEN_EXPIRE_MINUTES-720}
+      DEFAULT_SYMBIOTE_NAME: ${DEFAULT_SYMBIOTE_NAME-SYSTEM}
     command: ["arq", "src.backend.features.system.workers.arq.SystemArqSettings"]
     depends_on:
       backend-migrate:
@@ -207,17 +280,26 @@ services:
   generation-ai-worker:
     image: ${DOCKER_IMAGE_WORKER:?DOCKER_IMAGE_WORKER is required}
     restart: unless-stopped
-    env_file:
-      - path: ${DEPLOY_ENV_FILE:-.env}
-        required: false
     environment:
       DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
-      SITE_DATABASE_URL: ${SITE_DATABASE_URL:?SITE_DATABASE_URL is required}
       GAME_DATABASE_URL: ${GAME_DATABASE_URL:?GAME_DATABASE_URL is required}
       REDIS_URL: ${REDIS_URL:?REDIS_URL is required}
       MONGO_URL: ${MONGO_URL:?MONGO_URL is required}
       MONGO_DATABASE: ${MONGO_DATABASE:-tbmmorpg_analytics}
       DEBUG: "False"
+      DATABASE_ECHO: ${DATABASE_ECHO-false}
+      MONGO_SERVER_SELECTION_TIMEOUT_MS: ${MONGO_SERVER_SELECTION_TIMEOUT_MS-5000}
+      LOG_LEVEL_CONSOLE: ${LOG_LEVEL_CONSOLE-DEBUG}
+      LOG_LEVEL_FILE: ${LOG_LEVEL_FILE-DEBUG}
+      LOG_ROTATION: ${LOG_ROTATION-10 MB}
+      LOG_DIR: ${LOG_DIR-logs}
+      GEMINI_API_KEY:
+      GEMINI_MODEL: ${GEMINI_MODEL-gemini-2.5-flash}
+      GAME_STREAM_NAME: ${GAME_STREAM_NAME-game_events}
+      GAME_STREAM_MAXLEN: ${GAME_STREAM_MAXLEN-10000}
+      COMBAT_AI_POLICY_PATH:
+      GAME_REFRESH_TOKEN_EXPIRE_MINUTES: ${GAME_REFRESH_TOKEN_EXPIRE_MINUTES-720}
+      DEFAULT_SYMBIOTE_NAME: ${DEFAULT_SYMBIOTE_NAME-SYSTEM}
     command: ["arq", "src.backend.features.generation_ai.workers.arq.GenerationAIArqSettings"]
     volumes:
       - tbmmorpg-generated-assets:/app/var/generated-assets
@@ -236,4 +318,7 @@ volumes:
 networks:
   tbmmorpg-network:
     name: tbmmorpg-network
+    driver: bridge
+  tbmmorpg-edge:
+    name: tbmmorpg-edge
     driver: bridge

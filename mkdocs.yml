@@ -51,6 +51,8 @@ nav:
     - Обзор: management/index.md
     - Деплой: management/deployment.md
     - Контракт деплоя: management/deployment-contract.md
+    - Recovery evidence: management/recovery-evidence.md
+    - Перед выпуском: management/infrastructure-release-checklist.md
     - Стратегия тестирования: management/testing_strategy.md
 
   - Shared:

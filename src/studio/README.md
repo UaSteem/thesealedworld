@@ -13,7 +13,13 @@ See the migration plan at
 ## Running locally
 
 Studio is part of the **local dev compose** (`deploy/docker-compose.yml`) and
-starts automatically with the rest of the stack:
+starts with the rest of the stack. Set a distinct private `STUDIO_ACCESS_TOKEN`
+first: without it Studio returns 503. HTTP Basic username is `studio`, and the
+password is the token. Use loopback/SSH tunnel or HTTPS. SQL/Redis/HTTP clients
+enforce selected-source read restrictions; separate read-only storage credentials
+are still required. Production-source mutations are blocked.
+
+Start the stack:
 
 ```powershell
 docker compose -f deploy/docker-compose.yml up -d --build

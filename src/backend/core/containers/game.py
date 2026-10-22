@@ -6,9 +6,6 @@ from loguru import logger
 from src.backend.config.settings import settings
 from src.backend.core.database import get_manual_session_context, get_session_context
 from src.backend.core.mongo import get_mongo_provider
-from src.backend.features.generation_ai.bootstrap import build_generation_ai_registry
-from src.backend.features.generation_ai.repositories import AIGenerationTaskRepository
-from src.backend.features.generation_ai.services import GenerationAIService
 
 # Feature Services
 from src.backend.features.items.services import ItemGenerationService
@@ -23,7 +20,7 @@ from src.backend.features.rift.services import (
 )
 from src.backend.features.scenario.integrations import ScenarioImportIntegration
 from src.backend.features.world.integrations import WorldDataIntegration, WorldLocationIntegration
-from src.backend.features.world.services import LLMWorldGenerator, WorldBootstrapService, WorldCacheService
+from src.backend.features.world.services import WorldBootstrapService, WorldCacheService, WorldGenerator
 from src.backend.infrastructure.rift.repositories import RiftNodePoolRepository, RiftSettingRepository
 from src.backend.infrastructure.rift.repositories.catalog_documents import RiftCatalogDocumentRepository
 from src.backend.infrastructure.world.repositories import WorldRepository
@@ -47,13 +44,7 @@ class GameFeatureContainer:
             locations = WorldLocationIntegration(app.state.world_locations)
             # world_locations were initialized in InfrastructureContainer
             cache = WorldCacheService(data=data, locations=locations)
-            generation_ai = GenerationAIService(
-                repository=AIGenerationTaskRepository(session),
-                registry=build_generation_ai_registry(session=session),
-                arq=getattr(app.state, "generation_ai_arq", None),
-                auto_schedule=False,
-            )
-            generator = LLMWorldGenerator(data, generation_ai=generation_ai)
+            generator = WorldGenerator(data)
 
             bootstrap = WorldBootstrapService(
                 data=data,
@@ -104,15 +95,6 @@ class GameFeatureContainer:
                 clan_count=rift_population_result.clans,
             ).info("RiftPopulationBootstrapFinished")
             await session.commit()
-            await self._schedule_bootstrap_generation_ai(generation_ai)
-
-    async def _schedule_bootstrap_generation_ai(self, generation_ai: GenerationAIService) -> int:
-        if not settings.bootstrap_ai_generation_enabled:
-            logger.info("GenerationAiBootstrapSchedulingSkipped")
-            return 0
-        scheduled = await generation_ai.schedule_pending_task_ids()
-        logger.bind(task_count=scheduled).info("GenerationAiBootstrapTasksScheduled")
-        return scheduled
 
     async def _bootstrap_anchor_projections(self, app: FastAPI) -> None:
         logger.info("AnchorProjectionsBootstrapStarted")

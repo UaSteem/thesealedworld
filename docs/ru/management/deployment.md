@@ -234,3 +234,97 @@ uv run python -m tools.assets.backfill_generated_assets_to_s3 --local-root var/g
 
 Реальный backfill должен копировать файлы, а не регенерировать изображения. Старый volume нужно оставить
 как rollback/cache минимум на один release.
+
+
+## Локальная проверка восстановления PostgreSQL (A08-15)
+
+Drill `tests/deploy/test_postgres_restore_drill.py` проверяет custom-format
+`pg_dump` и `pg_restore` только на синтетических site/game базах в собственном
+временном контейнере. Проверяются данные, Unicode, ограничения, индексы и
+продолжение sequence; целевые базы новые и не совпадают с исходными.
+Повреждённый архив должен завершать restore с ошибкой.
+
+Это проверка механизма восстановления. Она не использует production dump,
+application URL, `.env`, рабочие volumes или открытые порты. Нужен локально
+доступный образ `postgres:16-alpine`; автоматическая загрузка запрещена.
+Контейнер и его временные volumes очищаются после проверки.
+
+Для operational закрытия A08-15 отдельно нужны расписание реальных backup,
+место хранения вне основного сервера, права доступа, шифрование/retention,
+изолированный restore реального backup, измеренные RPO/RTO и доставка alerts
+ответственному. MongoDB, Redis и assets требуют собственных recovery contracts;
+PostgreSQL synthetic drill не доказывает согласованность нескольких хранилищ.
+
+
+Ручной запуск из корня проекта (Docker должен быть доступен):
+
+```powershell
+$env:RUN_POSTGRES_RESTORE_DRILL = "1"
+.venv/Scripts/python -m pytest tests/deploy/test_postgres_restore_drill.py -m external --no-cov
+```
+
+Успех означает, что synthetic drill завершился без ошибок. Он не сохраняет
+backup после cleanup и не запускает расписание резервного копирования.
+
+
+## Локальная проверка восстановления MongoDB (A08-15)
+
+`tests/deploy/test_mongo_restore_drill.py` проверяет `mongodump --archive` и
+`mongorestore` с переносом namespace в новую синтетическую базу. Собственный
+контейнер `mongo:8` запускается с `--pull=never`, без сети/портов/рабочих volumes;
+данные находятся в tmpfs. Приложение, `.env` и реальные database URLs не читаются.
+
+Проверяются канонические BSON/EJSON данные, вложенные и Unicode значения,
+ObjectId/date/long, индексы и реальное отклонение дубликата unique key. TTL
+проверяется по сохранению определения индекса; истечение TTL здесь не измеряется.
+Исходная база должна оставаться неизменной, restore работает с новой базой.
+Повреждённый архив должен завершать restore с ошибкой; atomic rollback всей
+операции восстановления не предполагается. Контейнер удаляется в `finally`.
+
+Ручной запуск при наличии локального образа и доступа к Docker:
+
+```powershell
+$env:RUN_MONGO_RESTORE_DRILL = "1"
+.venv/Scripts/python -m pytest tests/deploy/test_mongo_restore_drill.py -m external --no-cov
+```
+
+Drill не сохраняет backup после cleanup и не подтверждает production backup,
+retention, offsite storage, пользователей/роли, RPO/RTO, replica-set oplog/PITR
+или согласованность SQL/Mongo/Redis/assets. Эти operational проверки остаются
+отдельными задачами. Рабочие архивы и рабочие данные для drill не используются.
+
+
+## Локальная проверка восстановления Redis RDB (A08-15)
+
+`tests/deploy/test_redis_restore_drill.py` использует только собственные
+синтетические данные и контейнеры Redis Stack. Через `SAVE` создаётся RDB,
+который загружается в новом процессе; тест не подменяет restore повторной
+записью ключей клиентом. Проверяются обычные типы Redis и RedisJSON, Streams
+consumer group/pending/cursor, исходный срок TTL и пропуск уже истёкшего ключа.
+Повреждённый RDB не должен приводить к успешному старту пустого сервера.
+
+Нужен локальный образ `redis/redis-stack-server:7.2.0-v14`, загрузка запрещена.
+Контейнеры имеют уникальные имена, не подключаются к сети и не открывают порты.
+Application URL, `.env` и рабочие volumes не используются. Все временные данные
+и контейнеры удаляются после проверки.
+
+```powershell
+$env:RUN_REDIS_RESTORE_DRILL = "1"
+.venv/Scripts/python -m pytest tests/deploy/test_redis_restore_drill.py -m external --no-cov
+```
+
+Это synthetic RDB drill на одной версии Redis Stack. Он не проверяет AOF,
+репликацию/failover, ACL/секреты, смену версии RedisJSON, operational расписание
+backup или согласованность PostgreSQL/MongoDB/Redis. Восстановление pending не
+означает безопасного повтора игровых эффектов: доменная идемпотентность остаётся
+отдельным контрактом. RDB сохраняет момент снимка; новые записи после `SAVE`
+нельзя объявлять сохранёнными. Production RPO/RTO этим тестом не измеряются.
+
+
+## Автоматизируемая проверка recovery evidence
+
+Контракт manifest и CLI проверки целостности/свежести backup описаны в
+[recovery-evidence.md](recovery-evidence.md). Проверка возвращает ненулевой exit
+при потере файла, hash mismatch, просроченном backup/drill или превышении
+заданного времени восстановления. Она не заменяет production backup и доставку
+alerts; расписание и пороги не установлены автоматически.

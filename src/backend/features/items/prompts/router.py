@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
-from codex_ai.core import LLMRouter, PromptResult
+from codex_ai.core import LLMMessage, LLMRouter, PromptResult
 
 item_prompt_router = LLMRouter()
 
@@ -38,4 +38,4 @@ def build_item_name_description_prompt(payload: dict[str, Any]) -> PromptResult:
         'Return strict JSON: {"name": "...", "description": "..."}.'
     )
     user = json.dumps(payload, ensure_ascii=False, sort_keys=True)
-    return PromptResult(messages=[{"role": "system", "content": system}, {"role": "user", "content": user}])
+    return PromptResult(messages=[LLMMessage(role="system", content=system), LLMMessage(role="user", content=user)])

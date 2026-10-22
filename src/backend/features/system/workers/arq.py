@@ -3,9 +3,10 @@ from __future__ import annotations
 
 from typing import Any
 
+from src.backend.config.runtime import runtime_settings
 from src.backend.core.arq_logging import setup_arq_worker_logging
 
-setup_arq_worker_logging("system-worker")
+setup_arq_worker_logging("system-worker", config=runtime_settings)
 
 from arq import cron
 from loguru import logger

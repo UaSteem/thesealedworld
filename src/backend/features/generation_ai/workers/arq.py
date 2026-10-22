@@ -3,15 +3,22 @@ from __future__ import annotations
 
 from typing import Any
 
+from src.backend.config.runtime import runtime_settings
 from src.backend.core.arq_logging import setup_arq_worker_logging
 
-setup_arq_worker_logging("generation-ai-worker")
+setup_arq_worker_logging("generation-ai-worker", config=runtime_settings)
 
+from arq import cron
 from loguru import logger
 
 from src.backend.core.ai import AIService
 from src.backend.core.arq import GENERATION_AI_ARQ_QUEUE, ArqService, BaseArqSettings, base_shutdown, base_startup
-from src.backend.features.generation_ai.workers.tasks import GENERATION_AI_TASKS
+from src.backend.features.generation_ai.workers.tasks import (
+    GENERATION_AI_TASKS,
+    generation_ai_reconcile_documents,
+    generation_ai_recover_running,
+    generation_ai_recover_scheduling,
+)
 
 
 async def generation_ai_startup(ctx: dict[str, Any]) -> None:
@@ -43,3 +50,9 @@ class GenerationAIArqSettings(BaseArqSettings):
     on_startup = generation_ai_startup
     on_shutdown = generation_ai_shutdown
     functions = GENERATION_AI_TASKS
+
+    cron_jobs = [
+        cron(generation_ai_recover_running, run_at_startup=True),
+        cron(generation_ai_recover_scheduling, second={0, 30}, run_at_startup=True),
+        cron(generation_ai_reconcile_documents, minute=set(range(0, 60, 5)), run_at_startup=True),
+    ]

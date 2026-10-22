@@ -9,11 +9,11 @@ from alembic.config import Config
 PROJECT_ROOT = Path(__file__).parent.parent.parent
 sys.path.append(str(PROJECT_ROOT))
 
-from src.backend.config.settings import settings  # noqa: E402
-
 
 def runserver():
     """Run the FastAPI backend server."""
+    from src.backend.config.settings import settings
+
     print(f"🎮 Starting backend server at http://{settings.app_host}:{settings.app_port}")
     uvicorn.run(
         "src.backend.app:app",

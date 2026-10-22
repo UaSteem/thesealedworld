@@ -28,6 +28,7 @@ from src.studio.features.source_selector.routes import router as source_selector
 from src.studio.features.sources.postgres_readonly import PostgresPoolRegistry
 from src.studio.features.sources.redis_readonly import RedisClientRegistry
 from src.studio.features.sources.ssh_tunnel import SshTunnelManager
+from src.studio.security import StudioAccessMiddleware, guard_source_request
 from src.studio.settings import settings
 
 setup_logging(
@@ -95,7 +96,7 @@ async def lifespan(app: FastAPI):
     app.state.redis_clients = RedisClientRegistry()
     # Long-lived httpx client used by cabinet modules to call the backend API
     # at request.state.source.api_base (set per-request by SourceSelectorMiddleware).
-    app.state.backend_http_client = httpx.AsyncClient(timeout=10.0)
+    app.state.backend_http_client = httpx.AsyncClient(timeout=10.0, event_hooks={"request": [guard_source_request]})
 
     logger.bind(
         templates_studio=str(settings.studio_templates_dir),
@@ -140,6 +141,7 @@ if settings.studio_static_dir.exists():
     )
 
 app.add_middleware(SourceSelectorMiddleware, settings=settings)
+app.add_middleware(StudioAccessMiddleware, settings=settings)
 
 app.include_router(shell_router)
 app.include_router(source_selector_router)

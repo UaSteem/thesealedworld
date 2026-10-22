@@ -289,6 +289,7 @@ services:
       PROD_REDIS_URL: redis://host.docker.internal:16379/0
       PROD_API_BASE: http://host.docker.internal:18001
       STUDIO_SOURCE: ${STUDIO_SOURCE:-local}
+      STUDIO_ACCESS_TOKEN: ${STUDIO_ACCESS_TOKEN:-}
       PYTHONPATH: /app:/app/src
       DEBUG: "True"
     ports:

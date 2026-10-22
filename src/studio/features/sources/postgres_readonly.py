@@ -3,21 +3,61 @@
 Holds one `asyncpg.Pool` per `SourceKind` and lazily creates it on first
 request. Pools are closed in the FastAPI shutdown handler.
 
-Read-only is enforced on the *database* side via the `studio_ro` role for
-prod — even if studio code accidentally calls UPDATE, Postgres rejects it.
-For local, callers should still treat connections as read-only by convention.
+Every source pool uses server-side default_transaction_read_only and every
+acquired connection runs inside an explicit read-only transaction. A restricted
+facade exposes fetch methods only. Actual server-role grants remain operational
+configuration and have not been inspected or changed here.
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+from typing import TYPE_CHECKING, Any
 
 from loguru import logger
 
 if TYPE_CHECKING:
-    import asyncpg
-
     from src.studio.features.sources.models import Source, SourceKind
+
+
+class ReadOnlyConnection:
+    def __init__(self, connection: Any) -> None:
+        self._connection = connection
+
+    def _validate(self, query: str) -> None:
+        normalized = query.strip().rstrip(";")
+        if (
+            not normalized
+            or ";" in normalized
+            or normalized.split(maxsplit=1)[0].upper() not in {"SELECT", "WITH", "EXPLAIN", "SHOW"}
+        ):
+            raise PermissionError("Studio PostgreSQL exposes analytical reads only")
+
+    async def fetch(self, query: str, *args: Any, **kwargs: Any) -> Any:
+        self._validate(query)
+        return await self._connection.fetch(query, *args, **kwargs)
+
+    async def fetchrow(self, query: str, *args: Any, **kwargs: Any) -> Any:
+        self._validate(query)
+        return await self._connection.fetchrow(query, *args, **kwargs)
+
+    async def fetchval(self, query: str, *args: Any, **kwargs: Any) -> Any:
+        self._validate(query)
+        return await self._connection.fetchval(query, *args, **kwargs)
+
+
+class ReadOnlyPostgresPool:
+    def __init__(self, pool: Any) -> None:
+        self._pool = pool
+
+    @asynccontextmanager
+    async def acquire(self) -> AsyncIterator[ReadOnlyConnection]:
+        async with self._pool.acquire() as connection, connection.transaction(readonly=True):
+            yield ReadOnlyConnection(connection)
+
+    async def close(self) -> None:
+        await self._pool.close()
 
 
 class PostgresPoolRegistry:
@@ -31,9 +71,9 @@ class PostgresPoolRegistry:
     """
 
     def __init__(self) -> None:
-        self._pools: dict[SourceKind, asyncpg.Pool] = {}
+        self._pools: dict[SourceKind, ReadOnlyPostgresPool] = {}
 
-    async def get(self, source: Source) -> asyncpg.Pool:
+    async def get(self, source: Source) -> ReadOnlyPostgresPool:
         import asyncpg
 
         existing = self._pools.get(source.kind)
@@ -46,9 +86,11 @@ class PostgresPoolRegistry:
             min_size=1,
             max_size=5,
             command_timeout=30.0,
+            server_settings={"default_transaction_read_only": "on"},
         )
-        self._pools[source.kind] = pool
-        return pool
+        wrapped = ReadOnlyPostgresPool(pool)
+        self._pools[source.kind] = wrapped
+        return wrapped
 
     async def close_all(self) -> None:
         for kind, pool in list(self._pools.items()):

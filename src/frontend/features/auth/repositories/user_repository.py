@@ -97,11 +97,11 @@ class UserRepository:
 
     async def get_pending_testers(self) -> list[User]:
         result = await self.session.execute(select(User).where(User.tester_status == "pending"))
-        return result.scalars().all()
+        return list(result.scalars().all())
 
     async def get_approved_testers(self) -> list[User]:
         result = await self.session.execute(select(User).where(User.tester_status == "approved"))
-        return result.scalars().all()
+        return list(result.scalars().all())
 
     async def commit(self) -> None:
         await self.session.commit()

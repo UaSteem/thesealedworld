@@ -22,7 +22,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 # --- CUSTOM SETUP ---
-from src.backend.config.settings import settings  # noqa: E402
+from src.backend.config.runtime import runtime_settings as settings  # noqa: E402
 from src.backend.core.database import (  # noqa: E402
     Base,
     model_imports,  # noqa: F401

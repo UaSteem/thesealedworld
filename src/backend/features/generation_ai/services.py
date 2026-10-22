@@ -19,8 +19,7 @@ if TYPE_CHECKING:
     from src.backend.features.generation_ai.repositories import AIGenerationTaskRepository
 
 GENERATION_AI_ARQ_TASK = "generation_ai_process_task"
-# Exact retired types only: other generators retain their existing retry policy.
-RETIRED_MONSTER_TASK_TYPES = frozenset({"monster.clan_flavor", "monster.clan_image", "monster.member_image"})
+ALLOWED_TASK_TYPES = frozenset({"items.text"})
 
 
 class GenerationAIService:
@@ -81,6 +80,15 @@ class GenerationAIService:
         )
 
     async def process_task(self, task_id: str) -> AIGenerationTaskResultDTO | None:
+        """Process on a dedicated manual-commit session.
+
+        Commits the prepared claim internally before AI. The caller commits final
+        application/retry and dispatches followups afterwards; do not wrap this
+        operation in session.begin() or share its session with unrelated writes.
+        """
+        if await self.repository.retire_unsupported_by_id(task_id):
+            logger.bind(task_id=task_id).info("GenerationAiRetiredTaskSkipped")
+            return None
         task = await self.repository.claim_by_id(task_id)
         if task is None:
             existing = await self.repository.get(task_id)
@@ -92,12 +100,12 @@ class GenerationAIService:
         return await self._execute_claimed_task(task)
 
     async def _execute_claimed_task(self, task: Any) -> AIGenerationTaskResultDTO | None:
-        if task.task_type in RETIRED_MONSTER_TASK_TYPES:
+        if task.task_type not in ALLOWED_TASK_TYPES or getattr(task, "output_kind", None) != "json":
             await self.repository.mark_failed(
                 task.id,
                 {
                     "type": "RetiredTaskType",
-                    "message": "Monster API generation has been archived; use prepared catalog content.",
+                    "message": "Only items.text JSON generation remains available.",
                 },
             )
             logger.bind(task_id=task.id, task_type=task.task_type).info("GenerationAiRetiredTaskSkipped")
@@ -106,20 +114,48 @@ class GenerationAIService:
             handler = self.registry.resolve(task.task_type)
             if self.executor is None:
                 raise RuntimeError("AI generation executor is not configured")
-
             request = await handler.build_request(task)
             self._validate_request(task, request)
-            result = await self.executor.generate(task, request)
-            if not isinstance(result, AIGenerationTaskResultDTO):
-                result = AIGenerationTaskResultDTO.model_validate(result)
-            followup_specs = await handler.apply_result(task, result)
-            await self.repository.mark_done(task.id, result)
-            await self._enqueue_followups(followup_specs)
-            logger.bind(task_id=task.id, task_type=task.task_type).info("GenerationAiTaskDone")
-            return result
         except Exception as exc:
             await self._mark_retry_or_failed(task.id, exc)
             return None
+
+        # This is a processing-owned boundary, not an enqueue caller's unit of
+        # work. Commit failures propagate; a provider must never run on an
+        # uncommitted claim. No SQL transaction/connection exists during generate.
+        token = await self.repository.commit_claim_for_provider(task)
+        try:
+            result = await self.executor.generate(task, request)
+            if not isinstance(result, AIGenerationTaskResultDTO):
+                result = AIGenerationTaskResultDTO.model_validate(result)
+        except Exception as exc:
+            owned = await self.repository.reacquire_claim(token)
+            if owned is not None:
+                await self._mark_retry_or_failed(owned.id, exc)
+            else:
+                logger.bind(task_id=token.task_id).warning("GenerationAiStaleProviderFailureSkipped")
+            return None
+
+        owned = await self.repository.reacquire_claim(token)
+        if owned is None:
+            logger.bind(task_id=token.task_id).warning("GenerationAiStaleProviderResultSkipped")
+            return None
+        # Roll back all handler SQL writes and completion before recording retry.
+        # Keep identifiers outside the savepoint: rollback expires mapped state.
+        owned_id = owned.id
+        task_type = owned.task_type
+        pending_schedule_count = len(self._pending_schedule_tasks)
+        try:
+            async with self.repository.application_transaction():
+                followup_specs = await handler.apply_result(owned, result)
+                await self.repository.mark_done(owned_id, result)
+                await self._enqueue_followups(followup_specs)
+        except Exception as exc:
+            del self._pending_schedule_tasks[pending_schedule_count:]
+            await self._mark_retry_or_failed(owned_id, exc)
+            return None
+        logger.bind(task_id=owned_id, task_type=task_type).info("GenerationAiTaskDone")
+        return result
 
     async def claim_and_process_next(self) -> str | None:
         task = await self.repository.claim_next()
@@ -129,6 +165,8 @@ class GenerationAIService:
         return task.id
 
     def _validate_spec(self, spec: AIGenerationTaskSpecDTO) -> None:
+        if spec.task_type not in ALLOWED_TASK_TYPES or spec.output_kind != "json":
+            raise ValueError("Only items.text JSON generation remains available")
         if not self.registry.has(spec.task_type):
             raise ValueError(f"AI generation task type is not registered: {spec.task_type}")
 
@@ -145,27 +183,6 @@ class GenerationAIService:
 
         if kind == "json" and request.get("schema") is None:
             raise ValueError(f"AI JSON generation requires schema for task_type={task.task_type}")
-
-        if kind == "image":
-            prompt = request.get("prompt")
-            if not isinstance(prompt, str) or not prompt.strip():
-                raise ValueError(
-                    f"AI image generation requires plain non-empty string prompt for task_type={task.task_type}"
-                )
-            storage_key = request.get("storage_key")
-            if not isinstance(storage_key, str) or not storage_key.strip():
-                raise ValueError(f"AI image generation requires storage_key for task_type={task.task_type}")
-            content_type = request.get("content_type")
-            if not isinstance(content_type, str) or not content_type.strip().lower().startswith("image/"):
-                raise ValueError(f"AI image generation requires image content_type for task_type={task.task_type}")
-            model = request.get("model")
-            if not isinstance(model, str) or not model.strip():
-                raise ValueError(f"AI image generation requires model for task_type={task.task_type}")
-            normalized_model = model.strip().lower()
-            if normalized_model.startswith("imagen-") or "nano-banana" in normalized_model:
-                raise ValueError(f"Unsupported image model for task_type={task.task_type}: {model}")
-            if not normalized_model.startswith("gemini-") or "image" not in normalized_model:
-                raise ValueError(f"Unsupported Gemini image model id for task_type={task.task_type}: {model}")
 
     async def _schedule_tasks(self, task_ids: list[str]) -> int:
         scheduled = 0
@@ -210,6 +227,9 @@ class GenerationAIService:
             )
             return
 
+        # Claim predicates use the persisted budget; save the effective limit in
+        # the same transaction as cooldown so the next attempt remains reachable.
+        task.max_attempts = retry_limit
         not_before = datetime.now(UTC) + timedelta(seconds=30)
         await self.repository.mark_cooldown(
             task.id,

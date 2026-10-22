@@ -1,23 +1,17 @@
 from pathlib import Path
 from typing import Literal
 
-from codex_core.settings import BaseCommonSettings
 from pydantic import Field, model_validator
 from pydantic_settings import SettingsConfigDict
+
+from src.frontend.config.database import DatabaseSettings
 
 # Root directory of the project
 BASE_DIR = Path(__file__).parent.parent.parent.parent
 
 
-class FrontendSettings(BaseCommonSettings):
+class FrontendSettings(DatabaseSettings):
     """Frontend-specific settings inheriting from codex-core base."""
-
-    # Logging
-    debug: bool = True
-    log_level_console: str = "DEBUG"
-    log_level_file: str = "INFO"
-    log_rotation: str = "10 MB"
-    log_dir: str = "logs"
 
     # Server Settings
     app_host: str = "0.0.0.0"  # nosec
@@ -50,11 +44,6 @@ class FrontendSettings(BaseCommonSettings):
         "На альфе прогресс может быть сброшен при крупных изменениях. "
         "С беты прогресс сохраняется — возможен только один объявленный вайп перед 1.0."
     )
-    site_database_url: str = (
-        "postgresql+asyncpg://tbmmorpg:tbmmorpg_dev@127.0.0.1:5432/tbmmorpg_site"  # pragma: allowlist secret
-    )
-    database_url: str = site_database_url
-    database_echo: bool = False
     secret_key: str = "change-me-in-env-change-me-in-env-32-bytes"  # pragma: allowlist secret
     access_token_expire_minutes: int = 30
     refresh_token_expire_days: int = 30
@@ -111,6 +100,14 @@ class FrontendSettings(BaseCommonSettings):
             or self.backend_internal_service_key.strip().startswith("dev-")
         ):
             raise ValueError("Production settings cannot use default or development secret keys")
+        return self
+
+    @model_validator(mode="after")
+    def validate_email_origin(self) -> "FrontendSettings":
+        if self.enable_email_verification:
+            from src.frontend.features.email.origin import canonical_email_origin
+
+            canonical_email_origin(self.site_base_url, allow_local_http=self.debug)
         return self
 
     model_config = SettingsConfigDict(

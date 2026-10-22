@@ -4,11 +4,13 @@ import asyncio
 from dataclasses import dataclass, field
 from hashlib import sha256
 from pathlib import Path
-from typing import Any, Literal, Protocol
+from typing import TYPE_CHECKING, Any, Literal, Protocol
 from urllib.parse import quote, urlsplit
 
-from src.backend.config.settings import BackendSettings, settings
 from src.backend.features.generation_ai.dto import AIGenerationTaskResultDTO
+
+if TYPE_CHECKING:
+    from src.backend.config.settings import BackendSettings
 
 
 @dataclass(frozen=True, slots=True)
@@ -150,7 +152,11 @@ class S3GeneratedAssetStorage:
         return True
 
 
-def build_generated_asset_storage(config: BackendSettings = settings) -> GeneratedAssetStorage:
+def build_generated_asset_storage(config: BackendSettings | None = None) -> GeneratedAssetStorage:
+    if config is None:
+        from src.backend.config.settings import settings
+
+        config = settings
     if config.asset_storage_backend == "local":
         return LocalGeneratedAssetStorage(
             root=config.asset_local_root,
@@ -178,7 +184,11 @@ def build_generated_asset_storage(config: BackendSettings = settings) -> Generat
     raise RuntimeError(f"Unsupported generated asset storage backend: {config.asset_storage_backend!r}")
 
 
-def build_s3_client(config: BackendSettings = settings) -> Any:
+def build_s3_client(config: BackendSettings | None = None) -> Any:
+    if config is None:
+        from src.backend.config.settings import settings
+
+        config = settings
     try:
         import boto3
     except ImportError as exc:  # pragma: no cover - covered by deployment smoke once dependency is installed

@@ -25,6 +25,8 @@ if TYPE_CHECKING:
     from src.studio.features.sources.models import Source, SourceKind
     from src.studio.settings import StudioSettings
 
+from src.studio.security import selected_source
+
 SOURCE_COOKIE_NAME = "studio_source"
 _VALID_KINDS: frozenset[str] = frozenset(("local", "prod"))
 
@@ -40,7 +42,11 @@ class SourceSelectorMiddleware(BaseHTTPMiddleware):
         source: Source = self._sources[kind]
         request.state.source = source
         request.state.source_kind = kind
-        return await call_next(request)
+        handle = selected_source.set(source)
+        try:
+            return await call_next(request)
+        finally:
+            selected_source.reset(handle)
 
     def _resolve_kind(self, request: Request) -> SourceKind:
         cookie_value = request.cookies.get(SOURCE_COOKIE_NAME)

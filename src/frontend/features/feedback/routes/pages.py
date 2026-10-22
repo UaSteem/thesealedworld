@@ -82,11 +82,13 @@ async def feedback_submit(
     priority = form_data.get("priority") or None
 
     try:
-        data = FeedbackCreate(
-            type=str(form_data.get("type", "")),
-            title=str(form_data.get("title", "")),
-            body=str(form_data.get("body", "")),
-            priority=priority,
+        data = FeedbackCreate.model_validate(
+            {
+                "type": str(form_data.get("type", "")),
+                "title": str(form_data.get("title", "")),
+                "body": str(form_data.get("body", "")),
+                "priority": priority,
+            }
         )
     except Exception:
         form_vm = FeedbackFormVM()

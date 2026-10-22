@@ -329,3 +329,304 @@ docker compose -f deploy/compose.infra.yml --profile manual config --services
 ```
 
 `certbot` должен отсутствовать в обычном списке сервисов и появляться только с `--profile manual`.
+
+
+## Сетевая граница публичного proxy (A08-02)
+
+Production Compose отделяет HTTP edge от сети приложений и хранилищ.
+Nginx и certbot не должны иметь общей Docker network с PostgreSQL, Redis или
+MongoDB. При этом nginx должен видеть все HTTP upstream: `frontend`,
+`frontend-play`, `backend`, `chat`. Эти HTTP-сервисы подключаются к обеим сетям;
+workers и migrations не требуют доступа из edge.
+
+Это ограничивает прямую сетевую достижимость хранилищ из proxy. HTTP upstream
+остаются доверенной границей и имеют доступ к данным; такая схема не защищает
+от компрометации backend, SSRF с его правами или обхода авторизации API.
+Разделение `env_file`, DB roles, Redis ACL и секретов остаётся отдельной работой.
+Сети сохраняют исходящий доступ: блокировка provider/S3/Telegram не является
+частью этого изменения.
+
+Изменение файлов не меняет сеть уже работающих контейнеров. При будущем
+разрешённом rollout требуется пересоздание затронутых контейнеров и проверка
+фактических network attachments; простой restart не доказывает изоляцию.
+Существующие volumes и данные не переименовываются. Этот шаг не запускает
+production deploy и не отключает текущие подключения вручную.
+
+
+Имена сетей: `tbmmorpg-edge` — proxy/HTTP upstream, `tbmmorpg-network` —
+приложения/хранилища. Certbot initial issue, renewal helper и systemd unit
+используют edge. Volume init jobs работают с `network_mode: none`.
+Старое имя data-сети и существующие volume names сохраняются. Административные
+инструменты остаются в data-сети и требуют отдельного контроля доступа.
+
+
+## Allowlist окружения Telegram bot (A08-02)
+
+Production `compose.tg-bot.yml` передаёт только явные ключи `environment`,
+не весь общий `env_file`. В bot не должны попадать PostgreSQL/Mongo root URLs,
+SMTP, AI-provider и S3 credentials или дополнительные operator-ключи других сервисов.
+Настройки bot/auth/Redis/API и предусмотренные параметры логирования/поведения
+перечисляются явно по контракту `BotSettings`.
+
+Общий deployment `.env` на хосте остаётся входом интерполяции Compose: workflow
+создаёт его в каталоге deploy с прежними ограничениями доступа. Удаление
+service `env_file` не означает удаление этого файла, разделение GitHub secrets
+или ротацию значений. При ручном запуске с другим файлом требуется штатный
+`docker compose --env-file <файл> ...`, иначе значения не станут входом
+интерполяции только от установки `DEPLOY_ENV_FILE`.
+
+Изменение применяется при будущем пересоздании bot, текущие контейнеры не
+трогаются. Остальные сервисы пока сохраняют прежнюю передачу env; общий
+`SECRET_KEY`, Redis credentials и backend API credentials бота остаются
+самостоятельными границами для дальнейшего разделения/прав. Это не полное
+закрытие A08-02 и не подтверждение текущего окружения на сервере.
+
+
+## Allowlist окружения chat-archive-worker (A08-02)
+
+Production архиватор чата получает 12 явных настроек вместо общего
+`env_file`. Подключения PostgreSQL/Redis/Mongo и поддерживаемые настройки
+логирования, SQL echo и Mongo timeout сохраняются. AI-, S3-, SMTP-, Telegram-
+и operator-секреты не должны попадать в окружение этого worker.
+
+Архиватор использует существующие RuntimeSettings без auth-полей.
+`SECRET_KEY`, `FRONTEND_INTERNAL_SERVICE_KEY` и `SITE_TO_GAME_SERVICE_KEY`
+не передаются и не требуются; строгая auth-проверка API сохраняется. Алгоритм
+архивирования, cron, функции и max_jobs не меняются. Проверки используют
+синтетическое окружение и startup/shutdown с подставным Redis без рабочих данных.
+Ротация credentials, роли БД и Redis ACL остаются отдельными задачами.
+SITE_DATABASE_URL исключён: архиватор использует game SQL и не нуждается в site DB.
+
+Исходный deployment `.env` остаётся входом Compose interpolation. При будущем
+rollout нужно пересоздать только затронутый worker и проверить его эффективное
+окружение; в текущей задаче контейнеры/credentials/рабочие данные не меняются.
+
+
+## Allowlist окружения site-migrate (A08-02)
+
+Production `site-migrate` получает отдельный явный список вместо общего env-файла.
+Alembic использует site `DATABASE_URL`; игровые DB/Redis подключения и backend
+API URL этому entrypoint не требуются. Они не передаются migration-контейнеру,
+как и AI/S3/SMTP/Telegram/operator credentials.
+
+Сохраняются site URL, production DEBUG, поддерживаемые параметры SQL echo и
+логирования: всего 8 DB/logging настроек. Alembic использует DatabaseSettings
+без SECRET_KEY/BACKEND_INTERNAL_SERVICE_KEY. FrontendSettings наследует общие
+DB поля и сохраняет строгую auth-проверку HTTP runtime. Роли БД и смена ключей
+требуют отдельного operational применения.
+
+Это изменение доставки окружения при будущем запуске migration-контейнера.
+Текущие базы, схема и миграции в этой задаче не изменяются; SQL может генерироваться
+в offline-проверке без исполнения. Остальные site/play/API сервисы пока требуют
+собственных allowlists; host deployment `.env` остаётся источником интерполяции.
+
+
+## Allowlist окружения backend-migrate (A08-02)
+
+`backend-migrate` получает явный список для entrypoint `upgrade` и
+`ensure-mongo-indexes`. Ему нужны игровые SQL и Mongo подключения, production
+валидация и поддерживаемые настройки логирования/SQL echo/Mongo timeout.
+Site DB, Redis и AI/S3/SMTP/Telegram/operator-секреты этому migration-контейнеру
+не передаются: цепочка миграций и bootstrap индексов их не использует.
+
+Migration entrypoints используют RuntimeSettings: 11 настроек без API auth-ключей.
+BackendSettings разрешается только для HTTP runserver и сохраняет production
+auth validation. Это не ротация ключей и не least-privilege DB roles. Command,
+образы, volumes и код миграций сохраняются.
+Изменение окружения применяется при будущем запуске нового migration-контейнера;
+рабочие SQL/Mongo базы и их индексы в этой задаче не меняются.
+
+Проверки на синтетическом окружении подтверждают сборку настроек/импортов и,
+где поддерживается, offline SQL. Они не заменяют online migration и проверку
+реальных grants. Прочие API/worker сервисы требуют отдельного разделения env.
+
+
+## Allowlist окружения generation-ai-worker (A08-02)
+
+`generation-ai-worker` использует явный список переменных вместо общего
+`env_file`. Его Gemini credentials/model сохраняются: это рабочий provider
+для `items.text`. SQL/Mongo/Redis, логирование и используемые shared-worker
+настройки передаются явно через runtime-конфигурацию без API auth-полей.
+Включены `DEFAULT_SYMBIOTE_NAME` и `GAME_REFRESH_TOKEN_EXPIRE_MINUTES`, которые
+читаются моделью CharacterSymbiote и менеджером блокировки общего контейнера.
+Список содержит 19 настроек; отсутствие значения сохраняет прежний default,
+явно пустое значение передаётся валидатору без подмены default.
+Чужие AI-provider, S3/SMTP/Telegram/operator/root DB credentials не должны
+попадать в окружение worker.
+
+Это ограничение доставки секретов, а не смена провайдера или отключение
+генерации. Отсутствующий/пустой Gemini key сохраняет прежнее поведение AIService;
+проверки не делают реальных provider-запросов и не запускают задачи генерации.
+`SECRET_KEY`, `FRONTEND_INTERNAL_SERVICE_KEY` и `SITE_TO_GAME_SERVICE_KEY`
+этому worker не передаются. Общие инфраструктурные потребители читают отдельные
+runtime settings; BackendSettings сохраняет строгий production auth-validator.
+GenerationAI, system-worker, combat-worker и combat-ai-simulation-worker передают
+runtime settings явно; остальные ARQ entrypoints сохраняют проверку
+BackendSettings при настройке logging. Пропуска проверки через env-флаг нет.
+Права БД и authkeys остальных сервисов остаются отдельной работой. Gemini,
+очередь, cron, startup-операции, образы и volume mounts сохраняются.
+
+Host `.env` остаётся источником Compose interpolation; применение требует
+будущего пересоздания worker. Работающие контейнеры, данные, секреты на хосте
+или в GitHub не изменяются.
+
+## Allowlist окружения system-worker (A08-02)
+
+`system-worker` получает 17 явных runtime-настроек вместо общего `env_file`.
+Сохраняются game SQL, MongoDB, Redis, логирование, SQL echo, Mongo timeout,
+game stream и runtime policy path. `SECRET_KEY`, `FRONTEND_INTERNAL_SERVICE_KEY`
+и `SITE_TO_GAME_SERVICE_KEY` не передаются и не требуются при импорте или startup.
+Entrypoint явно использует RuntimeSettings; строгая auth-проверка API сохраняется.
+`DEFAULT_SYMBIOTE_NAME` и `GAME_REFRESH_TOKEN_EXPIRE_MINUTES` передаются явно:
+их используют зарегистрированные задачи и создаваемые общим контейнером managers.
+Настройки игровой логики и их значения этим изменением не меняются.
+
+Site DB, AI-provider, S3/SMTP/Telegram/operator/root credentials не передаются.
+Права хранилищ и authkeys остальных сервисов остаются отдельной работой.
+Host `.env` остаётся источником Compose interpolation. Применение требует будущего
+пересоздания worker; работающие сервисы, данные и расписание задач не изменяются.
+Проверки используют синтетические настройки и startup/shutdown с подставными
+адаптерами; реальные worker, сетевые запросы и подключения к БД не запускаются.
+
+## Allowlist окружения combat-worker (A08-02)
+
+`combat-worker` получает 17 явных runtime-настроек вместо общего `env_file`.
+Game SQL, MongoDB и Redis сохранены. `SECRET_KEY`, `FRONTEND_INTERNAL_SERVICE_KEY`
+и `SITE_TO_GAME_SERVICE_KEY` больше не передаются: entrypoint явно использует
+RuntimeSettings, а строгая auth-проверка API сохраняется. Сохраняются logging, SQL echo,
+Mongo timeout, game streams, `COMBAT_AI_POLICY_PATH`, `DEFAULT_SYMBIOTE_NAME`
+и `GAME_REFRESH_TOKEN_EXPIRE_MINUTES`. Значения и поведение игровых настроек
+не меняются; боевой AI использует локальную policy, а не ключи LLM-провайдеров.
+
+Site DB и AI-provider/S3/SMTP/Telegram/operator/root credentials не передаются.
+Authkeys остальных сервисов и роли хранилищ остаются отдельной работой. Очередь,
+задачи, параллелизм, образы, сеть и игровая логика сохраняются. Применение окружения требует будущего пересоздания
+контейнера; работающие сервисы и данные этим шагом не меняются.
+
+## Allowlist окружения combat-ai-simulation-worker (A08-02)
+
+`combat-ai-simulation-worker` получает 17 явных runtime-настроек вместо общего
+`env_file`. `SECRET_KEY`, `FRONTEND_INTERNAL_SERVICE_KEY` и
+`SITE_TO_GAME_SERVICE_KEY` не передаются и не требуются: entrypoint явно использует
+RuntimeSettings. Строгая auth-проверка API сохраняется. Сохраняются game
+SQL/MongoDB/Redis, logging/echo/Mongo timeout, game streams, local policy path и общие
+переопределения symbiote name/lock TTL. Site DB и ключи внешних AI-провайдеров,
+S3/SMTP/Telegram/operator/root в окружение не передаются.
+
+Профиль `combat-ai-simulation`, очередь, четыре задачи, таймауты и ограничения
+повторных попыток/параллелизма сохраняются. Код симуляции и обучения не меняется.
+Тесты проверяют конфигурацию, импорт и startup/shutdown с подставными адаптерами.
+Симуляции, обучение, реальные сетевые подключения и рабочие БД не запускаются.
+Auth остальных сервисов и роли хранилищ
+остаются отдельной работой; применение требует будущего пересоздания контейнера.
+
+## Allowlist окружения chat (A08-02)
+
+`chat` получает явный список настроек вместо общего `env_file`. Сохраняются
+game SQL/MongoDB/Redis и обязательные shared-validator authkeys, настройки JWT
+для REST и realtime, разрешённые Origin и ping-интервалы, Streams consumer group/
+worker name/pending recovery, буфер сообщений, logging и используемые общие
+настройки хранилищ. Переопределения должны сохранять прежнюю обработку пустых
+значений; CHAT_STREAM_CONSUMER_GROUP/CHAT_WORKER_NAME остаются Compose aliases.
+`REALTIME_ALLOWED_ORIGINS` передаётся JSON-массивом: текущий settings loader
+отклоняет CSV и пустую строку. Этот контракт здесь не изменяется.
+
+Site DB и посторонние AI/S3/SMTP/Telegram/operator/root credentials исключаются
+из доставки окружения после проверки цепочки потребителей. REST/WS routes,
+авторизация, сообщения и протоколы не меняются. Тесты используют синтетическое
+окружение и импорт приложения без lifespan, рабочих БД и сетевых подключений.
+Shared auth и роли хранилищ остаются отдельными задачами; применение окружения
+требует будущего пересоздания контейнера.
+
+## Allowlist окружения backend (A08-02)
+
+`backend` использует явный список переменных вместо общего `env_file`.
+Сохраняются game SQL/MongoDB/Redis, JWT и межсервисная авторизация, operator/
+monster catalog keys, Gemini key/model для существующего AIContainer, параметры
+Streams, logging и используемые world/runtime overrides. Наличие административных
+ключей в этом сервисе необходимо его API; их значения и права здесь не меняются.
+
+Site DB и посторонние SMTP/Telegram/root DB/provider/S3 credentials не передаются.
+После отключения генерации изображений у S3 factory нет runtime callers в backend;
+Gemini остаётся используемой зависимостью и сохраняется явно.
+Host `.env` остаётся источником Compose interpolation; применение окружения требует
+будущего пересоздания контейнера. Source, игровая логика, endpoints и startup
+не меняются; проверки используют синтетические настройки без lifespan/БД/сети.
+Общие ключи авторизации и роли хранилищ остаются отдельной частью A08-02.
+
+## Allowlist окружения frontend site (A08-02)
+
+Сервис `frontend` с `FRONTEND_SURFACE=site` получает явный список настроек вместо
+общего `env_file`. Сохраняются site SQL, Redis для публикации событий новостей,
+JWT/cookie/CSRF, backend API credentials (включая operator keys кабинета), SMTP,
+параметры URL, SEO/release и используемые пути/логирование.
+
+S3 credentials сохраняются: frontend обслуживает generated assets через S3 reader,
+в отличие от backend после отключения заказа изображений. Это не новые ключи и
+не ротация. Game SQL, MongoDB, AI-provider, Telegram и root DB credentials в site
+окружение не передаются. `frontend-play` в этом заходе не меняется.
+
+Тесты используют синтетические credentials и импорт настоящего site-приложения
+без lifespan, писем, рабочих БД и сетевых запросов. UI, маршруты, auth и gameplay
+не меняются. Применение требует будущего пересоздания контейнера; shared keys и
+права хранилищ остаются отдельной работой.
+
+## Allowlist окружения frontend-play (A08-02)
+
+`frontend-play` получает явный список переменных вместо общего `env_file`.
+Site SQL сохраняется для общего слоя аутентификации/refresh; игровые данные
+по-прежнему запрашиваются через backend API. Передаются нужные JWT/cookie/CSRF,
+game cookie flags, realtime URL, backend service key, renderer/release/SEO/path
+и S3 generated-assets настройки, включая существующие runtime overrides.
+
+Redis URL/credentials, game SQL, MongoDB, SMTP, backend operator keys, AI-provider,
+Telegram и root DB credentials play-сервису не передаются: их потребителей в
+зарегистрированной play-цепочке нет. Импорт site-модулей общим приложением сам
+по себе не делает site-only обработчики активными в play surface.
+
+Тесты импортируют настоящую play surface с синтетическими credentials, root+src
+PYTHONPATH и временным assets-каталогом; без lifespan, рабочих БД, писем и сетевых
+запросов. Source/gameplay, протоколы, маршруты и настройки работающих контейнеров
+не меняются. Применение требует будущего пересоздания; shared keys и роли БД
+остаются отдельной частью A08-02.
+
+
+## Завершение локального инфраструктурного пакета
+
+Backend/site migration entrypoints используют DB/runtime configuration без API
+signing/session/internal keys. Backend-migrate получает 11 настроек, site-migrate
+8 DB/logging настроек; HTTP API по-прежнему проверяют свои auth credentials.
+Chat-archive-worker больше не получает site DB URL. Это не изменение игровых
+алгоритмов или схемы данных.
+
+Studio требует отдельный `STUDIO_ACCESS_TOKEN`: username HTTP Basic — `studio`,
+пароль — значение этой переменной. Без токена сервер отвечает 503, без правильной
+авторизации 401. Используйте loopback/SSH tunnel или HTTPS, разрешённый Host и
+same-origin формы. Production source не допускает мутации; локальные compute
+операции ограничены явным списком. Клиенты SQL используют read-only transactions,
+Redis предоставляет читающие команды, HTTP ограничен выбранным источником.
+Эти ограничения не заменяют отдельные read-only credentials хранилищ.
+
+Почтовые ссылки используют только проверенный `SITE_BASE_URL`. Для production
+при включённом email это HTTPS origin без userinfo/path/query/fragment. Host и
+forwarded headers запроса не выбирают адрес ссылки. В debug разрешён локальный
+HTTP; пустое значение использует стабильный localhost:8000.
+
+Перед выпуском выполнить единый
+[операционный список](infrastructure-release-checklist.md). Не установлены
+production backup/alerts, не переключены существующие DB roles/Redis ACL и не
+применены новые allowlists к работающим контейнерам.
+
+
+## Чистое окружение CI и изоляция проверок миграций
+
+Quality steps используют явные синтетические signing/internal service keys при
+DEBUG=False. Эти значения нужны только для импорта строгих настроек и контрактных
+тестов; они не являются production credentials и не меняют validators. Проверки
+читают env непосредственно из обоих workflow и отдельно проверяют отказ без keys.
+
+Opt-in site migration/auth tests разрешают только зарегистрированный disposable
+loopback PostgreSQL URL своего fixture. Дочерние процессы не читают dotenv и не
+наследуют database overrides; перед SQLAlchemy connect проверяется owning
+DatabaseSettings URL. Изменение settings owner требует обновления этого harness,
+а не подмены устаревшего config.settings. Рабочие базы для этих тестов запрещены.

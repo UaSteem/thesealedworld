@@ -130,30 +130,13 @@ def test_operator_can_list_simulations(client, monkeypatch, key):
     service.list_recent.assert_awaited_once_with(limit=50, run_kind=None)
 
 
-def test_writer_can_enqueue_news_cover(client, monkeypatch):
-    from src.backend.features.generation_ai import api as module
-
-    db = SimpleNamespace(commit=AsyncMock())
-    client.app.dependency_overrides[get_db] = lambda: db
-    repository = SimpleNamespace(get=AsyncMock(return_value=None))
-    service = SimpleNamespace(
-        enqueue_many=AsyncMock(return_value=SimpleNamespace(task_ids=["new-task"], created=1)),
-        schedule_pending_task_ids=AsyncMock(return_value=1),
+def test_news_cover_generation_route_is_removed(client):
+    assert (
+        client.post(
+            "/api/admin/generation-ai/news-covers", headers={"X-Operator-Key": "ops-writer"}, json={}
+        ).status_code
+        == 404
     )
-    monkeypatch.setattr(module, "AIGenerationTaskRepository", lambda session: repository)
-    monkeypatch.setattr(module, "build_generation_ai_registry", lambda session: object())
-    monkeypatch.setattr(module, "GenerationAIService", lambda **kwargs: service)
-    response = client.post(
-        "/api/admin/generation-ai/news-covers",
-        headers={"X-Operator-Key": "ops-writer"},
-        json={"article_id": "article", "slug": "news", "title": "News", "prompt": "Cover"},
-    )  # pragma: allowlist secret
-    assert response.status_code == 200
-    assert response.json()["task_id"] == "new-task"
-    specs = service.enqueue_many.await_args.args[0]
-    assert len(specs) == 1 and specs[0].entity_id == "article"
-    service.schedule_pending_task_ids.assert_awaited_once()
-    db.commit.assert_awaited_once()
 
 
 def test_writer_can_create_simulation(client, monkeypatch):

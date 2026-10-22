@@ -5,7 +5,7 @@ from typing import Any
 from src.shared.enums import CoreDomain
 
 
-def build_game_nav(*, state: CoreDomain | str, char_id: int) -> dict[str, dict[str, Any]]:
+def build_game_nav(*, state: CoreDomain | str, char_id: int) -> dict[str, dict[str, Any] | None]:
     current = state.value if isinstance(state, CoreDomain) else str(state)
     if current == CoreDomain.SCENARIO.value:
         return {

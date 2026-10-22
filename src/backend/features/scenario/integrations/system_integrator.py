@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Any
 
 from loguru import logger as log
 
-from src.backend.config.settings import settings
+from src.backend.config.runtime import runtime_settings as settings
 from src.backend.core.exceptions import BusinessLogicException
 from src.backend.features.character.events import CharacterEvents
 from src.backend.features.city_services.events import CityServiceEvents

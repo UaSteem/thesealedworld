@@ -1,13 +1,14 @@
 from contextlib import asynccontextmanager
 
 import redis.asyncio as aioredis
-from codex_platform.streams import StreamRuntime, StreamRuntimeConfig
+from codex_platform.streams import StreamRuntimeConfig
 from fastapi import FastAPI
 from loguru import logger
 
 from src.backend.chat.services.connection_manager import ChatConnectionManager
 from src.backend.chat.services.session_service import PlayerChatSession
 from src.backend.config.settings import settings
+from src.backend.core.bus.recovery import GameStreamRuntime as StreamRuntime
 from src.backend.realtime.core.lifespan import bootstrap_realtime
 from src.backend.realtime.services.notice_service import RealtimeNoticeService
 
@@ -37,6 +38,8 @@ async def lifespan(app: FastAPI):
 
     runtime = StreamRuntime(
         redis=app.state.redis,
+        min_idle_ms=settings.stream_pending_min_idle_ms,
+        scan_count=settings.stream_pending_scan_count,
         config=StreamRuntimeConfig(
             stream_name=settings.game_stream_name,
             consumer_group=settings.stream_consumer_group,

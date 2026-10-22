@@ -99,3 +99,21 @@ class TestFeedbackRoutes:
 
         assert response.status_code == 303
         assert "/account/feedback" in response.headers["location"]
+
+
+@pytest.mark.unit
+@pytest.mark.parametrize("priority", ["unsupported", "upload"])
+def test_invalid_priority_renders_error_without_persisting(priority):
+    app = _make_app(user=_user_mock())
+    data = {"type": "bug", "title": "Valid report", "body": "A valid report body"}
+    files = None
+    if priority == "upload":
+        files = {"priority": ("priority.txt", b"minor", "text/plain")}
+    else:
+        data["priority"] = priority
+    with patch("src.frontend.features.feedback.routes.pages.FeedbackRepository") as repository:
+        with TestClient(app) as client:
+            response = client.post("/account/feedback/new", data=data, files=files, follow_redirects=False)
+    assert response.status_code == 200
+    assert "Проверьте заполнение полей" in response.text
+    repository.assert_not_called()

@@ -2,21 +2,16 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Annotated, cast
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends
 
 from src.backend.core.database import get_db
-from src.backend.core.operator_auth import require_operator_read, require_operator_write
-from src.backend.features.generation_ai.bootstrap import build_generation_ai_registry
+from src.backend.core.operator_auth import require_operator_read
 from src.backend.features.generation_ai.dto import (
     AIGenerationOutputKind,
-    AIGenerationTaskCreateResponseDTO,
     AIGenerationTaskStatus,
     AIGenerationTaskViewDTO,
-    NewsCoverGenerationRequestDTO,
 )
 from src.backend.features.generation_ai.repositories import AIGenerationTaskRepository
-from src.backend.features.generation_ai.services import GenerationAIService
-from src.backend.features.generation_ai.tasks_news import build_news_cover_image_task_spec
 
 if TYPE_CHECKING:
     from src.backend.features.generation_ai.models import AIGenerationTask
@@ -28,45 +23,6 @@ router = APIRouter(
 
 def get_generation_task_repository(db_session=Depends(get_db)) -> AIGenerationTaskRepository:
     return AIGenerationTaskRepository(db_session)
-
-
-@router.post(
-    "/news-covers", response_model=AIGenerationTaskCreateResponseDTO, dependencies=[Depends(require_operator_write)]
-)
-async def request_news_cover_generation(
-    payload: NewsCoverGenerationRequestDTO,
-    request: Request,
-    db_session=Depends(get_db),
-) -> AIGenerationTaskCreateResponseDTO:
-    spec = build_news_cover_image_task_spec(
-        article_id=payload.article_id,
-        slug=payload.slug,
-        title=payload.title,
-        preview=payload.preview,
-        body_excerpt=payload.body_excerpt,
-        prompt=payload.prompt,
-        content_type=payload.content_type,
-    )
-    repository = AIGenerationTaskRepository(db_session)
-    service = GenerationAIService(
-        repository=repository,
-        registry=build_generation_ai_registry(session=db_session),
-        arq=getattr(request.app.state, "generation_ai_arq", None),
-        auto_schedule=False,
-    )
-    result = await service.enqueue_many([spec])
-    await db_session.commit()
-    scheduled = await service.schedule_pending_task_ids()
-    task_id = result.task_ids[0]
-    task = await repository.get(task_id)
-    return AIGenerationTaskCreateResponseDTO(
-        task_id=task_id,
-        status=cast("AIGenerationTaskStatus", task.status) if task is not None else "pending",
-        created=result.created > 0,
-        scheduled=scheduled,
-        storage_key=spec.input_payload.get("storage_key"),
-        generated_url=task.generated_url if task is not None else None,
-    )
 
 
 @router.get("/tasks/{task_id}", response_model=AIGenerationTaskViewDTO)
@@ -83,6 +39,9 @@ async def get_generation_task(
 
 
 def _task_view(task: AIGenerationTask) -> AIGenerationTaskViewDTO:
+    error = dict(getattr(task, "error", {}) or {})
+    if getattr(task, "last_error_type", None) and error.get("type") != task.last_error_type:
+        error = {"type": task.last_error_type, "message": task.last_error_message or ""}
     return AIGenerationTaskViewDTO(
         task_id=task.id,
         task_type=task.task_type,
@@ -94,5 +53,5 @@ def _task_view(task: AIGenerationTask) -> AIGenerationTaskViewDTO:
         generated_url=task.generated_url,
         asset_hash=task.asset_hash,
         metadata=dict(getattr(task, "metadata_", {}) or {}),
-        error=dict(getattr(task, "error", {}) or {}),
+        error=error,
     )

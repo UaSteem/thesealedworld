@@ -9,11 +9,12 @@ if str(ROOT) not in sys.path:
 
 
 def main() -> int:
+    from tools.validators.architecture import validate_architecture
     from tools.validators.items_resources import validate_items_resources
     from tools.validators.scenario_fixtures import validate_scenario_fixtures
     from tools.validators.skills_resources import validate_skills_resources
 
-    errors: list[str] = []
+    errors: list[str] = validate_architecture(ROOT)
     errors.extend(validate_items_resources(ROOT))
     errors.extend(validate_skills_resources(ROOT))
     errors.extend(validate_scenario_fixtures(ROOT))

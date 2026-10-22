@@ -198,7 +198,7 @@ Initial certificate issue:
 ```bash
 docker run --rm \
   --name tbmmorpg-certbot-issue \
-  --network tbmmorpg-network \
+  --network tbmmorpg-edge \
   -v tbmmorpg-certs:/etc/letsencrypt \
   -v tbmmorpg-certbot-challenge:/var/www/certbot \
   certbot/certbot:v2.11.0 certonly \

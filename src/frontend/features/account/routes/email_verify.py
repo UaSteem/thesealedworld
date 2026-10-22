@@ -7,6 +7,7 @@ from fastapi import APIRouter, Depends, Request, status
 from fastapi.responses import RedirectResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from src.frontend.config.settings import settings
 from src.frontend.core.database import get_db
 from src.frontend.core.renderer import UIRenderer, get_ui_renderer
 from src.frontend.features.account.services.email_verification_service import (
@@ -17,6 +18,7 @@ from src.frontend.features.account.services.email_verification_service import (
 from src.frontend.features.auth.repositories.token_repository import TokenRepository
 from src.frontend.features.auth.repositories.user_repository import UserRepository
 from src.frontend.features.email.config import get_email_service
+from src.frontend.features.email.origin import canonical_email_origin
 from src.shared.exceptions import AuthException, BusinessLogicException
 
 router = APIRouter(tags=["AccountEmail"])
@@ -28,7 +30,8 @@ def _build_service(request: Request, db: AsyncSession) -> EmailVerificationServi
         users=UserRepository(session=db),
         tokens=TokenRepository(session=db),
         email_service=get_email_service(),
-        site_base_url=str(request.base_url).rstrip("/"),
+        site_base_url=canonical_email_origin(settings.site_base_url, allow_local_http=settings.debug),
+        allow_local_http=settings.debug,
     )
 
 

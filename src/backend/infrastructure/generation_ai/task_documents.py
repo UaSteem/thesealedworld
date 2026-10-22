@@ -81,7 +81,7 @@ class AIGenerationTaskDocumentRepository:
             "updated_at": now,
         }
         await self.ensure_indexes()
-        await self.collection.update_one(
+        write = await self.collection.update_one(
             filter_query,
             {
                 "$set": document,
@@ -89,14 +89,48 @@ class AIGenerationTaskDocumentRepository:
             },
             upsert=True,
         )
-        stored = await self.collection.find_one(filter_query, {"_id": 1})
-        return str(stored["_id"]) if isinstance(stored, dict) and stored.get("_id") is not None else doc_id
+        if not write.acknowledged:
+            raise ValueError("AI generation initial input write was not acknowledged")
+        stored = await self.collection.find_one(filter_query)
+        if not isinstance(stored, dict) or stored.get("_id") is None:
+            raise ValueError("AI generation initial input write could not be confirmed")
+        # Mongo rounds datetime precision, so compare payload/identity fields only.
+        if any(stored.get(key) != value for key, value in document.items() if key != "updated_at"):
+            raise ValueError("AI generation initial input readback does not match the request")
+        return str(stored["_id"])
 
     async def fetch_by_task_id(self, task_id: str) -> dict[str, Any] | None:
         document = await self.collection.find_one(
             {"document_kind": AI_GENERATION_TASK_DOCUMENT_KIND, "task_id": str(task_id)}
         )
         return dict(document) if isinstance(document, dict) else None
+
+    async def reconciliation_page(
+        self, *, before: datetime, after_id: str | None = None, limit: int = 100
+    ) -> list[dict[str, Any]]:
+        if not 1 <= limit <= 1000:
+            raise ValueError("Reconciliation page limit must be between 1 and 1000")
+        query: dict[str, Any] = {
+            "document_kind": AI_GENERATION_TASK_DOCUMENT_KIND,
+            "task_type": "items.text",
+            "output_kind": "json",
+            "updated_at": {"$lte": before},
+            "_id": {"$type": "string"},
+        }
+        if after_id is not None:
+            query["_id"]["$gt"] = after_id
+        return [dict(doc) async for doc in self.collection.find(query).sort("_id", 1).limit(limit)]
+
+    async def mark_reconciliation(self, document: dict[str, Any], state: str) -> bool:
+        # Compare the actual snapshot, including input/output. Reconciliation
+        # metadata is advisory and never changes the payload's updated_at clock.
+        expected = {key: value for key, value in document.items() if key != "reconciliation"}
+        write = await self.collection.update_one(
+            expected, {"$set": {"reconciliation": {"state": state, "checked_at": _now()}}}, upsert=False
+        )
+        if not write.acknowledged:
+            raise ValueError("AI generation reconciliation write was not acknowledged")
+        return write.matched_count == 1
 
     async def record_result(
         self,
@@ -105,38 +139,39 @@ class AIGenerationTaskDocumentRepository:
         result: AIGenerationTaskResultDTO,
         metadata: dict[str, Any],
     ) -> str:
-        now = _now()
-        doc_id = str(task.mongo_document_id or uuid4())
-        filter_query = {"document_kind": AI_GENERATION_TASK_DOCUMENT_KIND, "task_id": str(task.id)}
-        await self.ensure_indexes()
-        await self.collection.update_one(
+        # Results belong to the already-confirmed input document. Never recreate
+        # a missing document from transient ORM fields or repair its identity.
+        if not task.mongo_document_id:
+            raise ValueError("AI generation result requires a persisted input pointer")
+        filter_query = {
+            "_id": task.mongo_document_id,
+            "document_kind": AI_GENERATION_TASK_DOCUMENT_KIND,
+            "schema_version": AI_GENERATION_TASK_DOCUMENT_SCHEMA_VERSION,
+            "task_id": str(task.id),
+            "identity_key": task.identity_key,
+            "task_type": task.task_type,
+            "entity_type": task.entity_type,
+            "entity_id": task.entity_id,
+            "output_kind": task.output_kind,
+        }
+        payload = {
+            "output_payload": _coerce_dict(result.output_payload),
+            "metadata": _coerce_dict(metadata),
+            "error": {},
+        }
+        write = await self.collection.update_one(
             filter_query,
-            {
-                "$set": {
-                    "document_kind": AI_GENERATION_TASK_DOCUMENT_KIND,
-                    "schema_version": AI_GENERATION_TASK_DOCUMENT_SCHEMA_VERSION,
-                    "task_id": str(task.id),
-                    "identity_key": task.identity_key,
-                    "task_type": task.task_type,
-                    "entity_type": task.entity_type,
-                    "entity_id": task.entity_id,
-                    "output_kind": task.output_kind,
-                    "output_payload": _coerce_dict(result.output_payload),
-                    "metadata": _coerce_dict(metadata),
-                    "error": {},
-                    "updated_at": now,
-                },
-                "$setOnInsert": {
-                    "_id": doc_id,
-                    "created_at": now,
-                    "prompt_payload": _coerce_dict(getattr(task, "prompt_payload", {})),
-                    "input_payload": _coerce_dict(getattr(task, "input_payload", {})),
-                },
-            },
-            upsert=True,
+            {"$set": {**payload, "updated_at": _now()}},
+            upsert=False,
         )
-        stored = await self.collection.find_one(filter_query, {"_id": 1})
-        return str(stored["_id"]) if isinstance(stored, dict) and stored.get("_id") is not None else doc_id
+        if not write.acknowledged or write.matched_count != 1:
+            raise ValueError("AI generation result write was not acknowledged or input document did not match")
+        stored = await self.collection.find_one(filter_query)
+        if not isinstance(stored, dict) or any(
+            stored.get(key) != value for key, value in {**filter_query, **payload}.items()
+        ):
+            raise ValueError("AI generation result readback does not match the completed result")
+        return str(stored["_id"])
 
     async def record_error(self, *, task: AIGenerationTask, error: dict[str, Any]) -> str:
         now = _now()
