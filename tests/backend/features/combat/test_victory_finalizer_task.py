@@ -1,17 +1,39 @@
 from __future__ import annotations
 
+import importlib
+from unittest.mock import AsyncMock
+
 import pytest
 
 from src.backend.features.combat.runtime.services.durability_policy import CombatDurabilityPolicy
 from src.backend.features.combat.runtime.support.analytics_builder import COMBAT_MATH_VERSION
 from src.backend.features.combat.workers.tasks.victory_finalizer_task import victory_finalizer_task
 from src.backend.features.inventory.events.publisher import InventoryEvents
+from tests.backend.features.combat.finalization_fakes import MemoryFinalizationJournal
+
+
+@pytest.fixture(autouse=True)
+def finalization_dependencies(monkeypatch):
+    module = importlib.import_module("src.backend.features.combat.workers.tasks.victory_finalizer_task")
+    journal = MemoryFinalizationJournal()
+    monkeypatch.setattr(module, "CombatFinalizationJournal", lambda: journal)
+    monkeypatch.setattr(module, "checkpoint_combat_progression", AsyncMock())
+    original = module._apply_durability_consequences
+
+    async def durability(ctx, facts):
+        await original({"events": FakeEvents(), **ctx}, facts)
+
+    monkeypatch.setattr(module, "_apply_durability_consequences", durability)
+    return journal
 
 
 class FakeCombatDataService:
     def __init__(self) -> None:
         self.winner: tuple[str, str] | None = None
         self.saved_finalization: tuple[str, dict, list[int], int] | None = None
+
+    async def get_finalization(self, session_id):
+        return self.saved_finalization[1] if self.saved_finalization else None
 
     async def set_battle_winner(self, session_id: str, winner: str) -> None:
         self.winner = (session_id, winner)
@@ -132,7 +154,10 @@ class FakeCharacterSessions:
     ) -> None:
         self.updated.append((char_id, vital, cur, max))
 
-    async def apply_skill_progress(self, char_id: int, rewards: dict) -> None:
+    async def get_session(self, char_id):
+        return {"sessions": {"combat_id": "combat-1"}}
+
+    async def apply_skill_progress(self, char_id: int, rewards: dict, *, combat_id=None) -> None:
         self.progress.append((char_id, rewards))
 
     async def patch_fields(self, char_id: int, updates: dict) -> None:
@@ -189,9 +214,7 @@ async def test_victory_finalizer_commits_player_vitals_to_active_session() -> No
         (7, "energy", 8, 30),
         (7, "stamina", 12, 50),
     ]
-    assert character_sessions.progress == [
-        (7, {"skill_swords": 0.0012, "skill_tactics": 0.0008})
-    ]
+    assert character_sessions.progress == [(7, {"skill_swords": 0.0012, "skill_tactics": 0.0008})]
     # This fixture records only an offensive hit, not committed natural HP regeneration.
     assert "skill_anatomy" not in character_sessions.progress[0][1]
     assert character_sessions.patches == [
@@ -313,55 +336,24 @@ async def test_victory_finalizer_attaches_arena_post_combat_outcome() -> None:
 
 
 @pytest.mark.asyncio
-async def test_victory_finalizer_applies_rift_result_before_player_claims_loot() -> None:
-    rift_runtime = FakeRiftRuntime()
+@pytest.mark.parametrize("winner", ["team_1", "team_2"])
+async def test_retired_rift_result_remains_pending_without_legacy_runtime(winner, finalization_dependencies) -> None:
+    from src.backend.features.combat.workers.tasks.victory_finalizer_task import RetiredCombatFinalizationError
 
-    await victory_finalizer_task(
-        {
-            "combat_data_service": RiftCombatDataService(),
-            "character_sessions": FakeCharacterSessions(),
-            "events": FakeEvents(),
-            "redis": FakeQueue(),
-            "rift_runtime": rift_runtime,
-        },
-        {"session_id": "rift-combat-1", "winner": "team_1"},
-    )
-
-    assert rift_runtime.applied == [
-        {
-            "combat_id": "rift-combat-1",
-            "result": "victory",
-            "rift_session_id": "rift-run-1",
-            "rift_instance_id": "rift-instance-1",
-            "event_scope": "transition",
-            "travel_id": "travel-1",
-            "event_key": "",
-            "participant_ref": "",
-        }
-    ]
-    assert rift_runtime.cleared == []
-
-
-@pytest.mark.asyncio
-async def test_victory_finalizer_propagates_defeat_to_rift_when_monsters_win() -> None:
-    """Regression: hardcoded 'victory' would silently open gates for the player after a loss."""
-    rift_runtime = FakeRiftRuntime()
-
-    await victory_finalizer_task(
-        {
-            "combat_data_service": RiftCombatDataService(),
-            "character_sessions": FakeCharacterSessions(),
-            "events": FakeEvents(),
-            "redis": FakeQueue(),
-            "rift_runtime": rift_runtime,
-        },
-        # winner is team_2 (monsters) — player team has no winning char_id
-        {"session_id": "rift-combat-2", "winner": "team_2"},
-    )
-
-    assert len(rift_runtime.applied) == 1
-    assert rift_runtime.applied[0]["result"] == "defeat"
-    assert rift_runtime.applied[0]["rift_session_id"] == "rift-run-1"
+    runtime = FakeRiftRuntime()
+    queue = FakeQueue()
+    with pytest.raises(RetiredCombatFinalizationError):
+        await victory_finalizer_task(
+            {"combat_data_service": RiftCombatDataService(), "character_sessions": FakeCharacterSessions(),
+             "events": FakeEvents(), "redis": queue, "rift_runtime": runtime},
+            {"session_id": "combat-1", "winner": winner},
+        )
+    assert runtime.applied == []
+    assert queue.jobs == []
+    row = finalization_dependencies.rows["combat-1"]
+    assert row["payload"]["winner_team"] == winner
+    assert "rift" not in row["completed"]
+    assert "complete" not in row["completed"]
 
 
 def test_durability_policy_uses_death_damage_for_dead_pve_players() -> None:

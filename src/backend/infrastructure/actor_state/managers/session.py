@@ -1,9 +1,12 @@
 from __future__ import annotations
 
 import builtins
+import copy
 import time
 from datetime import UTC, datetime
 from typing import TYPE_CHECKING, Any, Literal
+
+from redis.exceptions import WatchError
 
 from src.backend.features.character.runtime.combat_actor_input import CharacterCombatActorInputBuilder
 from src.backend.features.character.runtime.vital_profile import resolve_player_vital_profile_key
@@ -617,8 +620,14 @@ class CharacterSessionManager:
             paths=[f"$.skills.{skill_key}" for skill_key in sorted(unique_skills)],
         )
 
-    async def apply_skill_progress(self, char_id: int, rewards: dict[str, float]) -> None:
+    async def apply_skill_progress(
+        self, char_id: int, rewards: dict[str, float], *, combat_id: str | None = None
+    ) -> None:
         if not rewards:
+            return
+
+        if combat_id:
+            await self._apply_combat_skill_progress(char_id, rewards, combat_id=combat_id)
             return
 
         document = await self.get_session(char_id)
@@ -662,6 +671,69 @@ class CharacterSessionManager:
 
         await self.patch_fields(char_id, updates)
         await self.mark_dirty(char_id, reason="skill_progress_applied", paths=sorted(set(dirty_paths)))
+
+    async def _apply_combat_skill_progress(self, char_id: int, rewards: dict[str, float], *, combat_id: str) -> None:
+        """Commit rewards, receipt and checkpoint generation in one Redis transaction.
+
+        WATCH covers the entire document, including writes from other session APIs.
+        A connection failure after EXEC is safe to retry because the receipt is in
+        the same document as the reward. Receipts follow progression into SQL and
+        back through rehydration; they must never be expired independently of XP.
+        """
+        key = self.build_key(char_id)
+        for _attempt in range(16):
+            async with self._redis_client().pipeline(transaction=True) as pipe:
+                try:
+                    await pipe.watch(key)
+                    document = self._first(await pipe.json().get(key, "$"))
+                    if not isinstance(document, dict):
+                        raise SessionNotFoundError(f"Character session not found: char_id={char_id}")
+                    document = copy.deepcopy(document)
+                    progression = dict(document.get("progression") or {})
+                    receipts = dict(progression.get("combat_receipts") or {})
+                    if combat_id in receipts:
+                        return
+                    skills = dict(document.get("skills") or {})
+                    for reward_key, raw_delta in rewards.items():
+                        delta = round(float(raw_delta or 0.0), 4)
+                        if delta <= 0:
+                            continue
+                        if reward_key == "free_xp":
+                            progression["free_xp"] = round(float(progression.get("free_xp", 0.0)) + delta, 4)
+                        else:
+                            current = skills.get(reward_key)
+                            payload = dict(current) if isinstance(current, dict) else {}
+                            payload["xp"] = round(float(payload.get("xp", payload.get("total_xp", 0.0))) + delta, 4)
+                            payload.setdefault("unlocked", True)
+                            payload.setdefault("state", SkillProgressState.PLUS.value)
+                            skills[reward_key] = payload
+                    receipts[combat_id] = True
+                    progression["combat_receipts"] = receipts
+                    document["progression"] = progression
+                    document["skills"] = skills
+                    dirty = dict(document.get("sync_dirty") or {})
+                    paths = set(dirty.get("paths") or []) | {"$.skills", "$.progression"}
+                    targets = dict(dirty.get("targets") or {})
+                    targets["skills"] = True
+                    document["sync_dirty"] = {
+                        **dirty,
+                        "dirty": True,
+                        "reason": "combat_skill_progress_applied",
+                        "paths": sorted(paths),
+                        "targets": targets,
+                        "generation": max(time.time(), float(dirty.get("generation") or 0) + 0.000001),
+                    }
+                    metrics = dict(document.get("metrics") or {})
+                    metrics["gear_score_version"] = None
+                    document["metrics"] = metrics
+                    pipe.multi()
+                    pipe.json().set(key, "$", document)
+                    pipe.expire(key, self.ttl_seconds)
+                    await pipe.execute()
+                    return
+                except WatchError:
+                    continue
+        raise CharacterSessionError(f"Concurrent progression writes exhausted retries: char_id={char_id}")
 
     async def apply_symbiote_xp(self, char_id: int, amount: int | float) -> dict[str, Any]:
         delta = int(amount or 0)

@@ -4,6 +4,7 @@ from src.backend.core.arq_logging import setup_arq_worker_logging
 
 setup_arq_worker_logging("combat-worker", config=runtime_settings)
 
+from arq import cron
 from loguru import logger as log
 
 from src.backend.core.arq import COMBAT_ARQ_QUEUE, ArqService, BaseArqSettings, base_shutdown, base_startup
@@ -18,6 +19,7 @@ from .tasks.chaos_task import chaos_check_task
 from .tasks.collector_task import combat_collector_task
 from .tasks.executor_task import execute_batch_task
 from .tasks.finalization_persist_task import combat_finalization_persist_task
+from .tasks.finalization_recovery_task import combat_finalization_recovery_task
 from .tasks.result_support_task import combat_result_support_task
 from .tasks.victory_finalizer_task import victory_finalizer_task
 
@@ -31,6 +33,7 @@ COMBAT_TASKS = [
     victory_finalizer_task,
     combat_result_support_task,
     combat_finalization_persist_task,
+    combat_finalization_recovery_task,
 ]
 
 
@@ -69,6 +72,8 @@ class CombatArqSettings(BaseArqSettings):
     max_jobs: int = COMBAT_RUNTIME_MAX_JOBS
     job_timeout: int = 60
     keep_result: int = 0
+    max_tries: int = 10
+    cron_jobs = [cron(combat_finalization_recovery_task, second=0, run_at_startup=True)]
     on_startup = combat_startup
     on_shutdown = combat_shutdown
     functions = COMBAT_TASKS

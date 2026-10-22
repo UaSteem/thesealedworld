@@ -42,7 +42,7 @@ class FakeProgressionRecorder:
     def __init__(self) -> None:
         self.calls = []
 
-    async def apply_progress(self, char_id: int, rewards: dict[str, float]) -> bool:
+    async def apply_progress(self, char_id: int, rewards: dict[str, float], *, combat_id=None) -> bool:
         self.calls.append((char_id, rewards))
         return True
 
@@ -51,7 +51,7 @@ class FakeCharacterSessions:
     def __init__(self) -> None:
         self.calls = []
 
-    async def apply_skill_progress(self, char_id: int, rewards: dict[str, float]) -> None:
+    async def apply_skill_progress(self, char_id: int, rewards: dict[str, float], *, combat_id=None) -> None:
         self.calls.append((char_id, rewards))
 
 

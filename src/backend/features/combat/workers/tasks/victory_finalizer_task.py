@@ -3,25 +3,17 @@ from typing import Any
 from loguru import logger as log
 
 from src.backend.core.database import get_session_context
-from src.backend.core.mongo import get_mongo_provider
+from src.backend.features.character.services.combat_progression import checkpoint_combat_progression
 from src.backend.features.combat.runtime.services.data_service import CombatDataService  # noqa: TC001
 from src.backend.features.combat.runtime.services.durability_policy import CombatDurabilityPolicy
 from src.backend.features.combat.runtime.services.experience_finalizer import CombatExperienceFinalizer
 from src.backend.features.combat.runtime.services.finalization_builder import CombatFinalizationBuilder
+from src.backend.features.combat.services.finalization_journal import CombatFinalizationJournal
 from src.backend.features.combat.services.post_battle_router import CombatPostBattleRouter
 from src.backend.features.combat.workers.tasks.chat_announcements import publish_combat_final_announcement
 from src.backend.features.expedition import ExpeditionService
 from src.backend.features.inventory.events.publisher import InventoryEvents
 from src.backend.infrastructure.loot.managers.loot_manager import LootManager
-from src.backend.infrastructure.rift.managers import (
-    RiftInstanceStore,
-    RiftPortalStore,
-    RiftPresenceStore,
-    RiftRestoreLock,
-    RiftRunSessionStore,
-)
-from src.backend.infrastructure.rift.repositories import RiftMembershipRepository
-from src.backend.infrastructure.rift.repositories.snapshots import RiftRuntimeSnapshotRepository
 from src.backend.realtime.integrations.notice_publisher import (
     PlayerNoticePublisher,
     RawStreamNoticeProducer,
@@ -29,6 +21,10 @@ from src.backend.realtime.integrations.notice_publisher import (
 )
 from src.shared.enums import CoreDomain
 from src.shared.infrastructure.log_task_wrapper import logged_task
+
+
+class RetiredCombatFinalizationError(RuntimeError):
+    """A frozen result belongs to a runtime retired from the active build."""
 
 
 def _build_notice_publisher(ctx: dict) -> PlayerNoticePublisher | None:
@@ -63,110 +59,218 @@ async def victory_finalizer_task(ctx: dict, data: dict) -> None:
 
     data_service: CombatDataService | None = ctx.get("combat_data_service")
     if not data_service:
-        log.bind(reason="no_data_service").error("VictoryFinalizerFailed")
-        return
+        raise RuntimeError("Combat data service unavailable")
 
+    journal = ctx.get("combat_finalization_journal") or CombatFinalizationJournal()
     try:
-        # 1. Устанавливаем статус победы в Redis
-        await data_service.set_battle_winner(session_id, winner)
+        finalization = await journal.load(session_id)
+        if finalization and finalization.get("legacy_finalized"):
+            log.bind(session_id=session_id).warning("VictoryFinalizerLegacyResultAlreadyFinalized")
+            return
+        if finalization is None:
+            meta = await data_service.get_meta(session_id)
+            if not isinstance(meta, dict) or not meta:
+                raise RuntimeError(f"Combat facts unavailable for finalization: {session_id}")
+            global_rate = 0.00005
+            game_config = ctx.get("game_config")
+            if game_config is not None:
+                global_rate = await game_config.get_float("core", "SKILL_PROGRESSION_BASE_RATE", default=0.00005)
+            progression_results = await CombatExperienceFinalizer().finalize(
+                data_service, session_id, winner, global_rate=global_rate, apply=False
+            )
+            finalization = await CombatFinalizationBuilder().build(
+                data_service, session_id, winner, progression_results=progression_results
+            )
+            await _freeze_progression_destinations(ctx, finalization)
+            # First durable commit precedes closure or any reward mutation.
+            frozen = await journal.freeze(finalization)
+            # Keep full traces in the cache; the durable core owns rewards/outcome.
+            finalization = {**frozen, "analytics": finalization.get("analytics", {})}
+            await data_service.save_finalization(
+                session_id, finalization, char_ids=finalization.get("participant_char_ids", []), ttl=86400
+            )
 
-        # 2. Commit final combat vitals back into the active character session.
-        await _commit_player_vitals_to_active_sessions(ctx, data_service, session_id)
+        async def close_runtime(facts: dict[str, Any]) -> None:
+            await data_service.set_battle_winner(session_id, facts["winner_team"])
 
-        # 3. Convert flat runtime xp_buffer counters into character progression rewards.
-        global_rate = 0.00005
-        game_config = ctx.get("game_config")
-        if game_config is not None:
-            global_rate = await game_config.get_float("core", "SKILL_PROGRESSION_BASE_RATE", default=0.00005)
+        async def vitals(facts: dict[str, Any]) -> None:
+            await _commit_frozen_player_vitals(ctx, facts)
 
-        progression_recorder = None
-        if ctx.get("expeditions") is not None or ctx.get("world_locations") is not None:
-            async with get_session_context() as session:
-                progression_recorder = ExpeditionService(
+        async def progression(facts: dict[str, Any]) -> None:
+            await _apply_frozen_progression(ctx, facts)
+
+        async def cache(facts: dict[str, Any]) -> None:
+            # Reconstruct the result after cache expiry without live runtime keys.
+            existing = await data_service.get_finalization(session_id)
+            await data_service.save_finalization(
+                session_id, existing or facts, char_ids=facts.get("participant_char_ids", []), ttl=86400
+            )
+
+        async def rift(facts: dict[str, Any]) -> None:
+            await _apply_rift_combat_result(ctx, facts)
+
+        async def durability(facts: dict[str, Any]) -> None:
+            await _apply_durability_consequences(ctx, facts)
+
+        async def attach(facts: dict[str, Any]) -> None:
+            await _attach_finalization_to_active_sessions(ctx, session_id, facts)
+
+        async def announce(facts: dict[str, Any]) -> None:
+            await publish_combat_final_announcement(ctx, facts)
+
+        async def archive(_facts: dict[str, Any]) -> None:
+            await _enqueue_finalization_persist(ctx, session_id)
+
+        for step, action in (
+            ("closed", close_runtime),
+            ("vitals", vitals),
+            ("progression", progression),
+            ("cache", cache),
+            ("rift", rift),
+            ("durability", durability),
+            ("attached", attach),
+            ("announced", announce),
+            ("complete", archive),
+        ):
+            await journal.run_step(session_id, step, action)
+        log.bind(session_id=session_id).info("VictoryFinalizerCompleted")
+    except Exception as error:
+        log.bind(session_id=session_id).exception("VictoryFinalizerFailed")
+        if isinstance(error, RetiredCombatFinalizationError):
+            await journal.block_retired(session_id)
+            raise
+        if "job_try" in ctx:
+            from arq import Retry
+
+            raise Retry(defer=min(60, 5 * int(ctx["job_try"]))) from None
+        raise
+
+
+async def _apply_frozen_progression(ctx: dict, finalization: dict[str, Any]) -> None:
+    sessions = ctx.get("character_sessions")
+    combat_id = str(finalization["combat_id"])
+
+    async def apply(recorder: Any | None) -> None:
+        for actor in finalization.get("actors", {}).values():
+            char_id = actor.get("char_id")
+            rewards = actor.get("progression") or {}
+            if char_id is None or not rewards:
+                continue
+            destination = actor.get("progression_destination")
+            if not isinstance(destination, dict):
+                raise RuntimeError("Frozen combat progression destination is missing")
+            if destination.get("kind") == "expedition":
+                if recorder is None:
+                    raise RuntimeError("Frozen combat expedition recorder is unavailable")
+                if not await recorder.apply_progress(
+                    int(char_id), rewards, combat_id=combat_id, expedition_run_id=destination["run_id"]
+                ):
+                    raise RuntimeError("Frozen combat expedition cannot accept progression")
+                continue
+            if destination.get("kind") != "secured":
+                raise RuntimeError("Unknown frozen combat progression destination")
+            if sessions is None:
+                raise RuntimeError("Character sessions unavailable for combat progression")
+            await sessions.apply_skill_progress(int(char_id), rewards, combat_id=combat_id)
+            checkpoint = ctx.get("combat_progression_checkpoint") or checkpoint_combat_progression
+            await checkpoint(sessions, int(char_id), combat_id)
+
+    if ctx.get("expeditions") is not None or ctx.get("world_locations") is not None:
+        async with get_session_context() as session:
+            await apply(
+                ExpeditionService(
                     session=session,
-                    character_sessions=ctx.get("character_sessions"),
+                    character_sessions=sessions,
                     expedition_manager=ctx.get("expeditions"),
                     world_store=ctx.get("world_locations"),
                     game_config=ctx.get("game_config"),
                 )
-                progression_results = await CombatExperienceFinalizer().finalize(
-                    data_service,
-                    session_id,
-                    winner,
-                    character_sessions=ctx.get("character_sessions"),
-                    progression_recorder=progression_recorder,
-                    global_rate=global_rate,
-                )
-        else:
-            progression_results = await CombatExperienceFinalizer().finalize(
-                data_service,
-                session_id,
-                winner,
-                character_sessions=ctx.get("character_sessions"),
-                progression_recorder=None,
-                global_rate=global_rate,
             )
+    else:
+        await apply(None)
 
-        # 4. Freeze final combat facts before runtime cleanup can remove actor/session keys.
-        finalization = await CombatFinalizationBuilder().build(
-            data_service,
-            session_id,
-            winner,
-            progression_results=progression_results,
-        )
-        save_finalization = getattr(data_service, "save_finalization", None)
-        if save_finalization is not None:
-            await save_finalization(
-                session_id,
-                finalization,
-                char_ids=finalization.get("participant_char_ids", []),
-                ttl=86400,
-            )
-            await _apply_rift_combat_result(ctx, finalization)
-            await _apply_durability_consequences(ctx, finalization)
-            await _attach_finalization_to_active_sessions(ctx, session_id, finalization)
-            await publish_combat_final_announcement(ctx, finalization)
-            await _enqueue_finalization_persist(ctx, session_id)
 
-        log.bind(session_id=session_id).info("VictoryFinalizerCompleted")
+async def _freeze_progression_destinations(ctx: dict, finalization: dict[str, Any]) -> None:
+    actors = [actor for actor in finalization.get("actors", {}).values() if actor.get("char_id") is not None]
+    for actor in actors:
+        actor["progression_destination"] = {"kind": "secured"}
+    if ctx.get("expeditions") is None and ctx.get("world_locations") is None:
+        return
+    async with get_session_context() as session:
+        recorder = ExpeditionService(session=session)
+        for actor in actors:
+            expedition = await recorder.get_active_run(int(actor["char_id"]))
+            if expedition is not None:
+                if expedition.status != "active":
+                    raise RuntimeError("Combat progression cannot freeze into a non-active expedition")
+                actor["progression_destination"] = {"kind": "expedition", "run_id": expedition.run_id}
 
-    except Exception:  # noqa: BLE001
-        log.bind(session_id=session_id).exception("VictoryFinalizerFailed")
+
+async def _commit_frozen_player_vitals(ctx: dict, finalization: dict[str, Any]) -> None:
+    sessions = ctx.get("character_sessions")
+    if sessions is None and finalization.get("participant_char_ids"):
+        raise RuntimeError("Character sessions unavailable for combat vitals")
+    for actor in finalization.get("actors", {}).values():
+        char_id = actor.get("char_id")
+        if char_id is None:
+            continue
+        if not await _session_still_in_combat(sessions, int(char_id), str(finalization["combat_id"])):
+            continue
+        vitals = actor.get("vitals_final") or {}
+        for vital, source, maximum in (
+            ("hp", "hp", "max_hp"),
+            ("energy", "en", "max_en"),
+            ("stamina", "stamina", "max_stamina"),
+        ):
+            await _update_vital_if_present(sessions, int(char_id), vital, vitals.get(source), vitals.get(maximum))
+
+
+async def _session_still_in_combat(sessions: Any, char_id: int, combat_id: str) -> bool:
+    document = await sessions.get_session(char_id)
+    if not isinstance(document, dict):
+        raise RuntimeError(f"Character session unavailable during finalization: {char_id}")
+    refs = document.get("sessions") or {}
+    return str(refs.get("combat_id") or "") == combat_id
+
+
+async def _session_owns_finalization(sessions: Any, char_id: int, combat_id: str) -> bool:
+    document = await sessions.get_session(char_id)
+    if not isinstance(document, dict):
+        raise RuntimeError(f"Character session unavailable during finalization: {char_id}")
+    refs = document.get("sessions") or {}
+    return str(refs.get("combat_id") or "") == combat_id or (
+        not refs.get("combat_id")
+        and str(refs.get("combat_finalization_id") or "") == combat_id
+        and document.get("state") in {CoreDomain.COMBAT_RESULT.value, CoreDomain.DEATH.value}
+    )
 
 
 async def _enqueue_finalization_persist(ctx: dict, session_id: str) -> None:
     queue = ctx.get("redis")
     if queue is None:
-        return
+        raise RuntimeError("Combat persistence queue unavailable")
     await queue.enqueue_job("combat_finalization_persist_task", {"combat_id": session_id})
 
 
 async def _apply_durability_consequences(ctx: dict, finalization: dict[str, Any]) -> None:
     events = ctx.get("events")
     request = getattr(events, "request", None)
+    requests = CombatDurabilityPolicy().resolve(finalization)
     if request is None:
+        if requests:
+            raise RuntimeError("Combat durability event transport unavailable")
         return
 
-    for durability_request in CombatDurabilityPolicy().resolve(finalization):
+    for durability_request in requests:
         payload = durability_request.as_payload()
-        try:
-            response = await request(
-                InventoryEvents.DURABILITY_DAMAGE_REQUESTED,
-                payload,
-                timeout=30.0,
-                correlation_id=durability_request.idempotency_key,
-            )
-            if isinstance(response, dict) and response.get("status") == "error":
-                log.bind(
-                    char_id=durability_request.char_id,
-                    combat_id=durability_request.combat_id,
-                    error=response.get("error"),
-                ).warning("VictoryFinalizerDurabilityDamageFailed")
-        except Exception:  # noqa: BLE001
-            log.bind(
-                char_id=durability_request.char_id,
-                combat_id=durability_request.combat_id,
-            ).exception("VictoryFinalizerDurabilityDamageRequestFailed")
+        response = await request(
+            InventoryEvents.DURABILITY_DAMAGE_REQUESTED,
+            payload,
+            timeout=30.0,
+            correlation_id=durability_request.idempotency_key,
+        )
+        if not isinstance(response, dict) or response.get("status") not in {"ok", "skipped"}:
+            raise RuntimeError(f"Combat durability request failed: {durability_request.idempotency_key}")
 
 
 async def _apply_rift_combat_result(ctx: dict, finalization: dict[str, Any]) -> None:
@@ -176,76 +280,11 @@ async def _apply_rift_combat_result(ctx: dict, finalization: dict[str, Any]) -> 
     if battle_type != "rift" and not rift_session_id:
         return
     if not rift_session_id:
-        log.bind(combat_id=finalization.get("combat_id")).warning("VictoryFinalizerRiftResultMissingSession")
-        return
+        raise RuntimeError("Rift combat finalization is missing its session")
 
-    result = _resolve_rift_result(finalization)
-
-    rift_runtime = ctx.get("rift_runtime")
-    db_session_cm = None
-    if rift_runtime is None:
-        redis_service = ctx.get("redis_service")
-        if redis_service is None:
-            log.bind(combat_id=finalization.get("combat_id")).warning("VictoryFinalizerRiftRuntimeUnavailable")
-            return
-        from src.backend.features.rift.integrations import RiftRuntimeIntegration
-
-        # Build the full runtime integration so DB fallback for require_instance /
-        # require_run_session works, and so portal status can be marked on defeat.
-        db_session_cm = get_session_context()
-        db_session = await db_session_cm.__aenter__()
-        rift_runtime = RiftRuntimeIntegration(
-            instance_store=RiftInstanceStore(redis_service),
-            session_store=RiftRunSessionStore(redis_service),
-            presence_store=RiftPresenceStore(redis_service),
-            portal_store=RiftPortalStore(redis_service),
-            membership_repository=RiftMembershipRepository(db_session),
-            snapshot_repository=RiftRuntimeSnapshotRepository(get_mongo_provider().database()),
-            restore_lock=RiftRestoreLock(redis_service),
-        )
-
-    try:
-        apply_combat_result = getattr(rift_runtime, "apply_combat_result", None)
-        if apply_combat_result is None:
-            clear_run_active_encounter = getattr(rift_runtime, "clear_run_active_encounter", None)
-            if clear_run_active_encounter is not None:
-                await clear_run_active_encounter(rift_session_id)
-            return
-
-        await apply_combat_result(
-            combat_id=str(finalization.get("combat_id") or ""),
-            result=result,
-            rift_session_id=rift_session_id,
-            rift_instance_id=str(meta.get("rift_instance_id") or ""),
-            event_scope=str(meta.get("rift_event_scope") or ""),
-            travel_id=str(meta.get("rift_travel_id") or ""),
-            event_key=str(meta.get("rift_event_key") or ""),
-            participant_ref="",
-        )
-    finally:
-        if db_session_cm is not None:
-            await db_session_cm.__aexit__(None, None, None)
-
-
-def _resolve_rift_result(finalization: dict[str, Any]) -> str:
-    """Return ``victory`` if the winning team contained a player char_id, else ``defeat``.
-
-    The previous implementation hardcoded ``victory``, which silently cleared rift
-    node_events / opened gates even when monsters won the encounter.
-    """
-    winner_team = str(finalization.get("winner_team") or "")
-    if not winner_team or winner_team == "draw":
-        return "defeat"
-    actors = finalization.get("actors") if isinstance(finalization.get("actors"), dict) else {}
-    for actor in actors.values():
-        if not isinstance(actor, dict):
-            continue
-        if actor.get("char_id") is None:
-            continue
-        if str(actor.get("team") or "") != winner_team:
-            continue
-        return "victory"
-    return "defeat"
+    # Retired by the separately authorized Rift alpha retirement. Old frozen
+    # work remains visible as pending; it must not resurrect legacy gameplay.
+    raise RetiredCombatFinalizationError("Legacy Rift combat finalization is retired")
 
 
 async def _attach_finalization_to_active_sessions(ctx: dict, session_id: str, finalization: dict[str, Any]) -> None:
@@ -254,10 +293,13 @@ async def _attach_finalization_to_active_sessions(ctx: dict, session_id: str, fi
         return
 
     char_ids = [int(char_id) for char_id in finalization.get("participant_char_ids", []) if _int_or_none(char_id)]
+    char_ids = [
+        char_id for char_id in char_ids if await _session_owns_finalization(character_sessions, char_id, session_id)
+    ]
     dead_char_ids = {
         int(actor.get("char_id"))
         for actor in (finalization.get("actors") or {}).values()
-        if isinstance(actor, dict) and actor.get("char_id") is not None and actor.get("is_dead") is True
+        if isinstance(actor, dict) and actor.get("char_id") in char_ids and actor.get("is_dead") is True
     }
     location_id = (
         (finalization.get("meta") or {}).get("location_id") if isinstance(finalization.get("meta"), dict) else None
@@ -323,47 +365,6 @@ async def _attach_finalization_to_active_sessions(ctx: dict, session_id: str, fi
                 reason="combat_finalized",
                 domain="combat",
             )
-
-
-async def _commit_player_vitals_to_active_sessions(ctx: dict, data_service: CombatDataService, session_id: str) -> None:
-    character_sessions = ctx.get("character_sessions")
-    if character_sessions is None:
-        log.bind(session_id=session_id).warning("VictoryFinalizerActiveCharacterSessionsUnavailable")
-        return
-
-    meta = await data_service.get_meta(session_id)
-    if not isinstance(meta, dict):
-        log.bind(session_id=session_id).warning("VictoryFinalizerCombatMetaUnavailable")
-        return
-
-    actor_ids = [actor_id for actor_id in data_service.actor_ids_from_meta(meta) if str(actor_id).isdigit()]
-    if not actor_ids:
-        return
-
-    actors = await data_service.get_actors_batch(session_id, actor_ids)
-    for actor_id, actor in actors.items():
-        actor_meta = actor.get("meta") if isinstance(actor, dict) else None
-        if not isinstance(actor_meta, dict):
-            continue
-
-        char_id = int(actor_id)
-        await _update_vital_if_present(
-            character_sessions, char_id, "hp", actor_meta.get("hp"), actor_meta.get("max_hp")
-        )
-        await _update_vital_if_present(
-            character_sessions,
-            char_id,
-            "energy",
-            actor_meta.get("en"),
-            actor_meta.get("max_en"),
-        )
-        await _update_vital_if_present(
-            character_sessions,
-            char_id,
-            "stamina",
-            actor_meta.get("stamina"),
-            actor_meta.get("max_stamina"),
-        )
 
 
 async def _update_vital_if_present(

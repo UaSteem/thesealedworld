@@ -6,6 +6,7 @@ from src.backend.core.database import get_session_context
 from src.backend.core.mongo import get_mongo_provider
 from src.backend.features.combat.runtime.analytics import CombatAnalyticsIngestionService
 from src.backend.features.combat.runtime.services.data_service import CombatDataService  # noqa: TC001
+from src.backend.features.combat.services.finalization_journal import CombatFinalizationJournal
 from src.backend.infrastructure.combat.repositories import CombatFinalizationRepository
 from src.backend.infrastructure.mongo import CombatDocumentRepository
 from src.shared.infrastructure.log_task_wrapper import logged_task
@@ -27,8 +28,9 @@ async def combat_finalization_persist_task(ctx: dict, payload: dict) -> None:
     get_finalization = getattr(data_service, "get_finalization", None)
     finalization = await get_finalization(combat_id) if get_finalization is not None else None
     if not isinstance(finalization, dict):
-        log.bind(reason="missing_cache", combat_id=combat_id).warning("CombatFinalizationPersistSkipped")
-        return
+        finalization = await CombatFinalizationJournal().load(combat_id)
+    if not isinstance(finalization, dict) or finalization.get("legacy_finalized"):
+        raise RuntimeError(f"Frozen combat finalization unavailable: {combat_id}")
 
     exchanges = CombatAnalyticsIngestionService.extract_exchange_facts(finalization, include_trace=True)
     combat_document = CombatAnalyticsIngestionService.build_combat_document(finalization, exchanges)

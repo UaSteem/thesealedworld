@@ -40,6 +40,10 @@ class CharacterSystemIntegrator:
         self.expedition_repo = expedition_repo
 
     async def sync_active_session(self, char_id: int) -> dict[str, Any]:
+        if self.progression_repo is not None:
+            # Serialize Redis snapshots before reading them, including combat's
+            # synchronous progression checkpoint. The caller commits this lock.
+            await self.progression_repo.lock_character(char_id)
         document = await self.character_sessions.get_session(char_id)
         if document is None:
             raise ValueError(f"Active character session not found: char_id={char_id}")
@@ -71,6 +75,7 @@ class CharacterSystemIntegrator:
                 await self.progression_repo.set_free_xp(
                     session_doc.char_id,
                     float(session_doc.progression.free_xp or 0.0),
+                    combat_receipts=dict(getattr(session_doc.progression, "combat_receipts", {}) or {}),
                 )
         if (
             not unsafe_runtime

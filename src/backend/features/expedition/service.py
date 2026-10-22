@@ -100,10 +100,47 @@ class ExpeditionService:
         await self._maybe_commit()
         return expedition
 
-    async def apply_progress(self, char_id: int, rewards: dict[str, float]) -> bool:
-        expedition = await self.get_active_run(char_id, for_update=True)
+    async def apply_progress(
+        self,
+        char_id: int,
+        rewards: dict[str, float],
+        *,
+        combat_id: str | None = None,
+        expedition_run_id: str | None = None,
+    ) -> bool:
+        if combat_id:
+            # Look through closed runs too: a delayed duplicate must not credit a
+            # new expedition or fall back to secured character progression.
+            from src.backend.features.expedition.models import CharacterExpedition
+
+            event_key = f"combat_progress:{combat_id}"
+            result = await self.session.execute(
+                select(CharacterExpedition).where(
+                    CharacterExpedition.character_id == char_id,
+                    CharacterExpedition.processed_events.has_key(event_key),  # noqa: W601
+                )
+            )
+            previous = result.scalar_one_or_none()
+            if previous is not None:
+                if previous.status == "active" and self.character_sessions is not None:
+                    await self.character_sessions.set_pending_progress(char_id, self._pending(previous))
+                return True
+
+        if expedition_run_id:
+            expedition = await self.expedition_repo.get(expedition_run_id, for_update=True)
+            if expedition is None or expedition.character_id != char_id:
+                raise RuntimeError("Frozen combat expedition is unavailable")
+            if expedition.status != "active" and not self.expedition_repo.is_processed(expedition, event_key):
+                raise RuntimeError("Frozen combat expedition closed before progression applied")
+        else:
+            expedition = await self.get_active_run(char_id, for_update=True)
         if expedition is None or expedition.status != "active":
             return False
+
+        if combat_id and self.expedition_repo.is_processed(expedition, event_key):
+            if self.character_sessions is not None:
+                await self.character_sessions.set_pending_progress(char_id, self._pending(expedition))
+            return True
 
         pending = self._pending(expedition)
         skills = dict(pending.get("skills") or {})
@@ -121,6 +158,17 @@ class ExpeditionService:
         pending["free_xp"] = free_xp
         expedition.pending_progress_json = pending
         flag_modified(expedition, "pending_progress_json")
+
+        if combat_id:
+            self.expedition_repo.mark_processed(expedition, event_key, {"rewards": rewards})
+            flag_modified(expedition, "processed_events")
+            # The receipt and pending XP commit together under the expedition row
+            # lock. Redis is a repeatable absolute projection after that commit.
+            await self.session.commit()
+            if self.character_sessions is not None:
+                await self.character_sessions.set_pending_progress(char_id, pending)
+                await self.refresh_session_risk(char_id, expedition=expedition, system_connect=False)
+            return True
 
         if self.character_sessions is not None:
             await self.character_sessions.apply_pending_progress(char_id, rewards)
@@ -178,6 +226,8 @@ class ExpeditionService:
         location_id: str | None,
     ) -> bool:
         expedition = await self.get_active_run(char_id, for_update=True)
+        if expedition is not None and expedition.status == "death_pending" and expedition.death_combat_id == combat_id:
+            return True
         if expedition is None or expedition.status != "active":
             return False
 

@@ -460,6 +460,15 @@ Canonical объединяет лишь полный дубль: одна при
 
 ### A03-01 — Повтор finalizer повторно начисляет XP
 
+- [x] **22.10.2026 — исправлено, независимо проверено и принято владельцем.**
+  XP защищён по combat_id/character_id у владельца операции. Redis receipt, XP и dirty generation применяются атомарно.
+  SQL checkpoint сохраняет XP вместе с receipt. Expedition pending XP и receipt фиксируются одной транзакцией.
+  Назначение награды закреплено до применения; формулы XP сохранены.
+  Проверки: 87 passed, включая 7 тестов настоящих RedisJSON/PostgreSQL; независимый повтор — 22 passed.
+  Ruff и адресная проверка типов прошли. [Задача и доказательства](../tasks/active/2026-10-22-combat-finalization.md#финальные-проверки).
+  Полный ARQ process-kill/restart, Mongo end-to-end и полный project gate не проверялись; деплой не выполнялся.
+  Ниже сохранены исходные свидетельства аудита и исторические ограничения.
+
 - **Источник / аудит:** [audit/03_combat_runtime.md:294](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/03_combat_runtime.md:294); аудит 03. **Code anchors:** [src/backend/features/combat/workers/tasks/collector_task.py:76](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/combat/workers/tasks/collector_task.py:76), [src/backend/features/combat/workers/tasks/victory_finalizer_task.py:69](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/combat/workers/tasks/victory_finalizer_task.py:69), [src/backend/features/combat/runtime/services/experience_finalizer.py:69](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/combat/runtime/services/experience_finalizer.py:69)
 - **Исходная severity:** High. **Доказательность:** Подтверждено статическим анализом в исходном аудите; полного повторного анализа сейчас нет. **Стадия:** Pre-alpha. **Срочность:** При стабилизации домена.
 - **Домены / контракт:** Combat; Character; Expedition. Один combat/character progression effect один раз.
@@ -468,6 +477,16 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A03-01. **Связи:** Причина/контекст A02-02/03; тестовая зависимость A06-04.
 
 ### A03-02 — Ошибка финализации оставляет закрытый бой без завершённых последствий
+
+- [x] **22.10.2026 — исправлено, независимо проверено и принято владельцем в активном World/Expedition.**
+  SQL journal сохраняет исход и награды до закрытия runtime; checkpoints и recovery возобновляют незавершённые последствия.
+  Проверены повтор после XP, death_pending/corpse, dirty checkpoint, восстановление без runtime и пагинация очередей.
+  Архивация использует сохранённое ядро результата после потери Redis cache и отдельный поиск pending записей.
+  Старый Rift получает blocked_retired с причиной; его runtime выведен отдельной задачей, исправление не заявляется.
+  Проверки: 87 passed, включая 7 тестов настоящих RedisJSON/PostgreSQL; независимый повтор — 22 passed.
+  [Задача и доказательства](../tasks/active/2026-10-22-combat-finalization.md#финальные-проверки).
+  Полный ARQ process-kill/restart, Mongo end-to-end и полный project gate не проверялись; деплой не выполнялся.
+  Результаты без frozen journal автоматически не переигрываются. Ниже сохранены исторические свидетельства.
 
 - **Источник / аудит:** [audit/03_combat_runtime.md:302](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/03_combat_runtime.md:302); аудит 03. **Code anchors:** [src/backend/features/combat/workers/tasks/victory_finalizer_task.py:71](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/combat/workers/tasks/victory_finalizer_task.py:71), [src/backend/features/combat/workers/tasks/collector_task.py:46](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/combat/workers/tasks/collector_task.py:46)
 - **Исходная severity:** High. **Доказательность:** Подтверждён failure window по исходному отчёту; реальное межхранилищное воспроизведение не выполнено. **Стадия:** Pre-alpha. **Срочность:** При стабилизации домена.

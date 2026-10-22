@@ -185,6 +185,7 @@ class CharacterStateIntegrator:
             skills=self._session_skills_from_character(character),
             progression=CharacterSessionProgressionDTO(
                 free_xp=float(getattr(progression, "free_xp", 0.0) or 0.0),
+                combat_receipts=dict((getattr(progression, "metadata_", None) or {}).get("combat_receipts") or {}),
             ),
             pending_progress=CharacterSessionPendingProgressDTO.model_validate(
                 {

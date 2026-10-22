@@ -141,7 +141,7 @@ async def test_anatomy_regeneration_is_finalized_after_battle_once_via_progressi
         def __init__(self):
             self.calls = []
 
-        async def apply_progress(self, char_id, rewards):
+        async def apply_progress(self, char_id, rewards, *, combat_id=None):
             self.calls.append((char_id, rewards))
             return True
 

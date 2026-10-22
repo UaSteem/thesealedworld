@@ -57,6 +57,7 @@ class CombatExperienceFinalizer:
         character_sessions: Any | None = None,
         progression_recorder: Any | None = None,
         global_rate: float | None = None,
+        apply: bool = True,
     ) -> dict[str, CombatActorExperienceResult]:
         meta = await data_service.get_meta(session_id)
         if not isinstance(meta, dict):
@@ -81,16 +82,18 @@ class CombatExperienceFinalizer:
             )
             results[str(actor_id)] = result
 
+            if not apply:
+                continue
             recorded_dirty = False
             if rewards and progression_recorder is not None and hasattr(progression_recorder, "apply_progress"):
-                recorded_dirty = bool(await progression_recorder.apply_progress(char_id, rewards))
+                recorded_dirty = bool(await progression_recorder.apply_progress(char_id, rewards, combat_id=session_id))
             if (
                 rewards
                 and not recorded_dirty
                 and character_sessions is not None
                 and hasattr(character_sessions, "apply_skill_progress")
             ):
-                await character_sessions.apply_skill_progress(char_id, rewards)
+                await character_sessions.apply_skill_progress(char_id, rewards, combat_id=session_id)
 
         log.bind(
             status="success",
