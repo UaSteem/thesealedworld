@@ -5606,38 +5606,92 @@ def test_context_builder_can_mark_secondary_hits_as_costless_one_way() -> None:
 
 
 @pytest.mark.unit
-async def test_crit_bleed_trigger_is_cancelled_when_attack_is_parried(monkeypatch: pytest.MonkeyPatch) -> None:
+@pytest.mark.parametrize(
+    ("trigger_id", "effect_id", "ammo"),
+    [
+        ("weapon_serrated_bleed_crit", "dot_bleed", False),
+        ("weapon_impact_stun_crit", "stun", False),
+        ("weapon_serrated_bleed_crit", "dot_burn", True),
+    ],
+)
+@pytest.mark.parametrize("outcome", ["parry", "dodge", "block", "block_zero", "crit", "noncrit"])
+async def test_contact_crit_effects_require_contact(
+    monkeypatch: pytest.MonkeyPatch, trigger_id: str, effect_id: str, ammo: bool, outcome: str
+) -> None:
+    from src.backend.features.combat.runtime.support.log_builder import CombatLogBuilder
+
     monkeypatch.setattr(token_awarder, "bonus_token_roll", lambda: False)
-    source = actor(1, "a")
-    target = actor(2, "b")
-    source.loadout.layout.update({"main_hand": "skill_swords", "main_hand_trigger": "crit.weapon_serrated_bleed_crit"})
-    source.stats = stats(
+    # The old A06-02 setup failed the trigger roll itself. Keep the real catalog
+    # rule active and explicitly assert its successful attempt before defense.
+    monkeypatch.setattr(MathCore, "roll_chance", staticmethod(lambda chance: (0.0, chance > 0)))
+    monkeypatch.setattr(MathCore, "random_range", staticmethod(lambda low, high: low))
+    source, target = actor(1, "a"), actor(2, "b")
+    source.loadout.layout.update(
         {
-            "main_hand_accuracy": 1.0,
-            "main_hand_crit_chance": 1.0,
-            "main_hand_crit_cap": 1.0,
-            "main_hand_damage_base": 10.0,
-            "main_hand_damage_spread": 0.0,
-        },
-        {"skill_swords": 0.0},
+            "main_hand": "skill_archery" if ammo else "skill_swords",
+            "main_hand_trigger": f"crit.{trigger_id}",
+        }
     )
-    target.stats = stats({"evasion": 0.0, "parry": 1.0, "parry_cap": 1.0, "block": 0.0})
-    rolls = iter([(0.0, True), (0.0, True), (1.0, False), (0.0, True)])
-    monkeypatch.setattr(MathCore, "roll_chance", staticmethod(lambda _chance: next(rolls)))
-
-    result = await CombatPipeline().calculate(
-        source,
-        target,
-        CombatMoveDTO(move_id="m1", char_id=1, strategy="exchange", payload=ExchangePayload(target_id=2)),
+    if ammo:
+        source.loadout.ammo_charges["main_hand"] = 1
+        source.loadout.ammo_effects["main_hand"] = {"effects": [{"id": effect_id}]}
+    source.stats = stats(
+        {"main_hand_damage_base": 0.0 if outcome == "block_zero" else 10.0, "main_hand_damage_spread": 0.0}
     )
+    target.stats = stats({"parry": 1.0, "parry_cap": 1.0, "evasion": 1.0})
+    original_build = ContextBuilder.build_context
 
-    assert result.is_crit is True
-    assert result.is_parried is True
+    def build_context(*args, **kwargs):
+        ctx = original_build(*args, **kwargs)
+        ctx.flags.force.hit = True
+        ctx.flags.force.crit = outcome != "noncrit"
+        ctx.flags.restriction.cannot_crit = outcome == "noncrit"
+        ctx.stages.check_evasion = outcome == "dodge"
+        ctx.stages.check_parry = outcome == "parry"
+        ctx.stages.check_block = outcome.startswith("block")
+        ctx.flags.force.block = outcome.startswith("block")
+        return ctx
+
+    monkeypatch.setattr(ContextBuilder, "build_context", staticmethod(build_context))
+    move = CombatMoveDTO(move_id="m1", char_id=1, strategy="exchange", payload=ExchangePayload(target_id=2))
+    result = await CombatPipeline().calculate(source, target, move)
+    applied = outcome in {"block", "block_zero", "crit"}
     assert result.is_hit is True
-    assert result.tokens_awarded_attacker == {"crit": 1}
-    assert result.tokens_awarded_defender == {"parry": 1}
-    assert target.statuses.effects == []
-    assert "APPLY_EFFECT" not in [event.type for event in result.events]
+    assert result.is_crit is (outcome != "noncrit")
+    assert result.is_parried is (outcome == "parry")
+    assert result.is_dodged is (outcome == "dodge")
+    assert result.is_blocked is outcome.startswith("block")
+    assert result.tokens_awarded_attacker == {"hit" if outcome == "noncrit" else "crit": 1}
+    assert result.tokens_awarded_defender == (
+        {outcome: 1} if outcome in {"parry", "dodge"} else {"block": 1} if outcome.startswith("block") else {}
+    )
+    attempts = [attempt for attempt in result.trigger_attempts if attempt.trigger_id == trigger_id]
+    assert bool(attempts) is (outcome != "noncrit")
+    if attempts:
+        assert attempts[0].passed is True
+        assert trigger_id in result.fired_triggers
+    assert (effect_id in [effect.effect_id for effect in target.statuses.effects]) is applied
+    assert (effect_id in [fact.effect_id for fact in result.status_applications]) is applied
+    assert (effect_id in [event.action_id for event in result.events if event.type == "APPLY_EFFECT"]) is applied
+    battle = BattleContext(session_id="c1", meta=battle_meta(), actors={"1": source, "2": target})
+    entries = CombatLogBuilder.build_result_entries(
+        ctx=battle, result=result, action=CombatActionDTO(action_type="exchange", move=move), wave=1, timestamp=0.0
+    )
+    assert bool(entries)
+    assert (effect_id in [effect["effect_id"] for effect in entries[0]["result"]["effects"]]) is applied
+    if not applied:
+        assert target.statuses.effects == []
+        assert result.status_applications == []
+        assert "force_ranged_close" not in [event.action_id for event in result.events]
+    assert (
+        effect_id in [effect["effect_id"] for effect in CombatLogBuilder._public_effects(battle, result)]
+    ) is applied
+    if outcome == "block_zero":
+        assert result.damage_final == 0
+    elif applied:
+        assert result.damage_final > 0
+    if ammo:
+        assert result.ammo_spent == ({} if outcome == "noncrit" else {"main_hand": 1})
 
 
 @pytest.mark.unit
@@ -5872,7 +5926,7 @@ def test_archery_crit_queues_active_ammo_effect_payload_and_spends_charge() -> N
             "params": {"power": 2.0, "apply_bonus": 0.1},
             "tags": ["arrow", "fire", "ammo", "crit"],
             "source_trigger_id": "ammo_arrow_crit",
-            "conditions": {"is_hit": True, "is_crit": True},
+            "conditions": {"is_hit": True, "is_crit": True, "is_contact": True},
         }
     ]
     accuracy_debuffs = [effect for effect in result.applied_effects if effect.get("id") == "debuff_accuracy"]
@@ -5882,7 +5936,7 @@ def test_archery_crit_queues_active_ammo_effect_payload_and_spends_charge() -> N
             "params": {"power": 2.0},
             "tags": ["arrow", "fire", "accuracy_debuff", "ammo", "crit"],
             "source_trigger_id": "ammo_arrow_crit",
-            "conditions": {"is_hit": True, "is_crit": True},
+            "conditions": {"is_hit": True, "is_crit": True, "is_contact": True},
         }
     ]
     assert result.ammo_spent == {"main_hand": 1}

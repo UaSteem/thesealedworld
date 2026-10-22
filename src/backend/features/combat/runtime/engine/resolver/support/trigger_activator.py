@@ -74,6 +74,7 @@ def apply_trigger_effects(
             conditions = effect_data.setdefault("conditions", {})
             conditions.setdefault("is_hit", True)
             conditions.setdefault("is_crit", True)
+            conditions.setdefault("is_contact", True)
         res.applied_effects.append(effect_data)
 
 
@@ -95,6 +96,7 @@ def apply_ammo_crit_payload(ctx: PipelineContextDTO, res: InteractionResultDTO) 
         conditions = effect_data.setdefault("conditions", {})
         conditions.setdefault("is_hit", True)
         conditions.setdefault("is_crit", True)
+        conditions.setdefault("is_contact", True)
         tags = effect_data.setdefault("tags", [])
         if isinstance(tags, list):
             for tag in ("ammo", "arrow", "crit"):

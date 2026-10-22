@@ -1003,10 +1003,11 @@ class AbilityService:
     @staticmethod
     def _apply_queued_effects(ctx: PipelineContextDTO, source: ActorSnapshot, target: ActorSnapshot | None) -> None:
         """Convert queued effect payloads into concrete runtime state mutations."""
+        # Rejected queue entries must not reach the public applied-effects log.
+        ctx.result.applied_effects[:] = [
+            effect for effect in ctx.result.applied_effects if AbilityService._effect_conditions_met(ctx, effect)
+        ]
         for effect_data in ctx.result.applied_effects:
-            if not AbilityService._effect_conditions_met(ctx, effect_data):
-                continue
-
             target_char_id = effect_data.get("target_id")
             effect_target = source if target_char_id == source.char_id else target
             if not effect_target:
@@ -1461,6 +1462,7 @@ class AbilityService:
             "always": True,
             "is_hit": result.is_hit,
             "is_crit": result.is_crit,
+            "is_contact": result.is_hit and not result.is_dodged and not result.is_parried,
             "is_blocked": result.is_blocked,
             "is_parried": result.is_parried,
             "is_dodged": result.is_dodged,
