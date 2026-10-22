@@ -43,6 +43,7 @@ from src.backend.infrastructure.combat.models import (
     CombatFinalization,
 )
 from src.backend.infrastructure.inventory import InventoryItem, ResourceWallet
+from src.backend.infrastructure.inventory.models import DurabilityApplication
 from src.backend.infrastructure.monsters import GeneratedClanORM, GeneratedMonsterORM, HabitatClanPoolEntryORM
 from src.backend.infrastructure.rift import (
     RiftMembership,
@@ -72,6 +73,7 @@ __all__ = [
     "CharacterLocationKnowledge",
     "AIGenerationTask",
     "InventoryItem",
+    "DurabilityApplication",
     "ResourceWallet",
     "SkillProgress",
     "CharacterSymbiote",

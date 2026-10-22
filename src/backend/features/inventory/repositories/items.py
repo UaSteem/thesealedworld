@@ -1,12 +1,22 @@
 from __future__ import annotations
 
+import asyncio
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 from typing import Any
 
-from sqlalchemy import or_, select
+from sqlalchemy import func, or_, select
+from sqlalchemy.dialects.postgresql import insert
 
 from src.backend.features.items.models import ItemInstance, ItemPlacement, ItemTransaction, ResourceBalance
-from src.backend.infrastructure.inventory.models import ResourceWallet
+from src.backend.infrastructure.inventory.models import DurabilityApplication, ResourceWallet
 from src.shared.schemas.inventory import InventoryRuntimeItemDTO, WalletDTO
+
+# Two-int advisory lock key: "INVD" namespace + SQL character id.
+# All durability writers and projection rebuilds use this order before row/receipt locks.
+_DURABILITY_LOCK_NAMESPACE = 0x494E5644
+_DURABILITY_LOCK_TIMEOUT_SECONDS = 5
+_DURABILITY_PROJECTION_TIMEOUT_SECONDS = 10
 
 _CURRENCY_PREFIXES = ("coin_", "currency_", "gold_", "silver_", "copper_")
 _COMPONENT_PREFIXES = ("essence_", "flower_", "bark_", "supply_", "component_")
@@ -35,6 +45,7 @@ class InventoryItemRepository:
             .join(ItemPlacement, ItemPlacement.item_id == ItemInstance.id)
             .where(holder_clause)
             .order_by(ItemPlacement.position_index.nulls_last(), ItemInstance.name, ItemInstance.id)
+            .execution_options(populate_existing=True)
         )
         return list(result.all())
 
@@ -107,6 +118,97 @@ class InventoryItemRepository:
                 continue
             instance.mechanics = dict(item.mechanics)
         await self.session.flush()
+
+    async def _lock_durability(self, char_id: int) -> None:
+        # Bound a stalled publisher/writer; timeout is a retryable failure, never an ACK.
+        async with asyncio.timeout(_DURABILITY_LOCK_TIMEOUT_SECONDS):
+            await self.session.execute(select(func.pg_advisory_xact_lock(_DURABILITY_LOCK_NAMESPACE, char_id)))
+
+    @asynccontextmanager
+    async def durability_projection(self, char_id: int) -> AsyncIterator[None]:
+        """Fence SQL reread through both Redis publications and receipt marker.
+
+        A separate transaction starts after the authoritative damage commit. Failure
+        rolls back only this projection transaction; committed damage remains durable.
+        """
+        try:
+            await self._lock_durability(char_id)
+            async with asyncio.timeout(_DURABILITY_PROJECTION_TIMEOUT_SECONDS):
+                yield
+                await self.session.commit()
+        except BaseException:
+            # Includes cancellation while waiting, publishing, or committing.
+            await self.session.rollback()
+            raise
+
+    async def apply_durability_damage(
+        self,
+        *,
+        char_id: int,
+        idempotency_key: str,
+        payload: dict[str, Any],
+        item_ids: list[str],
+        expedition_run_id: str | None = None,
+    ) -> dict[str, Any]:
+        """Own the commit point; never publish cached damage before this returns."""
+        try:
+            await self._lock_durability(char_id)
+            claimed = await self.session.scalar(
+                insert(DurabilityApplication)
+                .values(character_id=char_id, idempotency_key=idempotency_key, payload=payload, changed=[])
+                .on_conflict_do_nothing(index_elements=["character_id", "idempotency_key"])
+                .returning(DurabilityApplication.character_id)
+            )
+            receipt = await self.session.scalar(
+                select(DurabilityApplication).where(
+                    DurabilityApplication.character_id == char_id,
+                    DurabilityApplication.idempotency_key == idempotency_key,
+                )
+            )
+            if claimed is None:
+                if receipt.payload != payload:
+                    raise ValueError("Idempotency key payload conflict")
+                await self.session.commit()
+                return {"duplicate": True, "changed": []}
+
+            holders = [(ItemPlacement.holder_type == "character") & (ItemPlacement.holder_id == str(char_id))]
+            if expedition_run_id:
+                holders.append(
+                    (ItemPlacement.holder_type == "expedition") & (ItemPlacement.holder_id == expedition_run_id)
+                )
+            # Stable lock order prevents deadlocks when distinct events overlap.
+            instances = await self.session.scalars(
+                select(ItemInstance)
+                .join(ItemPlacement, ItemPlacement.item_id == ItemInstance.id)
+                .where(ItemInstance.id.in_(item_ids), or_(*holders))
+                .order_by(ItemInstance.id)
+                .with_for_update(of=ItemInstance)
+                .execution_options(populate_existing=True)
+            )
+            changed: list[dict[str, Any]] = []
+            for instance in instances:
+                if payload["amount"] <= 0:
+                    continue
+                mechanics = dict(instance.mechanics or {})
+                before = _optional_float(mechanics.get("durability_current"))
+                maximum = _optional_float(mechanics.get("durability_max"))
+                current = before if before is not None else maximum
+                if current is None:
+                    continue
+                after = max(0.0, round(current - payload["amount"], 4))
+                if after == before:
+                    continue
+                mechanics["durability_current"] = after
+                if maximum is not None:
+                    mechanics["durability_max"] = maximum
+                instance.mechanics = mechanics
+                changed.append({"item_id": str(instance.id), "before": current, "after": after})
+            receipt.changed = changed
+            await self.session.commit()
+            return {"duplicate": False, "changed": changed}
+        except BaseException:
+            await self.session.rollback()
+            raise
 
     async def discard_character_item(
         self,
@@ -217,3 +319,10 @@ def _quantity_from_item(metadata: dict[str, Any], mechanics: dict[str, Any]) -> 
             if value > 0:
                 return value
     return 1
+
+
+def _optional_float(value: Any) -> float | None:
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None

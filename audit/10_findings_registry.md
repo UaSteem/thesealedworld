@@ -514,6 +514,11 @@ Canonical объединяет лишь полный дубль: одна при
 
 ### A03-07 — Durability marker не защищает повтор после частично успешного применения
 
+- **Статус:** Исправлена; принята пользователем 2026-10-22. Независимая ревизия завершена, открытых замечаний нет.
+- **Исправление:** SQL-журнал и износ фиксируются одной транзакцией. Блокировка персонажа сериализует применение и обновление Redis-проекций износа.
+- **Проверки и ревизия:** [Задача, команды и результаты](../tasks/active/2026-10-22-a03-07-durability.md#результаты); [независимая ревизия и закрытие замечания](../tasks/active/2026-10-22-a03-07-durability.md#независимая-ревизия-и-исправление-замечания). Независимый прогон: 32 passed (18 recovery + 14 disposable PostgreSQL). [Recovery tests](../tests/backend/features/inventory/test_durability_recovery.py), [PostgreSQL tests](../tests/backend/features/inventory/test_durability_postgres.py).
+- **Границы закрытия:** Локальное исправление и независимая проверка; миграция к рабочей БД не применялась, деплоя не было. Реальный Redis и полный project gate не проверялись. Сериализация охватывает durability writers.
+- **Исторические сведения исходного аудита:**
 - **Источник / аудит:** [audit/03_combat_runtime.md:336](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/03_combat_runtime.md:336); аудит 03. **Code anchors:** [src/backend/features/inventory/services/inventory_service.py:197](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/inventory/services/inventory_service.py:197), [src/backend/features/combat/runtime/services/durability_policy.py:56](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/combat/runtime/services/durability_policy.py:56)
 - **Исходная severity:** Medium. **Доказательность:** Подтверждён failure window по исходному отчёту; реальное межхранилищное воспроизведение не выполнено. **Стадия:** Pre-alpha. **Срочность:** При стабилизации домена.
 - **Домены / контракт:** Combat; Inventory; Character. Durability event меняет SQL mechanics не более раза.

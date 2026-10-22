@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from sqlalchemy import ForeignKey, Integer, String
+from sqlalchemy import DateTime, ForeignKey, Integer, String, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -45,3 +45,15 @@ class ResourceWallet(Base, ContextSourceMixin, SchemaVersionMixin, RevisionMixin
     components: Mapped[dict[str, int]] = mapped_column(JSONB, default=dict, nullable=False)
 
     character: Mapped[Character] = relationship("Character", back_populates="wallet")
+
+
+class DurabilityApplication(Base):
+    """Durable receipt committed atomically with item mechanics."""
+
+    __tablename__ = "inventory_durability_applications"
+
+    character_id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    idempotency_key: Mapped[str] = mapped_column(String(240), primary_key=True)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    changed: Mapped[list[dict[str, Any]]] = mapped_column(JSONB, default=list, nullable=False)
+    created_at: Mapped[Any] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)

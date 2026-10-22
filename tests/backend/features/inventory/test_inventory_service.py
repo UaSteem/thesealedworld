@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import asyncio
+from collections import defaultdict
+from contextlib import asynccontextmanager
+
 import pytest
 
 from src.backend.features.character.events import CharacterEvents
@@ -22,6 +26,8 @@ class FakeInventoryRepository:
         self.saved: dict[str, InventoryRuntimeItemDTO] | None = None
         self.discarded: list[dict[str, object]] = []
         self.committed = False
+        self.durability_events = {}
+        self._durability_locks = defaultdict(asyncio.Lock)
 
     async def list_character_items(self, char_id: int, *, expedition_run_id: str | None = None):
         return [(FakeInstance(item), FakePlacement(item)) for item in self.items]
@@ -43,6 +49,37 @@ class FakeInventoryRepository:
 
     async def save_item_mechanics(self, items: dict[str, InventoryRuntimeItemDTO]) -> None:
         self.saved = items
+
+    @asynccontextmanager
+    async def durability_projection(self, char_id):
+        async with self._durability_locks[char_id]:
+            yield
+
+    async def apply_durability_damage(self, *, char_id, idempotency_key, payload, item_ids, expedition_run_id=None):
+        async with self._durability_locks[char_id]:
+            return await self._apply_damage(char_id=char_id, idempotency_key=idempotency_key, payload=payload, item_ids=item_ids)
+
+    async def _apply_damage(self, *, char_id, idempotency_key, payload, item_ids):
+        key = (char_id, idempotency_key)
+        if key in self.durability_events:
+            if self.durability_events[key] != payload:
+                raise ValueError("Idempotency key payload conflict")
+            return {"duplicate": True, "changed": []}
+        changed = []
+        self.saved = {}
+        for item in self.items:
+            current = item.mechanics.get("durability_current", item.mechanics.get("durability_max"))
+            if item.item_id not in item_ids or current is None:
+                continue
+            after = max(0.0, round(float(current) - payload["amount"], 4))
+            if after == item.mechanics.get("durability_current"):
+                continue
+            item.mechanics = {**item.mechanics, "durability_current": after}
+            self.saved[item.item_id] = item
+            changed.append({"item_id": item.item_id, "before": float(current), "after": after})
+        self.durability_events[key] = payload
+        self.committed = True
+        return {"duplicate": False, "changed": changed}
 
     async def discard_character_item(
         self,
@@ -1065,7 +1102,7 @@ async def test_apply_durability_damage_updates_equipped_items(fake_redis_service
     assert result["changed"] == [{"item_id": "sword-1", "before": 10.0, "after": 9.9}]
     assert repository.saved is not None
     assert repository.saved["sword-1"].mechanics["durability_current"] == 9.9
-    assert repository.saved["ore-1"].mechanics["durability_current"] == 5
+    assert "ore-1" not in repository.saved
     assert repository.committed is True
     assert fake_redis_client.store["game:ac:7"]["items"]["by_id"]["sword-1"]["mechanics"]["durability_current"] == 9.9
     assert "combat:combat-1:durability:7:combat_completed" in fake_redis_client.store["game:ac:7"]["processed_events"]
