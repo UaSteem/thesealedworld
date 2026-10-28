@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from time import perf_counter
 from typing import TYPE_CHECKING, Any
-from uuid import uuid4
 
 from loguru import logger
 
@@ -201,30 +200,9 @@ class ScenarioService:
             raise ScenarioConditionFailed(action_id)
 
         if action.get("type") == "enter_prepared_rift":
-            if not await self.integrator.has_prepared_rift_entry(char_id):
-                await self._prepare_rift_entry_for_node(char_id, context, current)
-                master = await self.integrator.get_quest_master(context.quest_key) or {}
-                return self.formatter.render_payload(current, context.flatten(), master)
-            metadata = await self.integrator.activate_prepared_rift_entry(char_id, context)
-            await self.integrator.sync_active_character_to_db(char_id)
-            await self.integrator.publish_event(
-                "scenario.finalized",
-                {
-                    "char_id": char_id,
-                    "quest_key": context.quest_key,
-                    "target_state": CoreDomain.RIFT.value,
-                    "rift_session_id": metadata.get("rift_session_id"),
-                    "rift_instance_id": metadata.get("rift_instance_id"),
-                },
-            )
-            return ScenarioFinalizeResult(
-                target_state=CoreDomain.RIFT,
-                transition_reason="scenario_rift_entry",
-                metadata={
-                    "quest_key": context.quest_key,
-                    **metadata,
-                },
-            )
+            from src.backend.features.rift.retirement import LegacyRiftRetiredError
+
+            raise LegacyRiftRetiredError("Legacy Rift entry is retired")
 
         if action.get("type") == "finish_quest":
             return await self.finalize(char_id)
@@ -459,21 +437,8 @@ class ScenarioService:
         context: ScenarioContextDTO,
         node: dict[str, Any],
     ) -> None:
-        raw_metadata = node.get("metadata")
-        metadata = raw_metadata if isinstance(raw_metadata, dict) else {}
-        raw_rift_entry = metadata.get("rift_entry")
-        rift_entry = raw_rift_entry if isinstance(raw_rift_entry, dict) else {}
-        if not bool(rift_entry.get("prepare_on_show")):
-            return
-        if await self.integrator.has_prepared_rift_entry(char_id):
-            context.flags["rift_entry_status"] = "ready"
-            return
-        if not context.flags.get("rift_entry_request_id"):
-            context.flags["rift_entry_request_id"] = uuid4().hex
-        result = await self.integrator.publish_rift_entry_requested(char_id, context, node)
-        context.flags["rift_entry_status"] = "requested"
-        context.flags["rift_entry_request_id"] = str(result.get("request_id") or context.flags["rift_entry_request_id"])
-        await self.integrator.update_progress(char_id, context, force_backup=True)
+        # Scenario content stays readable while the legacy runtime is retired.
+        return None
 
     async def _current_or_raise(self, context: ScenarioContextDTO) -> dict[str, Any]:
         node = await self.integrator.get_node(context.quest_key, context.current_node_key)

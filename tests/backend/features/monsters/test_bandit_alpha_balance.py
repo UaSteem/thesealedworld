@@ -8,6 +8,7 @@ from src.backend.features.monsters.catalog.registry import get_catalog
 from src.backend.features.monsters.encounters.dto.selection import MonsterEncounterOrderDTO
 from src.backend.features.monsters.encounters.policies.composition import MonsterCompositionPolicyResolver
 from src.backend.features.monsters.encounters.services.squad_selection_service import MonsterEncounterSelectionService
+from tests.backend.features.monsters.catalog.equipment_slot_expectations import before_equipment_slots
 
 
 def test_bandit_price_ladder_preserves_other_authored_mechanics():
@@ -30,7 +31,7 @@ def test_bandit_price_ladder_preserves_other_authored_mechanics():
             "equipment_set_id": m.equipment_set_id,
         }
     assert (
-        hashlib.sha256(json.dumps(proof, sort_keys=True).encode()).hexdigest()
+        hashlib.sha256(json.dumps(before_equipment_slots(proof), sort_keys=True).encode()).hexdigest()
         == "95d4927b6c2590742a93603b0bd27707927e63159c85979a07bd43b8b3cc96c9"
     )
 

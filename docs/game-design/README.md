@@ -48,6 +48,7 @@ Do not treat this directory as current implementation architecture.
 - Gifts and Symbiote concept: `domains/gifts/README.md`
 - Modifier vocabulary: `rules/modifiers/modifier_vocabulary.md`
 - Actor mapper reference: `rules/modifiers/actor_mapper_reference.md`
+- Current world direction (12 factions): `designer/world/README.md` and `../adr/0002-faction-city-district-progression.md`
 - World bible: `designer/world/00_world_bible.md`
 - Combat vision: `designer/combat/README.md`
 - RPG design overview: `designer/rpg/README.md`

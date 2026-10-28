@@ -16,7 +16,7 @@ from src.backend.features.city_services.events import CityServiceEvents
 from src.backend.features.inventory.events.publisher import InventoryEvents
 from src.backend.features.items.dto.instance import ItemGenerationRequestDTO, ItemOriginRefDTO, ItemPlacementRefDTO
 from src.backend.features.items.events.publisher import ItemEvents
-from src.backend.features.rift.events import RiftEvents
+from src.backend.features.rift.retirement import LegacyRiftRetiredError
 from src.backend.features.scenario.dto.context import ScenarioContextDTO
 from src.backend.features.scenario.handlers import get_handler
 from src.backend.features.scenario.handlers.base_handler import ScenarioInitialHandlerContext
@@ -248,45 +248,14 @@ class ScenarioSystemIntegrator:
         context: ScenarioContextDTO,
         node: dict[str, Any],
     ) -> dict[str, Any]:
-        raw_metadata = node.get("metadata")
-        metadata = raw_metadata if isinstance(raw_metadata, dict) else {}
-        raw_rift_entry = metadata.get("rift_entry")
-        rift_entry = raw_rift_entry if isinstance(raw_rift_entry, dict) else {}
-        request_id = str(context.flags.get("rift_entry_request_id") or uuid.uuid4())
-        exit_location_id = str(rift_entry.get("exit_location_id") or "")
-        if not exit_location_id:
-            exit_location_id = await self.select_tutorial_outskirts_spawn_location()
-        payload = {
-            "char_id": char_id,
-            "quest_key": context.quest_key,
-            "scenario_session_id": str(context.scenario_session_id),
-            "source_ref": f"scenario:{context.quest_key}:{node.get('node_key') or context.current_node_key}",
-            "request_id": request_id,
-            "rift_key": str(rift_entry.get("rift_key") or "starter_rift"),
-            "entry_reason": str(rift_entry.get("entry_reason") or "scenario"),
-            "seed": str(rift_entry.get("seed") or f"{context.quest_key}:{char_id}:{request_id}"),
-            "exit_target_state": str(rift_entry.get("exit_target_state") or CoreDomain.EXPLORATION.value),
-            "exit_location_id": exit_location_id,
-            "exit_reason": str(rift_entry.get("exit_reason") or "rift_exit"),
-            "completion_exit": rift_entry.get("completion_exit"),
-            "exit_node_id": rift_entry.get("exit_node_id"),
-        }
-        await self.events.publish(RiftEvents.ENTRY_REQUESTED, payload, correlation_id=request_id)
-        return {"request_id": request_id, "payload": payload}
+        raise LegacyRiftRetiredError("Legacy Rift entry is retired")
 
     async def activate_prepared_rift_entry(
         self,
         char_id: int,
         context: ScenarioContextDTO,
     ) -> dict[str, Any]:
-        refs = await self.character_sessions.activate_prepared_rift_session(
-            char_id,
-            prev_state=CoreDomain.EXPLORATION,
-        )
-        await self.character_sessions.clear_scenario_session(char_id)
-        await self.sessions.delete(char_id)
-        await self.repo.delete_state(char_id)
-        return dict(refs)
+        raise LegacyRiftRetiredError("Legacy Rift activation is retired")
 
     async def cleanup_session(self, char_id: int) -> None:
         """Remove scenario artifacts without character state transitions."""

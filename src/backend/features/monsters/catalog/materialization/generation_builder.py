@@ -538,7 +538,7 @@ class MonsterClanGenerationBuilder:
         mapping = NATURAL_EQUIPMENT_MAPPINGS.get(equipment_key)
         if mapping is not None:
             return mapping.item_kind
-        if slot == "quiver" or equipment_key.startswith("quiver_"):
+        if equipment_key.startswith("quiver_"):
             return "ammo"
         if slot == "amulet":
             return "accessory"

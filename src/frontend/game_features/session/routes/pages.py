@@ -68,15 +68,7 @@ async def _attach_dev_status_context(
 ) -> None:
     context["user"] = user
     context["access_token"] = get_game_access_token_from_context(context) or context.get("access_token", "")
-    if not settings.debug or not getattr(user, "is_superuser", False):
-        return
-    options = await game_session_api.list_starting_imprints()
-    context["dev_status_controls"] = {
-        "starter_rift_reset": {
-            "action": "/game/dev/starter-rift-reset",
-            "imprints": [item.model_dump(mode="json") for item in options.imprints],
-        }
-    }
+    context.pop("dev_status_controls", None)
 
 
 def get_game_access_token_from_context(context: dict) -> str:
@@ -200,11 +192,7 @@ async def game_dev_starter_rift_reset(
     user = await auth_service.require_current_user(request)
     if not settings.debug or not getattr(user, "is_superuser", False):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
-    context = await context_builder.dev_reset_starter_rift(request, char_id=char_id, imprint_key=imprint_key)
-    context["user"] = user
-    context["access_token"] = get_game_access_token(request) or ""
-    await _attach_dev_status_context(context, user=user, game_session_api=context_builder.game_session_api)
-    return await ui.render("game/session_content_inner.html", context=context)
+    raise HTTPException(status_code=status.HTTP_410_GONE, detail="Legacy starter Rift reset has been retired")
 
 
 @router.post("/game/loot/claim-all", name="game_loot_claim_all")

@@ -4,6 +4,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
+from src.backend.features.items.dto.visuals import ItemAppearanceDTO  # noqa: TC001
+
 
 class ItemPlacementRefDTO(BaseModel):
     holder_type: Literal["character", "container", "corpse", "auction", "system", "scenario_reward", "expedition"]
@@ -24,10 +26,13 @@ class ItemGenerationRequestDTO(BaseModel):
     generation_mode: Literal["player", "runtime"] = "player"
     base_id: str
     target_slot: str | None = None
+    # Grade/rarity input; also the existing auto-material hint when material_tier is omitted.
     rarity_tier: int = 0
     item_grade: str = ""
     affix_profile: str = ""
     material_id: str | None = None
+    # Explicit material choice tier; actual selected material remains authoritative.
+    material_tier: int | None = Field(default=None, ge=0)
     affix_bundle_ids: list[str] = Field(default_factory=list)
     forced_affix_ids: list[str] = Field(default_factory=list)
     allowed_affix_ids: list[str] = Field(default_factory=list)
@@ -56,6 +61,10 @@ class ItemGenerationBatchRequestDTO(BaseModel):
 class GeneratedItemDTO(BaseModel):
     instance_id: str | None = None
     template_id: str
+    item_tier: int = Field(default=0, ge=0)
+    appearance: ItemAppearanceDTO | None = None
+    is_identified: bool = False
+    lore_tags: list[str] = Field(default_factory=list)
     item_type: str
     rarity: str
     rarity_tier: int

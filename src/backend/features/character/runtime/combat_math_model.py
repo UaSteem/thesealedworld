@@ -25,7 +25,7 @@ UNARMED_DAMAGE_SPREAD = 0.50
 ARMOR_BEARING_SLOTS = frozenset({"head_armor", "chest_armor", "arms_armor", "legs_armor"})
 JEWELRY_SLOTS = frozenset({"ring_1", "ring_2", "amulet", "earring"})
 HEAVY_CHEST_DODGE_CAPS = {
-    "plate_chest": 0.35,
+    "heavy_chest_armor": 0.35,
 }
 HEAVY_ARMOR_NATURAL_RESISTANCE_BONUS_AT_FULL = 0.50
 PHYSICAL_RESISTANCE_PER_ENDURANCE = ATTRIBUTE_MODIFIER_RULES[StatKey.PHYSICAL_RESISTANCE][StatKey.ENDURANCE]
@@ -180,7 +180,7 @@ class CharacterCombatMathModelBuilder:
                 )
                 if combat_slot == "main_hand":
                     self._replace_base_modifier(modifiers, "main_hand_damage_spread", damage_spread)
-                elif combat_slot == "off_hand" and not self._is_shield(item_type, tags):
+                elif combat_slot == "off_hand" and item_type != "ammo" and not self._is_shield(item_type, tags):
                     self._replace_base_modifier(modifiers, "off_hand_damage_spread", damage_spread)
 
             for bonus_key, value in resolve_accessory_bonuses(item, mechanics).items():
@@ -373,7 +373,7 @@ class CharacterCombatMathModelBuilder:
             self._set_base_modifier(modifiers, "main_hand_damage_base", value)
             return
         if slot == "off_hand":
-            if not self._is_shield(item_type, tags):
+            if item_type != "ammo" and not self._is_shield(item_type, tags):
                 self._set_base_modifier(modifiers, "off_hand_damage_base", value)
             elif self._is_guard_shield(item_type, tags):
                 self._set_base_modifier(modifiers, "shield_guard_power", value)

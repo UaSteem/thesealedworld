@@ -8,6 +8,7 @@ from src.backend.features.monsters.catalog.registry import get_catalog
 from src.backend.features.monsters.encounters.dto.selection import MonsterEncounterOrderDTO
 from src.backend.features.monsters.encounters.policies.composition import MonsterCompositionPolicyResolver
 from src.backend.features.monsters.encounters.services.squad_selection_service import MonsterEncounterSelectionService
+from tests.backend.features.monsters.catalog.equipment_slot_expectations import before_equipment_slots
 
 
 def test_wolf_prices_and_single_attack_keep_other_authored_mechanics():
@@ -28,7 +29,7 @@ def test_wolf_prices_and_single_attack_keep_other_authored_mechanics():
             "equipment_set_id": member.equipment_set_id,
         }
     assert (
-        hashlib.sha256(json.dumps(proof, sort_keys=True).encode()).hexdigest()
+        hashlib.sha256(json.dumps(before_equipment_slots(proof), sort_keys=True).encode()).hexdigest()
         == "3942633649e21c5a993f564610b1f27dd05b7f08c16ba709dcebe1b8eecf18a6"
     )
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import random
 import time
@@ -50,18 +51,35 @@ class CombatLifecycleService:
         session_data = self._assemble_session_data(
             combat_id, battle_type, participants, snapshots, request, ai_policy_id=ai_policy_id
         )
+        session_data.meta["creation_fingerprint"] = self.creation_fingerprint(battle_type, participants, request)
         ttl = int(request.get("ttl") or await self._session_ttl_seconds())
-        await self.store.create_session_batch(
+        created = await self.store.create_session_batch(
             combat_id,
             session_data,
             ttl=ttl,
+            analytics=[
+                CombatAnalyticsFactBuilder.build_session_profile(combat_id=combat_id, session_data=session_data)
+            ],
         )
-        if hasattr(self.store, "append_analytics"):
-            await self.store.append_analytics(
-                combat_id,
-                CombatAnalyticsFactBuilder.build_session_profile(combat_id=combat_id, session_data=session_data),
-            )
+        if not created:
+            existing = await self.existing_creation(combat_id, session_data.meta["creation_fingerprint"])
+            if existing is None:
+                raise CombatLifecycleError("combat session expired during creation retry")
+            return existing
         return session_data
+
+    @staticmethod
+    def creation_fingerprint(
+        battle_type: str, participants: dict[str, list[int | str]], request: dict[str, Any]
+    ) -> str:
+        """Identity is based on stable inputs, before snapshots/timestamps regenerate."""
+        delivery_fields = {"combat_id", "correlation_id", "requested_at", "timestamp", "created_at", "updated_at"}
+        inputs = {key: value for key, value in request.items() if key not in delivery_fields}
+        payload = {"battle_type": battle_type, "participants": participants, "request": inputs}
+        return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+    async def existing_creation(self, combat_id: str, fingerprint: str) -> SessionDataDTO | None:
+        return await self.store.load_existing_creation(combat_id, fingerprint)
 
     async def _session_ttl_seconds(self) -> int:
         if self.game_config is None:

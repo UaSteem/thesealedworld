@@ -23,7 +23,7 @@ Separate template identity from prompt richness.
 Persisted item text templates are keyed only by:
 
 ```text
-clan_id + base_id + item_tier + material_id
+clan_id + base_id + item_tier (from material) + material_id + normalized affix lore tags + visual_variant_id
 ```
 
 The hash function may wrap this payload with the prompt version so prompt-contract changes create a new template generation space.
@@ -39,9 +39,17 @@ Do not include in the item text template hash:
 - `variant_key`
 - `item_id`
 - placement data
-- affix ids, bundles, or roll values
+- raw affix ids, bundles, or roll values (use normalized authored lore meanings instead)
 
 Prompt payload may still include `source_context`, `owner_family`, and `loot_culture`; those fields help the AI write the text but do not define template identity.
+
+As implemented by the v2 text contract, `resources/affixes/narrative.py` owns the controlled meanings.
+Normalize only actually rolled affix identities; sort/deduplicate the resulting lore IDs.
+The payload includes their meanings and selected appearance description; changes to prompt semantics require a prompt version change.
+`material_tier` selects a material, and the chosen material determines item tier; do not use rarity to overwrite that derived tier.
+Selected `appearance` and `is_identified` belong to the instance. AI readiness must not reveal text automatically.
+New instance/template baseline text is catalog-derived rather than duplicated; public inventory projection gates prepared text on identification.
+The authorized identify inventory action is implemented; an appraisal character skill is still deferred.
 
 For the current legacy item AI text path, generated clan narrative still comes from the database by `clan_id`. The new prepared Python monster catalog exists, but this item consumer has not switched to it yet. Preserve the current generator until its narrative source is migrated explicitly.
 

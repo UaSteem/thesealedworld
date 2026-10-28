@@ -105,6 +105,23 @@ window.GameCatalogCache = {
         return null;
     },
 
+    getItemVisual(visualVariantId) {
+        return this.get('item_visuals', visualVariantId);
+    },
+
+    getItemPresentation(baseId, visualVariantId = null) {
+        const base = this.get('items', baseId) || {};
+        const visual = this.getItemVisual(visualVariantId) || {};
+        return {
+            name: visual.name || base.title || '',
+            description: visual.description || base.description || '',
+            thumbnail_url: visual.thumbnail_url || null,
+            image_url: visual.image_url || null,
+            width_cells: visual.width_cells || null,
+            height_cells: visual.height_cells || null,
+        };
+    },
+
     getByKey(key) {
         if (!key) return null;
         if (key.startsWith('combat.')) {
@@ -576,25 +593,26 @@ window.ExplorationRiskFrame = {
 
         let color;
         if (isEncounter) {
-            color = [255, 58, 42];
+            color = 'var(--game-risk-danger)';
         } else if (isSafeZone) {
-            color = [70, 238, 142];
+            color = 'var(--game-risk-safe)';
         } else if (threat < 0.5) {
             const t = threat / 0.5;
-            color = this.mix([220, 184, 48], [230, 106, 28], t);
+            color = this.mix('var(--game-risk-low)', 'var(--game-risk-medium)', t);
         } else {
             const t = (threat - 0.5) / 0.5;
-            color = this.mix([230, 106, 28], [255, 58, 42], t);
+            color = this.mix('var(--game-risk-medium)', 'var(--game-risk-danger)', t);
         }
 
         scene.classList.toggle('is-danger', isEncounter || (!isSafeZone && threat >= 0.75));
         scene.classList.toggle('is-safe', isSafeZone && !isEncounter);
-        scene.style.setProperty('--danger-color', `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.94)`);
-        scene.style.setProperty('--danger-glow-color', `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.36)`);
+        scene.style.setProperty('--danger-color', `color-mix(in srgb, ${color} 94%, transparent)`);
+        scene.style.setProperty('--danger-glow-color', `color-mix(in srgb, ${color} 36%, transparent)`);
     },
 
     mix(from, to, t) {
-        return from.map((value, index) => Math.round(value + (to[index] - value) * t));
+        const percent = Math.max(0, Math.min(1, t)) * 100;
+        return `color-mix(in srgb, ${from} ${100 - percent}%, ${to} ${percent}%)`;
     },
 };
 
@@ -767,6 +785,7 @@ window.inventoryGridLayout = function(element) {
 };
 
 window.gameShell = function(initial = {}) {
+    const docked = initial.docked === true;
     const activeCharId = initial.activeCharId || "";
     const domain = initial.domain || "";
     const parseCssPx = (value, fallback) => {
@@ -778,14 +797,13 @@ window.gameShell = function(initial = {}) {
         const styles = window.getComputedStyle(root);
         const header = parseCssPx(styles.getPropertyValue("--game-header-height"), 40);
         const footer = parseCssPx(styles.getPropertyValue("--game-footer-height"), 24);
-        const inset = window.matchMedia("(max-width: 768px)").matches ? 6 : 8;
+        const inset = 8;
         return {
             header,
             footer,
             inset,
             top: header + inset,
             bottom: footer + inset,
-            isMobile: window.matchMedia("(max-width: 768px)").matches,
         };
     };
     const hudStorageKey = (name) => `tbmmorpg:hud:${name}:geometry:v1`;
@@ -796,20 +814,12 @@ window.gameShell = function(initial = {}) {
     const panelStateStorageKey = () => {
         const scope = activeCharId || "global";
         const domainScope = domain || "global";
-        const viewportScope = isDrawerViewport() ? "drawer" : "desktop";
+        const viewportScope = "desktop";
         return `tbmmorpg:shell:panels:${domainScope}:${scope}:${viewportScope}:v1`;
-    };
-    const isDrawerViewport = () => window.matchMedia("(max-width: 1024px)").matches;
-    const clearDrawerPanelState = () => {
-        try {
-            window.localStorage.removeItem(panelStateStorageKey());
-        } catch (_error) {
-            return;
-        }
     };
     const worldDesktopPanelsDefaultOpen = () => {
         if (!["exploration", "rift"].includes(domain)) return false;
-        return window.matchMedia("(min-width: 1025px)").matches;
+        return true;
     };
     const unavailableModalCopy = {
         quests: {
@@ -839,16 +849,12 @@ window.gameShell = function(initial = {}) {
         if (domain === "combats" && !["enemies", "log"].includes(view)) {
             return "enemies";
         }
-        if (noInventoryDomains.includes(domain) && view === "inventory") {
+        if ((docked || noInventoryDomains.includes(domain)) && view === "inventory") {
             return defaultRightPanelView;
         }
         return view;
     };
     const loadPanelState = () => {
-        if (isDrawerViewport()) {
-            clearDrawerPanelState();
-            return null;
-        }
         try {
             const raw = window.localStorage.getItem(panelStateStorageKey());
             if (!raw) return null;
@@ -866,10 +872,6 @@ window.gameShell = function(initial = {}) {
         }
     };
     const savePanelState = (state) => {
-        if (isDrawerViewport()) {
-            clearDrawerPanelState();
-            return;
-        }
         try {
             window.localStorage.setItem(panelStateStorageKey(), JSON.stringify({
                 leftOpen: Boolean(state.leftOpen),
@@ -923,8 +925,8 @@ window.gameShell = function(initial = {}) {
     const savedPanelState = loadPanelState();
     const defaultPanelsOpen = worldDesktopPanelsDefaultOpen();
     const initialPanelState = savedPanelState || {
-        leftOpen: !isDrawerViewport() && defaultPanelsOpen,
-        rightOpen: !isDrawerViewport() && defaultPanelsOpen,
+        leftOpen: defaultPanelsOpen,
+        rightOpen: defaultPanelsOpen,
         leftPanelView: "status",
         rightPanelView: defaultRightPanelView,
     };
@@ -951,8 +953,8 @@ window.gameShell = function(initial = {}) {
         chatTab: "global",
         chatHeight: chatWindowObj.open ? chatWindowObj.height : 30,
         chatMinimized: !chatWindowObj.open,
-        chatStep: chatWindowObj.open ? 2 : 0,
-        chatClosed: !chatWindowObj.open,
+        chatStep: docked ? 2 : (chatWindowObj.open ? 2 : 0),
+        chatClosed: docked ? false : !chatWindowObj.open,
         chatUnread: false,
         selectedAgentId: activeCharId,
         domain,
@@ -966,10 +968,14 @@ window.gameShell = function(initial = {}) {
             chat: chatWindowObj
         },
         chatLauncher,
-        leftOpen: initialPanelState.leftOpen,
-        rightOpen: initialPanelState.rightOpen,
+        leftOpen: docked ? true : initialPanelState.leftOpen,
+        rightOpen: docked ? false : initialPanelState.rightOpen,
 
         togglePanel(detail = {}) {
+            if (docked && detail.side === 'right' && detail.view === 'inventory') {
+                if (!noInventoryDomains.includes(document.getElementById('game-session-root')?.dataset.gameState || domain)) window.GameClientShell?.openInventory();
+                return;
+            }
             if (detail.side === "left") {
                 const nextView = detail.view || this.leftPanelView;
                 if (!detail.forceOpen && this.leftOpen && this.leftPanelView === nextView) {
@@ -1085,9 +1091,9 @@ window.gameShell = function(initial = {}) {
         },
 
         startHudWindowDrag(name, event, element) {
+            if (docked && name === 'chat') return;
             const hudWindow = this.windows[name];
             if (!hudWindow || !element) return;
-            if (shellMetrics().isMobile) return;
 
             const rect = element.getBoundingClientRect();
             hudWindow.x = rect.left;
@@ -1105,9 +1111,9 @@ window.gameShell = function(initial = {}) {
         },
 
         startHudWindowResize(name, edge, event, element) {
+            if (docked && name === 'chat') return;
             const hudWindow = this.windows[name];
             if (!hudWindow || !element) return;
-            if (shellMetrics().isMobile) return;
 
             const rect = element.getBoundingClientRect();
             hudWindow.x = rect.left;
@@ -1238,7 +1244,6 @@ window.gameShell = function(initial = {}) {
         hudWindowStyle(name) {
             const hudWindow = this.windows[name];
             if (!hudWindow) return "";
-            if (shellMetrics().isMobile) return "";
             const parts = [];
             if (hudWindow.x !== null) {
                 parts.push(`left: ${hudWindow.x}px`, `top: ${hudWindow.y}px`, "right: auto", "bottom: auto");
@@ -1271,6 +1276,16 @@ function _applyChatStep(newStep) {
     const chatRow   = document.querySelector('.game-chat-row') || document.querySelector('.game-chat-overlay');
     if (!container || !chatRow) return;
 
+    if (container.hasAttribute?.('data-game-client-shell')) {
+        const step = Math.max(0, Math.min(3, newStep));
+        if (step) container.style.setProperty('--client-chat-share', [0, '15%', '17.5%', '20%'][step]);
+        const state = window.Alpine?.$data(container);
+        if (state) { state.chatStep = step; state.chatClosed = step === 0; state.chatMinimized = step === 0; }
+        chatRow.querySelectorAll('[data-chat-minmax-label]').forEach(node => {node.textContent = step === 1 ? 'MAX' : 'MIN';});
+        window.GameClientShell?.refresh();
+        return;
+    }
+
     const styles = window.getComputedStyle(container);
     const footerHeight = Number.parseFloat(styles.getPropertyValue('--game-footer-height')) || 30;
     const available = window.innerHeight - 80;
@@ -1280,8 +1295,7 @@ function _applyChatStep(newStep) {
         Math.round(available * 0.50),
         Math.round(available * 0.75),
     ];
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    const minStep = isMobile ? 0 : 1;
+    const minStep = 1;
     const clamped = Math.max(minStep, Math.min(steps.length - 1, newStep));
     const height  = steps[clamped];
     const minMaxLabel = clamped === minStep ? 'MAX' : 'MIN';
@@ -1315,10 +1329,6 @@ function _applyChatStep(newStep) {
                     data.windows.chat.height = height;
                 }
             }
-            if (window.matchMedia("(max-width: 767px)").matches) {
-                data.chatClosed = clamped === 0;
-                if (clamped > 0) data.chatUnread = false;
-            }
         }
     }
 }
@@ -1332,8 +1342,7 @@ window.stepChatSize = function(dirOrTarget) {
         if (data && data.chatStep !== undefined) currentStep = data.chatStep;
     }
 
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    const minStep = isMobile ? 0 : 1;
+    const minStep = 1;
 
     let newStep;
     if (dirOrTarget === 'min')      newStep = minStep;
@@ -1355,8 +1364,7 @@ window.toggleChatMinMax = function() {
         const data = Alpine.$data(container);
         if (data && data.chatStep !== undefined) currentStep = data.chatStep;
     }
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    const minStep = isMobile ? 0 : 1;
+    const minStep = 1;
     _applyChatStep(currentStep === minStep ? 3 : minStep);
 };
 

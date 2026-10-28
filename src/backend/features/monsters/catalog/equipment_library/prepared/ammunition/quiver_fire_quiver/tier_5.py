@@ -1,13 +1,13 @@
 """Authored shared mechanics. Edit deliberately."""
 
-DATA = {'id': 'quiver_fire.quiver.ammunition.t5',
+DATA = {'id': 'quiver_fire.off_hand.ammunition.t5',
  'tier': 5,
  'profile_id': 'ammunition',
- 'item': {'item_id': 'quiver_fire.quiver.ammunition.t5',
+ 'item': {'item_id': 'quiver_fire.off_hand.ammunition.t5',
           'owner_key': None,
           'base_id': 'quiver_fire',
           'item_type': 'ammo',
-          'slot': 'quiver',
+          'slot': 'off_hand',
           'combat': {'power': 11.4,
                      'damage_spread': 0.0,
                      'implicit_bonuses': {},

@@ -1167,6 +1167,10 @@ class AbilityService:
                         ),
                         at_action_end=ctx.flags.meta.defer_queued_statuses,
                         forced_close=True,
+                        source_action_id=effect_data.get("source_action_id") or ctx.result.action_facts.get("id"),
+                        source_feint_id=ctx.result.action_facts.get("id")
+                        if ctx.result.action_facts.get("role") == "feint"
+                        else None,
                     )
                     ctx.result.effect_facts.append(
                         CombatEffectFactDTO(

@@ -18,7 +18,7 @@ trade_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Trade Bonus",
         ui_template="+{value}% Trade Value",
-        narrative_tags=("merchant", "shrewd", "profitable"),
+        narrative_tags=("trade",),
     ),
 )
 

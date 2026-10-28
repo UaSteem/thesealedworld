@@ -56,7 +56,7 @@ class ParryStep(ResolverStep):
         parry_cap = def_.mods.parry_cap
         parrying = def_.skills.skill_parrying
         skill_mult = 1.0 + (current_tunables().parry_skill_mult_per_point * parrying)
-        parry_chance = parry_base * skill_mult
+        parry_chance = parry_base * skill_mult + ctx.mods.tactical_parry_bonus
 
         if ctx.flags.formula.ignore_parry_cap:
             final_chance = parry_chance

@@ -20,25 +20,11 @@ Domain screens decide content:
 
 The slots themselves are shared.
 
-## Mobile Priority
+## Current desktop priority
 
-Mobile portrait is the hardest layout and must be designed first.
+Owner decision 2026-10-24: focus on desktop from 2560×1440 and larger down to 1366×768, including 1920×1080. Check 3840×2160 and shorter browser content height too. Mobile/tablet development and acceptance are deferred. Earlier guidance is preserved in archive/game_mobile_legacy/2026-10-24/related-originals/.
 
-- Keep the main game field readable.
-- Avoid turning actor/resource/status areas into scroll zones unless the screen is explicitly a panel or inventory.
-- Chat expands upward and may cover lower UI by design.
-- Drawers must not reflow critical controls.
-- Text controls that require reading get height priority over icon-only controls.
-- Icon-only ability/belt/tool rows must stay compact.
-
-## Desktop And Tablet
-
-Tablet and desktop reuse the same component contracts with different layout placement.
-
-- Side panels may become persistent on desktop but drawer-based on mobile/tablet.
-- Wider screens should add useful spacing or side panels, not stretch every button into oversized strips.
-- Desktop game menu can be full navigation; mobile can use burger/menu behavior.
-- Do not solve desktop by copying mobile widths blindly, and do not solve mobile by shrinking desktop.
+Keep the field readable, preserve useful control sizes and use internal scrolling when content is long. Wider screens should add useful space rather than stretch every button. Shared desktop/touch components can retain mobile-prefixed names. Future phone design targets landscape, collapsible chat and less vertical world visibility; it is separate work.
 
 ## Data Honesty
 
@@ -71,4 +57,4 @@ Before finishing gameplay UI work, report:
 - Which shared component/shell class owns the behavior.
 - Which domain class only customizes content.
 - Whether any page-local CSS should be promoted to a component.
-- Whether the mobile action panel leaves enough room for the main game field.
+- Whether the action panel leaves enough room for the main field at 1366×768 and reduced browser content height.

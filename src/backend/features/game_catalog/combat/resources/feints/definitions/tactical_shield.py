@@ -3,6 +3,7 @@ from src.backend.features.game_catalog.combat.resources.common.descriptions impo
     CombatEventTextSetDTO,
     build_combat_description,
 )
+from src.backend.features.game_catalog.combat.resources.common.pipeline_mutations import pipeline_mutation
 from src.backend.features.game_catalog.combat.resources.common.targeting import TargetType
 from src.backend.features.game_catalog.combat.resources.feints.schemas import (
     FeintCatalogEntryDTO,
@@ -16,6 +17,7 @@ _TACTICAL_SHIELD_TAGS = ["tactical", "shield", "skill_shield_mastery", "block", 
 TACTICAL_SHIELD_FEINTS_TECHNICAL = {
     "active_defense": FeintTechnicalDTO(
         feint_id="active_defense",
+        pipeline_mutations=[pipeline_mutation("tactical.entry_bonus")],
         cost=FeintCostDTO(tactics={"block": 3}),
         target=TargetType.SINGLE_ENEMY,
         applicability_tags=[*_TACTICAL_SHIELD_TAGS, "damage_reduction"],
@@ -26,6 +28,7 @@ TACTICAL_SHIELD_FEINTS_TECHNICAL = {
     ),
     "full_defense": FeintTechnicalDTO(
         feint_id="full_defense",
+        pipeline_mutations=[pipeline_mutation("tactical.protect")],
         cost=FeintCostDTO(tactics={"block": 5}),
         target=TargetType.SINGLE_ENEMY,
         applicability_tags=[*_TACTICAL_SHIELD_TAGS, "damage_cap"],
@@ -46,6 +49,7 @@ TACTICAL_SHIELD_FEINTS_TECHNICAL = {
     ),
     "aggressive_defense": FeintTechnicalDTO(
         feint_id="aggressive_defense",
+        pipeline_mutations=[pipeline_mutation("tactical.dislodge")],
         cost=FeintCostDTO(tactics={"hit": 2, "block": 5}),
         target=TargetType.SINGLE_ENEMY,
         applicability_tags=[*_TACTICAL_SHIELD_TAGS, "damage_cap", "reflect"],

@@ -17,7 +17,7 @@ hp_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Maximum HP",
         ui_template="+{value} Maximum HP",
-        narrative_tags=("vitality", "endurance", "hearty"),
+        narrative_tags=("vitality",),
     ),
 )
 
@@ -33,7 +33,7 @@ en_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Maximum Energy",
         ui_template="+{value} Maximum Energy",
-        narrative_tags=("energetic", "focused", "sustained"),
+        narrative_tags=("focus",),
     ),
 )
 
@@ -49,7 +49,7 @@ hp_regen_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="HP Regeneration",
         ui_template="+{value}% HP Regen",
-        narrative_tags=("regenerating", "resilient", "sustained"),
+        narrative_tags=("renewal",),
     ),
 )
 

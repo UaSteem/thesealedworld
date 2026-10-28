@@ -107,7 +107,7 @@ class CharacterCombatActorInputBuilder:
             if not item_id:
                 continue
             item = CharacterCombatActorInputBuilder._dict(by_id.get(str(item_id)))
-            if str(slot) == "quiver":
+            if str(slot) == "off_hand" and CharacterCombatActorInputBuilder._item_type(item) == "ammo":
                 quiver_payload = CharacterCombatActorInputBuilder._ammo_effect_payload(item)
                 quiver_charges = CharacterCombatActorInputBuilder._ammo_charges(item, flat_skills)
             skill_key = CharacterCombatActorInputBuilder._skill_key_for_slot(str(slot), item)
@@ -121,6 +121,10 @@ class CharacterCombatActorInputBuilder:
                 skill_key=skill_key,
                 symbiote=symbiote,
             )
+            if item_type == "ammo":
+                # Ammunition supplies main-hand charges/effects; it is never an
+                # independently selectable off-hand attack or weapon trigger.
+                continue
             if str(slot) == "two_hand":
                 hand_usage[combat_slot] = "two_hand"
             if item_type == "weapon" and str(slot) != "two_hand":

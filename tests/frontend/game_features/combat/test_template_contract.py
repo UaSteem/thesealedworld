@@ -27,6 +27,7 @@ from src.shared.schemas.combat import (
     CombatStatSectionDTO,
     CombatStatValueDTO,
 )
+from tests.frontend.css_theme_assertions import resolve_geometry_and_classic_art
 
 
 def test_combat_shell_uses_desktop_docks_without_forcing_mobile_panels():
@@ -34,7 +35,6 @@ def test_combat_shell_uses_desktop_docks_without_forcing_mobile_panels():
     responsive_dir = Path("src/frontend/static/css/game/shell/responsive")
     combat_desktop_css = responsive_dir.joinpath("combat_desktop.css").read_text()
     tablet_css = responsive_dir.joinpath("tablet_drawers.css").read_text()
-    mobile_css = responsive_dir.joinpath("mobile_drawers.css").read_text()
 
     assert "combat_layout = domain == 'combats'" in template
     assert "shell_background_url = background_url" in template
@@ -59,8 +59,10 @@ def test_combat_shell_uses_desktop_docks_without_forcing_mobile_panels():
     assert ".game-top-row.combat-layout .col-right" in combat_desktop_css
     assert ".game-top-row.combat-layout .combat-screen-shell" in combat_desktop_css
     assert "--center-content-max: 100%;" in combat_desktop_css
-    assert "@media (max-width: 1279px)" in tablet_css
-    assert "@media (max-width: 767px)" in mobile_css
+    assert "@media (max-width: 1439px)" in tablet_css
+    assert "@media (max-width: 1279px)" not in tablet_css
+    assert not responsive_dir.joinpath("mobile_drawers.css").exists()
+    assert 'mobile_drawers.css' not in responsive_dir.joinpath("index.css").read_text()
     assert ".game-top-row.combat-layout .col-left,\n    .game-top-row.combat-layout .col-right {\n        display: none !important;" not in combat_desktop_css
 
 
@@ -661,13 +663,11 @@ def test_combat_css_contains_texture_surfaces_without_shell_overrides():
     assert "grid-template-rows: auto minmax(260px, .72fr) minmax(0, auto) auto;" in result
     assert ".combat-result-head {\n    position: absolute;" in result
     assert ".combat-result-actions" in result
-    assert ".combat-result-actions .combat-primary-action" in result
-    assert "position: sticky;" in result
     assert ".combat-wait-scene" in source
     assert ".combat-panel" in source
     assert ".combat-vital-bar--stamina i" in source
-    assert "button-surface-04-charcoal-stone.webp" in source
-    assert "button-surface-02-blackened-metal.webp" in source
+    assert "button-surface-04-charcoal-stone.webp" in resolve_geometry_and_classic_art(source)
+    assert "button-surface-02-blackened-metal.webp" in resolve_geometry_and_classic_art(source)
     action_panel_block = source.split(".combat-action-panel {", maxsplit=1)[1].split(".combat-action-panel .combat-token-strip", maxsplit=1)[0]
     assert "button-surface-03-aged-bronze.webp" not in action_panel_block
     token_block = source.split(".combat-token {", maxsplit=1)[1].split(".combat-token img", maxsplit=1)[0]
@@ -701,29 +701,12 @@ def test_combat_css_contains_texture_surfaces_without_shell_overrides():
     assert "grid-template-rows: auto minmax(0, 1fr) auto;" in source
     assert "align-content: stretch;" in source
     assert ".combat-statebar," in source
-    assert "@media (max-width: 860px)" in source
-    assert ".combat-statebar {\n        display: none;" in source
     assert "width: 100%;" in source
     assert "grid-template-rows: minmax(138px, auto) minmax(0, 1fr);" not in responsive
-    assert "--combat-target-card-width: 100%;" in source
     assert "min-height: min(430px, calc(100dvh" not in responsive
     assert "grid-template-rows: auto 42px auto;" not in responsive
     assert "grid-template-rows: auto minmax(0, 1fr) auto;" in responsive
-    assert ".combat-field > .combat-field-actor--enemy {\n        grid-row: 1;\n        align-self: start;" in responsive
-    assert ".combat-field > .combat-field-actor--hero {\n        grid-row: 3;\n        align-self: end;" in responsive
-    assert ".combat-field > .combat-exchange-card {\n        grid-row: 2;\n        align-self: center;\n        justify-self: center;" in responsive
-    assert ".combat-exchange-trigger" in responsive
-    assert ".combat-exchange-inline {\n        display: none;" in responsive
     assert ".combat-exchange-modal" in actions
-    assert ".combat-exchange-wave__lines {\n        max-height: none;\n        overflow: visible;" in responsive
-    assert ".combat-action-panel {\n        gap: 6px;\n        padding: 7px;\n        max-height: min(38dvh, 270px);" in responsive
-    assert ".combat-feint-row {\n        grid-template-columns: 26px minmax(0, 1fr);" in responsive
-    assert ".combat-feint-row--empty {\n        grid-template-columns: minmax(0, 1fr);" in responsive
-    assert ".combat-feint-pin {\n        width: 26px;\n        min-height: 28px;\n        height: 28px;\n        aspect-ratio: auto;" in responsive
-    assert ".combat-feint-option,\n    .combat-feint-option--debug {\n        min-height: 28px;\n        height: 28px;" in responsive
-    assert ".combat-feint-row--empty .combat-feint-option--debug {\n        width: 100%;" in responsive
-    assert ".combat-feint-option img,\n    .combat-feint-icon {\n        width: 12px;\n        height: 12px;" in responsive
-    assert ".combat-feint-title {\n        -webkit-line-clamp: 1;" in responsive
     assert "--combat-target-card-width: clamp(340px, 52cqw, 620px);" in source
     assert "--combat-target-portrait-size: clamp(100px, min(16cqw, 30cqh), 190px);" in source
     assert "grid-template-columns: minmax(0, 1fr) var(--combat-target-portrait-size);" in source
@@ -737,7 +720,7 @@ def test_combat_css_contains_texture_surfaces_without_shell_overrides():
     assert ".combat-ability-strip" in actions
     assert "grid-template-columns: repeat(8, var(--combat-ability-slot-size));" in actions
     assert ".combat-ability-grid:has(> :nth-child(9))" in actions
-    assert "--combat-ability-slot-size: 30px;" in actions
+    assert "--combat-ability-slot-size: 30px;" in resolve_geometry_and_classic_art(actions)
     assert ".combat-roster-group" in source
     assert ".combat-roster-group__head" in source
     assert ".combat-action-group--desktop" not in source
@@ -747,22 +730,16 @@ def test_combat_css_contains_texture_surfaces_without_shell_overrides():
     assert "#center-screens" not in source
     assert "height: 100%;" in screen
     assert "grid-template-rows: auto minmax(0, 1fr) auto auto;" in screen
-    assert ".combat-mobile-dock {\n        display: none;" in source
     assert ".combat-action-panel {\n        position: sticky;\n        bottom: 0;" not in source
-    assert ".combat-action-panel {\n        max-height: min(44dvh, 320px);" in source
-    assert ".combat-primary-row {\n        order: 3;" in source
-    assert "position: sticky;\n        bottom: 0;" in source
     assert ".combat-primary-row {\n        order: -1;" not in source
-    mobile_actions = actions.split("@media (max-width: 860px)", maxsplit=1)[1]
-    assert ".combat-field {\n        min-height: auto;\n        grid-template-rows: auto minmax(0, 1fr) auto;\n        align-content: stretch;" in mobile_actions
-    assert "minmax(240px, 1fr)" not in mobile_actions
-    assert ".combat-exchange-card {\n        align-content: center;" in actions
     assert ".combat-ability-option--empty" in source
-    assert "button-surface-02-blackened-metal.webp" in source
+    assert "button-surface-02-blackened-metal.webp" in resolve_geometry_and_classic_art(source)
     assert ".combat-tool-panel {\n        order: -1;" not in source
-    assert ".combat-decision-panel {\n        order: 1;" in source
-    assert ".combat-refresh-button" in source
 
+    # Mobile overrides are archived; desktop texture/layout assertions above stay active.
+    assert "@media (max-width: 860px)" not in source
+    assert "@media (max-width: 767px)" not in responsive
+    assert "@media (max-width: 520px)" not in responsive
 
 def test_combat_log_panel_renders_line_icons():
     template = Path("src/frontend/templates/game/domains/combat/viewport/log_panel.html").read_text()

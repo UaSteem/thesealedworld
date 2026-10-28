@@ -17,7 +17,7 @@ cold_resistance_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Cold Resistance",
         ui_template="+{value}% Cold Resistance",
-        narrative_tags=("insulated", "hardy", "northern"),
+        narrative_tags=("cold_ward",),
     ),
 )
 
@@ -33,7 +33,7 @@ heat_resistance_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Heat Resistance",
         ui_template="+{value}% Heat Resistance",
-        narrative_tags=("fireproof", "desert", "heat-adapted"),
+        narrative_tags=("heat_ward",),
     ),
 )
 
@@ -49,7 +49,7 @@ bio_resistance_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Bio Resistance",
         ui_template="+{value}% Bio Resistance",
-        narrative_tags=("immune", "purified", "resilient"),
+        narrative_tags=("purity",),
     ),
 )
 

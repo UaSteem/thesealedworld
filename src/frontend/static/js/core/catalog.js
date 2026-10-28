@@ -98,6 +98,23 @@ window.GameCatalogCache = {
         return null;
     },
 
+    getItemVisual(visualVariantId) {
+        return this.get('item_visuals', visualVariantId);
+    },
+
+    getItemPresentation(baseId, visualVariantId = null) {
+        const base = this.get('items', baseId) || {};
+        const visual = this.getItemVisual(visualVariantId) || {};
+        return {
+            name: visual.name || base.title || '',
+            description: visual.description || base.description || '',
+            thumbnail_url: visual.thumbnail_url || null,
+            image_url: visual.image_url || null,
+            width_cells: visual.width_cells || null,
+            height_cells: visual.height_cells || null,
+        };
+    },
+
     getByKey(key) {
         if (!key) return null;
         if (key.startsWith('combat.')) {

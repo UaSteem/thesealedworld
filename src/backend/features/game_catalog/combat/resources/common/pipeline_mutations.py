@@ -52,6 +52,22 @@ def _contract(
 
 
 PIPELINE_MUTATION_CONTRACT_DEFINITIONS: tuple[PipelineMutationContractDTO, ...] = (
+    # Actor-global transition requests. The lifecycle consumes primary facts once.
+    _contract(
+        "tactical.entry_bonus", "result.action_facts.tactical_entry_bonus", "float", 0.20, allowed_sources=("feint",)
+    ),
+    _contract(
+        "tactical.hold_bonus", "result.action_facts.tactical_hold_bonus", "float", 0.20, allowed_sources=("feint",)
+    ),
+    _contract("tactical.protect", "result.action_facts.tactical_protect", "bool", True, allowed_sources=("feint",)),
+    _contract("tactical.dislodge", "result.action_facts.tactical_dislodge", "bool", True, allowed_sources=("feint",)),
+    _contract(
+        "tactical.force_advantage",
+        "result.action_facts.tactical_force_advantage",
+        "bool",
+        True,
+        allowed_sources=("feint",),
+    ),
     # Phases.
     _contract("phase.run_pre_calc", "phases.run_pre_calc", "bool", True),
     _contract("phase.run_stats_engine", "phases.run_stats_engine", "bool", True),

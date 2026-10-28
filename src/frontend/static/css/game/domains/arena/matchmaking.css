@@ -1,29 +1,29 @@
 .arena-queue-card {
-    min-height: 58px;
+    min-height: var(--size-58);
     min-width: 0;
     display: grid;
     grid-template-columns: minmax(0, 1fr) 52px;
     grid-template-areas:
         "kicker meter"
         "title meter";
-    gap: 2px 14px;
+    gap: var(--space-2) var(--space-14);
     align-items: center;
-    padding: 10px 14px 10px 18px;
-    border: 1px solid color-mix(in srgb, var(--world-accent, var(--col-accent)) 34%, transparent);
+    padding: var(--space-10) var(--space-14) var(--space-10) var(--space-18);
+    border: 1px solid color-mix(in srgb, var(--col-accent) 34%, transparent);
     background:
-        linear-gradient(90deg, rgba(255, 170, 0, .09), transparent 44%),
-        linear-gradient(rgba(1, 1, 1, .72), rgba(1, 1, 1, .88)),
-        url("/static/images/ui/textures/button-candidates/button-surface-01-dark-wood.webp");
+        linear-gradient(90deg, rgb(var(--tone-accent-024-rgb) / 0.09), transparent 44%),
+        linear-gradient(rgb(var(--tone-surface-002-rgb) / 0.72), rgb(var(--tone-surface-002-rgb) / 0.88)),
+        var(--texture-chrome-04);
     background-position: center;
     background-size: cover;
-    color: var(--world-accent, var(--col-accent));
+    color: var(--col-accent);
     cursor: pointer;
     clip-path: var(--clip-node-sm);
     text-align: left;
     box-shadow:
-        inset 0 1px 0 rgba(255, 230, 150, .12),
-        inset 0 -12px 20px rgba(0, 0, 0, .34),
-        0 0 0 1px rgba(0, 0, 0, .64);
+        inset 0 1px 0 rgb(var(--tone-text-027-rgb) / 0.12),
+        inset 0 -12px 20px rgb(var(--tone-surface-001-rgb) / 0.34),
+        0 0 0 1px rgb(var(--tone-surface-001-rgb) / 0.64);
     transition: border-color .16s ease, box-shadow .16s ease, filter .16s ease, transform .16s ease;
 }
 
@@ -35,28 +35,28 @@
         "kicker status meter"
         "title status meter"
         "note status meter";
-    gap: 7px 16px;
-    padding: 16px 18px;
+    gap: var(--space-7) var(--sp-4);
+    padding: var(--sp-4) var(--space-18);
 }
 
 .arena-queue-card--primary {
     background:
-        linear-gradient(90deg, rgba(255, 170, 0, .14), transparent 48%),
-        radial-gradient(circle at 90% 50%, rgba(255, 170, 0, .16), transparent 34%),
-        linear-gradient(rgba(1, 1, 1, .68), rgba(1, 1, 1, .90)),
-        url("/static/images/ui/textures/button-candidates/button-surface-01-dark-wood.webp");
+        linear-gradient(90deg, rgb(var(--tone-accent-024-rgb) / 0.14), transparent 48%),
+        radial-gradient(circle at 90% 50%, rgb(var(--tone-accent-024-rgb) / 0.16), transparent 34%),
+        linear-gradient(rgb(var(--tone-surface-002-rgb) / 0.68), rgb(var(--tone-surface-002-rgb) / 0.9)),
+        var(--texture-chrome-04);
     background-position: center;
     background-size: cover;
 }
 
 .arena-queue-card--secondary {
     min-height: 96px;
-    border-color: color-mix(in srgb, var(--world-accent, var(--col-accent)) 22%, transparent);
+    border-color: color-mix(in srgb, var(--col-accent) 22%, transparent);
     opacity: .9;
 }
 
 .arena-queue-card--compact {
-    min-height: 54px;
+    min-height: var(--size-54);
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
         "kicker"
@@ -72,28 +72,28 @@
 }
 
 .arena-queue-card:not(:disabled):hover {
-    border-color: color-mix(in srgb, var(--world-accent, var(--col-accent)) 66%, transparent);
+    border-color: color-mix(in srgb, var(--col-accent) 66%, transparent);
     filter: brightness(1.14) saturate(1.06);
     transform: translateY(-1px);
     box-shadow:
-        inset 0 1px 0 rgba(255, 230, 150, .18),
-        inset 0 -12px 20px rgba(0, 0, 0, .28),
-        0 0 18px var(--world-accent-soft, rgba(255, 170, 0, .22)),
-        0 0 0 1px rgba(0, 0, 0, .72);
+        inset 0 1px 0 rgb(var(--tone-text-027-rgb) / 0.18),
+        inset 0 -12px 20px rgb(var(--tone-surface-001-rgb) / 0.28),
+        0 0 18px var(--col-membrane),
+        0 0 0 1px rgb(var(--tone-surface-001-rgb) / 0.72);
 }
 
 .arena-queue-kicker {
     grid-area: kicker;
     color: var(--col-parchment-dim);
     font-size: var(--text-2xs);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: .24em;
 }
 
 .arena-queue-title {
     grid-area: title;
     font-size: var(--text-md);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: .14em;
     line-height: 1.25;
 }
@@ -113,45 +113,45 @@
     display: grid;
     align-content: center;
     justify-items: end;
-    gap: 4px;
+    gap: var(--sp-1);
     color: var(--col-parchment-dim);
     font-size: var(--text-2xs);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: .18em;
     text-align: right;
     text-transform: uppercase;
 }
 
 .arena-queue-status strong {
-    color: var(--world-accent, var(--col-accent));
+    color: var(--col-accent);
     font-size: var(--text-lg);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: .06em;
 }
 
 .arena-queue-meter {
     grid-area: meter;
-    width: 42px;
-    height: 42px;
+    width: var(--size-42);
+    height: var(--size-42);
     position: relative;
     display: grid;
     place-items: center;
-    border: 1px solid rgba(255, 170, 0, .28);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.28);
     background:
-        radial-gradient(circle, rgba(255, 170, 0, .18) 0 30%, transparent 31%),
-        radial-gradient(circle, rgba(255, 170, 0, .10) 0 32%, transparent 34%);
+        radial-gradient(circle, rgb(var(--tone-accent-024-rgb) / 0.18) 0 30%, transparent 31%),
+        radial-gradient(circle, rgb(var(--tone-accent-024-rgb) / 0.1) 0 32%, transparent 34%);
     clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
     opacity: .78;
 }
 
 .arena-queue-meter::before {
     content: "";
-    width: 26px;
-    height: 26px;
-    background: color-mix(in srgb, var(--world-accent, var(--col-accent)) 88%, #fff);
+    width: var(--size-26);
+    height: var(--size-26);
+    background: color-mix(in srgb, var(--col-accent) 88%, rgb(var(--tone-text-064-rgb)));
     -webkit-mask: var(--arena-queue-icon) center / contain no-repeat;
     mask: var(--arena-queue-icon) center / contain no-repeat;
-    filter: drop-shadow(0 0 8px var(--world-accent-soft, rgba(255, 170, 0, .22)));
+    filter: drop-shadow(0 0 8px var(--col-membrane));
 }
 
 .arena-queue-meter--ranked {
@@ -164,14 +164,14 @@
 
 .arena-queue-card--primary .arena-queue-meter,
 .arena-queue-card--secondary .arena-queue-meter {
-    width: 54px;
-    height: 54px;
+    width: var(--size-54);
+    height: var(--size-54);
 }
 
 .arena-queue-card--primary .arena-queue-meter::before,
 .arena-queue-card--secondary .arena-queue-meter::before {
-    width: 32px;
-    height: 32px;
+    width: var(--size-32);
+    height: var(--size-32);
 }
 
 .arena-service-exit--back {
@@ -189,16 +189,16 @@
     min-height: 178px;
     display: grid;
     place-items: center;
-    border: 1px solid color-mix(in srgb, var(--world-accent, var(--col-accent)) 18%, transparent);
+    border: 1px solid color-mix(in srgb, var(--col-accent) 18%, transparent);
     background:
-        linear-gradient(180deg, rgba(0, 0, 0, .18), rgba(0, 0, 0, .74)),
-        radial-gradient(circle at 50% 45%, rgba(255, 170, 0, .12), transparent 36%),
+        linear-gradient(180deg, rgb(var(--tone-surface-001-rgb) / 0.18), rgb(var(--tone-surface-001-rgb) / 0.74)),
+        radial-gradient(circle at 50% 45%, rgb(var(--tone-accent-024-rgb) / 0.12), transparent 36%),
         url("/static/images/game/arena/backgrounds/queue-scanner.webp"),
-        repeating-linear-gradient(-45deg, rgba(255, 170, 0, .025) 0 1px, transparent 1px 9px);
+        repeating-linear-gradient(-45deg, rgb(var(--tone-accent-024-rgb) / 0.025) 0 1px, transparent 1px 9px);
     background-position: center;
     background-size: cover;
     clip-path: var(--clip-node-sm);
-    box-shadow: inset 0 0 44px rgba(0, 0, 0, .74);
+    box-shadow: inset 0 0 44px rgb(var(--tone-surface-001-rgb) / 0.74);
     overflow: hidden;
     position: relative;
 }
@@ -207,10 +207,10 @@
     width: 118px;
     height: 118px;
     position: absolute;
-    border: 1px solid rgba(255, 170, 0, .16);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.16);
     background:
-        conic-gradient(from 0deg, transparent, rgba(255, 170, 0, .56), transparent 38%),
-        radial-gradient(circle, transparent 0 54%, rgba(255, 170, 0, .08) 56%, transparent 58%);
+        conic-gradient(from 0deg, transparent, rgb(var(--tone-accent-024-rgb) / 0.56), transparent 38%),
+        radial-gradient(circle, transparent 0 54%, rgb(var(--tone-accent-024-rgb) / 0.08) 56%, transparent 58%);
     clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
     opacity: .58;
     animation: arena-queue-scan 4s linear infinite;
@@ -218,25 +218,25 @@
 
 .arena-countdown {
     display: grid;
-    gap: 2px;
+    gap: var(--space-2);
     justify-items: center;
 }
 
 .arena-countdown-value {
-    color: color-mix(in srgb, var(--world-accent, var(--col-accent)) 86%, #fff);
+    color: color-mix(in srgb, var(--col-accent) 86%, rgb(var(--tone-text-064-rgb)));
     font-family: var(--font-ui);
-    font-size: 64px;
-    font-weight: 900;
+    font-size: var(--type-display);
+    font-weight: var(--weight-black);
     letter-spacing: 0;
     line-height: .95;
-    text-shadow: 0 2px 0 #000, 0 0 24px rgba(255, 170, 0, .26);
+    text-shadow: 0 2px 0 rgb(var(--tone-surface-001-rgb)), 0 0 24px rgb(var(--tone-accent-024-rgb) / 0.26);
 }
 
 .arena-countdown-label {
     color: var(--col-parchment-dim);
     font-family: var(--font-ui);
     font-size: var(--text-2xs);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: .28em;
     line-height: 1.4;
 }
@@ -244,17 +244,17 @@
 .arena-search-limit {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: var(--space-10);
     color: var(--col-parchment-dim);
     font-family: var(--font-ui);
     font-size: var(--text-2xs);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: .16em;
     text-transform: uppercase;
 }
 
 .arena-search-limit strong {
-    color: var(--world-accent, var(--col-accent));
+    color: var(--col-accent);
 }
 
 .arena-search-queue {

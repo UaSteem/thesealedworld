@@ -17,6 +17,17 @@ Project-owned skills live in `.agents/skills/`. Load the domain skill for the af
 | Audit findings, cross-audit comparison, remediation or domain stabilization plans | [audit-remediation](.agents/skills/turnbasedmmorpg-audit-remediation/SKILL.md) |
 | Versions, wipe, changelog, deployment, news | [release](.agents/skills/turnbasedmmorpg-release/SKILL.md) |
 
+## Main rule for domain skills
+
+Every domain skill has a short `SKILL.md` with two explicit routes:
+
+- **Use the domain:** `references/contract.md` describes or locates supported entry points, inputs/outputs, constraints, errors and examples for callers.
+- **Change the domain:** `references/properties.md` explains ownership, structure, invariants and routes to thematic references. Keep existing detailed references when they remain independently useful.
+
+Keep essential ownership and safety constraints in the entrypoint so choosing the consumer route cannot bypass them. Load only the route and references needed for the task. Mark missing or unverified contract details explicitly; a structural split does not prove current runtime behavior.
+
+The existing domain skills are backend, frontend, combat, game-content, monsters, rift and studio. Project, quality, release, audit-remediation and content-archive are process/operational skills; retain task-based routing without inventing domain APIs. Content-archive governs local archive/export/cleanup procedures, not a runtime content service.
+
 Agent-skill maintenance follows the global `project-skills-maintainer` workflow and the project's [maintenance reference](.agents/skills/turnbasedmmorpg-project/references/agent-skill-maintenance.md). In-game character skills are owned by the game catalog under `src/backend/features/game_catalog/skills`.
 
 `graphify-out/` is generated context and may be stale after source or skill changes. Verify claims against current files and regenerate only when the task requires a current graph.

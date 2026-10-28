@@ -6,9 +6,10 @@ import pytest
 from src.frontend.game_features.combat.routes.actions import (
     game_combat_feint_pin,
     game_combat_move,
+    game_combat_report,
     game_combat_result_continue,
 )
-from src.shared.schemas.combat import CombatActorCardDTO, CombatDashboardDTO, CombatResultDTO
+from src.shared.schemas.combat import CombatActorCardDTO, CombatDashboardDTO, CombatLogDTO, CombatResultDTO
 from src.shared.schemas.response import CoreResponseDTO, GameStateHeader, StateTransitionDTO
 
 
@@ -26,6 +27,25 @@ class FakeRenderer:
 class FakeAuthService:
     async def require_current_user(self, request):
         return SimpleNamespace(id="user-1")
+
+
+@pytest.mark.asyncio
+async def test_battle_report_authenticates_and_requests_bounded_typed_snapshot():
+    calls = []
+
+    class Auth:
+        async def require_current_user(self, request):
+            calls.append("auth")
+
+    class Api:
+        async def logs(self, token, **kwargs):
+            calls.append((token, kwargs))
+            return CombatLogDTO(session_id="battle-1", page_size=8)
+
+    request = SimpleNamespace(cookies={"tbmmorpg_game_access_token": "game-token"}, state=SimpleNamespace())
+    report = await game_combat_report(request, Auth(), Api(), char_id=5, page=-1)
+    assert isinstance(report, CombatLogDTO)
+    assert calls == ["auth", ("game-token", {"char_id": 5, "page": 1, "page_size": 8})]
 
 
 class RejectingCombatApi:

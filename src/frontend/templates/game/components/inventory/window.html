@@ -11,21 +11,19 @@
     'weapon_spear', 'weapon_staff', 'weapon_sword', 'weapon_trident', 'weapon_two_hand'
 ] %}
 {% set base_icon_map = {
-    'scout_leggings': 'legs_light',
-    'breeches': 'legs_medium',
-    'greaves': 'legs_heavy',
-    'fur_pants': 'legwear',
-    'travel_boots': 'feetwear'
+    'light_leg_armor': 'legs_light',
+    'medium_leg_armor': 'legs_medium',
+    'heavy_leg_armor': 'legs_heavy',
+    'pants': 'legwear',
+    'boots': 'feetwear'
 } %}
 {% set slot_icon_map = {
     'head_armor': 'head',
     'outer_garment': 'cloak',
     'chest_armor': 'torso',
-    'chest_garment': 'garment',
     'arms_armor': 'arms',
     'gloves_garment': 'arms',
     'legs_armor': 'legs',
-    'legs_garment': 'legwear',
     'feetwear': 'feetwear',
     'main_hand': 'weapon',
     'off_hand': 'shield',
@@ -35,7 +33,6 @@
     'ring_1': 'ring',
     'ring_2': 'ring',
     'belt_accessory': 'belt',
-    'quiver': 'quiver'
 } %}
 {% set accessory_slot_label_map = {
     'ring_1': 'Кольцо 1',
@@ -80,6 +77,16 @@
     'currency': 'resource',
     'quest': 'quest'
 } %}
+{% macro inventory_art(url, icon, kind='equipment') %}
+{% if url %}<img class="inventory-object-image inventory-object-image--{{ kind }}" src="{{ url }}" alt="" aria-hidden="true" loading="lazy">
+{% else %}<span class="{{ 'inventory-card-icon' if kind == 'bag' else 'inventory-equipped-icon' }}" style="--inventory-item-icon-url: url('/static/images/ui/inventory-gear/{{ icon }}.svg');" aria-hidden="true"></span>{% endif %}
+{% endmacro %}
+{% macro inventory_slot_actions(details, item) %}
+{% if item and inventory.can_act and details %}
+data-inventory-menu-trigger data-inventory-char-id="{{ inventory.char_id }}" data-inventory-item-id="{{ item.item_id }}"
+data-inventory-actions='[{% for action in details.actions %}{"action": {{ action.action | tojson }}, "label": {{ action.label | tojson }}, "slot_id": {{ action.slot_id | tojson }}, "enabled": {{ action.enabled | tojson }}, "reason": {{ action.reason | tojson }}}{% if not loop.last %},{% endif %}{% endfor %}]'
+{% endif %}
+{% endmacro %}
 {% macro inventory_tooltip_card(name, item_type, rarity_label, tier, icon, details, comparison=[], row_weight='-', row_quantity='1', target_label='') %}
 {% set type_label = details.item_type_label if details and details.item_type_label is defined else item_type %}
 <article class="item-card inventory-tooltip-card r{{ tier }} ic-r{{ tier }}"
@@ -92,7 +99,9 @@
                 <span class="inventory-tooltip-tier">T{{ tier }}</span>
             </div>
         </div>
-        <div class="inventory-tooltip-sigil" aria-hidden="true"></div>
+        {% if details and details.image_url is defined and details.image_url %}
+        <img class="inventory-object-image inventory-object-image--detail" src="{{ details.image_url }}" alt="" aria-hidden="true" loading="lazy">
+        {% else %}<div class="inventory-tooltip-sigil" aria-hidden="true"></div>{% endif %}
     </div>
     {% if details and details.description is defined and details.description %}
     <div class="inventory-tooltip-description">{{ details.description }}</div>
@@ -223,6 +232,12 @@
                     data-inventory-char-id="{{ inventory.char_id }}"
                     data-inventory-item-id="{{ zone_action_item.item_id if zone_action_item else '' }}"
                     data-inventory-actions='[
+                        {% if primary_item and not primary_item.is_identified %}
+                        {"action": "identify", "label": "Раскрыть", "item_id": {{ primary_item.item_id | tojson }}, "enabled": true},
+                        {% endif %}
+                        {% if secondary_item and not secondary_item.is_identified %}
+                        {"action": "identify", "label": "Раскрыть", "item_id": {{ secondary_item.item_id | tojson }}, "enabled": true},
+                        {% endif %}
                         {% if primary_item %}
                         {
                             "action": "unequip",
@@ -264,11 +279,11 @@
                     {% else %}
                     @click="selectedSlot = selectedSlot === '{{ zone.primary_slot.slot_id }}' ? null : '{{ zone.primary_slot.slot_id }}'; activeInventoryTab = 'items'"
                     {% endif %}>
-                <span class="inventory-slot-title">{{ zone.label }}</span>
+                {% if not zone_has_item %}<span class="inventory-slot-title">{{ zone.label }}</span>{% endif %}
                 {% if not zone_has_item %}
-                <span class="inventory-slot-state">{{ primary_name }}</span>
+                {{ inventory_art(none, primary_icon) }}
                 {% else %}
-                <span class="inventory-equipped-icon" aria-hidden="true"></span>
+                {{ inventory_art(zone_action_item.thumbnail_url if zone_action_item and zone_action_item.thumbnail_url is defined else none, primary_icon if not primary_empty else secondary_icon) }}
                 <span class="sr-only">{{ primary_name }}{% if secondary_item %}; {{ secondary_name }}{% endif %}</span>
                 {% endif %}
                 <span class="inventory-slot-tooltip">
@@ -299,8 +314,8 @@
             {% set slot_name = slot.item_name if slot.item_name is defined else (slot_item.name if slot_item else 'EMPTY') %}
             {% set slot_tier = slot.details.rarity_tier if slot.details else (slot_item.rarity_tier if slot_item and slot_item.rarity_tier is defined else 0) %}
             {% set slot_rarity = slot.details.rarity_label if slot.details else (slot_item.rarity if slot_item else 'Без грейда') %}
-            {% set slot_icon = weapon_icon_base_map.get(slot_item.base_id if slot_item else '', slot_icon_map.get(slot.slot_id, type_icon_map.get(slot_item.item_type if slot_item else '', 'default'))) %}
-            {% if slot.slot_id == 'two_hand' and not slot_empty %}
+            {% set slot_icon = 'quiver' if slot_item and slot_item.item_type == 'ammo' else weapon_icon_base_map.get(slot_item.base_id if slot_item else '', slot_icon_map.get(slot.slot_id, type_icon_map.get(slot_item.item_type if slot_item else '', 'default'))) %}
+            {% if slot.slot_id == 'two_hand' and not slot_empty and inventory.weapon_slots | length == 1 %}
             <button type="button"
                     class="inventory-equip-zone inventory-equip-zone--two-shadow is-equipped inventory-grade-r{{ slot_tier }}"
                     aria-label="{{ slot.label }}: {{ slot_name }}"
@@ -324,16 +339,16 @@
                     {% else %}
                     @click="selectedSlot = selectedSlot === '{{ slot.slot_id }}' ? null : '{{ slot.slot_id }}'; activeInventoryTab = 'items'"
                     {% endif %}>
-                <span class="inventory-slot-title">{{ slot.label }}</span>
-                <span class="inventory-equipped-icon" aria-hidden="true"></span>
+                {{ inventory_art(slot_item.thumbnail_url if slot_item and slot_item.thumbnail_url is defined else none, slot_icon) }}
             </button>
             {% endif %}
             <button type="button"
-                    class="inventory-equip-zone inventory-equip-zone--{{ 'two' if slot.slot_id == 'two_hand' else 'main' if slot.slot_id == 'main_hand' else 'off' }} {{ 'is-equipped' if not slot_empty else '' }} inventory-grade-r{{ slot_tier }}"
+                    class="inventory-equip-zone inventory-equip-zone--{{ 'two' if slot.slot_id == 'two_hand' and inventory.weapon_slots | length == 1 else 'main' if slot.slot_id in ['main_hand', 'two_hand'] else 'off' }} {{ 'is-equipped' if not slot_empty else '' }} inventory-grade-r{{ slot_tier }}"
                     :class="{ 'is-selected': selectedSlot === '{{ slot.slot_id }}' }"
                     aria-label="{{ slot.label }}: {{ slot_name }}"
                     data-slot-id="{{ slot.slot_id }}"
                     {% if not slot_empty %}data-inventory-tooltip-trigger{% endif %}
+                    {{ inventory_slot_actions(slot.details, slot_item) }}
                     {% if not slot_empty %}style="--inventory-item-icon-url: url('/static/images/ui/inventory-gear/{{ slot_icon }}.svg');"{% endif %}
                     {% if not slot_empty and inventory.can_act and slot_item %}
                     hx-post="/game/inventory/action"
@@ -353,11 +368,11 @@
                     {% else %}
                     @click="selectedSlot = selectedSlot === '{{ slot.slot_id }}' ? null : '{{ slot.slot_id }}'; activeInventoryTab = 'items'"
                     {% endif %}>
-                <span class="inventory-slot-title">{{ slot.label }}</span>
+                {% if slot_empty %}<span class="inventory-slot-title">{{ slot.label }}</span>{% endif %}
                 {% if slot_empty %}
-                <span class="inventory-slot-state">{{ slot_name }}</span>
+                {{ inventory_art(none, slot_icon) }}
                 {% else %}
-                <span class="inventory-equipped-icon" aria-hidden="true"></span>
+                {{ inventory_art(slot_item.thumbnail_url if slot_item and slot_item.thumbnail_url is defined else none, slot_icon) }}
                 <span class="sr-only">{{ slot_name }}</span>
                 {% endif %}
                 <span class="inventory-slot-tooltip">
@@ -394,6 +409,7 @@
                         aria-label="{{ slot.label }}: {{ slot_name }}"
                         data-slot-id="{{ slot.slot_id }}"
                         {% if not slot_empty %}data-inventory-tooltip-trigger{% endif %}
+                    {{ inventory_slot_actions(slot.details, slot_item) }}
                         {% if not slot_empty %}style="--inventory-item-icon-url: url('/static/images/ui/inventory-gear/{{ slot_icon }}.svg');"{% endif %}
                         {% if not slot_empty and inventory.can_act and slot_item %}
                         hx-post="/game/inventory/action"
@@ -413,11 +429,11 @@
                         {% else %}
                         @click="selectedSlot = selectedSlot === '{{ slot.slot_id }}' ? null : '{{ slot.slot_id }}'; activeInventoryTab = 'items'"
                         {% endif %}>
-                    <span class="inventory-accessory-slot-label">{{ slot_label }}</span>
+                    {% if slot_empty %}<span class="inventory-accessory-slot-label">{{ slot_label }}</span>{% endif %}
                     {% if slot_empty %}
-                    <small>{{ slot_name }}</small>
+                    {{ inventory_art(none, slot_icon) }}
                     {% else %}
-                    <span class="inventory-equipped-icon" aria-hidden="true"></span>
+                    {{ inventory_art(slot_item.thumbnail_url if slot_item and slot_item.thumbnail_url is defined else none, slot_icon) }}
                     <small class="sr-only">{{ slot_name }}</small>
                     {% endif %}
                     <span class="inventory-slot-tooltip">
@@ -451,6 +467,7 @@
                     aria-label="Belt quick slot {{ slot.slot_index }}: {{ quick_name }}"
                     aria-disabled="{{ 'false' if slot.enabled else 'true' }}"
                     {% if not quick_empty %}data-inventory-tooltip-trigger{% endif %}
+                    {{ inventory_slot_actions(slot.details, quick_item) }}
                     {% if not quick_empty %}style="--inventory-item-icon-url: url('/static/images/ui/inventory-gear/{{ quick_icon }}.svg');"{% endif %}
                     {% if not quick_empty and inventory.can_act and quick_item %}
                     hx-post="/game/inventory/action"
@@ -471,7 +488,7 @@
                 {% if quick_empty %}
                 <span class="inventory-belt-slot-index">{{ slot.slot_index }}</span>
                 {% else %}
-                <span class="inventory-equipped-icon" aria-hidden="true"></span>
+                {{ inventory_art(quick_item.thumbnail_url if quick_item and quick_item.thumbnail_url is defined else none, quick_icon) }}
                 <span class="sr-only">{{ quick_name }}</span>
                 {% endif %}
                 {% if quick_item %}
@@ -588,7 +605,7 @@
                         @click="inventoryNotice = {{ inventory.forbidden_reason | tojson | forceescape }}"
                         {% endif %}
                         style="{{ row.style if row.style is defined and row.style else '--item-w: ' ~ (row.grid_w if row.grid_w is defined else 2) ~ '; --item-h: ' ~ (row.grid_h if row.grid_h is defined else 1) ~ ';' }} --inventory-item-icon-url: url('/static/images/ui/inventory-gear/{{ row_icon }}.svg');">
-                    <span class="inventory-card-icon" aria-hidden="true"></span>
+                    {{ inventory_art(row.image_url if row.image_url is defined else none, row_icon, "bag") }}
                     <span class="inventory-card-name">{{ row.name }}</span>
                     {% if row.quantity != "1" and row.quantity != 1 %}
                     <span class="inventory-card-qty">{{ row.quantity }}</span>

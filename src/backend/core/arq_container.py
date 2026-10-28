@@ -18,7 +18,6 @@ from src.backend.features.combat.game_config import CombatConfig
 from src.backend.features.expedition.game_config import ExpeditionConfig
 from src.backend.features.exploration.game_config import ExplorationConfig
 from src.backend.features.loot.game_config import LootConfig
-from src.backend.features.rift.game_config import RiftConfig
 from src.backend.features.scenario.game_config import ScenarioConfig
 from src.backend.infrastructure.game_config.manager import GameConfigManager
 from src.backend.infrastructure.redis.managers import build_redis_managers
@@ -31,7 +30,6 @@ _GAME_CONFIGS = (
     ExplorationConfig,
     LootConfig,
     ScenarioConfig,
-    RiftConfig,
 )
 
 

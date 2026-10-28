@@ -19,7 +19,7 @@ def references_for(member, tier: int) -> tuple[EquipmentItemReferenceDTO, ...]:
             profile = "bruiser"
         elif slot == "chest_armor":
             profile = "fortified"
-        elif slot == "quiver":
+        elif slot == "off_hand" and mapping.item_kind == "ammo":
             profile = "ammunition"
         elif slot == "off_hand":
             profile = "guard" if mapping.item_kind == "shield" else "offhand"

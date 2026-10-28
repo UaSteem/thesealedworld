@@ -19,7 +19,7 @@ attribute_strength = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Strength",
         ui_template="+{value} Strength",
-        narrative_tags=("powerful", "warrior", "strong"),
+        narrative_tags=("ferocity",),
     ),
 )
 
@@ -36,7 +36,7 @@ attribute_perception = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Perception",
         ui_template="+{value} Perception",
-        narrative_tags=("perceptive", "sharp", "keen"),
+        narrative_tags=("awareness",),
     ),
 )
 
@@ -53,7 +53,7 @@ attribute_agility = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Agility",
         ui_template="+{value} Agility",
-        narrative_tags=("agile", "nimble", "quick"),
+        narrative_tags=("agility",),
     ),
 )
 
@@ -70,7 +70,7 @@ attribute_endurance = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Endurance",
         ui_template="+{value} Endurance",
-        narrative_tags=("resilient",),
+        narrative_tags=("vitality",),
     ),
 )
 
@@ -87,7 +87,7 @@ attribute_intellect = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Intellect",
         ui_template="+{value} Intellect",
-        narrative_tags=("intellectual",),
+        narrative_tags=("knowledge",),
     ),
 )
 
@@ -104,7 +104,7 @@ attribute_memory = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Memory",
         ui_template="+{value} Memory",
-        narrative_tags=("learned",),
+        narrative_tags=("knowledge",),
     ),
 )
 
@@ -121,7 +121,7 @@ attribute_mental = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Mental",
         ui_template="+{value} Mental",
-        narrative_tags=("steadfast",),
+        narrative_tags=("resolve",),
     ),
 )
 
@@ -138,7 +138,7 @@ attribute_projection = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Projection",
         ui_template="+{value} Projection",
-        narrative_tags=("focused",),
+        narrative_tags=("focus",),
     ),
 )
 
@@ -155,7 +155,7 @@ attribute_prediction = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Prediction",
         ui_template="+{value} Prediction",
-        narrative_tags=("prescient",),
+        narrative_tags=("foresight",),
     ),
 )
 

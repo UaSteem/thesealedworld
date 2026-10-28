@@ -14,6 +14,7 @@ from src.backend.features.combat.dto.pipeline import (
     CombatResourceApplicationDTO,
     InteractionResultDTO,
     PipelineContextDTO,
+    TacticalTransitionFactDTO,
 )
 from src.backend.features.combat.dto.session import BattleContext, TargetReturnDTO
 from src.backend.features.combat.integrations import CombatCatalogIntegrator
@@ -24,6 +25,7 @@ from src.backend.features.combat.runtime.engine.feint_service import FeintServic
 from src.backend.features.combat.runtime.engine.pipeline import CombatPipeline
 from src.backend.features.combat.runtime.engine.ranged_position import RangedPositionService
 from src.backend.features.combat.runtime.engine.stats_engine import StatsEngine
+from src.backend.features.combat.runtime.engine.tactical_state import TacticalStateService
 from src.backend.features.combat.runtime.engine.target_resolver import TargetResolver
 from src.backend.features.combat.runtime.support import (
     CombatAnalyticsFactBuilder,
@@ -473,6 +475,11 @@ class CombatExecutor:
         commit_ctx = PipelineContextDTO()
         commit_ctx.flags.meta.action_mode = "exchange" if participants else "unidirectional"
         actors = {str(key): actor for key, actor in ctx.actors.items()}
+        initial_positions = {
+            key: RangedPositionService.current_position(actor)
+            for key, actor in actors.items()
+            if RangedPositionService.is_ranged_actor(actor)
+        }
         # A status-only commit must not replay damage, cost, tokens, or hand refill.
         mechanics = self.pipeline.mechanics_service
         consumed = {
@@ -507,9 +514,46 @@ class CombatExecutor:
             final.effect_facts.extend(fact for fact in result.effect_facts if str(fact.actor_id) in accepted_positions)
             final.events.extend(event for event in result.events if str(event.target_id) in accepted_positions)
         if participants:
-            RangedPositionService.update_after_exchange(all_pairs, participants=participants, final_result=final)
+            for participant in participants:
+                StatsEngine.ensure_stats(participant)
+            TacticalStateService.update_after_exchange(
+                all_pairs,
+                participants=participants,
+                final_result=final,
+                seed=f"{ctx.session_id}:{ctx.meta.step_counter}:{action.move.move_id}",
+            )
+        else:
+            # Existing instant force-close is an explicit archer exception: it
+            # commits at action end without granting a tactical initiative roll.
+            for actor_id, before in initial_positions.items():
+                actor = actors[actor_id]
+                after = RangedPositionService.current_position(actor)
+                if before == after or not actor.is_alive:
+                    continue
+                effect = next(
+                    (
+                        e
+                        for e in actor.statuses.effects
+                        if e.effect_id == "ranged_position"
+                        and e.params.get("forced_close")
+                        and e.active_from_exchange == actor.meta.exchange_counter
+                    ),
+                    None,
+                )
+                if effect is not None:
+                    final.tactical_transitions.append(
+                        TacticalTransitionFactDTO(
+                            actor_id=actor.char_id,
+                            style="skill_ranged_combat",
+                            before=before,
+                            after=after,
+                            reason="feint_dislodge",
+                            source_action_id=effect.params.get("source_action_id"),
+                            source_feint_id=effect.params.get("source_feint_id"),
+                        )
+                    )
         StatsEngine.sync_effect_modifiers(list(ctx.actors.values()))
-        if final.effect_facts:
+        if final.effect_facts or final.tactical_transitions:
             ctx.pending_logs.extend(
                 CombatLogBuilder.build_effect_fact_entries(
                     ctx=ctx, result=final, action=action, wave=wave, timestamp=time.time()

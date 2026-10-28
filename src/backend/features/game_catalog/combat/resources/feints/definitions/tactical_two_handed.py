@@ -3,6 +3,7 @@ from src.backend.features.game_catalog.combat.resources.common.descriptions impo
     CombatEventTextSetDTO,
     build_combat_description,
 )
+from src.backend.features.game_catalog.combat.resources.common.pipeline_mutations import pipeline_mutation
 from src.backend.features.game_catalog.combat.resources.common.targeting import TargetType
 from src.backend.features.game_catalog.combat.resources.feints.schemas import (
     FeintCatalogEntryDTO,
@@ -16,6 +17,7 @@ _TWO_HANDED_TAGS = ["tactical", "two_handed", "skill_two_handed", "melee"]
 TACTICAL_TWO_HANDED_FEINTS_TECHNICAL = {
     "crushing_pressure": FeintTechnicalDTO(
         feint_id="crushing_pressure",
+        pipeline_mutations=[pipeline_mutation("tactical.dislodge")],
         cost=FeintCostDTO(tactics={"hit": 3}),
         target=TargetType.SINGLE_ENEMY,
         applicability_tags=[*_TWO_HANDED_TAGS, "hit", "debuff", "damage_reduction"],
@@ -24,6 +26,7 @@ TACTICAL_TWO_HANDED_FEINTS_TECHNICAL = {
     ),
     "steel_line": FeintTechnicalDTO(
         feint_id="steel_line",
+        pipeline_mutations=[pipeline_mutation("tactical.entry_bonus")],
         cost=FeintCostDTO(tactics={"crit": 3}),
         target=TargetType.SINGLE_ENEMY,
         applicability_tags=[*_TWO_HANDED_TAGS, "crit", "preparation", "parry"],
@@ -32,6 +35,7 @@ TACTICAL_TWO_HANDED_FEINTS_TECHNICAL = {
     ),
     "blade_return": FeintTechnicalDTO(
         feint_id="blade_return",
+        pipeline_mutations=[pipeline_mutation("tactical.hold_bonus")],
         cost=FeintCostDTO(tactics={"hit": 2, "crit": 2}),
         target=TargetType.SINGLE_ENEMY,
         applicability_tags=[*_TWO_HANDED_TAGS, "hit", "crit", "preparation", "parry_boost"],

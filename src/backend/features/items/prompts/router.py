@@ -34,6 +34,9 @@ def build_item_name_description_prompt(payload: dict[str, Any]) -> PromptResult:
         "If source_context is missing or sparse, write purely from type, material, grade, and stable item tags. "
         "\n\n"
         "Use provided tags, type, material, grade, and source context as narrative inspiration only. "
+        "narrative_meanings defines the controlled affix lore: express those meanings through imagery and atmosphere, "
+        "without inventing mechanics or exposing numeric bonuses. The selected visual_variant_id is a fixed appearance identity; "
+        "do not contradict the material or invent a different weapon form. "
         "Write in Russian. Name: short (2-5 words). Description: 1-2 atmospheric sentences (25-60 words). "
         'Return strict JSON: {"name": "...", "description": "..."}.'
     )

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from sqlalchemy import DateTime, ForeignKey, Integer, String, UniqueConstraint, func
+from sqlalchemy import Boolean, DateTime, ForeignKey, Integer, String, UniqueConstraint, func
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -21,8 +21,8 @@ class ItemGeneratedTemplate(Base, ContextSourceMixin, SchemaVersionMixin, Revisi
     rarity_tier: Mapped[int] = mapped_column(nullable=False, index=True)
     item_grade: Mapped[str] = mapped_column(String(40), default="", nullable=False, index=True)
     material_id: Mapped[str | None] = mapped_column(String(80), nullable=True, index=True)
-    name: Mapped[str] = mapped_column(String(160), nullable=False)
-    description: Mapped[str] = mapped_column(String(1000), nullable=False)
+    name: Mapped[str | None] = mapped_column(String(160), nullable=True)
+    description: Mapped[str | None] = mapped_column(String(1000), nullable=True)
     image_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     icon_key: Mapped[str | None] = mapped_column(String(120), nullable=True)
     text_status: Mapped[str] = mapped_column(String(40), default="not_requested", nullable=False, index=True)
@@ -51,8 +51,9 @@ class ItemInstance(Base, ContextSourceMixin, SchemaVersionMixin, RevisionMixin):
     rarity_tier: Mapped[int] = mapped_column(nullable=False, index=True)
     lifecycle_status: Mapped[str] = mapped_column(String(40), default="mechanical_ready", nullable=False, index=True)
     text_status: Mapped[str] = mapped_column(String(40), default="not_requested", nullable=False, index=True)
-    name: Mapped[str] = mapped_column(String(160), nullable=False)
-    description: Mapped[str] = mapped_column(String(1000), nullable=False)
+    is_identified: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false", nullable=False)
+    name: Mapped[str | None] = mapped_column(String(160), nullable=True)
+    description: Mapped[str | None] = mapped_column(String(1000), nullable=True)
     mechanics: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict, nullable=False)
     appearance: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict, nullable=False)
     generation: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict, nullable=False)

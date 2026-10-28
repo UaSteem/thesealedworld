@@ -86,6 +86,9 @@ class FakeRepo:
         self.created_templates.append(template)
         return template
 
+    async def get_generated_template(self, template_id):
+        return next((t for t in self.created_templates if t.id == template_id), None)
+
     async def get(self, item_id):
         return self.instances.get(item_id)
 
@@ -145,6 +148,13 @@ class FakeTemplatePersistence:
         self.templates_by_hash[text_visual_hash] = template
         self.created_templates.append(template)
         return template
+
+    async def request_template_text(self, template_id):
+        template = next(t for t in self.created_templates if t.id == template_id)
+        if template.text_status not in {"not_requested", "failed"}:
+            return False
+        template.text_status = "pending"
+        return True
 
     async def create_mechanical_item(
         self,
@@ -215,7 +225,7 @@ async def test_generation_service_reuses_text_visual_template_when_affixes_diffe
         base_request.model_copy(update={"forced_affix_ids": ["crit_chance"], "affix_count": 1})
     )
     second = await service.generate_mechanical(
-        base_request.model_copy(update={"forced_affix_ids": ["weapon_accuracy"], "affix_count": 1})
+        base_request.model_copy(update={"forced_affix_ids": ["armor_penetration_pct_bonus"], "affix_count": 1})
     )
 
     assert first.item_ids == ["item-1"]
@@ -242,7 +252,7 @@ async def test_generation_service_creates_character_owned_instances_from_reused_
         base_request.model_copy(update={"forced_affix_ids": ["crit_chance"], "affix_count": 1})
     )
     second = await service.generate_mechanical(
-        base_request.model_copy(update={"forced_affix_ids": ["weapon_accuracy"], "affix_count": 1})
+        base_request.model_copy(update={"forced_affix_ids": ["armor_penetration_pct_bonus"], "affix_count": 1})
     )
 
     assert first.item_ids == ["item-1"]
@@ -266,6 +276,8 @@ async def test_generation_service_reuses_text_template_for_same_clan_item_keys_a
         material_id="mat_iron_ingot",
         rarity_tier=2,
         request_ai_text=True,
+        forced_affix_ids=["crit_chance"],
+        affix_count=1,
         source_context={
             "clan_id": "clan-1",
             "location_id": "52_53",
@@ -295,8 +307,10 @@ async def test_generation_service_reuses_text_template_for_same_clan_item_keys_a
     assert persistence.created_items[0]["item"].metadata["text_template_hash_payload"] == {
         "clan_id": "clan-1",
         "base_id": "warhammer",
-        "item_tier": 2,
+        "item_tier": 1,
         "material_id": "mat_iron_ingot",
+        "lore_tags": ["ferocity"],
+        "visual_variant_id": None,
     }
     assert persistence.created_items[1]["generated_template_id"] == "template-1"
 
@@ -364,7 +378,7 @@ async def test_generation_service_generates_runtime_projection_batch_without_per
         ),
         ItemGenerationRequestDTO(
             generation_mode="runtime",
-            base_id="leather_armor",
+            base_id="light_chest_armor",
             item_grade="uncommon",
             affix_profile="monster_equipment_4slot",
             allowed_affix_ids=["evasion_bonus", "physical_resistance_bonus"],

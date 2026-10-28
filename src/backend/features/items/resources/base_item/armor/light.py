@@ -1,10 +1,10 @@
 from src.backend.features.items.resources.schemas import BaseItemDTO
 
 LIGHT_ARMOR_DB = {
-    "hood": BaseItemDTO(
-        id="hood",
-        name_ru="Капюшон разведчика",
-        narrative_description="Легкий капюшон закрывает голову, не мешая обзору и быстрым уходам с линии удара.",
+    "light_hood": BaseItemDTO(
+        id="light_hood",
+        name_ru="Лёгкий капюшон",
+        narrative_description="Лёгкий капюшон прикрывает голову, сохраняя открытый обзор.",
         slot="head_armor",
         type="armor",
         defense_type="magical",
@@ -14,15 +14,15 @@ LIGHT_ARMOR_DB = {
         base_power=2,
         base_durability=30,
         damage_spread=0.0,
-        narrative_tags=["hood", "light", "scout"],
+        narrative_tags=["light_hood", "light"],
         implicit_bonuses={
             "anti_dodge_chance": -0.005,
         },
     ),
-    "leather_armor": BaseItemDTO(
-        id="leather_armor",
-        name_ru="Легкий кожаный доспех",
-        narrative_description="Подогнанный кожаный доспех для бойца, который переживает удар за счет движения.",
+    "light_chest_armor": BaseItemDTO(
+        id="light_chest_armor",
+        name_ru="Лёгкий нагрудник",
+        narrative_description="Лёгкий нагрудник защищает корпус и сохраняет свободу движений.",
         slot="chest_armor",
         type="armor",
         defense_type="physical",
@@ -32,15 +32,15 @@ LIGHT_ARMOR_DB = {
         base_power=4,
         base_durability=45,
         damage_spread=0.0,
-        narrative_tags=["leather_armor", "light", "mobile", "scout"],
+        narrative_tags=["light_chest_armor", "light", "mobile"],
         implicit_bonuses={
             "evasion_penalty": -0.010,
         },
     ),
-    "soft_bracers": BaseItemDTO(
-        id="soft_bracers",
-        name_ru="Мягкие наручи",
-        narrative_description="Гибкие наручи защищают предплечья, сохраняя свободу для ответного движения.",
+    "light_bracers": BaseItemDTO(
+        id="light_bracers",
+        name_ru="Лёгкие наручи",
+        narrative_description="Лёгкие наручи прикрывают предплечья, сохраняя подвижность рук.",
         slot="arms_armor",
         type="armor",
         defense_type="physical",
@@ -50,16 +50,16 @@ LIGHT_ARMOR_DB = {
         base_power=2,
         base_durability=35,
         damage_spread=0.0,
-        narrative_tags=["bracers", "light", "mobile"],
+        narrative_tags=["bracers", "light", "forearms"],
         implicit_bonuses={
             "main_hand_accuracy_penalty": 0.005,
             "off_hand_accuracy_penalty": 0.005,
         },
     ),
-    "scout_leggings": BaseItemDTO(
-        id="scout_leggings",
-        name_ru="Поножи разведчика",
-        narrative_description="Легкая защита бедер и коленей для быстрых шагов, перекатов и смены дистанции.",
+    "light_leg_armor": BaseItemDTO(
+        id="light_leg_armor",
+        name_ru="Лёгкие поножи",
+        narrative_description="Лёгкие поножи прикрывают бёдра и колени, сохраняя свободу шага.",
         slot="legs_armor",
         type="armor",
         defense_type="physical",
@@ -69,7 +69,7 @@ LIGHT_ARMOR_DB = {
         base_power=2,
         base_durability=35,
         damage_spread=0.0,
-        narrative_tags=["leggings", "light", "scout"],
+        narrative_tags=["leggings", "light"],
         implicit_bonuses={},
     ),
 }

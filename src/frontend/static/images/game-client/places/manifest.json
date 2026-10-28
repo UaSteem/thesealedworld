@@ -1,0 +1,24 @@
+{
+  "images": [
+    {
+      "file": "arena-hall.webp",
+      "bytes": 233424,
+      "sha256": "6593c01488c6fa7e3ea40b8e4f93b5348a28a210f5a2b84632a7e5b47b452ab3"
+    },
+    {
+      "file": "administrative-quarter.webp",
+      "bytes": 336418,
+      "sha256": "e85c8dce8f7b63a2b367c91beb7b508305234a5a323cf8ec14a2d0d7f594abf0"
+    },
+    {
+      "file": "trading-quarter.webp",
+      "bytes": 316690,
+      "sha256": "5d0fc5b9049dc4cbcd70178f5ea73b490abb395808885331c1d1589e1f2d8f26"
+    },
+    {
+      "file": "crafting-quarter.webp",
+      "bytes": 379174,
+      "sha256": "6c502404db81767b04495f098a929dd59df6d2be36e9fcd1669caac315ceec0c"
+    }
+  ]
+}

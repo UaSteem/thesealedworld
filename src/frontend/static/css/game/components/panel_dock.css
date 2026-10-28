@@ -4,21 +4,21 @@
 }
 
 .panel-dock--framed {
-    border: 1px solid rgba(255, 170, 0, 0.14);
-    background: rgba(5, 5, 7, 0.18);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.14);
+    background: rgb(var(--tone-surface-022-rgb) / 0.18);
 }
 
 .panel-dock--scroll {
     overflow-x: hidden;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: rgba(255, 170, 0, 0.28) transparent;
+    scrollbar-color: rgb(var(--tone-accent-024-rgb) / 0.28) transparent;
 }
 
 .dock-nav {
-    min-height: 28px;
+    min-height: var(--size-28);
     display: grid;
-    gap: 4px;
+    gap: var(--sp-1);
 }
 
 .dock-nav--two {
@@ -35,39 +35,39 @@
 
 .dock-nav--bar {
     flex: 0 0 35px;
-    height: 35px;
-    min-height: 35px;
-    gap: 5px;
-    margin: 0 0 10px;
-    padding: 4px;
-    border: 1px solid rgba(255, 170, 0, 0.14);
+    height: var(--size-35);
+    min-height: var(--size-35);
+    gap: var(--space-5);
+    margin: 0 0 var(--space-10);
+    padding: var(--sp-1);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.14);
     border-top: 0;
     background:
-        linear-gradient(180deg, rgba(255, 170, 0, 0.055), rgba(5, 5, 7, 0.36)),
-        rgba(5, 5, 7, 0.44);
+        linear-gradient(180deg, rgb(var(--tone-accent-024-rgb) / 0.055), rgb(var(--tone-surface-022-rgb) / 0.36)),
+        rgb(var(--tone-surface-022-rgb) / 0.44);
     box-shadow:
-        inset 0 1px 0 rgba(0, 0, 0, 0.62),
-        0 8px 14px rgba(0, 0, 0, 0.26);
+        inset 0 1px 0 rgb(var(--tone-surface-001-rgb) / 0.62),
+        0 8px 14px rgb(var(--tone-surface-001-rgb) / 0.26);
 }
 
 .dock-nav-button {
     min-width: 0;
-    min-height: 28px;
+    min-height: var(--size-28);
     display: grid;
     place-items: center;
-    border: 1px solid rgba(255, 170, 0, 0.16);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.16);
     background:
-        linear-gradient(180deg, rgba(255, 170, 0, 0.10), rgba(5, 5, 7, 0.72)),
-        url("/static/images/ui/textures/button-candidates/button-surface-01-dark-wood.webp") center / cover,
-        rgba(5, 5, 7, 0.72);
+        linear-gradient(180deg, rgb(var(--tone-accent-024-rgb) / 0.1), rgb(var(--tone-surface-022-rgb) / 0.72)),
+        var(--texture-chrome-04) center / cover,
+        rgb(var(--tone-surface-022-rgb) / 0.72);
     box-shadow:
-        inset 0 1px 0 rgba(255, 218, 122, 0.10),
-        inset 0 -8px 14px rgba(0, 0, 0, 0.32);
-    color: rgba(210, 180, 140, 0.58);
+        inset 0 1px 0 rgb(var(--tone-accent-077-rgb) / 0.1),
+        inset 0 -8px 14px rgb(var(--tone-surface-001-rgb) / 0.32);
+    color: rgb(var(--tone-text-002-rgb) / 0.58);
     cursor: pointer;
     font-family: var(--font-ui);
     font-size: var(--game-panel-nav-size);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.06em;
     line-height: 1;
     text-transform: uppercase;
@@ -76,11 +76,11 @@
 .dock-nav-button:hover,
 .dock-nav-button:focus-visible,
 .dock-nav-button.is-active {
-    border-color: rgba(255, 170, 0, 0.34);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.34);
     color: var(--col-accent);
     box-shadow:
-        inset 0 1px 0 rgba(255, 220, 120, 0.10),
-        inset 0 -8px 14px rgba(0, 0, 0, 0.34);
+        inset 0 1px 0 rgb(var(--tone-accent-078-rgb) / 0.1),
+        inset 0 -8px 14px rgb(var(--tone-surface-001-rgb) / 0.34);
 }
 
 .dock-nav-button--close {
@@ -99,7 +99,7 @@
 
 .mobile-center-menu {
     flex: 0 0 35px;
-    height: 35px;
+    height: var(--size-35);
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
 }
@@ -112,34 +112,34 @@
 }
 
 .mobile-center-menu-item.is-active {
-    border-color: rgba(255, 170, 0, 0.54);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.54);
     background:
-        linear-gradient(180deg, rgba(255, 170, 0, 0.20), rgba(5, 5, 7, 0.66)),
+        linear-gradient(180deg, rgb(var(--tone-accent-024-rgb) / 0.2), rgb(var(--tone-surface-022-rgb) / 0.66)),
         url("/static/images/ui/textures/button-candidates/button-surface-01-dark-wood.webp") center / cover,
-        rgba(5, 5, 7, 0.72);
+        rgb(var(--tone-surface-022-rgb) / 0.72);
     color: var(--col-accent);
-    text-shadow: 0 0 8px rgba(255, 170, 0, 0.42);
+    text-shadow: 0 0 8px rgb(var(--tone-accent-024-rgb) / 0.42);
 }
 
 .mobile-center-menu-item.active {
-    border-color: rgba(255, 170, 0, 0.54);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.54);
     color: var(--col-accent);
 }
 
 .mobile-nav-icon {
-    width: 15px;
-    height: 15px;
+    width: var(--size-15);
+    height: var(--size-15);
     display: block;
     background: currentColor;
     opacity: 0.78;
     mask: var(--nav-icon-url) center / contain no-repeat;
     -webkit-mask: var(--nav-icon-url) center / contain no-repeat;
-    filter: drop-shadow(0 0 6px rgba(255, 170, 0, 0.16));
+    filter: drop-shadow(0 0 6px rgb(var(--tone-accent-024-rgb) / 0.16));
 }
 
 .mobile-center-menu-item.is-active .mobile-nav-icon {
     opacity: 1;
-    filter: drop-shadow(0 0 8px rgba(255, 170, 0, 0.36));
+    filter: drop-shadow(0 0 8px rgb(var(--tone-accent-024-rgb) / 0.36));
 }
 
 .mobile-center-menu-item span:not(.mobile-nav-icon) {
@@ -156,15 +156,15 @@
     min-height: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    border: 1px solid rgba(255, 170, 0, 0.24);
+    gap: var(--sp-2);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.24);
     background:
-        linear-gradient(180deg, rgba(18, 12, 5, 0.96), rgba(4, 4, 6, 0.98)),
+        linear-gradient(180deg, rgb(var(--tone-surface-084-rgb) / 0.96), rgb(var(--tone-surface-016-rgb) / 0.98)),
         url("/static/images/ui/textures/button-candidates/button-surface-02-blackened-metal.webp") center / cover,
-        #050506;
+        rgb(var(--tone-surface-020-rgb));
     box-shadow:
-        inset 0 1px 0 rgba(255, 170, 0, 0.10),
-        inset 0 -22px 34px rgba(0, 0, 0, 0.44);
+        inset 0 1px 0 rgb(var(--tone-accent-024-rgb) / 0.1),
+        inset 0 -22px 34px rgb(var(--tone-surface-001-rgb) / 0.44);
     transform: translateX(var(--side-panel-closed-offset, 100%));
     opacity: 0;
     pointer-events: none;

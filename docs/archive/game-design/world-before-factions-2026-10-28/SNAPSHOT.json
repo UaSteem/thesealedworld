@@ -1,0 +1,16 @@
+{
+  "docs/game-design/designer/world/00_world_bible.md": "41e2002e91a2caab06ebaf90612e7e645ed76f92bfb085c3db504c4367402f4a",
+  "docs/game-design/designer/world/01_world_vision.md": "7a2ada644a00baed479490df78baae3fba29b4416a1506f221916614caa5e45d",
+  "docs/game-design/designer/world/02_geography_and_topology.md": "5960e5beb6e9982efb434a6fd1e9e5d1a48bee0e40a957a32bce19cd29db936d",
+  "docs/game-design/designer/world/03_threat_and_anchors.md": "e57394bd68aa0ddfb61ae2d463c4966079fdf2a9854cba6eae6721990835d48b",
+  "docs/game-design/designer/world/README.md": "c852753a5ff1bceaf0420752cd1285b5a177e2a40a2f023e12cd55b255fd6c60",
+  "docs/game-design/designer/world/05_game_loops.md": "ba0e5d84d9453effb569e0ca0018a5b82d01c80ba2d93cb0c94aafcafb9d2571",
+  "docs/game-design/designer/world/09_narrative_and_destiny.md": "e9e8d99c68f6f1302006b07cb7f67e88c0a77ad6f1b8ca85d00be52c03d1d810",
+  "docs/game-design/designer/scenarios/01_zero_shard.md": "2ba9754f7785dead84803579ede8d203a4a36f7e4790595c744525a6cffdea0e",
+  "docs/game-design/designer/economy/01_economy_philosophy.md": "b5768cf5a7218323f4f6b10f02d4c693fcfbc1f1e00e7e5f095fe40735c83f94",
+  "docs/game-design/rules/modifiers/modifier_vocabulary.md": "f038c4fe1c3955ef52b6fda6404b29b8d168c5dc017e541e983639a736032fcb",
+  "docs/game-design/rules/items/item_model_reference.md": "78e6df246fe3a53a467b350604ac7e49d9d439208e44a0752ee314dae01651cd",
+  "docs/planning/ideas/world/starting_region_rifts_and_season_flow.md": "6c95164b87dc29fcbb19e9456b62459e4508a3df82023af21412062cfb39ed4d",
+  "docs/planning/ideas/items/item_resources_post_mvp.md": "7abe88f125ec46d28da055a701a1bdf9a31e7d036a686ad88ea3f241d1126a1a",
+  "docs/game-design/README.md": "4f4f9835844c5e51242d4152681195adee999978e7bbc3a32bfbd42843588e91"
+}

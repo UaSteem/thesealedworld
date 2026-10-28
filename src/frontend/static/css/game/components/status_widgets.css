@@ -1,26 +1,26 @@
 .status-widget-card {
     display: grid;
     grid-template-columns: 72px minmax(0, 1fr);
-    gap: 12px;
+    gap: var(--sp-3);
     align-items: center;
-    padding: 10px;
-    border: 1px solid rgba(255, 170, 0, 0.18);
+    padding: var(--space-10);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.18);
     background:
-        linear-gradient(90deg, rgba(255, 170, 0, 0.075), rgba(5, 5, 7, 0.58)),
-        rgba(5, 5, 7, 0.76);
+        linear-gradient(90deg, rgb(var(--tone-accent-024-rgb) / 0.075), rgb(var(--tone-surface-022-rgb) / 0.58)),
+        rgb(var(--tone-surface-022-rgb) / 0.76);
 }
 
 .status-widget-avatar {
-    width: 64px;
-    height: 64px;
+    width: var(--size-64);
+    height: var(--size-64);
     display: grid;
     place-items: center;
     overflow: hidden;
-    border: 1px solid rgba(255, 170, 0, 0.28);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.28);
     background:
-        radial-gradient(circle at 50% 36%, rgba(255, 170, 0, 0.22), transparent 42%),
-        linear-gradient(180deg, rgba(255, 170, 0, 0.09), rgba(0, 0, 0, 0.42)),
-        #09090d;
+        radial-gradient(circle at 50% 36%, rgb(var(--tone-accent-024-rgb) / 0.22), transparent 42%),
+        linear-gradient(180deg, rgb(var(--tone-accent-024-rgb) / 0.09), rgb(var(--tone-surface-001-rgb) / 0.42)),
+        rgb(var(--tone-surface-070-rgb));
 }
 
 .status-widget-avatar img {
@@ -34,7 +34,7 @@
     color: var(--col-accent);
     font-family: var(--font-ui);
     font-size: var(--text-xl);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0;
     line-height: 1;
 }
@@ -46,12 +46,12 @@
 }
 
 .status-widget-core {
-    gap: 7px;
+    gap: var(--space-7);
 }
 
 .status-widget-bars,
 .status-widget-skill-list {
-    gap: 5px;
+    gap: var(--space-5);
 }
 
 .status-widget-name {
@@ -59,7 +59,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 8px;
+    gap: var(--sp-2);
 }
 
 .status-widget-name strong,
@@ -76,16 +76,16 @@
 .status-widget-name strong {
     color: var(--col-accent);
     font-size: var(--game-panel-value-size);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.06em;
 }
 
 .status-widget-name span {
-    padding: 3px 5px;
-    border: 1px solid rgba(255, 170, 0, 0.16);
-    color: rgba(210, 180, 140, 0.62);
+    padding: var(--space-3) var(--space-5);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.16);
+    color: rgb(var(--tone-text-002-rgb) / 0.62);
     font-size: var(--game-panel-meta-size);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: 0.04em;
 }
 
@@ -94,73 +94,73 @@
     display: grid;
     grid-template-columns: 30px minmax(0, 1fr) 62px;
     align-items: center;
-    gap: 7px;
-    color: rgba(230, 204, 172, 0.72);
+    gap: var(--space-7);
+    color: rgb(var(--tone-text-010-rgb) / 0.72);
     font-family: var(--font-ui);
     font-size: var(--game-panel-label-size);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: 0.04em;
     line-height: 1;
     text-transform: uppercase;
 }
 
 .status-widget-bar i {
-    height: 6px;
+    height: var(--size-6);
     display: block;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgb(var(--tone-text-064-rgb) / 0.05);
     background:
         linear-gradient(90deg, var(--status-color), var(--status-color-bright)) 0 / var(--status-fill, 0%) 100% no-repeat,
-        rgba(255, 255, 255, 0.035);
+        rgb(var(--tone-text-064-rgb) / 0.035);
     box-shadow: 0 0 9px color-mix(in srgb, var(--status-color) 28%, transparent);
 }
 
 .status-widget-bar b {
     min-width: 0;
     overflow: hidden;
-    color: rgba(230, 204, 172, 0.68);
+    color: rgb(var(--tone-text-010-rgb) / 0.68);
     font-size: var(--game-panel-label-size);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     text-align: right;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .status-widget-bar--hp {
-    --status-color: #b01a00;
-    --status-color-bright: #ff6644;
+    --status-color: rgb(var(--tone-danger-004-rgb));
+    --status-color-bright: rgb(var(--tone-danger-049-rgb));
 }
 
 .status-widget-bar--en {
-    --status-color: #1a66cc;
-    --status-color-bright: #66bbff;
+    --status-color: rgb(var(--tone-energy-003-rgb));
+    --status-color-bright: rgb(var(--tone-energy-024-rgb));
 }
 
 .status-widget-bar--sta {
-    --status-color: #22aa55;
-    --status-color-bright: #88ffcc;
+    --status-color: rgb(var(--tone-success-005-rgb));
+    --status-color-bright: rgb(var(--tone-success-033-rgb));
 }
 
 .status-widget-section {
     min-width: 0;
-    border: 1px solid rgba(255, 170, 0, 0.12);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.12);
     background:
-        linear-gradient(180deg, rgba(255, 170, 0, 0.035), rgba(5, 5, 7, 0.34)),
-        rgba(5, 5, 7, 0.48);
+        linear-gradient(180deg, rgb(var(--tone-accent-024-rgb) / 0.035), rgb(var(--tone-surface-022-rgb) / 0.34)),
+        rgb(var(--tone-surface-022-rgb) / 0.48);
 }
 
 .status-widget-section-title {
-    min-height: 28px;
+    min-height: var(--size-28);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    padding: 0 8px;
+    gap: var(--sp-2);
+    padding: 0 var(--sp-2);
     cursor: pointer;
     list-style: none;
-    color: rgba(210, 180, 140, 0.58);
+    color: rgb(var(--tone-text-002-rgb) / 0.58);
     font-family: var(--font-ui);
     font-size: var(--game-panel-label-size);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.06em;
     line-height: 1;
     text-transform: uppercase;
@@ -185,28 +185,28 @@
 
 .status-widget-attribute-body,
 .status-widget-skill-list {
-    padding: 0 8px 8px;
+    padding: 0 var(--sp-2) var(--sp-2);
 }
 
 .status-widget-attribute-list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 4px;
+    gap: var(--sp-1);
 }
 
 .status-widget-attribute-group {
     min-width: 0;
     display: grid;
-    gap: 4px;
+    gap: var(--sp-1);
 }
 
 .status-widget-attribute-group em {
     min-width: 0;
     overflow: hidden;
-    color: rgba(210, 180, 140, 0.44);
+    color: rgb(var(--tone-text-002-rgb) / 0.44);
     font-family: var(--font-ui);
     font-size: var(--game-panel-meta-size);
     font-style: normal;
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.06em;
     line-height: 1;
     text-align: center;
@@ -220,23 +220,23 @@
     min-width: 0;
     display: grid;
     align-items: center;
-    gap: 6px;
-    border: 1px solid rgba(255, 170, 0, 0.10);
-    background: rgba(0, 0, 0, 0.20);
-    color: rgba(210, 180, 140, 0.68);
+    gap: var(--space-6);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.1);
+    background: rgb(var(--tone-surface-001-rgb) / 0.2);
+    color: rgb(var(--tone-text-002-rgb) / 0.68);
     font-family: var(--font-ui);
 }
 
 .status-widget-attribute-group div {
-    min-height: 34px;
+    min-height: var(--size-34);
     justify-items: center;
-    padding: 4px 2px;
+    padding: var(--sp-1) var(--space-2);
 }
 
 .status-widget-skill-list div {
-    min-height: 26px;
+    min-height: var(--size-26);
     grid-template-columns: minmax(0, 1fr) auto;
-    padding: 0 7px;
+    padding: 0 var(--space-7);
 }
 
 .status-widget-attribute-group span,
@@ -244,7 +244,7 @@
     min-width: 0;
     overflow: hidden;
     font-size: var(--game-panel-label-size);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: 0.04em;
     line-height: 1;
     text-overflow: ellipsis;
@@ -256,44 +256,44 @@
 .status-widget-skill-list strong {
     color: var(--col-accent);
     font-size: var(--game-panel-value-size);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     line-height: 1;
 }
 
 .status-widget-skill-groups {
     min-width: 0;
     display: grid;
-    gap: 5px;
-    padding: 0 8px 8px;
+    gap: var(--space-5);
+    padding: 0 var(--sp-2) var(--sp-2);
 }
 
 .status-widget-skill-group {
     min-width: 0;
-    border: 1px solid rgba(255, 170, 0, 0.10);
-    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.1);
+    background: rgb(var(--tone-surface-001-rgb) / 0.18);
 }
 
 .status-widget-skill-group[open] {
-    border-color: rgba(255, 170, 0, 0.18);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.18);
     background:
-        linear-gradient(180deg, rgba(255, 170, 0, 0.035), rgba(0, 0, 0, 0.14)),
-        rgba(0, 0, 0, 0.22);
+        linear-gradient(180deg, rgb(var(--tone-accent-024-rgb) / 0.035), rgb(var(--tone-surface-001-rgb) / 0.14)),
+        rgb(var(--tone-surface-001-rgb) / 0.22);
 }
 
 .status-widget-skill-group-title {
     min-width: 0;
-    min-height: 24px;
+    min-height: var(--size-24);
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 7px;
-    padding: 0 7px;
+    gap: var(--space-7);
+    padding: 0 var(--space-7);
     cursor: pointer;
     list-style: none;
-    color: rgba(210, 180, 140, 0.62);
+    color: rgb(var(--tone-text-002-rgb) / 0.62);
     font-family: var(--font-ui);
     font-size: var(--game-panel-label-size);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.06em;
     line-height: 1;
     text-transform: uppercase;
@@ -322,27 +322,27 @@
 .status-widget-skill-group-body {
     min-width: 0;
     display: grid;
-    gap: 4px;
-    padding: 0 6px 6px;
+    gap: var(--sp-1);
+    padding: 0 var(--space-6) var(--space-6);
 }
 
 .status-widget-skill-group-row {
     min-width: 0;
-    min-height: 24px;
+    min-height: var(--size-24);
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 6px;
-    padding: 0 6px;
-    border: 1px solid rgba(255, 170, 0, 0.08);
-    background: rgba(0, 0, 0, 0.22);
-    color: rgba(210, 180, 140, 0.68);
+    gap: var(--space-6);
+    padding: 0 var(--space-6);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.08);
+    background: rgb(var(--tone-surface-001-rgb) / 0.22);
+    color: rgb(var(--tone-text-002-rgb) / 0.68);
     font-family: var(--font-ui);
 }
 
 .status-widget-skill-group-row span {
     font-size: var(--game-panel-label-size);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: 0.04em;
     line-height: 1;
     text-transform: uppercase;
@@ -351,41 +351,41 @@
 .status-widget-skill-group-row strong {
     color: var(--col-accent);
     font-size: var(--game-panel-value-size);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     line-height: 1;
 }
 
 .status-dev-reset {
-    border-color: rgba(255, 84, 40, 0.34);
+    border-color: rgb(var(--tone-danger-029-rgb) / 0.34);
     background:
-        linear-gradient(180deg, rgba(255, 84, 40, 0.075), rgba(5, 5, 7, 0.42)),
-        rgba(5, 5, 7, 0.62);
+        linear-gradient(180deg, rgb(var(--tone-danger-029-rgb) / 0.075), rgb(var(--tone-surface-022-rgb) / 0.42)),
+        rgb(var(--tone-surface-022-rgb) / 0.62);
 }
 
 .status-dev-reset .status-widget-section-title strong {
-    color: #ff7048;
+    color: rgb(var(--tone-danger-052-rgb));
 }
 
 .status-dev-reset-form {
     min-width: 0;
     display: grid;
-    gap: 7px;
-    padding: 0 8px 8px;
+    gap: var(--space-7);
+    padding: 0 var(--sp-2) var(--sp-2);
 }
 
 .status-dev-reset-field {
     min-width: 0;
     display: grid;
-    gap: 5px;
+    gap: var(--space-5);
 }
 
 .status-dev-reset-field span {
     min-width: 0;
     overflow: hidden;
-    color: rgba(230, 204, 172, 0.62);
+    color: rgb(var(--tone-text-010-rgb) / 0.62);
     font-family: var(--font-ui);
     font-size: var(--game-panel-label-size);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.04em;
     line-height: 1;
     text-overflow: ellipsis;
@@ -397,29 +397,29 @@
 .status-dev-reset-button {
     width: 100%;
     min-width: 0;
-    min-height: 28px;
-    border: 1px solid rgba(255, 170, 0, 0.16);
-    background: rgba(0, 0, 0, 0.34);
-    color: rgba(240, 218, 184, 0.86);
+    min-height: var(--size-28);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.16);
+    background: rgb(var(--tone-surface-001-rgb) / 0.34);
+    color: rgb(var(--tone-text-029-rgb) / 0.86);
     font-family: var(--font-ui);
     font-size: var(--game-panel-label-size);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.02em;
     line-height: 1;
     text-transform: uppercase;
 }
 
 .status-dev-reset-field select {
-    padding: 0 7px;
+    padding: 0 var(--space-7);
 }
 
 .status-dev-reset-button {
     cursor: pointer;
-    border-color: rgba(255, 84, 40, 0.38);
-    color: #ff7048;
+    border-color: rgb(var(--tone-danger-029-rgb) / 0.38);
+    color: rgb(var(--tone-danger-052-rgb));
 }
 
 .status-dev-reset-button:hover {
-    border-color: rgba(255, 112, 72, 0.68);
-    background: rgba(255, 84, 40, 0.12);
+    border-color: rgb(var(--tone-danger-052-rgb) / 0.68);
+    background: rgb(var(--tone-danger-029-rgb) / 0.12);
 }

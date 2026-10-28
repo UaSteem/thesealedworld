@@ -10,7 +10,7 @@
 
 html,
 body {
-  background: #000;
+  background: rgb(var(--tone-surface-001-rgb));
   font-family: var(--font-ui);
   color: var(--col-text-primary);
   line-height: 1.5;
@@ -36,7 +36,7 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar {
-  width: 4px;
+  width: var(--size-4);
 }
 
 ::-webkit-scrollbar-track {
@@ -44,12 +44,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 170, 0, 0.18);
-  border-radius: 2px;
+  background: rgb(var(--tone-accent-024-rgb) / 0.18);
+  border-radius: var(--radius-sm);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 170, 0, 0.32);
+  background: rgb(var(--tone-accent-024-rgb) / 0.32);
 }
 
 a {

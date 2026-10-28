@@ -1,0 +1,158 @@
+{# Isolated layout study. No production route, actions, persistence or renderer decision. #}
+<style>
+.inventory-future-preview { background: var(--col-bg, #08080a); color: var(--col-text-world, #e6ccac); }
+.inventory-future-preview .shell-constrained { width: 100%; max-width: none; padding: 0; }
+.inventory-future-preview #app-viewport { min-height: 100vh; height: auto; }
+.inventory-future-preview #main-content { overflow: visible; }
+.inventory-future-preview .game-preview-meta { display: none; }
+.future-stage { flex: 1; width: 100%; min-width: 0; min-height: 100vh; padding: 40px 24px; background: radial-gradient(ellipse at 50% 0%, #26332e77, transparent 65%), #0b1114; }
+.future-stage-note { margin: 0 auto 14px; max-width: 920px; color: #a3ada6; font: 12px var(--font-ui); }
+.future-window { max-width: 920px; margin: auto; border: 1px solid var(--col-border-strong); background: #0c1011f5; box-shadow: 0 18px 75px #0009; }
+.future-topbar { display: flex; align-items: center; justify-content: space-between; padding: 18px 22px; border-bottom: 1px solid var(--col-border); }
+.future-topbar h1 { margin: 0; color: var(--col-text-world); font: 23px var(--font-world); }
+.future-topbar a { color: var(--col-text-dim); text-decoration: none; font: 12px var(--font-ui); }
+.future-workspace { display: grid; grid-template-columns: minmax(0, 1.14fr) minmax(0, .93fr); gap: 24px; padding: 22px; align-items: start; }
+.future-bag-column { min-width: 0; }
+.future-section-head { display: flex; justify-content: space-between; align-items: baseline; margin: 0 0 12px; }
+.future-section-head h2 { margin: 0; color: var(--col-text-world); font: 15px var(--font-ui); }
+.future-section-head span { color: var(--col-text-dim); font: 11px var(--font-ui); }
+.future-bag { position: relative; width: 100%; aspect-ratio: 8 / 5; }
+.future-cells, .future-items { position: absolute; inset: 0; display: grid; grid-template: repeat(5, 1fr) / repeat(8, minmax(0, 1fr)); gap: 5px; }
+.future-cells span { background: #161c1d; border: 1px solid #34403955; }
+.future-items { pointer-events: none; }
+.future-object { grid-column: var(--column); grid-row: 1 / span 3; position: relative; padding: 7px 2px 17px; border: 1px solid #58665d; background: #27302caa; cursor: pointer; pointer-events: auto; min-width: 0; transition: border-color .15s, background .15s; }
+.future-object:hover { background: #35453baa; border-color: #a4b49f; }
+.future-object.is-selected { border-color: #d2b48c; background: #71604738; box-shadow: inset 0 0 0 1px #d2b48c33; }
+.future-object:focus-visible { outline: 2px solid #e6ccac; outline-offset: 2px; }
+.future-object img { width: 100%; height: 100%; display: block; object-fit: contain; }
+.future-object small { position: absolute; left: 0; right: 0; bottom: 4px; text-align: center; font: 9px var(--font-ui); color: #c7c8ad; }
+.future-bag-hint { margin: 12px 0 25px; color: var(--col-text-dim); font: 11px var(--font-ui); }
+.future-belt { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 5px; }
+.future-belt-slot { position: relative; aspect-ratio: 1; border: 1px solid #53615877; background: #19211d; }
+.future-belt-slot span { position: absolute; left: 5px; top: 4px; font: 10px var(--font-ui); color: #b5bca4; }
+.future-belt-slot::after { content: ''; position: absolute; inset: 35%; border: 1px solid #64726240; border-radius: 50%; }
+.future-card { min-width: 0; border: 1px solid #75624399; background: #151b19; }
+.future-card[hidden] { display: none; }
+.future-card-head { padding: 17px 18px 13px; border-bottom: 1px solid #b59a6c26; }
+.future-card h2 { color: #e4d4b8; font: 25px/1.12 var(--font-world); margin: 0 0 8px; }
+.future-card-type { display: flex; flex-wrap: wrap; gap: 6px 12px; color: #a6b49f; font: 10px/1.5 var(--font-ui); }
+.future-card-type strong { color: #d7bb86; font-weight: 400; }
+.future-card-main { padding: 16px 18px; display: grid; grid-template-columns: 78px minmax(0, 1fr); gap: 17px; align-items: center; }
+.future-art { height: 144px; display: flex; justify-content: center; background: radial-gradient(ellipse, #8caa7d12, transparent 72%); }
+.future-art img { max-width: 100%; width: auto; height: 100%; object-fit: contain; }
+.future-base { min-width: 0; }
+.future-stat { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; padding: 5px 0; color: #b9bfae; font: 11px/1.35 var(--font-ui); border-bottom: 1px solid #ffffff06; }
+.future-stat span { overflow-wrap: anywhere; }
+.future-stat strong { color: #e2dcc8; font-size: 12px; font-weight: 400; white-space: nowrap; }
+.future-affixes { margin: 0 18px; padding: 11px 0; border-top: 1px solid #b59a6c26; }
+.future-affixes h3 { margin: 0 0 6px; color: #9ba38c; font: 9px var(--font-ui); letter-spacing: .12em; }
+.future-affixes .future-stat { color: #b8d3aa; }
+.future-affixes .future-stat strong { color: #bddda9; }
+.future-description { margin: 0 18px; padding: 12px 0; border-top: 1px solid #b59a6c26; color: #c0bcaa; font: 15px/1.45 var(--font-world); }
+.future-unidentified { margin: 0 18px; padding: 0 0 13px; font: 10px/1.5 var(--font-ui); color: #a0aa98; }
+.future-unidentified::before { content: '◇ '; color: #c3ad78; }
+.future-card-actions { display: flex; gap: 8px; padding: 12px 18px; border-top: 1px solid #b59a6c26; background: #0002; }
+.future-card-actions .btn-node { flex: 1; padding: 8px 6px; color: #cab58e; font-size: 11px; opacity: .65; cursor: default; }
+.future-demo-note { margin: 0; padding: 0 22px 17px; color: #7f8b80; font: 10px/1.5 var(--font-ui); }
+.future-phaser-section { max-width: 920px; margin: 40px auto 0; }
+.future-phaser-section h2 { margin: 0 0 10px; color: #e4d4b8; font: 24px var(--font-world); }
+.future-phaser-section > p { color: #a3ada6; font: 12px/1.6 var(--font-ui); margin: 0 0 14px; }
+#inventory-phaser-host { width: 100%; height: 640px; background: #0c1011; border: 1px solid #75624399; }
+#inventory-phaser-host canvas { display: block; }
+#inventory-phaser-status { margin-top: 10px; font-size: 11px; }
+@media (max-width: 700px) {
+  .future-stage { padding: 16px 12px; }
+  .future-stage-note { font-size: 10px; margin-bottom: 10px; }
+  .future-topbar { padding: 13px 14px; }
+  .future-workspace { grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 14px; }
+  .future-bag-hint { margin-bottom: 17px; }
+  .future-card-main { grid-template-columns: 72px minmax(0, 1fr); }
+  .future-card h2 { font-size: 24px; }
+  .future-demo-note { padding: 0 14px 13px; }
+}
+</style>
+<section class="future-stage" aria-label="Пример будущего инвентаря">
+  <p class="future-stage-note">Пример расположения окна в игровой области</p>
+  <section class="future-window" aria-labelledby="future-inventory-title">
+    <header class="future-topbar">
+      <h1 id="future-inventory-title">Инвентарь</h1>
+      <a href="/responsive.html" aria-label="Вернуться к предыдущему примеру">Закрыть ×</a>
+    </header>
+    <div class="future-workspace">
+      <section class="future-bag-column" aria-label="Содержимое рюкзака">
+        <header class="future-section-head"><h2>Рюкзак</h2><span>18 / 40 ячеек</span></header>
+        <div class="future-bag">
+          <div class="future-cells" aria-hidden="true">{% for cell in range(40) %}<span></span>{% endfor %}</div>
+          <div class="future-items">
+          {% for row in future_rows %}
+            <button type="button" class="future-object{{ ' is-selected' if row.item_id == selected_id else '' }}"
+                    style="--column: {{ loop.index }}" data-future-select="{{ row.item_id }}"
+                    aria-label="{{ row.name }}" aria-pressed="{{ 'true' if row.item_id == selected_id else 'false' }}"
+                    aria-controls="card-{{ row.item_id }}">
+              <img src="{{ row.image_url }}" alt="" aria-hidden="true"><small>T{{ future_tiers[row.item_id] }}</small>
+            </button>
+          {% endfor %}
+          </div>
+        </div>
+        <p class="future-bag-hint">Выберите меч, чтобы посмотреть его карточку.</p>
+        <header class="future-section-head"><h2>Пояс</h2><span>Быстрый доступ</span></header>
+        <div class="future-belt" aria-label="Восемь ячеек пояса в одну линию">
+          {% for cell in range(1, 9) %}<div class="future-belt-slot" aria-label="Ячейка пояса {{ cell }}: пусто"><span>{{ cell }}</span></div>{% endfor %}
+        </div>
+      </section>
+      <aside aria-label="Карточка выбранного предмета" aria-live="polite">
+        {% for row in future_rows %}
+        <article class="future-card" id="card-{{ row.item_id }}"{% if row.item_id != selected_id %} hidden{% endif %}>
+          <header class="future-card-head">
+            <h2>{{ row.name }}</h2>
+            <div class="future-card-type"><span>Одноручный меч</span><strong>T{{ future_tiers[row.item_id] }}</strong><span>{{ row.rarity_label }}</span></div>
+          </header>
+          <div class="future-card-main">
+            <div class="future-art"><img src="{{ row.image_url }}" alt="{{ row.name }}"></div>
+            <div class="future-base">
+              {% for line in row.details.details %}<div class="future-stat"><span>{{ line.label }}</span><strong>{{ line.value }}</strong></div>{% endfor %}
+            </div>
+          </div>
+          {% if row.details.affixes %}
+          <section class="future-affixes" aria-label="Аффиксы">
+            <h3>СВОЙСТВА</h3>
+            {% for affix in row.details.affixes %}<div class="future-stat"><span>{{ affix.label }}</span><strong>{{ affix.value }}</strong></div>{% endfor %}
+          </section>
+          {% endif %}
+          <p class="future-description">{{ row.details.description }}</p>
+          <p class="future-unidentified">Происхождение пока не определено.</p>
+          <footer class="future-card-actions"><button class="btn-node" type="button" disabled>Надеть</button><button class="btn-node" type="button" disabled>Определить</button></footer>
+        </article>
+        {% endfor %}
+      </aside>
+    </div>
+    <p class="future-demo-note">В примере можно переключать мечи. Игровые действия отключены.</p>
+  </section>
+  <section class="future-phaser-section" aria-labelledby="future-phaser-title">
+    <h2 id="future-phaser-title">Тот же инвентарь на Phaser</h2>
+    <p>Наведите на меч для просмотра. Нажмите, чтобы закрепить карточку; Escape снимает выбор. Игровые действия отключены.</p>
+    <div id="inventory-phaser-host" role="region" aria-label="Phaser-инвентарь"></div>
+    <p id="inventory-phaser-status" role="status" aria-live="polite">Загрузка Phaser…</p>
+  </section>
+</section>
+<script type="application/json" id="inventory-phaser-data">{{ future_phaser_payload | tojson }}</script>
+<script src="/static/js/vendor/phaser.min.js"></script>
+<script src="/static/js/game/previews/inventory_phaser.js"></script>
+<script>
+(() => {
+  const root = document.querySelector('.future-window');
+  if (!root) return;
+  root.querySelectorAll('[data-future-select]').forEach(button => {
+    button.addEventListener('click', () => {
+      root.querySelectorAll('[data-future-select]').forEach(candidate => {
+        const selected = candidate === button;
+        candidate.classList.toggle('is-selected', selected);
+        candidate.setAttribute('aria-pressed', String(selected));
+      });
+      root.querySelectorAll('.future-card').forEach(card => {
+        card.hidden = card.id !== `card-${button.dataset.futureSelect}`;
+      });
+    });
+  });
+})();
+</script>

@@ -17,7 +17,7 @@ weapon_accuracy = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Weapon Accuracy",
         ui_template="+{value}% Accuracy",
-        narrative_tags=("precise", "trained", "steady"),
+        narrative_tags=("precision",),
     ),
 )
 
@@ -33,7 +33,7 @@ armor_penetration_pct_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Armor Penetration %",
         ui_template="+{value}% Armor Penetration",
-        narrative_tags=("piercing", "brutal", "forceful"),
+        narrative_tags=("ferocity",),
     ),
 )
 
@@ -49,7 +49,7 @@ crit_chance = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Critical Chance",
         ui_template="+{value}% Crit Chance",
-        narrative_tags=("lethal", "sharp", "opportunistic"),
+        narrative_tags=("ferocity",),
     ),
 )
 
@@ -65,7 +65,7 @@ crit_power = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Critical Power",
         ui_template="+{value}% Crit Damage",
-        narrative_tags=("devastating", "brutal", "lethal"),
+        narrative_tags=("ferocity",),
     ),
 )
 
@@ -81,7 +81,7 @@ off_hand_accuracy = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Off-Hand Accuracy",
         ui_template="+{value}% Off-Hand Accuracy",
-        narrative_tags=("ambidextrous", "duelist", "swift"),
+        narrative_tags=("precision", "agility"),
     ),
 )
 
@@ -97,7 +97,7 @@ vampiric_power_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Vampiric Power",
         ui_template="+{value}% Vampiric Power",
-        narrative_tags=("vampiric", "blood", "drain"),
+        narrative_tags=("blood_drain",),
     ),
 )
 
@@ -113,7 +113,7 @@ vampiric_trigger_chance_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Vampiric Trigger Chance",
         ui_template="+{value}% Vampiric Chance",
-        narrative_tags=("vampiric", "blood", "trigger"),
+        narrative_tags=("blood_drain",),
     ),
 )
 

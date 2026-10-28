@@ -183,10 +183,10 @@ systems consume them.
 
 | Field | Meaning |
 | --- | --- |
-| `environment_cold_resistance` | Cold/anchor environment resistance; garment implicit profiles can add it. |
-| `environment_heat_resistance` | Heat/anchor environment resistance; garment implicit profiles can add it. |
-| `environment_gravity_resistance` | Gravity/anchor environment resistance; garment implicit profiles can add it. |
-| `environment_bio_resistance` | Biohazard/anchor environment resistance, currently derived from Endurance and garment profiles. |
+| `environment_cold_resistance` | Cold environment resistance; garment implicit profiles can add it. |
+| `environment_heat_resistance` | Heat environment resistance; garment implicit profiles can add it. |
+| `environment_gravity_resistance` | Gravity environment resistance; garment implicit profiles can add it. |
+| `environment_bio_resistance` | Biohazard environment resistance, currently derived from Endurance and garment profiles. |
 
 ## World Stats
 

@@ -56,17 +56,24 @@ class ItemInstanceRepository:
             rarity_tier=item.rarity_tier,
             lifecycle_status="ready" if text_status == "not_requested" else "mechanical_ready",
             text_status=text_status,
-            name=item.name,
-            description=item.description,
+            is_identified=item.is_identified,
+            name=None,
+            description=None,
             mechanics=mechanics,
-            appearance={
-                "width_cells": item.metadata.get("width_cells", 1),
-                "height_cells": item.metadata.get("height_cells", 1),
-                "volume_units": item.metadata.get("volume_units", 1),
-                "icon_key": item.metadata.get("icon_key"),
-            },
+            appearance=(
+                item.appearance.model_dump(mode="json")
+                if item.appearance
+                else {
+                    "width_cells": item.metadata.get("width_cells", 1),
+                    "height_cells": item.metadata.get("height_cells", 1),
+                    "volume_units": item.metadata.get("volume_units", 1),
+                    "icon_key": item.metadata.get("icon_key"),
+                }
+            ),
             generation={
                 "material_id": item.material_id,
+                "item_tier": item.item_tier,
+                "lore_tags": item.lore_tags,
                 "affix_bundle_ids": item.affix_bundle_ids,
                 "narrative_tags": item.narrative_tags,
                 "source": item.metadata.get("source"),
@@ -124,20 +131,26 @@ class ItemInstanceRepository:
             rarity_tier=item.rarity_tier,
             item_grade=str(item.metadata.get("item_grade") or ""),
             material_id=item.material_id,
-            name=item.name,
-            description=item.description,
+            name=None,
+            description=None,
             image_url=None,
             icon_key=str(item.metadata.get("icon_key") or "") or None,
             text_status=text_status,
             text_payload=text_payload,
-            appearance={
-                "width_cells": item.metadata.get("width_cells", 1),
-                "height_cells": item.metadata.get("height_cells", 1),
-                "volume_units": item.metadata.get("volume_units", 1),
-                "icon_key": item.metadata.get("icon_key"),
-            },
+            appearance=(
+                item.appearance.model_dump(mode="json")
+                if item.appearance
+                else {
+                    "width_cells": item.metadata.get("width_cells", 1),
+                    "height_cells": item.metadata.get("height_cells", 1),
+                    "volume_units": item.metadata.get("volume_units", 1),
+                    "icon_key": item.metadata.get("icon_key"),
+                }
+            ),
             generation={
                 "material_id": item.material_id,
+                "item_tier": item.item_tier,
+                "lore_tags": item.lore_tags,
                 "affix_bundle_ids": item.affix_bundle_ids,
                 "narrative_tags": item.narrative_tags,
                 "source": item.metadata.get("source"),
@@ -149,6 +162,21 @@ class ItemInstanceRepository:
         self.session.add(template)
         await self.session.flush()
         return template
+
+    async def request_template_text(self, template_id: str) -> bool:
+        claimed = await self.session.scalar(
+            update(ItemGeneratedTemplate)
+            .where(
+                ItemGeneratedTemplate.id == template_id,
+                ItemGeneratedTemplate.text_status.in_(("not_requested", "failed")),
+            )
+            .values(text_status="pending")
+            .returning(ItemGeneratedTemplate.id)
+        )
+        return claimed is not None
+
+    async def get_generated_template(self, template_id: str) -> ItemGeneratedTemplate | None:
+        return await self.session.get(ItemGeneratedTemplate, template_id)
 
     async def get(self, item_id: str) -> ItemInstance | None:
         return await self.session.scalar(select(ItemInstance).where(ItemInstance.id == item_id))
@@ -223,8 +251,9 @@ class ItemInstanceRepository:
         instance = await self.get(item_id)
         if instance is None:
             return None
-        instance.name = name
-        instance.description = description
+        if not instance.generated_template_id:
+            instance.name = name
+            instance.description = description
         instance.text_status = text_status
         if text_status == "generated":
             instance.lifecycle_status = "ready"
@@ -254,7 +283,7 @@ class ItemInstanceRepository:
         await self.session.execute(
             update(ItemInstance)
             .where(ItemInstance.generated_template_id == instance.generated_template_id)
-            .values(name=name, description=description, text_status=text_status)
+            .values(text_status=text_status)
         )
         await self.session.flush()
 
@@ -285,6 +314,13 @@ class ItemInstanceRepository:
             if metadata.get(key) is not None:
                 mechanics[key] = metadata[key]
 
+        from src.backend.features.items.services.visual_service import ItemVisualService
+
+        generation = dict(instance.generation or {})
+        baseline_name, baseline_description = ItemVisualService().base_presentation(
+            instance.base_id, generation.get("material_id"), metadata.get("visual_variant_id")
+        )
+        identified = bool(getattr(instance, "is_identified", False))
         return {
             "item_id": str(instance.id),
             "base_id": instance.base_id,
@@ -294,8 +330,8 @@ class ItemInstanceRepository:
             "mechanics": mechanics,
             "tags": list((instance.generation or {}).get("narrative_tags") or []),
             "metadata": metadata,
-            "name": instance.name,
-            "description": instance.description,
+            "name": (instance.name or baseline_name) if identified else baseline_name,
+            "description": (instance.description or baseline_description) if identified else baseline_description,
             "rarity": instance.rarity,
             "rarity_tier": instance.rarity_tier,
         }

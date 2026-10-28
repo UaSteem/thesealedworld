@@ -1,2 +1,8 @@
 # Portable alpha fixtures have byte-level provenance checks on every platform.
 tools/monsters/balance_probe/data/alpha/*.json text eol=lf
+
+# Retired CSS fixtures retain their original bytes, including existing CRLF.
+tests/fixtures/legacy_css/**/*.css -text
+
+# Original painted-art provenance is copied byte-for-byte.
+assets/game_client_sources/places/originals/source-manifest.json -text

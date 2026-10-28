@@ -1,15 +1,15 @@
 .scenario-watch {
     min-width: 0;
-    min-height: 42px;
+    min-height: var(--size-42);
     display: grid;
     grid-template-columns: auto minmax(0, 1fr) 52px;
     align-items: center;
-    gap: 8px;
-    padding: 7px 8px;
-    border: 1px solid rgba(153, 160, 170, 0.24);
+    gap: var(--sp-2);
+    padding: var(--space-7) var(--sp-2);
+    border: 1px solid rgb(var(--tone-neutral-010-rgb) / 0.24);
     background:
         linear-gradient(90deg, var(--scenario-soft), transparent 72%),
-        rgba(5, 5, 7, 0.76);
+        rgb(var(--tone-surface-022-rgb) / 0.76);
     position: relative;
     z-index: 1;
 }
@@ -28,17 +28,17 @@
 .scenario-watch strong {
     color: var(--scenario-accent);
     font-size: var(--game-panel-label-size);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.06em;
 }
 
 .scenario-watch span {
-    color: rgba(230, 204, 172, 0.68);
+    color: rgb(var(--tone-text-010-rgb) / 0.68);
     font-size: var(--game-panel-value-size);
 }
 
 .scenario-watch .game-action-button {
-    min-height: 24px;
+    min-height: var(--size-24);
     font-size: var(--game-panel-meta-size);
 }
 
@@ -61,7 +61,7 @@
 .scenario-choice-list {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 6px;
+    gap: var(--space-6);
 }
 
 .scenario-choice {
@@ -70,30 +70,30 @@
     grid-template-columns: 28px minmax(0, 1fr);
     align-items: center;
     justify-items: stretch;
-    gap: 8px;
-    padding: 7px 9px;
+    gap: var(--sp-2);
+    padding: var(--space-7) var(--space-9);
     text-align: left;
 }
 
 .scenario-choice-icon {
-    width: 26px;
-    height: 26px;
+    width: var(--size-26);
+    height: var(--size-26);
     display: grid;
     place-items: center;
-    border: 1px solid rgba(153, 160, 170, 0.28);
+    border: 1px solid rgb(var(--tone-neutral-010-rgb) / 0.28);
     background:
-        radial-gradient(circle at 50% 38%, rgba(153, 160, 170, 0.18), transparent 64%),
-        rgba(0, 0, 0, 0.28);
+        radial-gradient(circle at 50% 38%, rgb(var(--tone-neutral-010-rgb) / 0.18), transparent 64%),
+        rgb(var(--tone-surface-001-rgb) / 0.28);
     color: var(--scenario-accent);
 }
 
 .scenario-choice-icon::before {
     content: "";
-    width: 15px;
-    height: 15px;
+    width: var(--size-15);
+    height: var(--size-15);
     display: block;
     background: currentColor;
-    filter: drop-shadow(0 0 6px rgba(153, 160, 170, 0.28));
+    filter: drop-shadow(0 0 6px rgb(var(--tone-neutral-010-rgb) / 0.28));
     mask: var(--scenario-choice-icon-url) center / contain no-repeat;
     -webkit-mask: var(--scenario-choice-icon-url) center / contain no-repeat;
 }
@@ -101,7 +101,7 @@
 .scenario-choice-copy {
     min-width: 0;
     display: grid;
-    gap: 3px;
+    gap: var(--space-3);
 }
 
 .scenario-choice-copy strong,
@@ -118,25 +118,25 @@
 }
 
 .scenario-choice-copy strong {
-    color: rgba(245, 232, 204, 0.88);
+    color: rgb(var(--tone-text-050-rgb) / 0.88);
     font-size: var(--game-panel-value-size);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.04em;
     overflow-wrap: anywhere;
     white-space: normal;
 }
 
 .scenario-choice-copy small {
-    color: rgba(210, 180, 140, 0.52);
+    color: rgb(var(--tone-text-002-rgb) / 0.52);
     font-size: var(--game-panel-meta-size);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: 0.02em;
     overflow-wrap: anywhere;
     white-space: normal;
 }
 
 .scenario-choice--primary {
-    border-color: rgba(153, 160, 170, 0.44);
+    border-color: rgb(var(--tone-neutral-010-rgb) / 0.44);
 }
 
 .scenario-choice--primary .scenario-choice-copy strong {
@@ -144,29 +144,29 @@
 }
 
 .scenario-choice--primary .scenario-choice-icon {
-    border-color: rgba(153, 160, 170, 0.42);
+    border-color: rgb(var(--tone-neutral-010-rgb) / 0.42);
     color: var(--scenario-accent-strong);
 }
 
 .scenario-choice--danger {
-    border-color: rgba(255, 92, 64, 0.28);
+    border-color: rgb(var(--tone-danger-044-rgb) / 0.28);
 }
 
 .scenario-choice--danger .scenario-choice-copy strong,
 .scenario-choice--danger .scenario-choice-icon {
-    color: rgba(255, 168, 118, 0.92);
+    color: rgb(var(--tone-accent-059-rgb) / 0.92);
 }
 
 .scenario-empty-actions {
-    min-height: 42px;
+    min-height: var(--size-42);
     display: grid;
     place-items: center;
-    border: 1px solid rgba(255, 170, 0, 0.12);
-    background: rgba(0, 0, 0, 0.24);
-    color: rgba(210, 180, 140, 0.52);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.12);
+    background: rgb(var(--tone-surface-001-rgb) / 0.24);
+    color: rgb(var(--tone-text-002-rgb) / 0.52);
     font-family: var(--font-ui);
     font-size: var(--game-panel-label-size);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.06em;
     text-transform: uppercase;
 }

@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "purpose": "Shared versioned game-client source art; origin_local_path is historical provenance only, not a runtime or build dependency.",
+  "files": [
+    {
+      "path": "combat/ui/control-zone-v3.png",
+      "bytes": 856149,
+      "sha256": "dbe6a65e6eac268149700a88a71a4ffbf119b41a571fc89722bf089b988af86a",
+      "role": "ui_crop_master",
+      "runtime_copy": null,
+      "origin_local_path": "game_ui_lab/static/game/assets/combat/ui/control-zone-v3.png"
+    },
+    {
+      "path": "combat/ui/target-inspector-v1.png",
+      "bytes": 2315950,
+      "sha256": "53cdb10ad6454f31d7a62503695e7dee3ac9593ba7b57a882ace6a7c20d16756",
+      "role": "ui_crop_master",
+      "runtime_copy": null,
+      "origin_local_path": "game_ui_lab/static/game/assets/combat/ui/target-inspector-v1.png"
+    },
+    {
+      "path": "places/painted/arena-hall.webp",
+      "bytes": 233424,
+      "sha256": "6593c01488c6fa7e3ea40b8e4f93b5348a28a210f5a2b84632a7e5b47b452ab3",
+      "role": "runtime_background",
+      "runtime_copy": "src/frontend/static/images/game-client/places/arena-hall.webp",
+      "origin_local_path": "game_ui_lab/static/game/assets/places/painted/arena-hall.webp"
+    },
+    {
+      "path": "places/painted/administrative-quarter.webp",
+      "bytes": 336418,
+      "sha256": "e85c8dce8f7b63a2b367c91beb7b508305234a5a323cf8ec14a2d0d7f594abf0",
+      "role": "runtime_background",
+      "runtime_copy": "src/frontend/static/images/game-client/places/administrative-quarter.webp",
+      "origin_local_path": "game_ui_lab/static/game/assets/places/painted/administrative-quarter.webp"
+    },
+    {
+      "path": "places/painted/trading-quarter.webp",
+      "bytes": 316690,
+      "sha256": "5d0fc5b9049dc4cbcd70178f5ea73b490abb395808885331c1d1589e1f2d8f26",
+      "role": "runtime_background",
+      "runtime_copy": "src/frontend/static/images/game-client/places/trading-quarter.webp",
+      "origin_local_path": "game_ui_lab/static/game/assets/places/painted/trading-quarter.webp"
+    },
+    {
+      "path": "places/painted/crafting-quarter.webp",
+      "bytes": 379174,
+      "sha256": "6c502404db81767b04495f098a929dd59df6d2be36e9fcd1669caac315ceec0c",
+      "role": "runtime_background",
+      "runtime_copy": "src/frontend/static/images/game-client/places/crafting-quarter.webp",
+      "origin_local_path": "game_ui_lab/static/game/assets/places/painted/crafting-quarter.webp"
+    },
+    {
+      "path": "places/originals/administrative-quarter.jpg",
+      "bytes": 4880413,
+      "sha256": "92557ab9b0a13c12acce39a791105a420c0d4b44373a77abfd5e0306054095a0",
+      "role": "editable_place_master",
+      "runtime_copy": "src/frontend/static/images/game-client/places/administrative-quarter.webp",
+      "origin_local_path": "game_ui_lab/art_sources/places/painted/administrative-quarter.jpg"
+    },
+    {
+      "path": "places/originals/arena-hall.jpg",
+      "bytes": 3941587,
+      "sha256": "db739f5c27c5e8b789e5caeaab11f85656235415e3b42467b789b1e5c9c32f00",
+      "role": "editable_place_master",
+      "runtime_copy": "src/frontend/static/images/game-client/places/arena-hall.webp",
+      "origin_local_path": "game_ui_lab/art_sources/places/painted/arena-hall.jpg"
+    },
+    {
+      "path": "places/originals/trading-quarter.jpg",
+      "bytes": 4684884,
+      "sha256": "cb367d989825a674f6d775ec1ed916dece60022da77484a9a00aede04cf116d2",
+      "role": "editable_place_master",
+      "runtime_copy": "src/frontend/static/images/game-client/places/trading-quarter.webp",
+      "origin_local_path": "game_ui_lab/art_sources/places/painted/trading-quarter.jpg"
+    },
+    {
+      "path": "places/originals/crafting-quarter.jpg",
+      "bytes": 5034021,
+      "sha256": "93b62f8612be4f70c5a6f21928140d43f0b0d5ef6c00f446ba8eb4134bccddff",
+      "role": "editable_place_master",
+      "runtime_copy": "src/frontend/static/images/game-client/places/crafting-quarter.webp",
+      "origin_local_path": "game_ui_lab/art_sources/places/painted/crafting-quarter.jpg"
+    },
+    {
+      "path": "places/originals/residential-quarter.jpg",
+      "bytes": 4695881,
+      "sha256": "3645f6adde4605799366f63e01ae33b04b3e1dcc2271a9045a0db962b0f745cf",
+      "role": "art_master_only",
+      "runtime_copy": null,
+      "origin_local_path": "game_ui_lab/art_sources/places/painted/residential-quarter.jpg"
+    },
+    {
+      "path": "places/originals/source-manifest.json",
+      "bytes": 1602,
+      "sha256": "b2713434ef012ec47f158c9bb714ef7ef327c2be5faeb437bc98c2ae4e1ccf83",
+      "role": "owner_source_manifest",
+      "runtime_copy": null,
+      "origin_local_path": "game_ui_lab/art_sources/places/painted/source-manifest.json"
+    }
+  ]
+}

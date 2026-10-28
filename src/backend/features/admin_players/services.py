@@ -29,8 +29,6 @@ _EQUIPMENT_LABELS = {
     EquippedSlot.CHEST_ARMOR.value: "Корпус",
     EquippedSlot.ARMS_ARMOR.value: "Руки",
     EquippedSlot.LEGS_ARMOR.value: "Ноги",
-    EquippedSlot.CHEST_GARMENT.value: "Одежда корпуса",
-    EquippedSlot.LEGS_GARMENT.value: "Одежда ног",
     EquippedSlot.OUTER_GARMENT.value: "Верхняя одежда",
     EquippedSlot.GLOVES_GARMENT.value: "Перчатки",
     EquippedSlot.FEETWEAR.value: "Обувь",

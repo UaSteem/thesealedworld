@@ -1,5 +1,5 @@
-from src.backend.features.rift.workers.tasks.session_tasks import flush_rift_run_task
+"""No legacy Rift jobs are registered in the alpha worker."""
 
-RIFT_TASKS = (flush_rift_run_task,)
+RIFT_TASKS = ()
 
-__all__ = ["RIFT_TASKS", "flush_rift_run_task"]
+__all__ = ["RIFT_TASKS"]

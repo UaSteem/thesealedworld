@@ -168,7 +168,7 @@ def test_to_item_generation_requests_preserves_batch_order() -> None:
 
     item_requests = to_item_generation_requests(requests)
 
-    assert [request.base_id for request in item_requests] == ["rapier", "leather_armor"]  # transmog player items
+    assert [request.base_id for request in item_requests] == ["rapier", "light_chest_armor"]  # transmog player items
     assert [request.target_slot for request in item_requests] == ["main_hand", "chest_armor"]
 
 

@@ -191,55 +191,55 @@ def test_awakening_rift_final_armor_rewards_grant_mvp_sets_plus_garments() -> No
     expected = {
         "take_plate": (
             {
-                "push:helmet",
-                "push:plate_chest",
-                "push:gauntlets",
-                "push:greaves",
+                "push:heavy_helmet",
+                "push:heavy_chest_armor",
+                "push:heavy_bracers",
+                "push:heavy_leg_armor",
             },
             "push:skill_heavy_armor",
         ),
         "take_scale": (
             {
-                "push:helmet",
-                "push:plate_chest",
-                "push:gauntlets",
-                "push:greaves",
+                "push:heavy_helmet",
+                "push:heavy_chest_armor",
+                "push:heavy_bracers",
+                "push:heavy_leg_armor",
             },
             "push:skill_heavy_armor",
         ),
         "take_robe": (
             {
-                "push:hood",
-                "push:leather_armor",
-                "push:soft_bracers",
-                "push:scout_leggings",
+                "push:light_hood",
+                "push:light_chest_armor",
+                "push:light_bracers",
+                "push:light_leg_armor",
             },
             "push:skill_light_armor",
         ),
         "take_leather": (
             {
-                "push:hood",
-                "push:leather_armor",
-                "push:soft_bracers",
-                "push:scout_leggings",
+                "push:light_hood",
+                "push:light_chest_armor",
+                "push:light_bracers",
+                "push:light_leg_armor",
             },
             "push:skill_light_armor",
         ),
         "take_chainmail": (
             {
-                "push:leather_cap",
-                "push:jerkin",
-                "push:reinforced_gloves",
-                "push:breeches",
+                "push:medium_helmet",
+                "push:medium_chest_armor",
+                "push:medium_bracers",
+                "push:medium_leg_armor",
             },
             "push:skill_medium_armor",
         ),
         "take_brigandine": (
             {
-                "push:leather_cap",
-                "push:jerkin",
-                "push:reinforced_gloves",
-                "push:breeches",
+                "push:medium_helmet",
+                "push:medium_chest_armor",
+                "push:medium_bracers",
+                "push:medium_leg_armor",
             },
             "push:skill_medium_armor",
         ),
@@ -248,7 +248,6 @@ def test_awakening_rift_final_armor_rewards_grant_mvp_sets_plus_garments() -> No
     removed_armor_rewards = {
         "push:robe",
         "push:sandals",
-        "push:boots",
         "push:scale_mail",
         "push:chainmail",
         "push:brigandine",
@@ -259,7 +258,7 @@ def test_awakening_rift_final_armor_rewards_grant_mvp_sets_plus_garments() -> No
         loot = set(action["math"]["loot_queue"])
 
         assert armor_set <= loot
-        assert "push:travel_boots" in loot
+        assert "push:boots" in loot
         assert loot.isdisjoint(removed_armor_rewards)
         assert action["math"]["skills_queue"] == [skill_key]
 

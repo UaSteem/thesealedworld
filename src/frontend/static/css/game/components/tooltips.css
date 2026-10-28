@@ -2,17 +2,17 @@
 
 .tippy-box[data-theme~='game-hint'],
 .tippy-box[data-theme~='game-catalog'] {
-    border: 1px solid rgba(255, 170, 0, .28);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.28);
     background:
-        linear-gradient(180deg, rgba(255, 190, 70, .08), transparent 42%),
-        rgba(8, 10, 12, .96);
+        linear-gradient(180deg, rgb(var(--tone-accent-043-rgb) / 0.08), transparent 42%),
+        rgb(var(--tone-surface-067-rgb) / 0.96);
     color: var(--col-parchment);
     font-family: var(--font-mono);
     font-size: var(--text-sm);
     line-height: 1.45;
     box-shadow:
-        0 12px 40px rgba(0, 0, 0, .45),
-        0 0 18px rgba(255, 170, 0, .08);
+        0 12px 40px rgb(var(--tone-surface-001-rgb) / 0.45),
+        0 0 18px rgb(var(--tone-accent-024-rgb) / 0.08);
     clip-path: var(--clip-node-sm);
 }
 
@@ -22,28 +22,28 @@
 
 .tippy-box[data-theme~='game-hint'] .tippy-content,
 .tippy-box[data-theme~='game-catalog'] .tippy-content {
-    padding: 8px 10px;
+    padding: var(--sp-2) var(--space-10);
     white-space: pre-line;
 }
 
 .tippy-box[data-theme~='game-hint'] .tippy-arrow,
 .tippy-box[data-theme~='game-catalog'] .tippy-arrow {
-    color: rgba(255, 170, 0, .28);
+    color: rgb(var(--tone-accent-024-rgb) / 0.28);
 }
 
 .tippy-box[data-theme~='game-feint'] {
-    border: 1px solid rgba(77, 220, 132, .42);
+    border: 1px solid rgb(var(--tone-success-016-rgb) / 0.42);
     background:
-        linear-gradient(180deg, rgba(77, 220, 132, .10), transparent 42%),
-        rgba(8, 10, 12, .96);
+        linear-gradient(180deg, rgb(var(--tone-success-016-rgb) / 0.1), transparent 42%),
+        rgb(var(--tone-surface-067-rgb) / 0.96);
     color: var(--col-parchment);
     font-family: var(--font-ui);
     font-size: var(--text-base);
     line-height: 1.4;
     max-width: 320px;
     box-shadow:
-        0 14px 40px rgba(0, 0, 0, .55),
-        0 0 22px rgba(77, 220, 132, .12);
+        0 14px 40px rgb(var(--tone-surface-001-rgb) / 0.55),
+        0 0 22px rgb(var(--tone-success-016-rgb) / 0.12);
     clip-path: var(--clip-node-sm);
 }
 
@@ -52,21 +52,21 @@
 }
 
 .tippy-box[data-theme~='game-feint'] .tippy-arrow {
-    color: rgba(77, 220, 132, .42);
+    color: rgb(var(--tone-success-016-rgb) / 0.42);
 }
 
 .combat-feint-tip {
     display: grid;
-    gap: 6px;
+    gap: var(--space-6);
     min-width: 220px;
-    padding: 10px 12px;
+    padding: var(--space-10) var(--sp-3);
 }
 
 .combat-feint-tip__title {
-    color: rgba(190, 255, 210, .98);
+    color: rgb(var(--tone-success-035-rgb) / 0.98);
     font-family: var(--font-ui);
     font-size: var(--text-base);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: .10em;
     text-transform: uppercase;
 }
@@ -74,22 +74,22 @@
 .combat-feint-tip__row {
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: var(--space-5);
     align-items: center;
 }
 
 .combat-feint-tip__cost-label {
-    color: rgba(210, 180, 140, .62);
+    color: rgb(var(--tone-text-002-rgb) / 0.62);
     font-family: var(--font-ui);
     font-size: var(--text-xs);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: .14em;
     text-transform: uppercase;
-    margin-right: 2px;
+    margin-right: var(--space-2);
 }
 
 .combat-feint-tip__cost-empty {
-    color: rgba(210, 180, 140, .48);
+    color: rgb(var(--tone-text-002-rgb) / 0.48);
     font-style: italic;
     font-size: var(--text-sm);
 }
@@ -98,76 +98,76 @@
 .combat-feint-tip__badge {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 3px 6px;
-    border: 1px solid rgba(255, 255, 255, .10);
-    background: rgba(0, 0, 0, .36);
+    gap: var(--sp-1);
+    padding: var(--space-3) var(--space-6);
+    border: 1px solid rgb(var(--tone-text-064-rgb) / 0.1);
+    background: rgb(var(--tone-surface-001-rgb) / 0.36);
     font-family: var(--font-ui);
     font-size: var(--text-sm);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: .04em;
 }
 
 .combat-feint-tip__chip img,
 .combat-feint-tip__badge img {
-    width: 13px;
-    height: 13px;
-    filter: invert(84%) sepia(38%) saturate(729%) hue-rotate(352deg) brightness(99%) contrast(101%);
+    width: var(--size-13);
+    height: var(--size-13);
+    filter: var(--filter-tooltips-01);
 }
 
 .combat-feint-tip__chip b,
 .combat-feint-tip__badge b {
-    color: #ffd76a;
+    color: rgb(var(--tone-accent-070-rgb));
     font-family: var(--font-mono);
     font-size: var(--text-base);
 }
 
 .combat-feint-tip__chip span,
 .combat-feint-tip__badge span {
-    color: rgba(255, 232, 200, .82);
+    color: rgb(var(--tone-text-053-rgb) / 0.82);
 }
 
 .combat-feint-tip__badge--damage {
-    border-color: rgba(255, 120, 70, .42);
-    background: rgba(50, 14, 8, .54);
+    border-color: rgb(var(--tone-danger-053-rgb) / 0.42);
+    background: rgb(var(--tone-surface-119-rgb) / 0.54);
 }
 
 .combat-feint-tip__badge--damage img {
-    filter: invert(48%) sepia(72%) saturate(1860%) hue-rotate(348deg) brightness(102%) contrast(98%);
+    filter: var(--filter-tooltips-02);
 }
 
 .combat-feint-tip__badge--control {
-    border-color: rgba(255, 215, 70, .48);
-    background: rgba(48, 36, 8, .52);
+    border-color: rgb(var(--tone-accent-058-rgb) / 0.48);
+    background: rgb(var(--tone-surface-125-rgb) / 0.52);
 }
 
 .combat-feint-tip__badge--control img {
-    filter: invert(82%) sepia(64%) saturate(820%) hue-rotate(2deg) brightness(102%) contrast(101%);
+    filter: var(--filter-tooltips-03);
 }
 
 .combat-feint-tip__badge--debuff {
-    border-color: rgba(160, 100, 220, .46);
-    background: rgba(28, 14, 42, .54);
+    border-color: rgb(var(--tone-magic-008-rgb) / 0.46);
+    background: rgb(var(--tone-surface-123-rgb) / 0.54);
 }
 
 .combat-feint-tip__badge--debuff img {
-    filter: invert(58%) sepia(58%) saturate(1280%) hue-rotate(232deg) brightness(102%) contrast(102%);
+    filter: var(--filter-tooltips-04);
 }
 
 .combat-feint-tip__badge--tactical {
-    border-color: rgba(80, 200, 255, .48);
-    background: rgba(8, 28, 44, .54);
+    border-color: rgb(var(--tone-energy-022-rgb) / 0.48);
+    background: rgb(var(--tone-surface-121-rgb) / 0.54);
 }
 
 .combat-feint-tip__badge--tactical img {
-    filter: invert(64%) sepia(48%) saturate(1280%) hue-rotate(170deg) brightness(102%) contrast(101%);
+    filter: var(--filter-tooltips-05);
 }
 
 .combat-feint-tip__body {
-    margin-top: 2px;
-    padding-top: 6px;
-    border-top: 1px solid rgba(255, 255, 255, .08);
-    color: rgba(255, 232, 200, .88);
+    margin-top: var(--space-2);
+    padding-top: var(--space-6);
+    border-top: 1px solid rgb(var(--tone-text-064-rgb) / 0.08);
+    color: rgb(var(--tone-text-053-rgb) / 0.88);
     font-family: var(--font-text);
     font-size: var(--text-base);
     line-height: 1.45;

@@ -12,7 +12,7 @@
 @media (min-width: 1440px) {
     #game-left-content,
     #game-right-content {
-        padding: 10px 10px 36px;
+        padding: var(--space-10) var(--space-10) var(--space-36);
     }
 
     #app-viewport {
@@ -30,8 +30,8 @@
 
 @media (min-width: 1600px) {
     #center-screens.exploration-center-screens {
-        padding-left: 16px;
-        padding-right: 16px;
+        padding-left: var(--sp-4);
+        padding-right: var(--sp-4);
     }
 
     /* Navigation mode: narrow the action panel so it doesn't stretch */

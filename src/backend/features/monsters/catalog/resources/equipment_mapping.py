@@ -67,16 +67,16 @@ NATURAL_EQUIPMENT_MAPPINGS: dict[str, MonsterNaturalEquipmentMapping] = {
     ),
     "golem_stone_reserve": MonsterNaturalEquipmentMapping(
         natural_key="golem_stone_reserve",
-        base_id="quiver_training",
+        base_id="quiver_standard",
         item_kind="ammo",
-        default_slot="quiver",
+        default_slot="off_hand",
         name_ru="Запас каменных обломков",
         description_ru="Каменные обломки в углублениях корпуса, подготовленные для дальних бросков.",
         tags=("natural_ammo", "golem", "stone"),
     ),
     "golem_shell": MonsterNaturalEquipmentMapping(
         natural_key="golem_shell",
-        base_id="plate_chest",
+        base_id="heavy_chest_armor",
         item_kind="armor",
         default_slot="chest_armor",
         name_ru="Сегментированный каменный корпус",
@@ -176,11 +176,11 @@ NATURAL_EQUIPMENT_MAPPINGS: dict[str, MonsterNaturalEquipmentMapping] = {
     ),
     "rat_poison_glands": MonsterNaturalEquipmentMapping(
         natural_key="rat_poison_glands",
-        base_id="quiver_training",
+        base_id="quiver_standard",
         name_ru="Ядовитые железы крысы",
         description_ru="Развитые железы у основания челюстей. В них скапливается густой секрет, который крыса расходует на дальние плевки.",
         item_kind="ammo",
-        default_slot="quiver",
+        default_slot="off_hand",
         tags=("natural_ammo", "rat", "poison", "glands"),
     ),
     "rat_crushing_bite": MonsterNaturalEquipmentMapping(
@@ -195,7 +195,7 @@ NATURAL_EQUIPMENT_MAPPINGS: dict[str, MonsterNaturalEquipmentMapping] = {
     # ── КРЫСЫ: броня ─────────────────────────────────────────────────
     "rat_light_hide": MonsterNaturalEquipmentMapping(
         natural_key="rat_light_hide",
-        base_id="leather_armor",
+        base_id="light_chest_armor",
         name_ru="Лёгкая звериная шкура",
         description_ru="Тонкая гибкая шкура под короткой шерстью крысы. Она прикрывает тело, сохраняя подвижность в узких проходах.",
         item_kind="armor",
@@ -204,7 +204,7 @@ NATURAL_EQUIPMENT_MAPPINGS: dict[str, MonsterNaturalEquipmentMapping] = {
     ),
     "rat_medium_hide": MonsterNaturalEquipmentMapping(
         natural_key="rat_medium_hide",
-        base_id="jerkin",
+        base_id="medium_chest_armor",
         name_ru="Плотная шкура крысы",
         description_ru="Огрубевшая шкура взрослой крысы со старыми рубцами и редкой жёсткой шерстью. Плотные складки прикрывают бока и плечи.",
         item_kind="armor",
@@ -213,7 +213,7 @@ NATURAL_EQUIPMENT_MAPPINGS: dict[str, MonsterNaturalEquipmentMapping] = {
     ),
     "rat_heavy_hide": MonsterNaturalEquipmentMapping(
         natural_key="rat_heavy_hide",
-        base_id="plate_chest",
+        base_id="heavy_chest_armor",
         name_ru="Толстая шкура крупной крысы",
         description_ru="Толстая складчатая шкура тяжёлой крысы. На груди и загривке она огрубела от старых укусов и постоянного трения о камень.",
         item_kind="armor",
@@ -315,7 +315,7 @@ NATURAL_EQUIPMENT_MAPPINGS: dict[str, MonsterNaturalEquipmentMapping] = {
     # ── ВОЛКИ: броня ─────────────────────────────────────────────────
     "wolf_hide": MonsterNaturalEquipmentMapping(
         natural_key="wolf_hide",
-        base_id="leather_armor",
+        base_id="light_chest_armor",
         name_ru="Лёгкая волчья шкура",
         description_ru="Гибкая шкура под коротким плотным мехом. Она прикрывает тело молодого волка, не сковывая его резких движений.",
         item_kind="armor",
@@ -324,7 +324,7 @@ NATURAL_EQUIPMENT_MAPPINGS: dict[str, MonsterNaturalEquipmentMapping] = {
     ),
     "wolf_medium_hide": MonsterNaturalEquipmentMapping(
         natural_key="wolf_medium_hide",
-        base_id="jerkin",
+        base_id="medium_chest_armor",
         name_ru="Плотная волчья шкура",
         description_ru="Огрубевшая шкура взрослого волка под густой шерстью. На боках и спине видны старые следы укусов и зажившие рубцы.",
         item_kind="armor",
@@ -333,7 +333,7 @@ NATURAL_EQUIPMENT_MAPPINGS: dict[str, MonsterNaturalEquipmentMapping] = {
     ),
     "wolf_heavy_hide": MonsterNaturalEquipmentMapping(
         natural_key="wolf_heavy_hide",
-        base_id="plate_chest",
+        base_id="heavy_chest_armor",
         name_ru="Толстая шкура матёрого волка",
         description_ru="Толстая рубцовая шкура с густым слежавшимся мехом. Плотные складки прикрывают шею, грудь и бока тяжёлого хищника.",
         item_kind="armor",
@@ -385,7 +385,7 @@ NATURAL_EQUIPMENT_MAPPINGS: dict[str, MonsterNaturalEquipmentMapping] = {
     # ── ЯКОРНЫЕ БОССЫ: броня ─────────────────────────────────────────
     "anchor_projection_aegis": MonsterNaturalEquipmentMapping(
         natural_key="anchor_projection_aegis",
-        base_id="plate_chest",
+        base_id="heavy_chest_armor",
         name_ru="Оболочка Анкорной Проекции",
         item_kind="armor",
         default_slot="chest_armor",

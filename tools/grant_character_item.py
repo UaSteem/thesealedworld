@@ -45,7 +45,7 @@ def parse_positive_int(value: str) -> int:
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Grant generated items to a character backpack.")
     parser.add_argument("--char-id", type=int, required=True)
-    parser.add_argument("--base-id", required=True, help="Item base id, for example: warhammer, sword, leather_armor.")
+    parser.add_argument("--base-id", required=True, help="Item base id, for example: warhammer, sword, light_chest_armor.")
     parser.add_argument("--rarity-tier", type=int, default=1)
     parser.add_argument("--count", type=parse_positive_int, default=1)
     parser.add_argument("--material-id", default=None)

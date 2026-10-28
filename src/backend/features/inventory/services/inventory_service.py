@@ -6,6 +6,12 @@ from typing import TYPE_CHECKING, Any
 from uuid import uuid4
 
 from src.backend.features.inventory.repositories.items import runtime_item_from_instance
+from src.backend.features.inventory.services.equipment_rules import (
+    can_equip,
+    ensure_current_equipment_contract,
+    is_bow,
+    is_quiver,
+)
 from src.backend.features.inventory.services.projection import (
     BACKPACK_STORAGE,
     BELT_STORAGE,
@@ -13,7 +19,6 @@ from src.backend.features.inventory.services.projection import (
     belt_capacity,
     build_active_character_projection,
     build_runtime_session,
-    compatible_with_slot,
     is_quick_slot_compatible,
 )
 from src.backend.features.inventory.services.view import InventoryViewService
@@ -99,6 +104,8 @@ class InventoryService:
             self._remove_from_belt(session, dto.item_id)
         elif dto.action == "drop":
             await self._drop(session, dto.item_id)
+        elif dto.action == "identify":
+            await self._identify(session, dto.item_id)
         else:
             raise InventoryActionError(f"Inventory action is not implemented yet: {dto.action}")
 
@@ -142,8 +149,10 @@ class InventoryService:
                 session = None
             else:
                 session.risk_run_id = active_run_id
+                ensure_current_equipment_contract(session)
                 await self.inventory_sessions.touch(char_id)
                 await self._refresh_wallet(session)
+                await self._refresh_item_presentations(session, active_run_id=active_run_id)
                 return session
 
         rows = await self.repository.list_character_items(char_id, expedition_run_id=active_run_id)
@@ -155,6 +164,41 @@ class InventoryService:
         await self.character_sessions.set_inventory_session(char_id, self.inventory_sessions.build_key(char_id))
         await self._sync_active_character_items(session, reason="inventory_opened")
         return session
+
+    async def _refresh_item_presentations(
+        self, session: InventoryRuntimeSessionDTO, *, active_run_id: str | None
+    ) -> None:
+        # Generated text may finish while the window is open. SQL owns disclosure;
+        # preserve unflushed placement and mechanics in the runtime document.
+        rows = await self.repository.list_character_items(session.char_id, expedition_run_id=active_run_id)
+        for instance, placement in rows:
+            current = session.by_id.get(str(instance.id))
+            if current is None:
+                continue
+            fresh = runtime_item_from_instance(instance, placement)
+            for field in (
+                "name",
+                "description",
+                "material_id",
+                "visual_variant_id",
+                "thumbnail_url",
+                "image_url",
+                "is_identified",
+                "text_status",
+                "metadata",
+            ):
+                setattr(current, field, getattr(fresh, field))
+
+    async def _identify(self, session: InventoryRuntimeSessionDTO, item_id: str) -> None:
+        self._item(session, item_id)
+        active_run_id = await self._active_run_id(session.char_id)
+        identified = await self.repository.identify_character_item(
+            session.char_id, item_id, expedition_run_id=active_run_id
+        )
+        if not identified:
+            raise InventoryActionError(f"Inventory item cannot be identified: {item_id}")
+        await self.repository.commit()
+        await self._refresh_item_presentations(session, active_run_id=active_run_id)
 
     async def _refresh_wallet(self, session: InventoryRuntimeSessionDTO) -> None:
         get_wallet = getattr(self.repository, "get_wallet", None)
@@ -168,6 +212,7 @@ class InventoryService:
         session.wallet = wallet
 
     async def flush_session(self, session: InventoryRuntimeSessionDTO) -> None:
+        ensure_current_equipment_contract(session)
         await self.repository.save_placements(
             session.char_id,
             session.by_id,
@@ -269,15 +314,20 @@ class InventoryService:
         if slot_id not in {slot.value for slot in EquippedSlot}:
             raise InventoryActionError(f"Unknown equipment slot: {slot_id}")
         item = self._item(session, item_id)
-        if not compatible_with_slot(item, slot_id):
+        if not can_equip(session, item, slot_id):
             raise InventoryActionError(f"Item {item_id} cannot be equipped into {slot_id}")
 
         self._clear_equipment_slot(session, slot_id)
         if slot_id == EquippedSlot.TWO_HAND.value:
             self._clear_equipment_slot(session, EquippedSlot.MAIN_HAND.value)
-            self._clear_equipment_slot(session, EquippedSlot.OFF_HAND.value)
+            off_hand_id = session.layout.equipment.get(EquippedSlot.OFF_HAND.value)
+            if not (is_bow(item) and is_quiver(session.by_id.get(off_hand_id or ""))):
+                self._clear_equipment_slot(session, EquippedSlot.OFF_HAND.value)
         elif slot_id in {EquippedSlot.MAIN_HAND.value, EquippedSlot.OFF_HAND.value}:
-            self._clear_equipment_slot(session, EquippedSlot.TWO_HAND.value)
+            if not is_quiver(item):
+                self._clear_equipment_slot(session, EquippedSlot.TWO_HAND.value)
+            if slot_id == EquippedSlot.MAIN_HAND.value:
+                self._clear_incompatible_quiver(session)
 
         self._detach_item(session, item_id)
         item.placement = EQUIPMENT_STORAGE
@@ -292,6 +342,7 @@ class InventoryService:
         item.slot = None
         if item_id not in session.layout.backpack:
             session.layout.backpack.append(item_id)
+        self._clear_incompatible_quiver(session)
         self._enforce_belt_capacity(session)
 
     def _move_to_belt(self, session: InventoryRuntimeSessionDTO, item_id: str, slot_id: str) -> None:
@@ -333,6 +384,7 @@ class InventoryService:
         await self.repository.commit()
         self._detach_item(session, item_id)
         session.by_id.pop(item_id, None)
+        self._clear_incompatible_quiver(session)
 
     def _detach_item(self, session: InventoryRuntimeSessionDTO, item_id: str) -> None:
         for slot, equipped_id in list(session.layout.equipment.items()):
@@ -353,6 +405,12 @@ class InventoryService:
                 if item_id not in session.layout.backpack:
                     session.layout.backpack.append(item_id)
         session.layout.equipment[slot_id] = None
+
+    def _clear_incompatible_quiver(self, session: InventoryRuntimeSessionDTO) -> None:
+        two_hand = session.by_id.get(session.layout.equipment.get("two_hand") or "")
+        off_hand = session.by_id.get(session.layout.equipment.get("off_hand") or "")
+        if is_quiver(off_hand) and not is_bow(two_hand):
+            self._clear_equipment_slot(session, "off_hand")
 
     def _clear_belt_slot(self, session: InventoryRuntimeSessionDTO, slot_id: str) -> None:
         item_id = session.layout.belt.get(slot_id)

@@ -2,15 +2,15 @@
     width: var(--status-avatar-size);
     max-width: 100%;
     aspect-ratio: 1;
-    border: 1px solid rgba(255,170,0,.15);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.15);
     position: relative;
     overflow: hidden;
     margin-top: var(--sp-4);
-    margin-bottom: 20px;
+    margin-bottom: var(--sp-5);
     margin-inline: auto;
 }
 .avatar.loc-dot {
-    width: 6px; height: 6px;
+    width: var(--size-6); height: var(--size-6);
     background: var(--col-accent);
     border-radius: 50%;
     box-shadow: 0 0 10px var(--col-accent);
@@ -31,7 +31,7 @@
 .avatar-bg {
     width: 100%;
     height: 100%;
-    background: #0a0a0c;
+    background: rgb(var(--tone-surface-073-rgb));
     position: relative;
 }
 .avatar-bg img {
@@ -44,12 +44,12 @@
     position: absolute;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--sp-1);
     max-width: calc(100% - 10px);
-    background: rgba(12, 12, 16, 0.7);
+    background: rgb(var(--tone-surface-092-rgb) / 0.7);
     backdrop-filter: blur(4px);
-    padding: 3px 6px;
-    border: 1px solid rgba(255, 170, 0, 0.15);
+    padding: var(--space-3) var(--space-6);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.15);
     font-size: var(--text-2xs);
     line-height: 1.2;
     pointer-events: none;
@@ -61,7 +61,7 @@
 .av-tr { top: 5px; right: 5px; }
 .av-bl { bottom: 5px; left: 5px; }
 .av-br { bottom: 5px; right: 5px; }
-.av-val { font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--col-accent); }
+.av-val { font-family: var(--font-mono); font-weight: var(--weight-bold); color: var(--col-accent); }
 .av-corner .av-val {
     min-width: 0;
     overflow: hidden;
@@ -79,12 +79,12 @@
 }
 
 .avatar-frame {
-    width: 64px;
-    height: 64px;
+    width: var(--size-64);
+    height: var(--size-64);
     flex-shrink: 0;
     position: relative;
-    border: 1px solid rgba(255,170,0,0.1);
-    background: #000;
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.1);
+    background: rgb(var(--tone-surface-001-rgb));
 }
 
 .avatar-shadow {
@@ -100,10 +100,10 @@
     font-size: var(--text-base);
     letter-spacing: .09em;
     color: var(--col-accent);
-    text-shadow: 0 0 10px rgba(255,170,0,0.45);
+    text-shadow: 0 0 10px rgb(var(--tone-accent-024-rgb) / 0.45);
     font-weight: bold;
 }
-.avatar-sub  { font-size: var(--text-2xs); color: var(--col-parchment-dim); display: block; margin-top: 1px; opacity: 0.6; }
+.avatar-sub  { font-size: var(--text-2xs); color: var(--col-parchment-dim); display: block; margin-top: var(--space-1); opacity: 0.6; }
 
 
 .sec {
@@ -114,11 +114,11 @@
     opacity: 0.3;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: var(--space-5);
     min-width: 0;
-    margin: 15px 0 10px;
+    margin: var(--space-15) 0 var(--space-10);
     line-height: 1.35;
     text-align: center;
     overflow-wrap: anywhere;
 }
-.sec::before, .sec::after { content: ''; flex: 1; height: 1px; background: rgba(210, 180, 140, 0.1); }
+.sec::before, .sec::after { content: ''; flex: 1; height: var(--size-1); background: rgb(var(--tone-text-002-rgb) / 0.1); }

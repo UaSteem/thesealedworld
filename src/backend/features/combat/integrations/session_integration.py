@@ -20,6 +20,7 @@ from src.backend.features.combat.dto.session import (
     BattleContext,
     BattleMeta,
 )
+from src.backend.features.combat.runtime.support import CombatAnalyticsFactBuilder, CombatResultSupportTaskDTO
 
 # Инфраструктура
 from src.backend.infrastructure.combat.managers.session import CombatSessionManager
@@ -75,11 +76,7 @@ class CombatSessionIntegration:
         return int(await count_logs(session_id))
 
     async def append_analytics(self, session_id: str, entry: dict[str, Any] | str) -> None:
-        append = getattr(self.combat_manager, "append_analytics", None)
-        if append is None:
-            await self.combat_manager.commit_battle_results(session_id, {}, [], 0, analytics=[entry])
-            return
-        await append(session_id, entry)
+        await self.combat_manager.append_analytics(session_id, entry)
 
     async def get_analytics(self, session_id: str) -> dict[str, Any]:
         getter = getattr(self.combat_manager, "get_analytics", None)
@@ -178,8 +175,13 @@ class CombatSessionIntegration:
     async def add_log(self, session_id: str, text: str, tags: list[str] | None = None) -> None:
         await self.combat_manager.add_log(session_id, text, tags=tags)
 
-    async def create_session_batch(self, session_id: str, session_data: Any, *, ttl: int) -> None:
-        await self.combat_manager.create_session_batch(session_id, session_data, ttl=ttl)
+    async def create_session_batch(
+        self, session_id: str, session_data: Any, *, ttl: int, analytics: list[dict[str, Any] | str] | None = None
+    ) -> bool:
+        return await self.combat_manager.create_session_batch(session_id, session_data, ttl=ttl, analytics=analytics)
+
+    async def load_existing_creation(self, session_id: str, fingerprint: str):
+        return await self.combat_manager.load_existing_creation(session_id, fingerprint)
 
     async def cleanup_session(self, session_id: str) -> None:
         await self.combat_manager.cleanup_session(session_id)
@@ -361,8 +363,8 @@ class CombatSessionIntegration:
             if cid == "global_queue":
                 continue
 
-            if not data.get("meta"):
-                continue
+            if not data.get("meta") or not data.get("source_json"):
+                raise RuntimeError(f"Missing combat actor snapshot: {cid}")
 
             # Build Snapshot
             actors_map[cid] = self._build_snapshot(
@@ -390,6 +392,10 @@ class CombatSessionIntegration:
             moves_cache=moves_cache,
             pending_logs=[],
             pending_result_support_tasks=[],
+            storage_actor_snapshots={
+                cid: data["source_json"] for cid, data in structured_data.items() if cid != "global_queue"
+            },
+            storage_meta_snapshot=meta_raw,
         )
 
     async def load_snapshot_context(self, session_id: str) -> BattleContext | None:
@@ -398,7 +404,15 @@ class CombatSessionIntegration:
         """
         return await self.load_battle_context(session_id)
 
-    async def commit_session(self, ctx: BattleContext, processed_action_ids: list[str]) -> None:
+    async def commit_session(
+        self,
+        ctx: BattleContext,
+        processed_action_ids: list[str],
+        *,
+        owner: str,
+        exchange_id: str,
+        expected_actions: list[str | bytes],
+    ) -> bool:
         """Commit executor mutations back into runtime storage atomically.
 
         Args:
@@ -462,15 +476,30 @@ class CombatSessionIntegration:
         meta_update = {"step_counter": ctx.meta.step_counter, "last_activity_at": int(time.time())}
         if alive_counts_update is not None:
             meta_update["alive_counts"] = json.dumps(alive_counts_update)
-        await self.combat_manager.commit_battle_results(
+        # Facts use the same captured DTO and builder as deferred support. They
+        # must be accepted with the exchange even when later job delivery fails.
+        analytics = [
+            CombatAnalyticsFactBuilder.build_result_fact_from_support_payload(
+                CombatResultSupportTaskDTO.model_validate(payload)
+            )
+            for payload in ctx.pending_result_support_tasks
+        ]
+        return await self.combat_manager.commit_battle_results(
             ctx.session_id,
             updates,
             cast("list[dict[str, Any] | str]", logs),
-            len(processed_action_ids),
+            len(expected_actions),
             target_returns=target_returns,
             dead_actors=dead_actors_update,
             dead_actor_ids=dead_actor_ids,
             meta_update=meta_update,
+            analytics=analytics,
+            owner=owner,
+            expected_revision=ctx.meta.revision,
+            exchange_id=exchange_id,
+            expected_actions=expected_actions,
+            expected_actors=ctx.storage_actor_snapshots,
+            expected_meta=ctx.storage_meta_snapshot,
         )
 
     # ==========================================================================
@@ -497,6 +526,7 @@ class CombatSessionIntegration:
             location_id=d("location_id") or "unknown",
             started_at=self._optional_int(d("started_at")),
             ai_policy_id=str(d("ai_policy_id") or ""),
+            revision=int(d("revision") or 0),
         )
 
     @staticmethod

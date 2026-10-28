@@ -9,7 +9,6 @@ from pathlib import Path
 from typing import Any, cast
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
-
 from tools.game_preview.fixtures import PreviewFixture, build_fixture
 from tools.game_preview.server import PreviewServer
 
@@ -72,12 +71,13 @@ def _wrap_html(*, body: str, fixture: PreviewFixture, template_name: str) -> str
     status_json = json.dumps(status_seed, ensure_ascii=False)
     body_class = f"game-body {fixture.body_class}".strip()
     return f"""<!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-game-theme="adventure">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>{_escape_text(fixture.title)}</title>
     <link rel="stylesheet" href="/static/css/fonts.css?v={static_version}">
+    <link rel="stylesheet" href="/static/css/theme.css?v={static_version}">
     <link rel="stylesheet" href="/static/css/game.css?v={static_version}">
     <style>
         [x-cloak] {{ display: none !important; }}
@@ -88,10 +88,12 @@ def _wrap_html(*, body: str, fixture: PreviewFixture, template_name: str) -> str
             z-index: 2000;
             max-width: min(460px, calc(100vw - 16px));
             padding: 6px 8px;
-            border: 1px solid rgba(255, 170, 0, .22);
-            background: rgba(0, 0, 0, .72);
-            color: rgba(255, 232, 190, .72);
-            font: 10px/1.35 monospace;
+            border: 1px solid var(--col-border);
+            background: var(--game-overlay-surface, var(--col-bg-surface));
+            color: var(--col-text-secondary);
+            font-family: var(--font-ui);
+            font-size: var(--text-sm);
+            line-height: 1.35;
             pointer-events: none;
         }}
     </style>
@@ -123,7 +125,7 @@ def _wrap_html(*, body: str, fixture: PreviewFixture, template_name: str) -> str
     <div class="game-preview-meta">
         fixture: {_escape_text(fixture.title)}<br>
         template: {_escape_text(template_name)}<br>
-        css: /static/css/game.css
+        css: /static/css/theme.css + /static/css/game.css
     </div>
 </body>
 </html>
@@ -172,6 +174,7 @@ def _inline_css(file_path: str) -> str:
 def _static_version() -> str:
     paths = (
         STATIC_DIR / "css" / "fonts.css",
+        STATIC_DIR / "css" / "theme.css",
         STATIC_DIR / "css" / "game.css",
         STATIC_DIR / "js" / "game.js",
     )

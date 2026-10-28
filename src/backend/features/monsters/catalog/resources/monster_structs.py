@@ -28,15 +28,12 @@ class MonsterLoadout(TypedDict, total=False):
     arms_armor: str | None
     legs_armor: str | None
     feetwear: str | None
-    chest_garment: str | None
-    legs_garment: str | None
     outer_garment: str | None
     gloves_garment: str | None
     amulet: str | None
     ring_1: str | None
     ring_2: str | None
     belt_accessory: str | None
-    quiver: str | None
 
 
 class MonsterLootProfile(TypedDict, total=False):

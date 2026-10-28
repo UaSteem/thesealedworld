@@ -7,8 +7,8 @@ body::before {
   left: 0;
   right: 0;
   top: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255,170,0,0.25), transparent);
+  height: var(--size-2);
+  background: linear-gradient(90deg, transparent, rgb(var(--tone-accent-024-rgb) / 0.25), transparent);
   animation: scan 9s linear infinite;
   pointer-events: none;
   z-index: 99;
@@ -18,7 +18,7 @@ body::before {
 .bg-vignette {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.4) 100%);
+  background: radial-gradient(circle at center, transparent 0%, rgb(var(--tone-surface-001-rgb) / 0.4) 100%);
   pointer-events: none;
   z-index: 1;
 }

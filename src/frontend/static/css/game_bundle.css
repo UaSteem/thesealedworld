@@ -1,4 +1,3 @@
-@import url("game/core/tokens.css");
 @import url("game/core/reset.css");
 @import url("game/core/animations.css");
 @import url("game/shell/ambient.css");
@@ -31,3 +30,6 @@
 @import url("game/domains/loot/index.css");
 @import url("game/domains/rift/index.css");
 @import url("game/shell/responsive/index.css");
+
+/* Transitional runtime shell overrides legacy layout, scoped to active game sessions. */
+@import url("game/shell/runtime_client.css");

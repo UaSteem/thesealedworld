@@ -21,6 +21,7 @@
 {%- endmacro %}
 
 <section id="center-screens" class="city-service-center-screens">
+    {% include "game/includes/places_transport.html" %}
     {% if city_service %}
         {% set service_screen = city_service.screen.value if city_service.screen and city_service.screen.value is defined else city_service.screen %}
         {% set service_background = city_service.background_url or '/static/images/exploration/terrain/ancient_pavement_hub_01.webp' %}

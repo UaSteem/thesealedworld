@@ -3,6 +3,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any
 
 from src.backend.features.combat.integrations import CombatCatalogIntegrator
+from src.backend.features.combat.runtime.support.factual_report import (
+    result_numbers,
+    result_template,
+    transition_entries,
+    trigger_actor_ids,
+)
 
 if TYPE_CHECKING:
     from src.backend.features.combat.dto.action import CombatActionDTO
@@ -12,6 +18,33 @@ if TYPE_CHECKING:
 
 class CombatLogBuilder:
     """Builds short player-facing combat log entries from resolved public facts."""
+
+    _fact_numbers = staticmethod(result_numbers)
+
+    @classmethod
+    def _combat_text_template(cls, **kwargs) -> dict[str, Any]:
+        return result_template(cls, **kwargs)
+
+    @classmethod
+    def _build_trigger_proc_entry(cls, *, ctx, result, trigger_id, outcome, timestamp, tags, global_turn):
+        source_id, target_id = trigger_actor_ids(result, trigger_id)
+        source, target = cls._actor_ref(ctx, source_id), cls._actor_ref(ctx, target_id)
+        label = cls._resource_label("trigger", cls._trigger_resource_id(trigger_id))
+        return {
+            "type": "TRIGGER_PROC",
+            "kind": "trigger_proc",
+            "format": "factual-v1",
+            "text": f"{(source or {}).get('name', result.source_id)} → {(target or {}).get('name', result.target_id)}: срабатывание «{label}»",
+            "source": source,
+            "target": target,
+            "timestamp": timestamp,
+            "global_turn": global_turn,
+            "outcome": outcome,
+            "tags": [*tags, "trigger_proc"],
+            "action": {"id": trigger_id, "label": label, "mode": "trigger"},
+            "effects": cls._public_effects(ctx, result),
+            "presentation": {"player_visible": True},
+        }
 
     @classmethod
     def build_exchange_regen_entry(
@@ -88,10 +121,6 @@ class CombatLogBuilder:
             target_id=target_id,
         )
         cls._apply_combat_text_variables(variables, template, action_id=action_id)
-        if template.get("outcome") == "controlled":
-            controlled_actor = cls._actor_ref(ctx, cls._controlled_actor_id(result) or source_id)
-            if controlled_actor is not None:
-                variables["target"] = str(controlled_actor.get("name") or variables.get("target") or "NO_TARGET")
         text = cls._render_combat_text(template, variables)
         text = cls._append_reflect_text(text, result=result, source=source, target=target)
         catalog = cls._combat_text_catalog_fields(template)
@@ -103,6 +132,8 @@ class CombatLogBuilder:
         entry = {
             "id": f"{global_turn}:{wave}:{source_id or 'none'}:{target_id or 'none'}:0",
             "type": "LOG",
+            "format": "factual-v1",
+            "numbers": cls._fact_numbers(result),
             "kind": cls._entry_kind(result, action_type=action.action_type, is_area=is_area, catalog=catalog),
             "text": text,
             "timestamp": timestamp,
@@ -115,6 +146,7 @@ class CombatLogBuilder:
             "action": {
                 "mode": action.action_type,
                 "id": action_id,
+                "label": template.get("action_label"),
                 "catalog": catalog.get("catalog"),
                 "catalog_key": catalog.get("catalog_key"),
                 "event": catalog.get("catalog_event") or event_name,
@@ -239,6 +271,17 @@ class CombatLogBuilder:
         return {
             "id": f"{global_turn}:{wave}:{source_id or 'none'}:area:0",
             "type": "LOG",
+            "format": "factual-v1",
+            "numbers": {key: sum(result_numbers(r)[key] for r in results) for key in result_numbers(first)},
+            "target_results": [
+                {
+                    "target": cls._actor_ref(ctx, r.target_id),
+                    "outcome": cls._result_outcome(r),
+                    "numbers": result_numbers(r),
+                    "flags": cls._public_flags(r),
+                }
+                for r in results
+            ],
             "kind": cls._entry_kind(first, action_type=action.action_type, is_area=True, catalog=catalog),
             "text": text,
             "timestamp": timestamp,
@@ -318,7 +361,7 @@ class CombatLogBuilder:
             if fact_action not in {"apply", "expire", "resist", "cleanse"}:
                 continue
             effect_id = str(getattr(fact, "effect_id", "") or "")
-            if not effect_id or effect_id == skip_effect_id:
+            if not effect_id or effect_id == skip_effect_id or effect_id in {"ranged_position", "tactical_state"}:
                 continue
             target_id = getattr(fact, "actor_id", None)
             target = cls._actor_ref(ctx, target_id)
@@ -329,6 +372,7 @@ class CombatLogBuilder:
                     "id": f"{global_turn}:{wave}:effect:{target_id or 'none'}:{effect_id}:{len(entries)}",
                     "type": "LOG",
                     "kind": kind,
+                    "format": "factual-v1",
                     "text": text,
                     "timestamp": timestamp,
                     "tags": ["runtime", "effect", fact_action, f"turn:{global_turn}"],
@@ -406,6 +450,7 @@ class CombatLogBuilder:
                     "flags": {},
                 }
             )
+        entries.extend(transition_entries(cls, ctx=ctx, result=result, wave=wave, timestamp=timestamp))
         return entries
 
     @classmethod
@@ -420,24 +465,12 @@ class CombatLogBuilder:
     ) -> str:
         effect_entry = CombatCatalogIntegrator.get_effect_catalog_entry(effect_id)
         effect = cls._effect_label(effect_entry, effect_id)
-        event = {
-            "apply": "apply_effect",
-            "expire": "expire_effect",
-            "resist": "resist",
-            "cleanse": "cleanse",
-        }.get(action, action)
-        template_text = None
-        if effect_entry is not None:
-            target_body = cls._actor_body(ctx, (target or {}).get("id"))
-            resolved = effect_entry.descriptive.resolve_event_template(event, [target_body])
-            template_text = resolved.text if resolved else None
-        if not template_text:
-            template_text = {
-                "apply": "{target} получает {effect}.",
-                "expire": "{effect} {target} проходит.",
-                "resist": "{target} сопротивляется: {effect} не закрепляется.",
-                "cleanse": "{effect} {target} снят.",
-            }.get(action, "{target}: {effect}.")
+        template_text = {
+            "apply": "{source} → {target}: эффект «{effect}» применён.",
+            "expire": "{target}: эффект «{effect}» завершён.",
+            "resist": "{source} → {target}: сопротивление эффекту «{effect}».",
+            "cleanse": "{source} → {target}: эффект «{effect}» снят.",
+        }.get(action, "{target}: {effect}.")
         return cls._render_combat_text(
             {"template": template_text},
             {
@@ -448,7 +481,7 @@ class CombatLogBuilder:
         )
 
     @classmethod
-    def _combat_text_template(
+    def _legacy_combat_text_template(
         cls,
         *,
         ctx: BattleContext,
@@ -855,7 +888,7 @@ class CombatLogBuilder:
             return text
         source_name = str((source or {}).get("name") or "атакующему")
         target_name = str((target or {}).get("name") or "защитника")
-        return f"{text} Щит {target_name} возвращает {source_name} {result.reflected_damage} урона."
+        return f"{text} · возврат {target_name} → {source_name}: {result.reflected_damage} урона."
 
     @classmethod
     def _public_result(cls, ctx: BattleContext, result: InteractionResultDTO) -> dict[str, list[dict[str, Any]]]:
@@ -1162,7 +1195,7 @@ class CombatLogBuilder:
         return "merge"
 
     @classmethod
-    def _build_trigger_proc_entry(
+    def _legacy_build_trigger_proc_entry(
         cls,
         *,
         ctx: BattleContext,

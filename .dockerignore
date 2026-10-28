@@ -31,3 +31,14 @@ htmlcov/
 .pytest_cache
 *.log
 node_modules
+
+# Local-only archives, generated deliveries and independent artist workbench.
+/archive/
+/output/
+/artifacts/
+/outputs/
+/exports/
+/.codex-remote-attachments/
+/tmp_standee_demo/
+/game_ui_lab/
+/rift_lab/

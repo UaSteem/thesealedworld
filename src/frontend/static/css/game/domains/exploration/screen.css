@@ -26,7 +26,7 @@
     min-height: 0;
     display: none;
     flex-direction: column;
-    gap: 10px;
+    gap: var(--space-10);
     overflow: hidden;
 }
 
@@ -42,18 +42,18 @@
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
   padding:
-    var(--game-column-gutter-top, 16px)
-    var(--game-column-gutter-x, 15px)
+    var(--game-column-gutter-top, var(--sp-4))
+    var(--game-column-gutter-x, var(--space-15))
     80px;
-  gap: 10px;
+  gap: var(--space-10);
 }
 
 #center-screens.exploration-center-screens {
     justify-content: stretch;
     padding:
-        var(--game-column-gutter-top, 10px)
-        var(--game-column-gutter-x, 12px)
-        var(--game-column-gutter-top, 10px);
+        var(--game-column-gutter-top, var(--space-10))
+        var(--game-column-gutter-x, var(--sp-3))
+        var(--game-column-gutter-top, var(--space-10));
 }
 
 .exploration-main-dock {
@@ -84,8 +84,8 @@
     flex: 1 1 0;
     display: flex;
     flex-direction: column;
-    gap: 6px;
-    margin-bottom: 8px;
+    gap: var(--space-6);
+    margin-bottom: var(--sp-2);
 }
 
 .exploration-screen-content.has-city-map-layout {
@@ -127,8 +127,8 @@
     border-bottom: 0;
     border-left: 0;
     background:
-        linear-gradient(180deg, rgba(255, 170, 0, 0.035), rgba(0, 0, 0, 0.18)),
-        rgba(5, 5, 7, 0.34);
+        linear-gradient(180deg, rgb(var(--tone-accent-024-rgb) / 0.035), rgb(var(--tone-surface-001-rgb) / 0.18)),
+        rgb(var(--tone-surface-022-rgb) / 0.34);
 }
 
 .exploration-action-panel__body {
@@ -137,7 +137,7 @@
     height: 100%;
     display: grid;
     grid-template-rows: auto auto;
-    gap: 8px;
+    gap: var(--sp-2);
     overflow: hidden;
 }
 
@@ -166,7 +166,7 @@
     display: none;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-10);
     width: min(100%, var(--center-content-max, 920px));
     min-width: 0;
     margin-inline: auto;

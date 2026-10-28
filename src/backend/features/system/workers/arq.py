@@ -16,7 +16,6 @@ from src.backend.features.character.workers.tasks import CHARACTER_TASKS
 from src.backend.features.exploration.workers.tasks import EXPLORATION_TASKS
 from src.backend.features.inventory.workers.tasks import INVENTORY_TASKS
 from src.backend.features.loot.workers.tasks.loot_claim_task import loot_claim_task
-from src.backend.features.rift.workers.tasks import RIFT_TASKS
 from src.backend.features.system.workers.tasks import (
     SYSTEM_COORDINATOR_TASKS,
     online_vitals_regen_task,
@@ -27,7 +26,6 @@ SYSTEM_TASKS = (
     *CHARACTER_TASKS,
     *INVENTORY_TASKS,
     *EXPLORATION_TASKS,
-    *RIFT_TASKS,
     *SYSTEM_COORDINATOR_TASKS,
     loot_claim_task,
 )

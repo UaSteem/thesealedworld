@@ -18,7 +18,7 @@ travel_speed = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Travel Speed",
         ui_template="+{value}% Travel Speed",
-        narrative_tags=("swift", "ranger", "mobile"),
+        narrative_tags=("wayfinding", "agility"),
     ),
 )
 
@@ -34,7 +34,7 @@ scouting_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Scouting",
         ui_template="+{value}% Scouting",
-        narrative_tags=("perceptive", "ranger", "tracker"),
+        narrative_tags=("awareness",),
     ),
 )
 
@@ -50,7 +50,7 @@ pathfinding_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Pathfinding",
         ui_template="+{value}% Pathfinding",
-        narrative_tags=("explorer", "wayfarer", "navigator"),
+        narrative_tags=("wayfinding",),
     ),
 )
 

@@ -109,7 +109,7 @@ def test_shared_items_keep_archery_and_native_quiver_data():
         view = CatalogMonsterViewService().equipment(member_id=f"goblin_tribe.base.{variant}", tier=5)
         trace = view.stats_preview.technical["equipped_trace"]
         assert trace["loadout"]["layout"]["main_hand"] == "skill_archery"
-        assert next(i for i in view.items if i.slot == "quiver").generation.affixes == []
+        assert next(i for i in view.items if i.slot == "off_hand" and i.item_type == "ammo").generation.affixes == []
         if variant == "goblin_bomber":
             assert trace["loadout"]["ammo_charges"]["main_hand"] > 0
             assert trace["loadout"]["ammo_effects"]["main_hand"]["effects"]

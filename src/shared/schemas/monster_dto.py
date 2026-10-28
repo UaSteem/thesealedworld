@@ -39,8 +39,6 @@ class MonsterLoadoutDTO(BaseModel):
     arms_armor: str | None = None
     legs_armor: str | None = None
     feetwear: str | None = None
-    chest_garment: str | None = None
-    legs_garment: str | None = None
     outer_garment: str | None = None
     gloves_garment: str | None = None
     amulet: str | None = None

@@ -1,3 +1,9 @@
+{% if domain != 'combats' and char_id is defined and char_id %}
+<div class="game-client-status-entries">
+    <button type="button" class="dock-nav-button" data-game-client-open="character">Персонаж</button>
+    <button type="button" class="dock-nav-button" data-game-client-open="inventory">Инвентарь</button>
+</div>
+{% endif %}
 <nav class="dock-nav dock-nav--bar dock-nav--panel status-dock-actions" aria-label="{{ status_nav_label if status_nav_label is defined else 'Status actions' }}">
     <button class="dock-nav-button"
             type="button"

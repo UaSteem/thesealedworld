@@ -326,67 +326,6 @@ async def test_respawn_character_calls_integrator_from_death_state():
 
 
 @pytest.mark.asyncio
-async def test_respawn_character_returns_to_awakening_rift_after_starter_rift_death():
-    user_id = uuid4()
-    session_doc = active_session(
-        user_id=user_id,
-        state=CoreDomain.DEATH,
-        prev_state=CoreDomain.COMBAT_RESULT,
-        sessions={
-            "death_run_id": "run-1",
-            "rift_session_id": "rift-run-1",
-            "rift_instance_id": "rift-instance-1",
-        },
-    )
-    starter_context = {
-        "rift_key": "starter_rift",
-        "rift_session_id": "rift-run-1",
-        "rift_instance_id": "rift-instance-1",
-        "current_node_id": "z01:2_2",
-        "active_encounter_id": "combat-1",
-    }
-    integrator = FakeGameSessionIntegrator(session_doc=session_doc)
-    integrator.resolve_starter_rift_death_context.return_value = starter_context
-    integrator.reset_starter_rift_character.return_value = {
-        "status": "reset",
-        "attempt_index": 1,
-        "starting_imprint": {
-            "imprint_key": "starter_guard_01",
-            "attributes": {"endurance": 17, "strength": 16},
-            "item_ids": ["item-1"],
-        },
-    }
-    npc = SimpleNamespace(get_or_create_state=AsyncMock(return_value=SimpleNamespace(flags={})))
-    service = GameSessionService(integrator=integrator).bind_npc(npc)
-
-    response = await service.respawn_character(SimpleNamespace(id=user_id), 7)
-
-    assert response.header.current_state == CoreDomain.SCENARIO
-    assert response.header.previous_state == CoreDomain.DEATH
-    assert response.payload.target_state == CoreDomain.SCENARIO
-    assert response.payload.reason == "starter_rift_reset"
-    assert response.payload.quest_key == "awakening_rift"
-    assert response.payload.location_id == "52_52"
-    assert response.payload.metadata["attempt_index"] == 1
-    assert response.payload.metadata["starting_imprint"]["imprint_key"] == "starter_guard_01"
-    assert response.payload.metadata["starting_imprint"]["attributes"]["endurance"] == 17
-    assert response.payload.context["return_context"]["source_state"] == CoreDomain.EXPLORATION.value
-    assert response.payload.context["return_context"]["return_state"] == CoreDomain.SCENARIO.value
-    assert response.payload.context["return_context"]["metadata"]["original_source_state"] == CoreDomain.RIFT.value
-    assert response.payload.context["return_context"]["metadata"]["initial_node_key"] == "rift_entry_01"
-    assert response.payload.context["return_context"]["metadata"]["rift_session_id"] == "rift-run-1"
-    assert response.payload.context["return_context"]["metadata"]["rift_instance_id"] == "rift-instance-1"
-    integrator.resolve_starter_rift_death_context.assert_awaited_once_with(session_doc)
-    integrator.reset_starter_rift_character.assert_awaited_once_with(
-        7,
-        user_id=user_id,
-        starter_context=starter_context,
-        respawn_result={"status": "respawned", "location_id": "52_52", "corpse_id": "corpse-1"},
-    )
-    npc.get_or_create_state.assert_not_awaited()
-
-
-@pytest.mark.asyncio
 async def test_respawn_character_starts_first_death_dialogue_on_portal_pad():
     user_id = uuid4()
     session_doc = active_session(
@@ -495,90 +434,6 @@ async def test_integrator_resets_active_session_to_exploration():
     await integrator.reset_active_session_to_exploration(7)
 
     sessions.reset_main_runtime_refs_to_exploration.assert_awaited_once_with(7)
-
-
-@pytest.mark.asyncio
-async def test_integrator_resolves_starter_rift_death_context_only_for_starter_rift():
-    session_doc = active_session(
-        state=CoreDomain.DEATH,
-        prev_state=CoreDomain.COMBAT_RESULT,
-        sessions={
-            "death_run_id": "run-1",
-            "rift_session_id": "rift-run-1",
-            "rift_instance_id": "rift-instance-1",
-        },
-    )
-    integrator = GameSessionIntegrator(
-        character_sessions=FakeCharacterSessions(),
-        rift_runtime=FakeRiftRuntimeForDeath(setting_key="starter_rift"),
-    )
-
-    context = await integrator.resolve_starter_rift_death_context(session_doc)
-
-    assert context["rift_key"] == "starter_rift"
-    assert context["rift_session_id"] == "rift-run-1"
-    assert context["rift_instance_id"] == "rift-instance-1"
-    assert context["current_node_id"] == "z01:2_2"
-    assert context["active_encounter_id"] == "combat-1"
-    assert context["attributes_before"]["strength"] == 8
-
-    non_starter = GameSessionIntegrator(
-        character_sessions=FakeCharacterSessions(),
-        rift_runtime=FakeRiftRuntimeForDeath(setting_key="deep_rift"),
-    )
-    assert await non_starter.resolve_starter_rift_death_context(session_doc) is None
-
-
-@pytest.mark.asyncio
-async def test_integrator_resets_starter_rift_character_through_starting_imprint_pipeline():
-    sessions = FakeCharacterSessions(
-        {
-            "char_id": 7,
-            "state": CoreDomain.DEATH.value,
-            "prev_state": CoreDomain.COMBAT_RESULT.value,
-            "attributes": {"strength": 8, "agility": 8, "endurance": 8},
-            "vitals": {"hp": {"cur": 0, "max": 100}, "energy": {"cur": 12, "max": 100}, "stamina": {"cur": 0, "max": 100}},
-            "sessions": {
-                "death_run_id": "run-1",
-                "rift_session_id": "rift-run-1",
-                "rift_instance_id": "rift-instance-1",
-            },
-        }
-    )
-    reset_integration = SimpleNamespace(
-        reset_character_to_starting_imprint=AsyncMock(
-            return_value={
-                "status": "reset",
-                "starting_imprint": {"imprint_key": "starter_guard_01", "attributes": {"endurance": 17}},
-            }
-        )
-    )
-    integrator = GameSessionIntegrator(character_sessions=sessions, starter_reset_integration=reset_integration)
-    starter_context = {
-        "rift_key": "starter_rift",
-        "rift_session_id": "rift-run-1",
-        "rift_instance_id": "rift-instance-1",
-        "current_node_id": "z01:2_2",
-        "active_encounter_id": "combat-1",
-        "attributes_before": {"strength": 8, "agility": 8, "endurance": 8},
-        "vitals_before": {"hp": {"cur": 0, "max": 100}},
-    }
-
-    user_id = uuid4()
-    result = await integrator.reset_starter_rift_character(
-        7,
-        user_id=user_id,
-        starter_context=starter_context,
-        respawn_result={"status": "respawned", "location_id": "52_52", "corpse_id": "corpse-1", "run_id": "run-1"},
-    )
-
-    assert result["attempt_index"] == 1
-    assert result["starting_imprint"]["imprint_key"] == "starter_guard_01"
-    reset_integration.reset_character_to_starting_imprint.assert_awaited_once_with(
-        user_id=user_id,
-        character_id=7,
-        seed="starter-rift-reset:7:run-1:1",
-    )
 
 
 @pytest.mark.asyncio
@@ -708,3 +563,42 @@ async def test_claim_post_combat_loot_fails_when_claim_worker_queue_is_unavailab
 
     with pytest.raises(RuntimeError, match="loot_arq is required"):
         await integrator.claim_post_combat_loot(7, ["corpse-1"])
+
+
+def _complete_isolated(coroutine):
+    try:
+        coroutine.send(None)
+    except StopIteration as finished:
+        return finished.value
+    raise AssertionError("Unexpected external suspension")
+
+
+@pytest.mark.parametrize(
+    "name,kwargs",
+    [
+        ("resolve_starter_rift_death_context", {"session_doc": object()}),
+        (
+            "reset_starter_rift_character",
+            {"character_id": 7, "user_id": None, "starter_context": {}, "respawn_result": {}},
+        ),
+        ("dev_reset_starter_rift_character", {"character_id": 7, "user_id": None, "imprint_key": "old"}),
+    ],
+)
+def test_retired_starter_integrator_rejects_before_dependencies(name, kwargs):
+    from src.backend.features.rift.retirement import LegacyRiftRetiredError
+
+    integrator = object.__new__(GameSessionIntegrator)
+    with pytest.raises(LegacyRiftRetiredError):
+        _complete_isolated(getattr(integrator, name)(**kwargs))
+
+
+def test_retired_dev_reset_rejects_before_active_session_lookup():
+    from src.backend.features.rift.retirement import LegacyRiftRetiredError
+
+    service = object.__new__(GameSessionService)
+    with pytest.raises(LegacyRiftRetiredError):
+        _complete_isolated(service.dev_reset_starter_rift_character(object(), character_id=7, imprint_key="old"))
+
+
+def test_respawn_retains_generic_flow_without_starter_reset():
+    _complete_isolated(test_respawn_character_calls_integrator_from_death_state())

@@ -65,4 +65,11 @@ def approved_mechanics(family_id, variant_id, historical):
     if single:
         expected["fixed_loadout"]["off_hand"] = None
         expected["skills"].remove("skill_dual_wield")
+    loadout = expected.get("fixed_loadout", {})
+    loadout.pop("chest_garment", None)
+    loadout.pop("legs_garment", None)
+    quiver = loadout.pop("quiver", None)
+    if quiver:
+        assert not loadout.get("off_hand")
+        loadout["off_hand"] = quiver
     return expected

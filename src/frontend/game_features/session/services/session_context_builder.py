@@ -7,6 +7,7 @@ from fastapi import HTTPException, Request, status
 from loguru import logger
 
 from src.frontend.config.settings import settings
+from src.frontend.game_features.city_services.view_models.client import build_places_client_payload
 from src.frontend.game_features.combat.view_models.screen import (
     build_combat_outcome_screen_from_dashboard_vm,
     build_combat_outcome_screen_from_result_vm,
@@ -14,7 +15,9 @@ from src.frontend.game_features.combat.view_models.screen import (
     build_combat_screen_from_result_vm,
     build_combat_screen_vm,
 )
+from src.frontend.game_features.exploration.view_models.client import build_exploration_client_payload
 from src.frontend.game_features.inventory.view_models.window import build_inventory_window_vm
+from src.frontend.game_features.scenario.view_models.client import build_scenario_client_payload
 from src.frontend.game_features.session.token_state import require_game_access_token
 from src.frontend.game_features.session.view_models.nav import build_game_nav
 from src.shared.enums import CoreDomain
@@ -24,6 +27,7 @@ from src.shared.schemas.city_services import CityServiceUIPayloadDTO
 from src.shared.schemas.exploration import EncounterDTO, ExplorationScreenDTO, WorldNavigationDTO
 from src.shared.schemas.game_session import DevStarterRiftResetRequestDTO
 from src.shared.schemas.loot import LootClaimRequestDTO
+from src.shared.schemas.scenario import ScenarioPayloadDTO
 
 if TYPE_CHECKING:
     from src.frontend.integrations.backend_api.arena import BackendArenaApi
@@ -235,32 +239,9 @@ class SessionContextBuilder:
             )
 
         if state == CoreDomain.RIFT:
-            if self.rift_api is None:
-                raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Rift API client is unavailable")
-            character_status = await self._character_status(token, char_id=char_id)
-            status_payload = self._status_seed(character_status)
-            initial_inventory_open, inventory_window = await self._inventory_window_state(
-                token,
-                char_id=char_id,
-                character_status=character_status,
-                status_payload=status_payload,
-            )
-            rift_payload = await self.rift_api.view(token, char_id=char_id)
-            if not rift_payload:
-                raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Rift payload is unavailable")
-            return self._context(
-                state=CoreDomain.RIFT,
-                char_id=char_id,
-                transaction_id="",
-                payload_type="rift_screen",
-                character_status=character_status,
-                rift=rift_payload,
-                background_url="/static/images/exploration/city/d4/52_52_runic_circle_plaza.webp",
-                world_theme=getattr(character_status, "world_theme", None),
-                status_seed=status_payload,
-                inventory_window=inventory_window,
-                initial_inventory_open=initial_inventory_open,
-                game_state_scripts=["/static/js/game/states/rift.js"],
+            raise HTTPException(
+                status_code=status.HTTP_410_GONE,
+                detail="Legacy Rift has been retired for the new alpha build",
             )
 
         if state in {CoreDomain.COMBAT, CoreDomain.COMBAT_RESULT}:
@@ -641,9 +622,18 @@ class SessionContextBuilder:
             "transaction_id": transaction_id,
             "character_status": character_status,
             "scenario": scenario,
+            "scenario_client_payload": (
+                build_scenario_client_payload(scenario, char_id) if isinstance(scenario, ScenarioPayloadDTO) else None
+            ),
             "exploration": exploration,
+            "exploration_client_payload": build_exploration_client_payload(
+                exploration, encounter, exploration_local_map, char_id
+            ),
             "exploration_local_map": exploration_local_map,
             "encounter": encounter,
+            "places_client_payload": build_places_client_payload(
+                arena=arena, city_service=city_service, char_id=char_id
+            ),
             "arena": arena,
             "city_service": city_service,
             "combat": combat,

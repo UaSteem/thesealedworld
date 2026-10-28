@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "purpose": "Byte-identical CSS fixtures for current UI contracts; local root archive is not required.",
+  "files": [
+    {
+      "path": "chat/input.css",
+      "sha256": "76b0bb646709624ca62888c84370473561919d2a9d83ff854744542af57c8510",
+      "original_source": "archive/game_mobile_legacy/2026-10-24/originals/src/frontend/static/css/game/domains/chat/input.css"
+    },
+    {
+      "path": "responsive/mobile_drawers.css",
+      "sha256": "0275e65c54da9133f43f0ae07a1a522abf5a1552542e23c6286683230f89e063",
+      "original_source": "archive/game_mobile_legacy/2026-10-24/originals/src/frontend/static/css/game/shell/responsive/mobile_drawers.css"
+    },
+    {
+      "path": "responsive/mobile_header.css",
+      "sha256": "d9c8da05d3abe614454446b952aaab8fa6d2280b0e973f1dcb66b212da8cde4d",
+      "original_source": "archive/game_mobile_legacy/2026-10-24/originals/src/frontend/static/css/game/shell/responsive/mobile_header.css"
+    },
+    {
+      "path": "responsive/narrow_phone.css",
+      "sha256": "5e79ebd4856dcc08e935dc957a6a1063aad744e5b2172c327b3c2d748f4aa642",
+      "original_source": "archive/game_mobile_legacy/2026-10-24/originals/src/frontend/static/css/game/shell/responsive/narrow_phone.css"
+    }
+  ]
+}

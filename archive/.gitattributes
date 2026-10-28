@@ -1,5 +1,0 @@
-# Preserve original retirement copies byte-for-byte across Windows/Linux checkouts.
-backend/** -text
-tools/** -text
-tests/** -text
-docs/** -text

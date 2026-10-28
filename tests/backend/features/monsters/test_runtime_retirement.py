@@ -132,7 +132,7 @@ def test_rebuild_routes_return_gone_before_db_dependency():
         assert response.headers["ETag"]
 
 
-def test_world_bootstrap_keeps_world_and_rift_catalog_without_monster_materialization(monkeypatch):
+def test_world_bootstrap_keeps_world_without_retired_rift_or_monster_materialization(monkeypatch):
     from contextlib import asynccontextmanager
     from types import SimpleNamespace
     from unittest.mock import AsyncMock
@@ -149,7 +149,6 @@ def test_world_bootstrap_keeps_world_and_rift_catalog_without_monster_materializ
         raise AssertionError("Retired population/template service must not be constructed")
 
     world_bootstrap = SimpleNamespace(bootstrap=AsyncMock(return_value=7))
-    rift_bootstrap = SimpleNamespace(sync_fixtures=AsyncMock(return_value=SimpleNamespace(settings=2, nodes=9)))
     monkeypatch.setattr(game, "get_manual_session_context", session_context)
     for name in (
         "WorldRepository",
@@ -157,32 +156,35 @@ def test_world_bootstrap_keeps_world_and_rift_catalog_without_monster_materializ
         "WorldLocationIntegration",
         "WorldCacheService",
         "WorldGenerator",
-        "RiftResourceLoader",
-        "RiftSettingRepository",
-        "RiftNodePoolRepository",
-        "RiftCatalogDocumentRepository",
     ):
         monkeypatch.setattr(game, name, lambda *args, **kwargs: SimpleNamespace())
     monkeypatch.setattr(game, "WorldBootstrapService", lambda **kwargs: world_bootstrap)
-    monkeypatch.setattr(game, "RiftCatalogBootstrapService", lambda **kwargs: rift_bootstrap)
-    monkeypatch.setattr(game, "get_mongo_provider", lambda: SimpleNamespace(database=lambda: object()))
     for name in (
         "EncounterMonsterService",
         "ClanFactory",
         "MonsterClanGenerationBuilder",
         "HabitatClanPoolMaterializationService",
         "RiftPopulationBootstrapService",
+        "RiftCatalogBootstrapService",
+        "RiftResourceLoader",
+        "RiftSettingRepository",
+        "RiftNodePoolRepository",
+        "RiftCatalogDocumentRepository",
     ):
         monkeypatch.setattr(game, name, forbidden, raising=False)
     monkeypatch.setattr(game.settings, "bootstrap_content_materialization_enabled", True)
     container = game.GameFeatureContainer()
     app = SimpleNamespace(state=SimpleNamespace(world_locations=object()))
-    asyncio.run(container._bootstrap_world(app))
+    coroutine = container._bootstrap_world(app)
+    try:
+        coroutine.send(None)
+    except StopIteration:
+        pass
+    else:
+        raise AssertionError("Unexpected external suspension in isolated world bootstrap")
     world_bootstrap.bootstrap.assert_awaited_once()
-    rift_bootstrap.sync_fixtures.assert_awaited_once()
     assert app.state.world_cache_loaded_count == 7
-    assert app.state.rift_catalog_settings == 2
+    assert not hasattr(app.state, "rift_catalog_settings")
+    assert not hasattr(app.state, "rift_population_bindings")
     assert app.state.monster_population_clans == 0
-    assert app.state.rift_population_clans == 0
-    assert app.state.rift_population_bindings == {}
     session.commit.assert_awaited_once()

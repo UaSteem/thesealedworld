@@ -592,6 +592,16 @@ Canonical объединяет лишь полный дубль: одна при
 
 ### A03-13 — Crit-bleed применяется после парирования/уклонения
 
+- [x] **22.10.2026 — исправлено и независимо проверено локально.** Коммит [271a1d55](https://github.com/CodexDLC/thesealedworld/commit/271a1d553b18b335d417d9b462a7bdb7ca32d164).
+  Условие контакта отменяет crit-эффекты оружия и боеприпасов после parry/dodge;
+  block сохраняет контакт независимо от итогового урона. Hit/crit, токены и порядок
+  crit-мутаций сохранены; отклонённые по условиям payload не попадают в публичный лог.
+  Независимый ревизор: 19 целевых тестов passed; весь runtime_processors + resolver
+  contract — 285 passed без исключений. Ruff, diff-check и commit hooks passed.
+  [Команды и результаты проверки](../tasks/active/2026-10-22-a03-13-contact-effects.md#завершение-независимой-проверки-и-подготовка-коммита).
+  Полный проектный gate и production не проверялись; деплой не выполнялся.
+  Ниже сохранены исходные свидетельства аудита и прежние ограничения проверки.
+
 - **Источник / аудит:** [audit/03_combat_runtime.md:348](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/03_combat_runtime.md:348); аудит 03. **Code anchors:** [src/backend/features/game_catalog/combat/resources/triggers/definitions/rules/weapon_triggers.py:12](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/game_catalog/combat/resources/triggers/definitions/rules/weapon_triggers.py:12), [src/backend/features/combat/runtime/engine/resolver/support/trigger_activator.py:71](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/combat/runtime/engine/resolver/support/trigger_activator.py:71), [src/backend/features/combat/runtime/engine/resolver/orchestrator.py:50](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/combat/runtime/engine/resolver/orchestrator.py:50)
 - **Исходная severity:** Medium. **Доказательность:** Исторически воспроизведено локальной проверкой/тестом исходного аудита; сейчас не повторялось. **Стадия:** Pre-alpha. **Срочность:** При стабилизации домена.
 - **Домены / контракт:** Combat engine; Game catalog. On-contact crit effect не появляется после parry/dodge.
@@ -973,6 +983,16 @@ Canonical объединяет лишь полный дубль: одна при
 - **Canonical:** A06-01. **Связи:** Самостоятельный blocker; stale constructor A04-14 иной файл.
 
 ### A06-02 — Regression test parry не активирует проверяемый trigger
+
+- [x] **22.10.2026 — исправлено и независимо проверено локально.** Коммит [271a1d55](https://github.com/CodexDLC/thesealedworld/commit/271a1d553b18b335d417d9b462a7bdb7ca32d164).
+  Ложноположительный setup заменён 18 сценариями bleed/stun/ammo ×
+  parry/dodge/block/block_zero/crit/noncrit. Проверяются успешная активация триггера,
+  positive controls, статусы, события, публичные логи и токены.
+  Независимый ревизор: матрица + ammo queue — 19 passed; весь runtime_processors +
+  resolver contract — 285 passed без исключений. Ruff, diff-check и commit hooks passed.
+  [Команды и результаты проверки](../tasks/active/2026-10-22-a03-13-contact-effects.md#завершение-независимой-проверки-и-подготовка-коммита).
+  Это закрытие A06-02 вместе с runtime-исправлением A03-13, а не подтверждение
+  полного проектного gate или production. Ниже сохранены исходные свидетельства аудита.
 
 - **Источник / аудит:** [audit/06_testing_quality.md:391](D:/Workspace/personal/pets/TurnBasedMMORPG/audit/06_testing_quality.md:391); аудит 06. **Code anchors:** [tests/backend/features/combat/test_runtime_processors.py:5556](D:/Workspace/personal/pets/TurnBasedMMORPG/tests/backend/features/combat/test_runtime_processors.py:5556), [src/backend/features/combat/runtime/engine/resolver/orchestrator.py:47](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/combat/runtime/engine/resolver/orchestrator.py:47), [src/backend/features/combat/runtime/engine/resolver/support/trigger_activator.py:161](D:/Workspace/personal/pets/TurnBasedMMORPG/src/backend/features/combat/runtime/engine/resolver/support/trigger_activator.py:161)
 - **Исходная severity:** High. **Доказательность:** Исторически воспроизведено локальной проверкой/тестом исходного аудита; сейчас не повторялось. **Стадия:** Shared infrastructure (Pre-alpha). **Срочность:** При стабилизации домена.

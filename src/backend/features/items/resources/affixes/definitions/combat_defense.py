@@ -17,7 +17,7 @@ armor_flat = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Armor",
         ui_template="+{value} Armor",
-        narrative_tags=("solid", "reinforced", "durable"),
+        narrative_tags=("protection",),
     ),
 )
 
@@ -33,7 +33,7 @@ evasion_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Evasion",
         ui_template="+{value}% Evasion",
-        narrative_tags=("nimble", "agile", "quick"),
+        narrative_tags=("agility",),
     ),
 )
 
@@ -49,7 +49,7 @@ physical_resistance_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Physical Resistance",
         ui_template="+{value}% Physical Resistance",
-        narrative_tags=("hardened", "resilient", "tough"),
+        narrative_tags=("protection",),
     ),
 )
 
@@ -66,7 +66,7 @@ shield_guard_power_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Shield Guard Power",
         ui_template="+{value} Shield Guard",
-        narrative_tags=("guard", "absorb", "bastion"),
+        narrative_tags=("protection",),
     ),
 )
 
@@ -82,7 +82,7 @@ thorns_damage_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Thorns Damage",
         ui_template="+{value} Thorns",
-        narrative_tags=("spiked", "reflective", "punishing"),
+        narrative_tags=("retaliation",),
     ),
 )
 

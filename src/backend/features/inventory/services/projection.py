@@ -1,5 +1,12 @@
 from __future__ import annotations
 
+from src.backend.features.inventory.services.equipment_rules import (
+    EquipmentMigrationRequiredError,
+    ensure_current_equipment_contract,
+)
+from src.backend.features.inventory.services.equipment_rules import (
+    compatible_with_slot as compatible_with_slot,
+)
 from src.backend.features.items.runtime.item_factory import ItemFactory
 from src.shared.enums.item_enums import EquippedSlot, ItemType
 from src.shared.schemas.inventory import (
@@ -24,18 +31,25 @@ def build_runtime_session(
     by_id: dict[str, InventoryRuntimeItemDTO] = {}
 
     for item in items:
+        if item.item_id in by_id:
+            raise EquipmentMigrationRequiredError("Duplicate saved item identity")
         by_id[item.item_id] = item
         if item.placement == EQUIPMENT_STORAGE and item.slot:
+            if layout.equipment.get(item.slot):
+                raise EquipmentMigrationRequiredError("Multiple saved items occupy one equipment slot")
             layout.equipment[item.slot] = item.item_id
         elif item.placement == BELT_STORAGE and item.slot:
             layout.belt[item.slot] = item.item_id
         elif item.placement == BACKPACK_STORAGE:
             layout.backpack.append(item.item_id)
 
-    return InventoryRuntimeSessionDTO(char_id=char_id, layout=layout, by_id=by_id, risk_run_id=risk_run_id)
+    session = InventoryRuntimeSessionDTO(char_id=char_id, layout=layout, by_id=by_id, risk_run_id=risk_run_id)
+    ensure_current_equipment_contract(session)
+    return session
 
 
 def build_active_character_projection(session: InventoryRuntimeSessionDTO) -> ActiveCharacterItemsProjectionDTO:
+    ensure_current_equipment_contract(session)
     active_ids = {item_id for item_id in [*session.layout.equipment.values(), *session.layout.belt.values()] if item_id}
     layout = InventoryLayoutDTO(
         equipment=session.layout.equipment,
@@ -95,12 +109,6 @@ def belt_inventory_cell_bonus(session: InventoryRuntimeSessionDTO) -> int:
         return max(0, int(float(raw)))
     except (TypeError, ValueError):
         return 4
-
-
-def compatible_with_slot(item: InventoryRuntimeItemDTO, slot_id: str) -> bool:
-    if slot_id in item.valid_slots:
-        return True
-    return item.slot == slot_id or item.mechanics.get("slot") == slot_id
 
 
 def is_quick_slot_compatible(item: InventoryRuntimeItemDTO) -> bool:

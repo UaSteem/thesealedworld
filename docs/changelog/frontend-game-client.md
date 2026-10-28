@@ -5,6 +5,10 @@ Detailed milestone history for browser-facing gameplay surfaces inside
 
 ## [Unreleased]
 
+- Added an independent factual battle report tab inside the persistent chat area,
+  with bounded HTTP snapshots, pagination, reconnect reconciliation, stale-response
+  guards and retained final reports; combat events do not enter chat delivery.
+
 - Rift gameplay now has a test hex-map surface with Phaser scene wiring,
   void-temple tile assets, responsive shell adjustments, and updated exploration
   panel templates.

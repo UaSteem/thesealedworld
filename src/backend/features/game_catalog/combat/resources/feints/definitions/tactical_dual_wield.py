@@ -3,6 +3,7 @@ from src.backend.features.game_catalog.combat.resources.common.descriptions impo
     CombatEventTextSetDTO,
     build_combat_description,
 )
+from src.backend.features.game_catalog.combat.resources.common.pipeline_mutations import pipeline_mutation
 from src.backend.features.game_catalog.combat.resources.common.targeting import TargetType
 from src.backend.features.game_catalog.combat.resources.feints.schemas import (
     FeintCatalogEntryDTO,
@@ -16,6 +17,7 @@ _DUAL_TAGS = ["tactical", "dual_wield", "skill_dual_wield", "melee"]
 TACTICAL_DUAL_WIELD_FEINTS_TECHNICAL = {
     "broken_step": FeintTechnicalDTO(
         feint_id="broken_step",
+        pipeline_mutations=[pipeline_mutation("tactical.entry_bonus")],
         cost=FeintCostDTO(tactics={"hit": 2, "dodge": 1}),
         target=TargetType.SINGLE_ENEMY,
         applicability_tags=[*_DUAL_TAGS, "hit", "dodge", "counter"],
@@ -24,6 +26,7 @@ TACTICAL_DUAL_WIELD_FEINTS_TECHNICAL = {
     ),
     "shifting_line": FeintTechnicalDTO(
         feint_id="shifting_line",
+        pipeline_mutations=[pipeline_mutation("tactical.hold_bonus")],
         cost=FeintCostDTO(tactics={"hit": 3, "dodge": 2}),
         target=TargetType.SINGLE_ENEMY,
         applicability_tags=[*_DUAL_TAGS, "hit", "dodge", "parry_boost"],
@@ -32,6 +35,7 @@ TACTICAL_DUAL_WIELD_FEINTS_TECHNICAL = {
     ),
     "empty_line": FeintTechnicalDTO(
         feint_id="empty_line",
+        pipeline_mutations=[pipeline_mutation("tactical.dislodge")],
         cost=FeintCostDTO(tactics={"hit": 4, "dodge": 2}),
         target=TargetType.SINGLE_ENEMY,
         applicability_tags=[*_DUAL_TAGS, "hit", "dodge", "damage_reduction"],

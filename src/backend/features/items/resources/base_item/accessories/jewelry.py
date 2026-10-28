@@ -11,7 +11,7 @@ JEWELRY_DB = {
         "damage_spread": 0.0,
         "narrative_description": "Простое кольцо как основа для печати, символа или вложенной силы.",
         "narrative_tags": ["ring", "accessory", "jewelry"],
-        "implicit_bonuses": {"mental_resistance": 0.005, "hp_regen": 0.5},
+        "implicit_bonuses": {"mental_resistance": 0.03},
     },
     "amulet": {
         "id": "amulet",
@@ -24,7 +24,7 @@ JEWELRY_DB = {
         "damage_spread": 0.0,
         "narrative_description": "Амулет висит у груди и легко становится фокусом личной защиты.",
         "narrative_tags": ["amulet", "accessory", "necklace", "pendant"],
-        "implicit_bonuses": {"debuff_avoidance": 0.03, "en_regen": 1.0},
+        "implicit_bonuses": {"en_regen": 1.0},
     },
     "earring": {
         "id": "earring",
@@ -37,7 +37,7 @@ JEWELRY_DB = {
         "damage_spread": 0.0,
         "narrative_description": "Небольшая серьга как основа для тонкой настройки реакции и личной защиты.",
         "narrative_tags": ["earring", "accessory", "jewelry"],
-        "implicit_bonuses": {"initiative": 0.5, "stamina_regen": 1.0},
+        "implicit_bonuses": {"initiative": 0.7},
     },
 }
 

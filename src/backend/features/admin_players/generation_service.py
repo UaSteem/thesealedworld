@@ -45,15 +45,13 @@ _ATTRIBUTE_KEYS = (
 _FULL_LOADOUT: dict[str, str] = {
     "main_hand": "sword",
     "off_hand": "buckler",
-    "head_armor": "hood",
-    "chest_armor": "leather_armor",
-    "arms_armor": "soft_bracers",
-    "legs_armor": "scout_leggings",
-    "chest_garment": "linen_shirt",
-    "legs_garment": "fur_pants",
-    "outer_garment": "winter_cloak",
-    "gloves_garment": "work_gloves",
-    "feetwear": "travel_boots",
+    "head_armor": "light_hood",
+    "chest_armor": "light_chest_armor",
+    "arms_armor": "light_bracers",
+    "legs_armor": "light_leg_armor",
+    "outer_garment": "cloak",
+    "gloves_garment": "gloves",
+    "feetwear": "boots",
     "amulet": "amulet",
     "earring": "earring",
     "ring_1": "ring",
@@ -379,8 +377,6 @@ def _item_kind(slot: str) -> MonsterItemAffixKind:
         return "shield"
     if slot.endswith("_armor") or slot in {
         "feetwear",
-        "chest_garment",
-        "legs_garment",
         "outer_garment",
         "gloves_garment",
     }:

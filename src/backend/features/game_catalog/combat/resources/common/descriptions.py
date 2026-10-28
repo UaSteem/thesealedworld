@@ -136,8 +136,8 @@ def build_combat_description(
     resource_id: str,
     display_name: str,
     short_description: str,
-    humanoid_event_texts: CombatEventTextSetDTO,
-    beast_event_texts: CombatEventTextSetDTO,
+    humanoid_event_texts: CombatEventTextSetDTO | None = None,
+    beast_event_texts: CombatEventTextSetDTO | None = None,
     humanoid_long_description: str = "",
     beast_display_name: str = "",
     beast_short_description: str = "",
@@ -164,7 +164,7 @@ def build_combat_description(
                 long_description=resolved_long,
                 ui_label=resolved_ui_label,
                 tooltip=resolved_tooltip,
-                event_texts=humanoid_event_texts,
+                event_texts=humanoid_event_texts or CombatEventTextSetDTO(),
                 control_term=control_term,
             ),
             "beast": CombatTaxonomyDescriptionDTO(
@@ -174,7 +174,7 @@ def build_combat_description(
                 long_description=resolved_beast_long,
                 ui_label=resolved_beast_display,
                 tooltip=resolved_beast_short,
-                event_texts=beast_event_texts,
+                event_texts=beast_event_texts or CombatEventTextSetDTO(),
             ),
         }
     )

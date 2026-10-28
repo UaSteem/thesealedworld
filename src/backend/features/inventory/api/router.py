@@ -5,6 +5,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from src.backend.core.auth import User, get_current_user, require_game_character_scope
 from src.backend.features.character.repositories import CharacterRepository
 from src.backend.features.inventory.dependencies import get_character_repository, get_inventory_service
+from src.backend.features.inventory.services.equipment_rules import EquipmentMigrationRequiredError
 from src.backend.features.inventory.services.inventory_service import (
     InventoryActionError,
     InventoryActionForbiddenError,
@@ -33,7 +34,10 @@ async def get_inventory_view(
 ) -> CoreResponseDTO[InventoryWindowDTO]:
     require_game_character_scope(request, current_user, char_id)
     await _ensure_owner(characters, current_user, char_id)
-    payload = await service.open_window(char_id, active_tab=tab)
+    try:
+        payload = await service.open_window(char_id, active_tab=tab)
+    except EquipmentMigrationRequiredError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
     return CoreResponseDTO(
         header=GameStateHeader(current_state=CoreDomain.INVENTORY), payload=payload, payload_type="inventory"
     )
@@ -52,6 +56,8 @@ async def apply_inventory_action(
     await _ensure_owner(characters, current_user, dto.char_id)
     try:
         payload = await service.apply_action(dto, active_tab=tab)
+    except EquipmentMigrationRequiredError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
     except InventoryActionForbiddenError as exc:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=exc.payload.model_dump(mode="json")) from exc
     except InventoryActionError as exc:
@@ -71,7 +77,10 @@ async def close_inventory(
 ) -> CoreResponseDTO[InventoryWindowDTO]:
     require_game_character_scope(request, current_user, dto.char_id)
     await _ensure_owner(characters, current_user, dto.char_id)
-    payload = await service.close_window(dto.char_id)
+    try:
+        payload = await service.close_window(dto.char_id)
+    except EquipmentMigrationRequiredError as exc:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
     return CoreResponseDTO(
         header=GameStateHeader(current_state=CoreDomain.INVENTORY), payload=payload, payload_type="inventory"
     )

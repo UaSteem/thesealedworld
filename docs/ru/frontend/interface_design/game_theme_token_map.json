@@ -1,0 +1,5572 @@
+{
+  "version": 1,
+  "literal_to_css": {
+    "rgba(255, 170, 0, 0.16)": "rgb(var(--tone-accent-024-rgb) / 0.16)",
+    "rgba(5, 5, 7, 0.10)": "rgb(var(--tone-surface-022-rgb) / 0.1)",
+    "rgba(0, 0, 0, 0.08)": "rgb(var(--tone-surface-001-rgb) / 0.08)",
+    "rgba(255, 170, 0, 0.035)": "rgb(var(--tone-accent-024-rgb) / 0.035)",
+    "rgba(210, 180, 140, 0.62)": "rgb(var(--tone-text-002-rgb) / 0.62)",
+    "rgba(255, 170, 0, 0.20)": "rgb(var(--tone-accent-024-rgb) / 0.2)",
+    "rgba(5, 5, 7, 0.70)": "rgb(var(--tone-surface-022-rgb) / 0.7)",
+    "rgba(5, 5, 7, 0.62)": "rgb(var(--tone-surface-022-rgb) / 0.62)",
+    "rgba(255, 170, 0, 0.06)": "rgb(var(--tone-accent-024-rgb) / 0.06)",
+    "rgba(0, 0, 0, 0.32)": "rgb(var(--tone-surface-001-rgb) / 0.32)",
+    "rgba(255, 218, 122, 0.08)": "rgb(var(--tone-accent-077-rgb) / 0.08)",
+    "rgba(210, 180, 140, 0.72)": "rgb(var(--tone-text-002-rgb) / 0.72)",
+    "rgba(255, 170, 0, 0.48)": "rgb(var(--tone-accent-024-rgb) / 0.48)",
+    "rgba(255, 170, 0, 0.12)": "rgb(var(--tone-accent-024-rgb) / 0.12)",
+    "rgba(0, 0, 0, 0.42)": "rgb(var(--tone-surface-001-rgb) / 0.42)",
+    "rgba(255, 220, 120, 0.12)": "rgb(var(--tone-accent-078-rgb) / 0.12)",
+    "rgba(255, 170, 0, 0.54)": "rgb(var(--tone-accent-024-rgb) / 0.54)",
+    "rgba(255, 170, 0, 0.35)": "rgb(var(--tone-accent-024-rgb) / 0.35)",
+    "rgba(255, 170, 0, 0.22)": "rgb(var(--tone-accent-024-rgb) / 0.22)",
+    "rgba(0, 0, 0, 0.28)": "rgb(var(--tone-surface-001-rgb) / 0.28)",
+    "rgba(255, 170, 0, 0.72)": "rgb(var(--tone-accent-024-rgb) / 0.72)",
+    "rgba(0, 0, 0, 0.35)": "rgb(var(--tone-surface-001-rgb) / 0.35)",
+    "rgba(210, 180, 140, 0.82)": "rgb(var(--tone-text-002-rgb) / 0.82)",
+    "rgba(0, 0, 0, 0.24)": "rgb(var(--tone-surface-001-rgb) / 0.24)",
+    "rgba(255, 170, 0, 0.38)": "rgb(var(--tone-accent-024-rgb) / 0.38)",
+    "rgba(255, 170, 0, 0.24)": "rgb(var(--tone-accent-024-rgb) / 0.24)",
+    "rgba(255, 170, 0, 0.18)": "rgb(var(--tone-accent-024-rgb) / 0.18)",
+    "rgba(255, 170, 0, 0.52)": "rgb(var(--tone-accent-024-rgb) / 0.52)",
+    "rgba(255,170,0,0.04)": "rgb(var(--tone-accent-024-rgb) / 0.04)",
+    "rgba(255,170,0,0.18)": "rgb(var(--tone-accent-024-rgb) / 0.18)",
+    "rgba(255,170,0,0.70)": "rgb(var(--tone-accent-024-rgb) / 0.7)",
+    "rgba(255,170,0,0.05)": "rgb(var(--tone-accent-024-rgb) / 0.05)",
+    "rgba(255,170,0,0.10)": "rgb(var(--tone-accent-024-rgb) / 0.1)",
+    "rgba(255,170,0,0.40)": "rgb(var(--tone-accent-024-rgb) / 0.4)",
+    "rgba(255,51,0,0.22)": "rgb(var(--tone-danger-012-rgb) / 0.22)",
+    "rgba(255,80,50,0.70)": "rgb(var(--tone-danger-032-rgb) / 0.7)",
+    "rgba(255,51,0,0.09)": "rgb(var(--tone-danger-012-rgb) / 0.09)",
+    "rgba(255,51,0,0.42)": "rgb(var(--tone-danger-012-rgb) / 0.42)",
+    "rgba(255,51,0,0.16)": "rgb(var(--tone-danger-012-rgb) / 0.16)",
+    "rgba(255,170,0,0.09)": "rgb(var(--tone-accent-024-rgb) / 0.09)",
+    "rgba(255,170,0,0.35)": "rgb(var(--tone-accent-024-rgb) / 0.35)",
+    "rgba(255,170,0,0.65)": "rgb(var(--tone-accent-024-rgb) / 0.65)",
+    "rgba(119,68,255,0.25)": "rgb(var(--tone-magic-005-rgb) / 0.25)",
+    "rgba(153,102,255,0.75)": "rgb(var(--tone-magic-011-rgb) / 0.75)",
+    "rgba(119,68,255,0.04)": "rgb(var(--tone-magic-005-rgb) / 0.04)",
+    "rgba(119,68,255,0.10)": "rgb(var(--tone-magic-005-rgb) / 0.1)",
+    "rgba(119,68,255,0.45)": "rgb(var(--tone-magic-005-rgb) / 0.45)",
+    "#aa88ff": "rgb(var(--tone-magic-016-rgb))",
+    "rgba(255, 170, 0, 0.28)": "rgb(var(--tone-accent-024-rgb) / 0.28)",
+    "rgba(255, 220, 140, 0.36)": "rgb(var(--tone-text-013-rgb) / 0.36)",
+    "rgba(255, 220, 140, 0.95)": "rgb(var(--tone-text-013-rgb) / 0.95)",
+    "rgba(111, 107, 98, 0.34)": "rgb(var(--tone-neutral-004-rgb) / 0.34)",
+    "rgba(111, 107, 98, 0.055)": "rgb(var(--tone-neutral-004-rgb) / 0.055)",
+    "rgba(200, 191, 168, 0.34)": "rgb(var(--tone-text-004-rgb) / 0.34)",
+    "rgba(200, 191, 168, 0.055)": "rgb(var(--tone-text-004-rgb) / 0.055)",
+    "rgba(79, 168, 107, 0.34)": "rgb(var(--tone-success-007-rgb) / 0.34)",
+    "rgba(79, 168, 107, 0.06)": "rgb(var(--tone-success-007-rgb) / 0.06)",
+    "rgba(47, 143, 211, 0.34)": "rgb(var(--tone-energy-005-rgb) / 0.34)",
+    "rgba(47, 143, 211, 0.06)": "rgb(var(--tone-energy-005-rgb) / 0.06)",
+    "rgba(140, 85, 216, 0.38)": "rgb(var(--tone-magic-004-rgb) / 0.38)",
+    "rgba(140, 85, 216, 0.065)": "rgb(var(--tone-magic-004-rgb) / 0.065)",
+    "rgba(208, 104, 53, 0.44)": "rgb(var(--tone-danger-024-rgb) / 0.44)",
+    "rgba(88, 42, 20, 0.12)": "rgb(var(--tone-danger-002-rgb) / 0.12)",
+    "rgba(201, 154, 58, 0.72)": "rgb(var(--tone-accent-022-rgb) / 0.72)",
+    "rgba(39, 25, 11, .13)": "rgb(var(--tone-surface-120-rgb) / 0.13)",
+    "rgba(119, 75, 24, .11)": "rgb(var(--tone-accent-010-rgb) / 0.11)",
+    "rgba(241, 195, 87, .08)": "rgb(var(--tone-accent-047-rgb) / 0.08)",
+    "rgba(241, 195, 87, .16)": "rgb(var(--tone-accent-047-rgb) / 0.16)",
+    "rgba(201, 154, 58, 0.2)": "rgb(var(--tone-accent-022-rgb) / 0.2)",
+    "rgba(255, 255, 255, 0.62)": "rgb(var(--tone-text-064-rgb) / 0.62)",
+    "rgba(53, 215, 255, .08)": "rgb(var(--tone-energy-018-rgb) / 0.08)",
+    "rgba(255, 79, 216, .08)": "rgb(var(--tone-magic-013-rgb) / 0.08)",
+    "rgba(255, 255, 255, .09)": "rgb(var(--tone-text-064-rgb) / 0.09)",
+    "rgba(122, 92, 255, 0.16)": "rgb(var(--tone-magic-007-rgb) / 0.16)",
+    "rgba(255, 255, 255, 0.22)": "rgb(var(--tone-text-064-rgb) / 0.22)",
+    "rgba(10, 10, 12, 0.92)": "rgb(var(--tone-surface-073-rgb) / 0.92)",
+    "#ffffff": "rgb(var(--tone-text-064-rgb))",
+    "#ffd84d": "rgb(var(--tone-accent-062-rgb))",
+    "#4dff88": "rgb(var(--tone-success-022-rgb))",
+    "#35d7ff": "rgb(var(--tone-energy-018-rgb))",
+    "#7a5cff": "rgb(var(--tone-magic-007-rgb))",
+    "#ff4fd8": "rgb(var(--tone-magic-013-rgb))",
+    "rgba(200, 191, 168, 0.35)": "rgb(var(--tone-text-004-rgb) / 0.35)",
+    "rgba(79, 168, 107, 0.36)": "rgb(var(--tone-success-007-rgb) / 0.36)",
+    "rgba(47, 143, 211, 0.38)": "rgb(var(--tone-energy-005-rgb) / 0.38)",
+    "rgba(140, 85, 216, 0.42)": "rgb(var(--tone-magic-004-rgb) / 0.42)",
+    "#e08a47": "rgb(var(--tone-accent-026-rgb))",
+    "#b9572d": "rgb(var(--tone-danger-015-rgb))",
+    "#d06835": "rgb(var(--tone-danger-024-rgb))",
+    "#8f3f20": "rgb(var(--tone-danger-008-rgb))",
+    "rgba(208, 104, 53, 0.5)": "rgb(var(--tone-danger-024-rgb) / 0.5)",
+    "#e2bf68": "rgb(var(--tone-accent-046-rgb))",
+    "#c99a3a": "rgb(var(--tone-accent-022-rgb))",
+    "#a86f24": "rgb(var(--tone-accent-015-rgb))",
+    "#6f4318": "rgb(var(--tone-accent-008-rgb))",
+    "rgba(201, 154, 58, 0.78)": "rgb(var(--tone-accent-022-rgb) / 0.78)",
+    "rgba(7, 6, 5, .98)": "rgb(var(--tone-surface-025-rgb) / 0.98)",
+    "rgba(12, 11, 9, .96)": "rgb(var(--tone-surface-074-rgb) / 0.96)",
+    "rgba(241, 195, 87, .025)": "rgb(var(--tone-accent-047-rgb) / 0.025)",
+    "rgba(111, 67, 24, 0.08)": "rgb(var(--tone-accent-008-rgb) / 0.08)",
+    "rgba(241, 195, 87, 0.13)": "rgb(var(--tone-accent-047-rgb) / 0.13)",
+    "rgba(97, 58, 18, 0.14)": "rgb(var(--tone-accent-007-rgb) / 0.14)",
+    "rgba(201, 154, 58, 0.18)": "rgb(var(--tone-accent-022-rgb) / 0.18)",
+    "rgba(184, 150, 78, .07)": "rgb(var(--tone-accent-021-rgb) / 0.07)",
+    "rgba(255, 255, 255, 0.74)": "rgb(var(--tone-text-064-rgb) / 0.74)",
+    "rgba(53, 215, 255, 0.06)": "rgb(var(--tone-energy-018-rgb) / 0.06)",
+    "rgba(255, 79, 216, 0.16)": "rgb(var(--tone-magic-013-rgb) / 0.16)",
+    "rgba(255, 255, 255, 0.06)": "rgb(var(--tone-text-064-rgb) / 0.06)",
+    "rgba(88, 42, 20, 0.24)": "rgb(var(--tone-danger-002-rgb) / 0.24)",
+    "rgba(208, 104, 53, 0.38)": "rgb(var(--tone-danger-024-rgb) / 0.38)",
+    "rgba(0, 0, 0, 0.8)": "rgb(var(--tone-surface-001-rgb) / 0.8)",
+    "rgba(201, 154, 58, 0.22)": "rgb(var(--tone-accent-022-rgb) / 0.22)",
+    "rgba(241, 195, 87, 0.24)": "rgb(var(--tone-accent-047-rgb) / 0.24)",
+    "rgba(122, 92, 255, .3)": "rgb(var(--tone-magic-007-rgb) / 0.3)",
+    "rgba(255, 255, 255, .46)": "rgb(var(--tone-text-064-rgb) / 0.46)",
+    "rgba(255, 255, 255, 0.3)": "rgb(var(--tone-text-064-rgb) / 0.3)",
+    "rgba(255, 255, 255, 0.42)": "rgb(var(--tone-text-064-rgb) / 0.42)",
+    "rgba(255, 255, 255, 0.85)": "rgb(var(--tone-text-064-rgb) / 0.85)",
+    "#44dd88": "rgb(var(--tone-success-013-rgb))",
+    "rgba(153, 68, 238, 0.25)": "rgb(var(--tone-magic-006-rgb) / 0.25)",
+    "rgba(153, 68, 238, 0.06)": "rgb(var(--tone-magic-006-rgb) / 0.06)",
+    "rgba(180, 140, 240, 0.8)": "rgb(var(--tone-magic-014-rgb) / 0.8)",
+    "rgba(255, 255, 255, 0.05)": "rgb(var(--tone-text-064-rgb) / 0.05)",
+    "rgba(210, 180, 140, 0.42)": "rgb(var(--tone-text-002-rgb) / 0.42)",
+    "rgba(255, 80, 50, 0.6)": "rgb(var(--tone-danger-032-rgb) / 0.6)",
+    "rgba(68, 221, 136, 0.5)": "rgb(var(--tone-success-013-rgb) / 0.5)",
+    "rgba(255, 51, 0, .04)": "rgb(var(--tone-danger-012-rgb) / 0.04)",
+    "rgba(255, 51, 0, .20)": "rgb(var(--tone-danger-012-rgb) / 0.2)",
+    "rgba(255, 51, 0, .10)": "rgb(var(--tone-danger-012-rgb) / 0.1)",
+    "rgba(255, 51, 0, .26)": "rgb(var(--tone-danger-012-rgb) / 0.26)",
+    "rgba(255, 80, 50, .8)": "rgb(var(--tone-danger-032-rgb) / 0.8)",
+    "rgba(0, 0, 0, .38)": "rgb(var(--tone-surface-001-rgb) / 0.38)",
+    "rgba(255, 170, 0, 0.10)": "rgb(var(--tone-accent-024-rgb) / 0.1)",
+    "rgba(255, 170, 0, .04)": "rgb(var(--tone-accent-024-rgb) / 0.04)",
+    "rgba(255, 170, 0, .08)": "rgb(var(--tone-accent-024-rgb) / 0.08)",
+    "#44ff88": "rgb(var(--tone-success-020-rgb))",
+    "rgba(255, 170, 0, .50)": "rgb(var(--tone-accent-024-rgb) / 0.5)",
+    "rgba(210, 180, 140, .85)": "rgb(var(--tone-text-002-rgb) / 0.85)",
+    "rgba(180, 155, 225, .80)": "rgb(var(--tone-magic-015-rgb) / 0.8)",
+    "rgba(255, 100, 80, .80)": "rgb(var(--tone-danger-050-rgb) / 0.8)",
+    "rgba(255, 170, 0, .10)": "rgb(var(--tone-accent-024-rgb) / 0.1)",
+    "rgba(255, 51, 0, .35)": "rgb(var(--tone-danger-012-rgb) / 0.35)",
+    "rgba(255, 100, 80, .8)": "rgb(var(--tone-danger-050-rgb) / 0.8)",
+    "rgba(255, 170, 0, .20)": "rgb(var(--tone-accent-024-rgb) / 0.2)",
+    "rgba(255, 170, 0, .5)": "rgb(var(--tone-accent-024-rgb) / 0.5)",
+    "rgba(119, 68, 255, .30)": "rgb(var(--tone-magic-005-rgb) / 0.3)",
+    "rgba(153, 102, 255, .75)": "rgb(var(--tone-magic-011-rgb) / 0.75)",
+    "rgba(255, 170, 0, .15)": "rgb(var(--tone-accent-024-rgb) / 0.15)",
+    "rgba(255, 170, 0, .52)": "rgb(var(--tone-accent-024-rgb) / 0.52)",
+    "rgba(5, 5, 7, 0.78)": "rgb(var(--tone-surface-022-rgb) / 0.78)",
+    "rgba(5, 5, 7, 0.58)": "rgb(var(--tone-surface-022-rgb) / 0.58)",
+    "rgba(255, 170, 0, 0.055)": "rgb(var(--tone-accent-024-rgb) / 0.055)",
+    "rgba(255, 220, 120, 0.04)": "rgb(var(--tone-accent-078-rgb) / 0.04)",
+    "rgba(230, 204, 172, 0.72)": "rgb(var(--tone-text-010-rgb) / 0.72)",
+    "rgba(0, 0, 0, 0.20)": "rgb(var(--tone-surface-001-rgb) / 0.2)",
+    "rgba(230, 204, 172, 0.82)": "rgb(var(--tone-text-010-rgb) / 0.82)",
+    "rgba(255, 255, 255, 0.04)": "rgb(var(--tone-text-064-rgb) / 0.04)",
+    "rgba(255, 255, 255, 0.035)": "rgb(var(--tone-text-064-rgb) / 0.035)",
+    "rgba(85, 238, 153, 0.86)": "rgb(var(--tone-success-024-rgb) / 0.86)",
+    "rgba(255, 170, 0, 0.14)": "rgb(var(--tone-accent-024-rgb) / 0.14)",
+    "rgba(0, 0, 0, 0.36)": "rgb(var(--tone-surface-001-rgb) / 0.36)",
+    "rgba(230, 204, 172, 0.78)": "rgb(var(--tone-text-010-rgb) / 0.78)",
+    "rgba(255,255,255,0.015)": "rgb(var(--tone-text-064-rgb) / 0.015)",
+    "rgba(255,170,0,0.08)": "rgb(var(--tone-accent-024-rgb) / 0.08)",
+    "rgba(255,170,0,0.30)": "rgb(var(--tone-accent-024-rgb) / 0.3)",
+    "rgba(255,170,0,0.025)": "rgb(var(--tone-accent-024-rgb) / 0.025)",
+    "rgba(255,170,0,.05)": "rgb(var(--tone-accent-024-rgb) / 0.05)",
+    "rgba(255,170,0,.18)": "rgb(var(--tone-accent-024-rgb) / 0.18)",
+    "#f4dfb0": "rgb(var(--tone-text-030-rgb))",
+    "#c8a977": "rgb(var(--tone-text-001-rgb))",
+    "#ffd46d": "rgb(var(--tone-accent-069-rgb))",
+    "rgba(21, 13, 7, .74)": "rgb(var(--tone-surface-097-rgb) / 0.74)",
+    "rgba(255, 170, 0, .1)": "rgb(var(--tone-accent-024-rgb) / 0.1)",
+    "rgba(0, 0, 0, .98)": "rgb(var(--tone-surface-001-rgb) / 0.98)",
+    "rgba(9, 9, 10, .98)": "rgb(var(--tone-surface-060-rgb) / 0.98)",
+    "rgba(255, 170, 0, .07)": "rgb(var(--tone-accent-024-rgb) / 0.07)",
+    "rgba(80, 80, 72, .2)": "rgb(var(--tone-neutral-002-rgb) / 0.2)",
+    "rgba(0, 0, 0, .52)": "rgb(var(--tone-surface-001-rgb) / 0.52)",
+    "rgba(0, 0, 0, .64)": "rgb(var(--tone-surface-001-rgb) / 0.64)",
+    "rgba(255, 220, 120, .035)": "rgb(var(--tone-accent-078-rgb) / 0.035)",
+    "rgba(255, 170, 0, .05)": "rgb(var(--tone-accent-024-rgb) / 0.05)",
+    "rgba(0, 0, 0, .48)": "rgb(var(--tone-surface-001-rgb) / 0.48)",
+    "#000": "rgb(var(--tone-surface-001-rgb))",
+    "rgba(4, 4, 5, .88)": "rgb(var(--tone-surface-014-rgb) / 0.88)",
+    "rgba(24, 18, 12, .82)": "rgb(var(--tone-surface-109-rgb) / 0.82)",
+    "rgba(0, 0, 0, .24)": "rgb(var(--tone-surface-001-rgb) / 0.24)",
+    "rgba(0, 0, 0, .26)": "rgb(var(--tone-surface-001-rgb) / 0.26)",
+    "rgba(255, 220, 120, .04)": "rgb(var(--tone-accent-078-rgb) / 0.04)",
+    "rgba(255, 170, 0, .14)": "rgb(var(--tone-accent-024-rgb) / 0.14)",
+    "rgba(7, 5, 4, .82)": "rgb(var(--tone-surface-021-rgb) / 0.82)",
+    "rgba(16, 9, 5, .66)": "rgb(var(--tone-surface-068-rgb) / 0.66)",
+    "rgba(0, 0, 0, .28)": "rgb(var(--tone-surface-001-rgb) / 0.28)",
+    "rgba(0, 0, 0, .32)": "rgb(var(--tone-surface-001-rgb) / 0.32)",
+    "rgba(255, 219, 139, .1)": "rgb(var(--tone-text-012-rgb) / 0.1)",
+    "rgba(255, 216, 125, .28)": "rgb(var(--tone-accent-079-rgb) / 0.28)",
+    "rgba(0, 0, 0, .34)": "rgb(var(--tone-surface-001-rgb) / 0.34)",
+    "rgba(0, 0, 0, .16)": "rgb(var(--tone-surface-001-rgb) / 0.16)",
+    "rgba(255, 213, 118, .09)": "rgb(var(--tone-accent-073-rgb) / 0.09)",
+    "rgba(244, 223, 176, .24)": "rgb(var(--tone-text-030-rgb) / 0.24)",
+    "rgba(0, 0, 0, .42)": "rgb(var(--tone-surface-001-rgb) / 0.42)",
+    "rgba(255, 170, 0, .16)": "rgb(var(--tone-accent-024-rgb) / 0.16)",
+    "rgba(18, 11, 7, .86)": "rgb(var(--tone-surface-086-rgb) / 0.86)",
+    "rgba(64, 39, 20, .78)": "rgb(var(--tone-accent-001-rgb) / 0.78)",
+    "rgba(255, 170, 0, .38)": "rgb(var(--tone-accent-024-rgb) / 0.38)",
+    "rgba(24, 14, 8, .9)": "rgb(var(--tone-surface-104-rgb) / 0.9)",
+    "rgba(78, 47, 23, .88)": "rgb(var(--tone-accent-004-rgb) / 0.88)",
+    "rgba(255, 214, 112, .72)": "rgb(var(--tone-accent-071-rgb) / 0.72)",
+    "rgba(255, 170, 0, .22)": "rgb(var(--tone-accent-024-rgb) / 0.22)",
+    "rgba(255, 214, 112, .32)": "rgb(var(--tone-accent-071-rgb) / 0.32)",
+    "rgba(255, 214, 112, .58)": "rgb(var(--tone-accent-071-rgb) / 0.58)",
+    "rgba(255, 170, 0, .12)": "rgb(var(--tone-accent-024-rgb) / 0.12)",
+    "rgba(255, 214, 112, .2)": "rgb(var(--tone-accent-071-rgb) / 0.2)",
+    "#6f6b62": "rgb(var(--tone-neutral-004-rgb))",
+    "rgba(111, 107, 98, .4)": "rgb(var(--tone-neutral-004-rgb) / 0.4)",
+    "rgba(111, 107, 98, .16)": "rgb(var(--tone-neutral-004-rgb) / 0.16)",
+    "rgba(111, 107, 98, .1)": "rgb(var(--tone-neutral-004-rgb) / 0.1)",
+    "#c8bfa8": "rgb(var(--tone-text-004-rgb))",
+    "rgba(200, 191, 168, .5)": "rgb(var(--tone-text-004-rgb) / 0.5)",
+    "rgba(200, 191, 168, .2)": "rgb(var(--tone-text-004-rgb) / 0.2)",
+    "rgba(200, 191, 168, .14)": "rgb(var(--tone-text-004-rgb) / 0.14)",
+    "#4fa86b": "rgb(var(--tone-success-007-rgb))",
+    "rgba(79, 168, 107, .52)": "rgb(var(--tone-success-007-rgb) / 0.52)",
+    "rgba(79, 168, 107, .22)": "rgb(var(--tone-success-007-rgb) / 0.22)",
+    "rgba(79, 168, 107, .16)": "rgb(var(--tone-success-007-rgb) / 0.16)",
+    "#2f8fd3": "rgb(var(--tone-energy-005-rgb))",
+    "rgba(47, 143, 211, .54)": "rgb(var(--tone-energy-005-rgb) / 0.54)",
+    "rgba(47, 143, 211, .24)": "rgb(var(--tone-energy-005-rgb) / 0.24)",
+    "rgba(47, 143, 211, .18)": "rgb(var(--tone-energy-005-rgb) / 0.18)",
+    "#8c55d8": "rgb(var(--tone-magic-004-rgb))",
+    "rgba(140, 85, 216, .58)": "rgb(var(--tone-magic-004-rgb) / 0.58)",
+    "rgba(140, 85, 216, .26)": "rgb(var(--tone-magic-004-rgb) / 0.26)",
+    "rgba(140, 85, 216, .22)": "rgb(var(--tone-magic-004-rgb) / 0.22)",
+    "rgba(208, 104, 53, .66)": "rgb(var(--tone-danger-024-rgb) / 0.66)",
+    "rgba(208, 104, 53, .3)": "rgb(var(--tone-danger-024-rgb) / 0.3)",
+    "rgba(208, 104, 53, .26)": "rgb(var(--tone-danger-024-rgb) / 0.26)",
+    "rgba(201, 154, 58, .76)": "rgb(var(--tone-accent-022-rgb) / 0.76)",
+    "rgba(201, 154, 58, .3)": "rgb(var(--tone-accent-022-rgb) / 0.3)",
+    "rgba(201, 154, 58, .26)": "rgb(var(--tone-accent-022-rgb) / 0.26)",
+    "#7a4c1d": "rgb(var(--tone-accent-011-rgb))",
+    "rgba(255, 255, 255, .86)": "rgb(var(--tone-text-064-rgb) / 0.86)",
+    "rgba(255, 255, 255, .44)": "rgb(var(--tone-text-064-rgb) / 0.44)",
+    "rgba(122, 92, 255, .5)": "rgb(var(--tone-magic-007-rgb) / 0.5)",
+    "rgba(0, 0, 0, .58)": "rgb(var(--tone-surface-001-rgb) / 0.58)",
+    "rgba(255, 170, 0, .18)": "rgb(var(--tone-accent-024-rgb) / 0.18)",
+    "rgba(255, 170, 0, .28)": "rgb(var(--tone-accent-024-rgb) / 0.28)",
+    "rgba(12, 8, 6, .96)": "rgb(var(--tone-surface-054-rgb) / 0.96)",
+    "rgba(0, 0, 0, .72)": "rgb(var(--tone-surface-001-rgb) / 0.72)",
+    "rgba(8, 6, 4, .96)": "rgb(var(--tone-surface-027-rgb) / 0.96)",
+    "rgba(8, 6, 4, 0)": "rgb(var(--tone-surface-027-rgb) / 0)",
+    "rgba(0, 0, 0, .5)": "rgb(var(--tone-surface-001-rgb) / 0.5)",
+    "rgba(255, 170, 0, .42)": "rgb(var(--tone-accent-024-rgb) / 0.42)",
+    "rgba(8, 6, 5, .98)": "rgb(var(--tone-surface-031-rgb) / 0.98)",
+    "rgba(27, 19, 12, .98)": "rgb(var(--tone-surface-116-rgb) / 0.98)",
+    "rgba(0, 0, 0, .55)": "rgb(var(--tone-surface-001-rgb) / 0.55)",
+    "rgba(12, 8, 5, .94)": "rgb(var(--tone-surface-050-rgb) / 0.94)",
+    "rgba(45, 27, 12, .88)": "rgb(var(--tone-surface-124-rgb) / 0.88)",
+    "rgba(255, 170, 0, .54)": "rgb(var(--tone-accent-024-rgb) / 0.54)",
+    "#080604": "rgb(var(--tone-surface-027-rgb))",
+    "rgba(255, 219, 139, .035)": "rgb(var(--tone-text-012-rgb) / 0.035)",
+    "rgba(0, 0, 0, .82)": "rgb(var(--tone-surface-001-rgb) / 0.82)",
+    "rgba(255, 255, 255, .74)": "rgb(var(--tone-text-064-rgb) / 0.74)",
+    "rgba(210, 180, 140, .58)": "rgb(var(--tone-text-002-rgb) / 0.58)",
+    "rgba(255, 212, 109, .58)": "rgb(var(--tone-accent-069-rgb) / 0.58)",
+    "rgba(255, 255, 255, .05)": "rgb(var(--tone-text-064-rgb) / 0.05)",
+    "rgba(255, 255, 255, .34)": "rgb(var(--tone-text-064-rgb) / 0.34)",
+    "rgba(255, 255, 255, .62)": "rgb(var(--tone-text-064-rgb) / 0.62)",
+    "rgba(6, 4, 3, .86)": "rgb(var(--tone-surface-015-rgb) / 0.86)",
+    "rgba(14, 8, 5, .68)": "rgb(var(--tone-surface-059-rgb) / 0.68)",
+    "rgba(244, 223, 176, .66)": "rgb(var(--tone-text-030-rgb) / 0.66)",
+    "rgba(244, 223, 176, .72)": "rgb(var(--tone-text-030-rgb) / 0.72)",
+    "rgba(6, 4, 3, .9)": "rgb(var(--tone-surface-015-rgb) / 0.9)",
+    "rgba(15, 9, 5, .72)": "rgb(var(--tone-surface-066-rgb) / 0.72)",
+    "rgba(0, 0, 0, .36)": "rgb(var(--tone-surface-001-rgb) / 0.36)",
+    "rgba(5, 4, 3, .72)": "rgb(var(--tone-surface-011-rgb) / 0.72)",
+    "rgba(18, 12, 8, .42)": "rgb(var(--tone-surface-090-rgb) / 0.42)",
+    "rgba(200, 169, 119, .22)": "rgb(var(--tone-text-001-rgb) / 0.22)",
+    "rgba(7, 4, 3, .88)": "rgb(var(--tone-surface-017-rgb) / 0.88)",
+    "rgba(13, 8, 5, .7)": "rgb(var(--tone-surface-055-rgb) / 0.7)",
+    "rgba(0, 0, 0, .3)": "rgb(var(--tone-surface-001-rgb) / 0.3)",
+    "rgba(10, 6, 4, .58)": "rgb(var(--tone-surface-036-rgb) / 0.58)",
+    "rgba(8, 5, 4, .92)": "rgb(var(--tone-surface-023-rgb) / 0.92)",
+    "rgba(24, 14, 8, .86)": "rgb(var(--tone-surface-104-rgb) / 0.86)",
+    "rgba(12, 8, 6, .72)": "rgb(var(--tone-surface-054-rgb) / 0.72)",
+    "rgba(31, 17, 8, .9)": "rgb(var(--tone-surface-113-rgb) / 0.9)",
+    "rgba(108, 68, 27, .82)": "rgb(var(--tone-accent-009-rgb) / 0.82)",
+    "rgba(10, 6, 4, .78)": "rgb(var(--tone-surface-036-rgb) / 0.78)",
+    "rgba(11, 6, 3, .92)": "rgb(var(--tone-surface-037-rgb) / 0.92)",
+    "rgba(5, 3, 2, .84)": "rgb(var(--tone-surface-007-rgb) / 0.84)",
+    "rgba(255, 219, 139, .06)": "rgb(var(--tone-text-012-rgb) / 0.06)",
+    "rgba(255, 180, 60, .055)": "rgb(var(--tone-accent-039-rgb) / 0.055)",
+    "rgba(255, 190, 85, .115)": "rgb(var(--tone-accent-051-rgb) / 0.115)",
+    "rgba(255, 190, 95, .24)": "rgb(var(--tone-accent-057-rgb) / 0.24)",
+    "rgba(20, 13, 9, .88)": "rgb(var(--tone-surface-100-rgb) / 0.88)",
+    "rgba(72, 45, 27, .82)": "rgb(var(--tone-accent-003-rgb) / 0.82)",
+    "rgba(255, 213, 118, .28)": "rgb(var(--tone-accent-073-rgb) / 0.28)",
+    "rgba(17, 10, 6, .9)": "rgb(var(--tone-surface-076-rgb) / 0.9)",
+    "rgba(58, 35, 19, .82)": "rgb(var(--tone-surface-127-rgb) / 0.82)",
+    "rgba(255, 213, 118, .14)": "rgb(var(--tone-accent-073-rgb) / 0.14)",
+    "rgba(180, 145, 92, .2)": "rgb(var(--tone-accent-023-rgb) / 0.2)",
+    "rgba(15, 11, 8, .9)": "rgb(var(--tone-surface-082-rgb) / 0.9)",
+    "rgba(47, 38, 27, .82)": "rgb(var(--tone-surface-126-rgb) / 0.82)",
+    "rgba(255, 214, 112, .34)": "rgb(var(--tone-accent-071-rgb) / 0.34)",
+    "rgba(255, 170, 0, .06)": "rgb(var(--tone-accent-024-rgb) / 0.06)",
+    "rgba(255, 214, 112, .74)": "rgb(var(--tone-accent-071-rgb) / 0.74)",
+    "rgba(255, 170, 0, .2)": "rgb(var(--tone-accent-024-rgb) / 0.2)",
+    "rgba(255, 214, 112, .26)": "rgb(var(--tone-accent-071-rgb) / 0.26)",
+    "rgba(75, 56, 29, .16)": "rgb(var(--tone-accent-006-rgb) / 0.16)",
+    "rgba(138, 106, 47, .2)": "rgb(var(--tone-accent-014-rgb) / 0.2)",
+    "rgba(226, 195, 109, .16)": "rgb(var(--tone-accent-050-rgb) / 0.16)",
+    "rgba(226, 195, 109, .15)": "rgb(var(--tone-accent-050-rgb) / 0.15)",
+    "rgba(138, 106, 47, .28)": "rgb(var(--tone-accent-014-rgb) / 0.28)",
+    "rgba(255, 255, 255, .82)": "rgb(var(--tone-text-064-rgb) / 0.82)",
+    "rgba(53, 215, 255, .12)": "rgb(var(--tone-energy-018-rgb) / 0.12)",
+    "rgba(255, 79, 216, .18)": "rgb(var(--tone-magic-013-rgb) / 0.18)",
+    "rgba(255, 255, 255, .28)": "rgb(var(--tone-text-064-rgb) / 0.28)",
+    "rgba(255, 255, 255, .36)": "rgb(var(--tone-text-064-rgb) / 0.36)",
+    "rgba(122, 92, 255, .32)": "rgb(var(--tone-magic-007-rgb) / 0.32)",
+    "rgba(16, 9, 5, .54)": "rgb(var(--tone-surface-068-rgb) / 0.54)",
+    "rgba(200, 169, 119, .42)": "rgb(var(--tone-text-001-rgb) / 0.42)",
+    "rgba(4, 7, 8, 0.78)": "rgb(var(--tone-surface-028-rgb) / 0.78)",
+    "rgba(255, 179, 32, 0.48)": "rgb(var(--tone-accent-031-rgb) / 0.48)",
+    "rgba(5, 7, 8, 0.98)": "rgb(var(--tone-surface-034-rgb) / 0.98)",
+    "rgba(24, 20, 12, 0.98)": "rgb(var(--tone-surface-112-rgb) / 0.98)",
+    "rgba(255, 220, 120, 0.08)": "rgb(var(--tone-accent-078-rgb) / 0.08)",
+    "rgba(0, 0, 0, 0.62)": "rgb(var(--tone-surface-001-rgb) / 0.62)",
+    "rgba(255, 179, 32, 0.20)": "rgb(var(--tone-accent-031-rgb) / 0.2)",
+    "rgba(255, 179, 32, 0.06)": "rgb(var(--tone-accent-031-rgb) / 0.06)",
+    "rgba(255, 179, 32, 0.38)": "rgb(var(--tone-accent-031-rgb) / 0.38)",
+    "rgba(228, 214, 184, 0.82)": "rgb(var(--tone-text-023-rgb) / 0.82)",
+    "rgba(5, 5, 7, 0.18)": "rgb(var(--tone-surface-022-rgb) / 0.18)",
+    "rgba(5, 5, 7, 0.44)": "rgb(var(--tone-surface-022-rgb) / 0.44)",
+    "rgba(5, 5, 7, 0.36)": "rgb(var(--tone-surface-022-rgb) / 0.36)",
+    "rgba(0, 0, 0, 0.26)": "rgb(var(--tone-surface-001-rgb) / 0.26)",
+    "rgba(5, 5, 7, 0.72)": "rgb(var(--tone-surface-022-rgb) / 0.72)",
+    "rgba(255, 218, 122, 0.10)": "rgb(var(--tone-accent-077-rgb) / 0.1)",
+    "rgba(210, 180, 140, 0.58)": "rgb(var(--tone-text-002-rgb) / 0.58)",
+    "rgba(255, 170, 0, 0.34)": "rgb(var(--tone-accent-024-rgb) / 0.34)",
+    "rgba(0, 0, 0, 0.34)": "rgb(var(--tone-surface-001-rgb) / 0.34)",
+    "rgba(255, 220, 120, 0.10)": "rgb(var(--tone-accent-078-rgb) / 0.1)",
+    "rgba(255, 51, 0, 0.22)": "rgb(var(--tone-danger-012-rgb) / 0.22)",
+    "rgba(255, 51, 0, 0.03)": "rgb(var(--tone-danger-012-rgb) / 0.03)",
+    "rgba(51, 153, 255, 0.22)": "rgb(var(--tone-energy-006-rgb) / 0.22)",
+    "rgba(51, 153, 255, 0.03)": "rgb(var(--tone-energy-006-rgb) / 0.03)",
+    "rgba(119, 68, 255, 0.22)": "rgb(var(--tone-magic-005-rgb) / 0.22)",
+    "rgba(119, 68, 255, 0.03)": "rgb(var(--tone-magic-005-rgb) / 0.03)",
+    "rgba(210, 180, 140, .055)": "rgb(var(--tone-text-002-rgb) / 0.055)",
+    "rgba(210, 180, 140, .16)": "rgb(var(--tone-text-002-rgb) / 0.16)",
+    "rgba(210, 180, 140, .30)": "rgb(var(--tone-text-002-rgb) / 0.3)",
+    "rgba(255, 170, 0, .26)": "rgb(var(--tone-accent-024-rgb) / 0.26)",
+    "rgba(210, 180, 140, 1)": "rgb(var(--tone-text-002-rgb))",
+    "rgba(119, 68, 255, .05)": "rgb(var(--tone-magic-005-rgb) / 0.05)",
+    "rgba(119, 68, 255, .18)": "rgb(var(--tone-magic-005-rgb) / 0.18)",
+    "rgba(119, 68, 255, .42)": "rgb(var(--tone-magic-005-rgb) / 0.42)",
+    "rgba(153, 102, 255, .8)": "rgb(var(--tone-magic-011-rgb) / 0.8)",
+    "rgba(119, 68, 255, .52)": "rgb(var(--tone-magic-005-rgb) / 0.52)",
+    "rgba(210, 180, 140, .03)": "rgb(var(--tone-text-002-rgb) / 0.03)",
+    "rgba(210, 180, 140, .12)": "rgb(var(--tone-text-002-rgb) / 0.12)",
+    "rgba(210, 180, 140, .75)": "rgb(var(--tone-text-002-rgb) / 0.75)",
+    "rgba(210, 180, 140, .07)": "rgb(var(--tone-text-002-rgb) / 0.07)",
+    "rgba(210, 180, 140, .28)": "rgb(var(--tone-text-002-rgb) / 0.28)",
+    "rgba(255, 170, 0, .4)": "rgb(var(--tone-accent-024-rgb) / 0.4)",
+    "rgba(10, 10, 12, .56)": "rgb(var(--tone-surface-073-rgb) / 0.56)",
+    "rgba(255, 170, 0, 0.05)": "rgb(var(--tone-accent-024-rgb) / 0.05)",
+    "rgba(255, 170, 0, 0.08)": "rgb(var(--tone-accent-024-rgb) / 0.08)",
+    "rgba(255, 255, 255, 0.03)": "rgb(var(--tone-text-064-rgb) / 0.03)",
+    "#ff6644": "rgb(var(--tone-danger-049-rgb))",
+    "#ff3300": "rgb(var(--tone-danger-012-rgb))",
+    "#b01a00": "rgb(var(--tone-danger-004-rgb))",
+    "#66bbff": "rgb(var(--tone-energy-024-rgb))",
+    "#3399ff": "rgb(var(--tone-energy-006-rgb))",
+    "#1a66cc": "rgb(var(--tone-energy-003-rgb))",
+    "#88ffcc": "rgb(var(--tone-success-033-rgb))",
+    "#22aa55": "rgb(var(--tone-success-005-rgb))",
+    "rgba(255, 255, 255, .018)": "rgb(var(--tone-text-064-rgb) / 0.018)",
+    "rgba(68, 221, 136, .18)": "rgb(var(--tone-success-013-rgb) / 0.18)",
+    "rgba(255, 51, 0, .18)": "rgb(var(--tone-danger-012-rgb) / 0.18)",
+    "rgba(5, 5, 7, 0.76)": "rgb(var(--tone-surface-022-rgb) / 0.76)",
+    "rgba(255, 170, 0, 0.075)": "rgb(var(--tone-accent-024-rgb) / 0.075)",
+    "#09090d": "rgb(var(--tone-surface-070-rgb))",
+    "rgba(255, 170, 0, 0.09)": "rgb(var(--tone-accent-024-rgb) / 0.09)",
+    "rgba(230, 204, 172, 0.68)": "rgb(var(--tone-text-010-rgb) / 0.68)",
+    "rgba(5, 5, 7, 0.48)": "rgb(var(--tone-surface-022-rgb) / 0.48)",
+    "rgba(5, 5, 7, 0.34)": "rgb(var(--tone-surface-022-rgb) / 0.34)",
+    "rgba(210, 180, 140, 0.44)": "rgb(var(--tone-text-002-rgb) / 0.44)",
+    "rgba(210, 180, 140, 0.68)": "rgb(var(--tone-text-002-rgb) / 0.68)",
+    "rgba(0, 0, 0, 0.18)": "rgb(var(--tone-surface-001-rgb) / 0.18)",
+    "rgba(0, 0, 0, 0.22)": "rgb(var(--tone-surface-001-rgb) / 0.22)",
+    "rgba(0, 0, 0, 0.14)": "rgb(var(--tone-surface-001-rgb) / 0.14)",
+    "rgba(255, 84, 40, 0.34)": "rgb(var(--tone-danger-029-rgb) / 0.34)",
+    "rgba(5, 5, 7, 0.42)": "rgb(var(--tone-surface-022-rgb) / 0.42)",
+    "rgba(255, 84, 40, 0.075)": "rgb(var(--tone-danger-029-rgb) / 0.075)",
+    "#ff7048": "rgb(var(--tone-danger-052-rgb))",
+    "rgba(230, 204, 172, 0.62)": "rgb(var(--tone-text-010-rgb) / 0.62)",
+    "rgba(240, 218, 184, 0.86)": "rgb(var(--tone-text-029-rgb) / 0.86)",
+    "rgba(255, 84, 40, 0.38)": "rgb(var(--tone-danger-029-rgb) / 0.38)",
+    "rgba(255, 112, 72, 0.68)": "rgb(var(--tone-danger-052-rgb) / 0.68)",
+    "rgba(255, 84, 40, 0.12)": "rgb(var(--tone-danger-029-rgb) / 0.12)",
+    "rgba(255, 100, 0, .08)": "rgb(var(--tone-accent-017-rgb) / 0.08)",
+    "rgba(255, 100, 0, .28)": "rgb(var(--tone-accent-017-rgb) / 0.28)",
+    "rgba(255, 130, 50, .85)": "rgb(var(--tone-accent-027-rgb) / 0.85)",
+    "rgba(255, 220, 0, .06)": "rgb(var(--tone-accent-032-rgb) / 0.06)",
+    "rgba(255, 220, 0, .22)": "rgb(var(--tone-accent-032-rgb) / 0.22)",
+    "rgba(255, 220, 50, .8)": "rgb(var(--tone-accent-048-rgb) / 0.8)",
+    "rgba(255, 30, 30, .07)": "rgb(var(--tone-danger-013-rgb) / 0.07)",
+    "rgba(255, 30, 30, .25)": "rgb(var(--tone-danger-013-rgb) / 0.25)",
+    "rgba(255, 80, 80, .8)": "rgb(var(--tone-danger-045-rgb) / 0.8)",
+    "rgba(68, 221, 136, .06)": "rgb(var(--tone-success-013-rgb) / 0.06)",
+    "rgba(68, 221, 136, .22)": "rgb(var(--tone-success-013-rgb) / 0.22)",
+    "rgba(68, 221, 136, .8)": "rgb(var(--tone-success-013-rgb) / 0.8)",
+    "rgba(68, 221, 136, .75)": "rgb(var(--tone-success-013-rgb) / 0.75)",
+    "rgba(255, 51, 0, .08)": "rgb(var(--tone-danger-012-rgb) / 0.08)",
+    "rgba(255, 51, 0, .22)": "rgb(var(--tone-danger-012-rgb) / 0.22)",
+    "rgba(255, 170, 0, .6)": "rgb(var(--tone-accent-024-rgb) / 0.6)",
+    "rgba(119, 68, 255, .06)": "rgb(var(--tone-magic-005-rgb) / 0.06)",
+    "rgba(119, 68, 255, .22)": "rgb(var(--tone-magic-005-rgb) / 0.22)",
+    "rgba(0, 0, 0, 0.4)": "rgb(var(--tone-surface-001-rgb) / 0.4)",
+    "rgba(255, 170, 0, 0.55)": "rgb(var(--tone-accent-024-rgb) / 0.55)",
+    "rgba(68, 221, 136, 0.8)": "rgb(var(--tone-success-013-rgb) / 0.8)",
+    "rgba(255, 170, 0, 0.25)": "rgb(var(--tone-accent-024-rgb) / 0.25)",
+    "rgba(8, 10, 12, .96)": "rgb(var(--tone-surface-067-rgb) / 0.96)",
+    "rgba(255, 190, 70, .08)": "rgb(var(--tone-accent-043-rgb) / 0.08)",
+    "rgba(0, 0, 0, .45)": "rgb(var(--tone-surface-001-rgb) / 0.45)",
+    "rgba(77, 220, 132, .42)": "rgb(var(--tone-success-016-rgb) / 0.42)",
+    "rgba(77, 220, 132, .10)": "rgb(var(--tone-success-016-rgb) / 0.1)",
+    "rgba(77, 220, 132, .12)": "rgb(var(--tone-success-016-rgb) / 0.12)",
+    "rgba(190, 255, 210, .98)": "rgb(var(--tone-success-035-rgb) / 0.98)",
+    "rgba(210, 180, 140, .62)": "rgb(var(--tone-text-002-rgb) / 0.62)",
+    "rgba(210, 180, 140, .48)": "rgb(var(--tone-text-002-rgb) / 0.48)",
+    "rgba(255, 255, 255, .10)": "rgb(var(--tone-text-064-rgb) / 0.1)",
+    "#ffd76a": "rgb(var(--tone-accent-070-rgb))",
+    "rgba(255, 232, 200, .82)": "rgb(var(--tone-text-053-rgb) / 0.82)",
+    "rgba(255, 120, 70, .42)": "rgb(var(--tone-danger-053-rgb) / 0.42)",
+    "rgba(50, 14, 8, .54)": "rgb(var(--tone-surface-119-rgb) / 0.54)",
+    "rgba(255, 215, 70, .48)": "rgb(var(--tone-accent-058-rgb) / 0.48)",
+    "rgba(48, 36, 8, .52)": "rgb(var(--tone-surface-125-rgb) / 0.52)",
+    "rgba(160, 100, 220, .46)": "rgb(var(--tone-magic-008-rgb) / 0.46)",
+    "rgba(28, 14, 42, .54)": "rgb(var(--tone-surface-123-rgb) / 0.54)",
+    "rgba(80, 200, 255, .48)": "rgb(var(--tone-energy-022-rgb) / 0.48)",
+    "rgba(8, 28, 44, .54)": "rgb(var(--tone-surface-121-rgb) / 0.54)",
+    "rgba(255, 255, 255, .08)": "rgb(var(--tone-text-064-rgb) / 0.08)",
+    "rgba(255, 232, 200, .88)": "rgb(var(--tone-text-053-rgb) / 0.88)",
+    "rgba(255,170,0,.04)": "rgb(var(--tone-accent-024-rgb) / 0.04)",
+    "rgba(255,170,0,.10)": "rgb(var(--tone-accent-024-rgb) / 0.1)",
+    "rgba(255,170,0,.09)": "rgb(var(--tone-accent-024-rgb) / 0.09)",
+    "rgba(255,170,0,.22)": "rgb(var(--tone-accent-024-rgb) / 0.22)",
+    "rgba(255,51,0,.14)": "rgb(var(--tone-danger-012-rgb) / 0.14)",
+    "rgba(255,51,0,.28)": "rgb(var(--tone-danger-012-rgb) / 0.28)",
+    "rgba(51,153,255,.12)": "rgb(var(--tone-energy-006-rgb) / 0.12)",
+    "rgba(51,153,255,.25)": "rgb(var(--tone-energy-006-rgb) / 0.25)",
+    "rgba(119,68,255,.15)": "rgb(var(--tone-magic-005-rgb) / 0.15)",
+    "rgba(119,68,255,.30)": "rgb(var(--tone-magic-005-rgb) / 0.3)",
+    "rgba(255,255,255,.15)": "rgb(var(--tone-text-064-rgb) / 0.15)",
+    "rgba(255,255,255,.40)": "rgb(var(--tone-text-064-rgb) / 0.4)",
+    "rgba(255, 79, 216, .16)": "rgb(var(--tone-magic-013-rgb) / 0.16)",
+    "rgba(255, 255, 255, .24)": "rgb(var(--tone-text-064-rgb) / 0.24)",
+    "rgba(77, 255, 136, .18)": "rgb(var(--tone-success-022-rgb) / 0.18)",
+    "rgba(122, 92, 255, .28)": "rgb(var(--tone-magic-007-rgb) / 0.28)",
+    "rgba(255, 255, 255, .42)": "rgb(var(--tone-text-064-rgb) / 0.42)",
+    "rgba(85, 238, 153, .12)": "rgb(var(--tone-success-024-rgb) / 0.12)",
+    "rgba(85, 238, 153, .28)": "rgb(var(--tone-success-024-rgb) / 0.28)",
+    "rgba(255, 170, 0, 0.32)": "rgb(var(--tone-accent-024-rgb) / 0.32)",
+    "rgba(255, 214, 118, .045)": "rgb(var(--tone-accent-074-rgb) / 0.045)",
+    "rgba(255, 230, 150, .12)": "rgb(var(--tone-text-027-rgb) / 0.12)",
+    "rgba(1, 1, 1, .88)": "rgb(var(--tone-surface-002-rgb) / 0.88)",
+    "rgba(1, 1, 1, .70)": "rgb(var(--tone-surface-002-rgb) / 0.7)",
+    "rgba(255, 170, 0, .075)": "rgb(var(--tone-accent-024-rgb) / 0.075)",
+    "rgba(255, 230, 150, .10)": "rgb(var(--tone-text-027-rgb) / 0.1)",
+    "rgba(1, 1, 1, .62)": "rgb(var(--tone-surface-002-rgb) / 0.62)",
+    "rgba(68, 170, 255, .12)": "rgb(var(--tone-energy-010-rgb) / 0.12)",
+    "rgba(255, 230, 150, .18)": "rgb(var(--tone-text-027-rgb) / 0.18)",
+    "#fff": "rgb(var(--tone-text-064-rgb))",
+    "rgba(9, 12, 16, .92)": "rgb(var(--tone-surface-088-rgb) / 0.92)",
+    "rgba(4, 5, 7, .78)": "rgb(var(--tone-surface-019-rgb) / 0.78)",
+    "rgba(255, 183, 55, .035)": "rgb(var(--tone-accent-038-rgb) / 0.035)",
+    "rgba(0, 0, 0, .68)": "rgb(var(--tone-surface-001-rgb) / 0.68)",
+    "rgba(255, 225, 150, .07)": "rgb(var(--tone-text-025-rgb) / 0.07)",
+    "rgba(255, 170, 0, .035)": "rgb(var(--tone-accent-024-rgb) / 0.035)",
+    "rgba(1, 1, 1, .86)": "rgb(var(--tone-surface-002-rgb) / 0.86)",
+    "rgba(1, 1, 1, .72)": "rgb(var(--tone-surface-002-rgb) / 0.72)",
+    "rgba(255, 214, 118, .06)": "rgb(var(--tone-accent-074-rgb) / 0.06)",
+    "rgba(9, 11, 14, .91)": "rgb(var(--tone-surface-079-rgb) / 0.91)",
+    "rgba(3, 3, 4, .76)": "rgb(var(--tone-surface-006-rgb) / 0.76)",
+    "rgba(255, 183, 55, .045)": "rgb(var(--tone-accent-038-rgb) / 0.045)",
+    "rgba(255, 225, 150, .08)": "rgb(var(--tone-text-025-rgb) / 0.08)",
+    "rgba(255, 170, 0, .018)": "rgb(var(--tone-accent-024-rgb) / 0.018)",
+    "rgba(68, 170, 255, .09)": "rgb(var(--tone-energy-010-rgb) / 0.09)",
+    "rgba(255, 211, 125, .055)": "rgb(var(--tone-accent-075-rgb) / 0.055)",
+    "rgba(1, 1, 1, .76)": "rgb(var(--tone-surface-002-rgb) / 0.76)",
+    "rgba(255, 214, 118, .07)": "rgb(var(--tone-accent-074-rgb) / 0.07)",
+    "rgba(0, 0, 0, .62)": "rgb(var(--tone-surface-001-rgb) / 0.62)",
+    "rgba(0, 0, 0, .70)": "rgb(var(--tone-surface-001-rgb) / 0.7)",
+    "rgba(255, 170, 0, .025)": "rgb(var(--tone-accent-024-rgb) / 0.025)",
+    "rgba(0, 0, 0, .76)": "rgb(var(--tone-surface-001-rgb) / 0.76)",
+    "rgba(0, 0, 0, .95)": "rgb(var(--tone-surface-001-rgb) / 0.95)",
+    "rgba(0, 0, 0, .78)": "rgb(var(--tone-surface-001-rgb) / 0.78)",
+    "rgba(255, 170, 0, .09)": "rgb(var(--tone-accent-024-rgb) / 0.09)",
+    "rgba(1, 1, 1, .90)": "rgb(var(--tone-surface-002-rgb) / 0.9)",
+    "rgba(1, 1, 1, .68)": "rgb(var(--tone-surface-002-rgb) / 0.68)",
+    "rgba(0, 0, 0, .74)": "rgb(var(--tone-surface-001-rgb) / 0.74)",
+    "rgba(0, 0, 0, .18)": "rgb(var(--tone-surface-001-rgb) / 0.18)",
+    "rgba(255, 170, 0, .56)": "rgb(var(--tone-accent-024-rgb) / 0.56)",
+    "rgba(0, 0, 0, .66)": "rgb(var(--tone-surface-001-rgb) / 0.66)",
+    "rgba(9, 12, 16, .97)": "rgb(var(--tone-surface-088-rgb) / 0.97)",
+    "rgba(4, 5, 7, .93)": "rgb(var(--tone-surface-019-rgb) / 0.93)",
+    "rgba(255, 225, 150, .09)": "rgb(var(--tone-text-025-rgb) / 0.09)",
+    "rgba(255, 225, 150, .11)": "rgb(var(--tone-text-025-rgb) / 0.11)",
+    "rgba(255, 170, 0, .045)": "rgb(var(--tone-accent-024-rgb) / 0.045)",
+    "rgba(2, 2, 2, .88)": "rgb(var(--tone-surface-003-rgb) / 0.88)",
+    "rgba(2, 2, 2, .64)": "rgb(var(--tone-surface-003-rgb) / 0.64)",
+    "rgba(0, 0, 0, .84)": "rgb(var(--tone-surface-001-rgb) / 0.84)",
+    "rgba(0, 0, 0, .50)": "rgb(var(--tone-surface-001-rgb) / 0.5)",
+    "rgba(255, 170, 0, .13)": "rgb(var(--tone-accent-024-rgb) / 0.13)",
+    "rgba(255, 230, 150, .11)": "rgb(var(--tone-text-027-rgb) / 0.11)",
+    "rgba(255, 170, 0, .32)": "rgb(var(--tone-accent-024-rgb) / 0.32)",
+    "rgba(255, 211, 125, .07)": "rgb(var(--tone-accent-075-rgb) / 0.07)",
+    "rgba(2, 2, 2, .62)": "rgb(var(--tone-surface-003-rgb) / 0.62)",
+    "rgba(68, 170, 255, .08)": "rgb(var(--tone-energy-010-rgb) / 0.08)",
+    "rgba(68, 170, 255, .10)": "rgb(var(--tone-energy-010-rgb) / 0.1)",
+    "rgba(0, 0, 0, .75)": "rgb(var(--tone-surface-001-rgb) / 0.75)",
+    "rgba(255, 230, 150, .17)": "rgb(var(--tone-text-027-rgb) / 0.17)",
+    "rgba(0, 0, 0, .96)": "rgb(var(--tone-surface-001-rgb) / 0.96)",
+    "rgba(255, 170, 0, 0.78)": "rgb(var(--tone-accent-024-rgb) / 0.78)",
+    "rgba(5, 5, 7, 0.82)": "rgb(var(--tone-surface-022-rgb) / 0.82)",
+    "rgba(0, 0, 0, 0.30)": "rgb(var(--tone-surface-001-rgb) / 0.3)",
+    "rgba(255, 230, 150, 0.08)": "rgb(var(--tone-text-027-rgb) / 0.08)",
+    "rgba(245, 232, 204, 0.82)": "rgb(var(--tone-text-050-rgb) / 0.82)",
+    "rgba(2, 2, 2, .76)": "rgb(var(--tone-surface-003-rgb) / 0.76)",
+    "rgba(2, 2, 2, .58)": "rgb(var(--tone-surface-003-rgb) / 0.58)",
+    "rgba(255, 170, 0, .11)": "rgb(var(--tone-accent-024-rgb) / 0.11)",
+    "rgba(0, 0, 0, .20)": "rgb(var(--tone-surface-001-rgb) / 0.2)",
+    "rgba(0, 0, 0, .30)": "rgb(var(--tone-surface-001-rgb) / 0.3)",
+    "rgba(0,0,0,0.1)": "rgb(var(--tone-surface-001-rgb) / 0.1)",
+    "rgba(255,170,0,0.1)": "rgb(var(--tone-accent-024-rgb) / 0.1)",
+    "rgba(255,170,0,0.3)": "rgb(var(--tone-accent-024-rgb) / 0.3)",
+    "rgba(0, 0, 0, .22)": "rgb(var(--tone-surface-001-rgb) / 0.22)",
+    "#00ff00": "rgb(var(--tone-success-004-rgb))",
+    "#555": "rgb(var(--tone-neutral-003-rgb))",
+    "rgba(255, 170, 0, 0.1)": "rgb(var(--tone-accent-024-rgb) / 0.1)",
+    "rgba(255, 77, 46, 0.30)": "rgb(var(--tone-danger-028-rgb) / 0.3)",
+    "rgba(230, 204, 172, 0.92)": "rgb(var(--tone-text-010-rgb) / 0.92)",
+    "#ff4d2e": "rgb(var(--tone-danger-028-rgb))",
+    "#ffcd66": "rgb(var(--tone-accent-065-rgb))",
+    "#101015": "rgb(var(--tone-surface-108-rgb))",
+    "#68a8ff": "rgb(var(--tone-energy-020-rgb))",
+    "#ff6a4d": "rgb(var(--tone-danger-051-rgb))",
+    "#e8cf95": "rgb(var(--tone-text-005-rgb))",
+    "rgba(232, 207, 149, .55)": "rgb(var(--tone-text-005-rgb) / 0.55)",
+    "rgba(238, 220, 190, .92)": "rgb(var(--tone-text-037-rgb) / 0.92)",
+    "#f1d58f": "rgb(var(--tone-text-009-rgb))",
+    "rgba(241, 213, 143, .24)": "rgb(var(--tone-text-009-rgb) / 0.24)",
+    "#d8ecff": "rgb(var(--tone-text-060-rgb))",
+    "rgba(104, 168, 255, .28)": "rgb(var(--tone-energy-020-rgb) / 0.28)",
+    "#ffb38f": "rgb(var(--tone-danger-062-rgb))",
+    "rgba(255, 106, 77, .28)": "rgb(var(--tone-danger-051-rgb) / 0.28)",
+    "rgba(255, 77, 46, .42)": "rgb(var(--tone-danger-028-rgb) / 0.42)",
+    "rgba(0,0,0,0.34)": "rgb(var(--tone-surface-001-rgb) / 0.34)",
+    "rgba(8, 8, 10, .94)": "rgb(var(--tone-surface-053-rgb) / 0.94)",
+    "rgba(255, 170, 0, 0.15)": "rgb(var(--tone-accent-024-rgb) / 0.15)",
+    "rgba(255,170,0,0.4)": "rgb(var(--tone-accent-024-rgb) / 0.4)",
+    "rgba(8, 8, 10, 0.94)": "rgb(var(--tone-surface-053-rgb) / 0.94)",
+    "rgba(0, 0, 0, 0.46)": "rgb(var(--tone-surface-001-rgb) / 0.46)",
+    "rgba(10, 10, 12, 0.85)": "rgb(var(--tone-surface-073-rgb) / 0.85)",
+    "rgba(10, 7, 4, .64)": "rgb(var(--tone-surface-039-rgb) / 0.64)",
+    "rgba(8, 6, 4, .70)": "rgb(var(--tone-surface-027-rgb) / 0.7)",
+    "rgba(18, 11, 5, .58)": "rgb(var(--tone-surface-083-rgb) / 0.58)",
+    "rgba(0, 0, 0, 0.12)": "rgb(var(--tone-surface-001-rgb) / 0.12)",
+    "rgba(8, 8, 10, 0.98)": "rgb(var(--tone-surface-053-rgb) / 0.98)",
+    "rgba(0, 0, 0, 0.7)": "rgb(var(--tone-surface-001-rgb) / 0.7)",
+    "rgba(136, 102, 255, 0.4)": "rgb(var(--tone-magic-009-rgb) / 0.4)",
+    "rgba(153, 153, 170, 0.35)": "rgb(var(--tone-neutral-009-rgb) / 0.35)",
+    "rgba(255, 170, 0, 0.45)": "rgb(var(--tone-accent-024-rgb) / 0.45)",
+    "rgba(255, 170, 0, .24)": "rgb(var(--tone-accent-024-rgb) / 0.24)",
+    "rgba(13, 8, 4, .62)": "rgb(var(--tone-surface-051-rgb) / 0.62)",
+    "rgba(10, 7, 4, .70)": "rgb(var(--tone-surface-039-rgb) / 0.7)",
+    "rgba(22, 13, 5, .60)": "rgb(var(--tone-surface-095-rgb) / 0.6)",
+    "rgba(85, 238, 153, .10)": "rgb(var(--tone-success-024-rgb) / 0.1)",
+    "rgba(85, 238, 153, .20)": "rgb(var(--tone-success-024-rgb) / 0.2)",
+    "rgba(4, 12, 8, .64)": "rgb(var(--tone-surface-044-rgb) / 0.64)",
+    "rgba(3, 10, 7, .72)": "rgb(var(--tone-surface-033-rgb) / 0.72)",
+    "rgba(5, 17, 10, .58)": "rgb(var(--tone-surface-071-rgb) / 0.58)",
+    "rgba(153, 153, 170, .11)": "rgb(var(--tone-neutral-009-rgb) / 0.11)",
+    "rgba(153, 153, 170, .20)": "rgb(var(--tone-neutral-009-rgb) / 0.2)",
+    "rgba(5, 6, 8, .68)": "rgb(var(--tone-surface-029-rgb) / 0.68)",
+    "rgba(4, 5, 7, .76)": "rgb(var(--tone-surface-019-rgb) / 0.76)",
+    "rgba(9, 10, 13, .62)": "rgb(var(--tone-surface-072-rgb) / 0.62)",
+    "rgba(136, 102, 255, .11)": "rgb(var(--tone-magic-009-rgb) / 0.11)",
+    "rgba(136, 102, 255, .22)": "rgb(var(--tone-magic-009-rgb) / 0.22)",
+    "rgba(11, 7, 16, .64)": "rgb(var(--tone-surface-081-rgb) / 0.64)",
+    "rgba(9, 6, 14, .72)": "rgb(var(--tone-surface-065-rgb) / 0.72)",
+    "rgba(16, 9, 24, .58)": "rgb(var(--tone-surface-106-rgb) / 0.58)",
+    "rgba(255, 77, 46, .13)": "rgb(var(--tone-danger-028-rgb) / 0.13)",
+    "rgba(255, 77, 46, .24)": "rgb(var(--tone-danger-028-rgb) / 0.24)",
+    "rgba(15, 5, 3, .66)": "rgb(var(--tone-surface-043-rgb) / 0.66)",
+    "rgba(12, 4, 3, .74)": "rgb(var(--tone-surface-032-rgb) / 0.74)",
+    "rgba(21, 7, 4, .60)": "rgb(var(--tone-surface-075-rgb) / 0.6)",
+    "rgba(4, 4, 6, 0.52)": "rgb(var(--tone-surface-016-rgb) / 0.52)",
+    "rgba(210, 180, 140, 0.66)": "rgb(var(--tone-text-002-rgb) / 0.66)",
+    "rgba(6, 7, 9, 0.88)": "rgb(var(--tone-surface-040-rgb) / 0.88)",
+    "rgba(0, 0, 0, 0.48)": "rgb(var(--tone-surface-001-rgb) / 0.48)",
+    "rgba(0, 0, 0, 0.10)": "rgb(var(--tone-surface-001-rgb) / 0.1)",
+    "rgba(0, 0, 0, 0.76)": "rgb(var(--tone-surface-001-rgb) / 0.76)",
+    "rgba(3, 4, 6, 0.64)": "rgb(var(--tone-surface-012-rgb) / 0.64)",
+    "rgba(235, 220, 190, 0.82)": "rgb(var(--tone-text-032-rgb) / 0.82)",
+    "rgba(255, 170, 0, 0.74)": "rgb(var(--tone-accent-024-rgb) / 0.74)",
+    "rgba(235, 220, 190, 0.80)": "rgb(var(--tone-text-032-rgb) / 0.8)",
+    "rgba(255, 170, 0, 0.42)": "rgb(var(--tone-accent-024-rgb) / 0.42)",
+    "rgba(255, 170, 0, 0.07)": "rgb(var(--tone-accent-024-rgb) / 0.07)",
+    "rgba(3, 4, 6, 0.70)": "rgb(var(--tone-surface-012-rgb) / 0.7)",
+    "rgba(255, 214, 118, 0.10)": "rgb(var(--tone-accent-074-rgb) / 0.1)",
+    "rgba(0, 0, 0, 0.70)": "rgb(var(--tone-surface-001-rgb) / 0.7)",
+    "rgba(255, 230, 150, 0.12)": "rgb(var(--tone-text-027-rgb) / 0.12)",
+    "rgba(255, 230, 150, 0.18)": "rgb(var(--tone-text-027-rgb) / 0.18)",
+    "rgba(0, 0, 0, 0.84)": "rgb(var(--tone-surface-001-rgb) / 0.84)",
+    "rgba(10, 12, 14, 0.42)": "rgb(var(--tone-surface-085-rgb) / 0.42)",
+    "rgba(3, 4, 6, 0.58)": "rgb(var(--tone-surface-012-rgb) / 0.58)",
+    "rgba(255, 214, 118, 0.045)": "rgb(var(--tone-accent-074-rgb) / 0.045)",
+    "rgba(1, 1, 1, 0.88)": "rgb(var(--tone-surface-002-rgb) / 0.88)",
+    "rgba(1, 1, 1, 0.76)": "rgb(var(--tone-surface-002-rgb) / 0.76)",
+    "rgba(255, 214, 118, 0.07)": "rgb(var(--tone-accent-074-rgb) / 0.07)",
+    "rgba(255, 230, 150, 0.10)": "rgb(var(--tone-text-027-rgb) / 0.1)",
+    "rgba(8, 10, 12, .94)": "rgb(var(--tone-surface-067-rgb) / 0.94)",
+    "rgba(3, 3, 4, .84)": "rgb(var(--tone-surface-006-rgb) / 0.84)",
+    "rgba(255, 183, 55, .07)": "rgb(var(--tone-accent-038-rgb) / 0.07)",
+    "rgba(255, 190, 35, .48)": "rgb(var(--tone-accent-035-rgb) / 0.48)",
+    "rgba(0, 0, 0, .94)": "rgb(var(--tone-surface-001-rgb) / 0.94)",
+    "rgba(9, 8, 7, .86)": "rgb(var(--tone-surface-047-rgb) / 0.86)",
+    "rgba(255, 150, 0, .035)": "rgb(var(--tone-accent-020-rgb) / 0.035)",
+    "rgba(255, 190, 55, .14)": "rgb(var(--tone-accent-040-rgb) / 0.14)",
+    "rgba(80, 45, 0, .48)": "rgb(var(--tone-accent-002-rgb) / 0.48)",
+    "rgba(255, 235, 170, .18)": "rgb(var(--tone-text-041-rgb) / 0.18)",
+    "rgba(255, 198, 86, .28)": "rgb(var(--tone-accent-056-rgb) / 0.28)",
+    "rgba(255, 210, 85, .68)": "rgb(var(--tone-accent-063-rgb) / 0.68)",
+    "rgba(255, 215, 115, .96)": "rgb(var(--tone-accent-072-rgb) / 0.96)",
+    "rgba(96, 55, 0, .56)": "rgb(var(--tone-accent-005-rgb) / 0.56)",
+    "rgba(255, 245, 190, .24)": "rgb(var(--tone-text-055-rgb) / 0.24)",
+    "rgba(80, 45, 0, .52)": "rgb(var(--tone-accent-002-rgb) / 0.52)",
+    "rgba(255, 210, 85, .58)": "rgb(var(--tone-accent-063-rgb) / 0.58)",
+    "rgba(255, 185, 45, .24)": "rgb(var(--tone-accent-036-rgb) / 0.24)",
+    "rgba(8, 8, 9, .70)": "rgb(var(--tone-surface-049-rgb) / 0.7)",
+    "rgba(255, 190, 65, .075)": "rgb(var(--tone-accent-042-rgb) / 0.075)",
+    "rgba(255, 230, 160, .08)": "rgb(var(--tone-text-035-rgb) / 0.08)",
+    "rgba(45, 220, 190, .24)": "rgb(var(--tone-action-003-rgb) / 0.24)",
+    "rgba(5, 12, 12, .70)": "rgb(var(--tone-surface-062-rgb) / 0.7)",
+    "rgba(40, 210, 185, .07)": "rgb(var(--tone-action-001-rgb) / 0.07)",
+    "rgba(190, 255, 235, .08)": "rgb(var(--tone-success-036-rgb) / 0.08)",
+    "rgba(255, 185, 45, .22)": "rgb(var(--tone-accent-036-rgb) / 0.22)",
+    "rgba(7, 8, 10, .72)": "rgb(var(--tone-surface-048-rgb) / 0.72)",
+    "rgba(255, 190, 65, .055)": "rgb(var(--tone-accent-042-rgb) / 0.055)",
+    "rgba(255, 230, 160, .06)": "rgb(var(--tone-text-035-rgb) / 0.06)",
+    "rgba(255, 218, 140, .74)": "rgb(var(--tone-text-011-rgb) / 0.74)",
+    "rgba(255, 185, 45, .32)": "rgb(var(--tone-accent-036-rgb) / 0.32)",
+    "rgba(7, 7, 8, .88)": "rgb(var(--tone-surface-041-rgb) / 0.88)",
+    "rgba(255, 185, 45, .055)": "rgb(var(--tone-accent-036-rgb) / 0.055)",
+    "rgba(255, 235, 170, .12)": "rgb(var(--tone-text-041-rgb) / 0.12)",
+    "rgba(255, 170, 0, .055)": "rgb(var(--tone-accent-024-rgb) / 0.055)",
+    "rgba(255, 225, 165, .56)": "rgb(var(--tone-text-034-rgb) / 0.56)",
+    "rgba(210, 180, 140, .76)": "rgb(var(--tone-text-002-rgb) / 0.76)",
+    "rgba(80, 185, 255, .52)": "rgb(var(--tone-energy-016-rgb) / 0.52)",
+    "rgba(4, 13, 17, .46)": "rgb(var(--tone-surface-077-rgb) / 0.46)",
+    "rgba(80, 185, 255, .11)": "rgb(var(--tone-energy-016-rgb) / 0.11)",
+    "rgba(205, 236, 248, .88)": "rgb(var(--tone-energy-032-rgb) / 0.88)",
+    "rgba(255, 198, 82, .56)": "rgb(var(--tone-accent-053-rgb) / 0.56)",
+    "rgba(28, 19, 8, .48)": "rgb(var(--tone-surface-111-rgb) / 0.48)",
+    "rgba(255, 198, 82, .12)": "rgb(var(--tone-accent-053-rgb) / 0.12)",
+    "rgba(255, 226, 170, .88)": "rgb(var(--tone-text-039-rgb) / 0.88)",
+    "rgba(70, 210, 120, .42)": "rgb(var(--tone-success-012-rgb) / 0.42)",
+    "rgba(202, 238, 198, .82)": "rgb(var(--tone-success-034-rgb) / 0.82)",
+    "rgba(255, 125, 70, .46)": "rgb(var(--tone-danger-054-rgb) / 0.46)",
+    "rgba(238, 196, 160, .84)": "rgb(var(--tone-text-008-rgb) / 0.84)",
+    "rgba(255, 55, 55, .62)": "rgb(var(--tone-danger-025-rgb) / 0.62)",
+    "rgba(255, 185, 170, .90)": "rgb(var(--tone-danger-063-rgb) / 0.9)",
+    "rgba(255, 210, 70, .62)": "rgb(var(--tone-accent-054-rgb) / 0.62)",
+    "rgba(255, 190, 40, .055)": "rgb(var(--tone-accent-037-rgb) / 0.055)",
+    "rgba(120, 190, 255, .54)": "rgb(var(--tone-energy-026-rgb) / 0.54)",
+    "rgba(255, 222, 155, .78)": "rgb(var(--tone-text-026-rgb) / 0.78)",
+    "rgba(255, 80, 62, .30)": "rgb(var(--tone-danger-036-rgb) / 0.3)",
+    "rgba(255, 155, 128, .88)": "rgb(var(--tone-danger-060-rgb) / 0.88)",
+    "rgba(78, 220, 128, .30)": "rgb(var(--tone-success-014-rgb) / 0.3)",
+    "rgba(150, 244, 178, .88)": "rgb(var(--tone-success-032-rgb) / 0.88)",
+    "rgba(255, 204, 70, .34)": "rgb(var(--tone-accent-049-rgb) / 0.34)",
+    "rgba(255, 226, 142, .92)": "rgb(var(--tone-text-019-rgb) / 0.92)",
+    "rgba(88, 180, 255, .30)": "rgb(var(--tone-energy-019-rgb) / 0.3)",
+    "rgba(170, 224, 255, .88)": "rgb(var(--tone-energy-030-rgb) / 0.88)",
+    "rgba(255, 70, 70, .38)": "rgb(var(--tone-danger-034-rgb) / 0.38)",
+    "rgba(255, 170, 150, .94)": "rgb(var(--tone-danger-061-rgb) / 0.94)",
+    "rgba(255, 218, 155, .88)": "rgb(var(--tone-text-024-rgb) / 0.88)",
+    "rgba(255, 50, 45, .52)": "rgb(var(--tone-danger-018-rgb) / 0.52)",
+    "rgba(255, 210, 180, .96)": "rgb(var(--tone-text-033-rgb) / 0.96)",
+    "rgba(255, 60, 40, 0)": "rgb(var(--tone-danger-021-rgb) / 0)",
+    "rgba(255, 60, 40, .22)": "rgb(var(--tone-danger-021-rgb) / 0.22)",
+    "rgba(210, 180, 140, .42)": "rgb(var(--tone-text-002-rgb) / 0.42)",
+    "rgba(255, 170, 0, .34)": "rgb(var(--tone-accent-024-rgb) / 0.34)",
+    "rgba(255, 218, 155, .56)": "rgb(var(--tone-text-024-rgb) / 0.56)",
+    "rgba(9, 11, 14, .93)": "rgb(var(--tone-surface-079-rgb) / 0.93)",
+    "rgba(3, 3, 4, .80)": "rgb(var(--tone-surface-006-rgb) / 0.8)",
+    "rgba(255, 183, 55, .055)": "rgb(var(--tone-accent-038-rgb) / 0.055)",
+    "rgba(210, 180, 140, .54)": "rgb(var(--tone-text-002-rgb) / 0.54)",
+    "rgba(210, 180, 140, .56)": "rgb(var(--tone-text-002-rgb) / 0.56)",
+    "rgba(255, 185, 45, .18)": "rgb(var(--tone-accent-036-rgb) / 0.18)",
+    "rgba(7, 7, 8, .86)": "rgb(var(--tone-surface-041-rgb) / 0.86)",
+    "rgba(210, 180, 140, .025)": "rgb(var(--tone-text-002-rgb) / 0.025)",
+    "rgba(255, 231, 190, .78)": "rgb(var(--tone-text-046-rgb) / 0.78)",
+    "rgba(255, 255, 255, .06)": "rgb(var(--tone-text-064-rgb) / 0.06)",
+    "rgba(255, 72, 56, .92)": "rgb(var(--tone-danger-031-rgb) / 0.92)",
+    "rgba(255, 230, 150, .14)": "rgb(var(--tone-text-027-rgb) / 0.14)",
+    "rgba(255, 231, 190, .82)": "rgb(var(--tone-text-046-rgb) / 0.82)",
+    "rgba(255, 176, 24, .28)": "rgb(var(--tone-accent-029-rgb) / 0.28)",
+    "#e55242": "rgb(var(--tone-danger-027-rgb))",
+    "rgba(229, 82, 66, .34)": "rgb(var(--tone-danger-027-rgb) / 0.34)",
+    "rgba(255, 231, 190, .88)": "rgb(var(--tone-text-046-rgb) / 0.88)",
+    "rgba(0, 0, 0, .44)": "rgb(var(--tone-surface-001-rgb) / 0.44)",
+    "rgba(255, 231, 190, .92)": "rgb(var(--tone-text-046-rgb) / 0.92)",
+    "rgba(255, 190, 55, .30)": "rgb(var(--tone-accent-040-rgb) / 0.3)",
+    "rgba(255, 80, 62, .24)": "rgb(var(--tone-danger-036-rgb) / 0.24)",
+    "rgba(255, 231, 190, .84)": "rgb(var(--tone-text-046-rgb) / 0.84)",
+    "rgba(255, 155, 128, .84)": "rgb(var(--tone-danger-060-rgb) / 0.84)",
+    "rgba(255, 255, 255, .055)": "rgb(var(--tone-text-064-rgb) / 0.055)",
+    "rgba(255, 85, 65, .92)": "rgb(var(--tone-danger-040-rgb) / 0.92)",
+    "rgba(170, 28, 28, .9)": "rgb(var(--tone-danger-007-rgb) / 0.9)",
+    "rgba(255, 218, 155, .74)": "rgb(var(--tone-text-024-rgb) / 0.74)",
+    "rgba(255, 218, 155, .54)": "rgb(var(--tone-text-024-rgb) / 0.54)",
+    "rgba(255, 110, 90, .88)": "rgb(var(--tone-danger-055-rgb) / 0.88)",
+    "rgba(255, 190, 55, .22)": "rgb(var(--tone-accent-040-rgb) / 0.22)",
+    "rgba(255, 190, 55, .32)": "rgb(var(--tone-accent-040-rgb) / 0.32)",
+    "rgba(255, 80, 62, .28)": "rgb(var(--tone-danger-036-rgb) / 0.28)",
+    "rgba(255, 230, 150, .08)": "rgb(var(--tone-text-027-rgb) / 0.08)",
+    "rgba(255, 190, 55, .36)": "rgb(var(--tone-accent-040-rgb) / 0.36)",
+    "rgba(255, 183, 55, .08)": "rgb(var(--tone-accent-038-rgb) / 0.08)",
+    "rgba(0, 0, 0, .56)": "rgb(var(--tone-surface-001-rgb) / 0.56)",
+    "rgba(255, 230, 180, .54)": "rgb(var(--tone-text-042-rgb) / 0.54)",
+    "rgba(3, 3, 5, .10)": "rgb(var(--tone-surface-008-rgb) / 0.1)",
+    "rgba(255, 220, 140, .08)": "rgb(var(--tone-text-013-rgb) / 0.08)",
+    "rgba(255, 238, 190, .32)": "rgb(var(--tone-text-051-rgb) / 0.32)",
+    "rgba(255, 170, 0, .72)": "rgb(var(--tone-accent-024-rgb) / 0.72)",
+    "rgba(220, 48, 48, .82)": "rgb(var(--tone-danger-014-rgb) / 0.82)",
+    "rgba(220, 48, 48, .24)": "rgb(var(--tone-danger-014-rgb) / 0.24)",
+    "rgba(220, 48, 48, .72)": "rgb(var(--tone-danger-014-rgb) / 0.72)",
+    "rgba(220, 48, 48, .18)": "rgb(var(--tone-danger-014-rgb) / 0.18)",
+    "rgba(70, 210, 92, .78)": "rgb(var(--tone-success-009-rgb) / 0.78)",
+    "rgba(70, 210, 92, .22)": "rgb(var(--tone-success-009-rgb) / 0.22)",
+    "rgba(70, 210, 92, .68)": "rgb(var(--tone-success-009-rgb) / 0.68)",
+    "rgba(70, 210, 92, .16)": "rgb(var(--tone-success-009-rgb) / 0.16)",
+    "rgba(255, 110, 35, .84)": "rgb(var(--tone-accent-019-rgb) / 0.84)",
+    "rgba(255, 110, 35, .24)": "rgb(var(--tone-accent-019-rgb) / 0.24)",
+    "rgba(255, 110, 35, .74)": "rgb(var(--tone-accent-019-rgb) / 0.74)",
+    "rgba(255, 110, 35, .18)": "rgb(var(--tone-accent-019-rgb) / 0.18)",
+    "rgba(118, 130, 255, .82)": "rgb(var(--tone-energy-011-rgb) / 0.82)",
+    "rgba(118, 130, 255, .24)": "rgb(var(--tone-energy-011-rgb) / 0.24)",
+    "rgba(118, 130, 255, .70)": "rgb(var(--tone-energy-011-rgb) / 0.7)",
+    "rgba(118, 130, 255, .18)": "rgb(var(--tone-energy-011-rgb) / 0.18)",
+    "rgba(88, 190, 255, .76)": "rgb(var(--tone-energy-021-rgb) / 0.76)",
+    "rgba(88, 190, 255, .20)": "rgb(var(--tone-energy-021-rgb) / 0.2)",
+    "rgba(88, 190, 255, .65)": "rgb(var(--tone-energy-021-rgb) / 0.65)",
+    "rgba(88, 190, 255, .14)": "rgb(var(--tone-energy-021-rgb) / 0.14)",
+    "rgba(255, 202, 86, .78)": "rgb(var(--tone-accent-061-rgb) / 0.78)",
+    "rgba(255, 202, 86, .22)": "rgb(var(--tone-accent-061-rgb) / 0.22)",
+    "rgba(255, 202, 86, .66)": "rgb(var(--tone-accent-061-rgb) / 0.66)",
+    "rgba(255, 202, 86, .14)": "rgb(var(--tone-accent-061-rgb) / 0.14)",
+    "rgba(90, 176, 255, .76)": "rgb(var(--tone-energy-017-rgb) / 0.76)",
+    "rgba(90, 176, 255, .20)": "rgb(var(--tone-energy-017-rgb) / 0.2)",
+    "rgba(90, 176, 255, .64)": "rgb(var(--tone-energy-017-rgb) / 0.64)",
+    "rgba(90, 176, 255, .14)": "rgb(var(--tone-energy-017-rgb) / 0.14)",
+    "rgba(190, 94, 255, .76)": "rgb(var(--tone-magic-012-rgb) / 0.76)",
+    "rgba(190, 94, 255, .20)": "rgb(var(--tone-magic-012-rgb) / 0.2)",
+    "rgba(190, 94, 255, .64)": "rgb(var(--tone-magic-012-rgb) / 0.64)",
+    "rgba(190, 94, 255, .14)": "rgb(var(--tone-magic-012-rgb) / 0.14)",
+    "rgba(82, 224, 170, .76)": "rgb(var(--tone-success-023-rgb) / 0.76)",
+    "rgba(82, 224, 170, .20)": "rgb(var(--tone-success-023-rgb) / 0.2)",
+    "rgba(82, 224, 170, .64)": "rgb(var(--tone-success-023-rgb) / 0.64)",
+    "rgba(82, 224, 170, .14)": "rgb(var(--tone-success-023-rgb) / 0.14)",
+    "rgba(210, 180, 140, .72)": "rgb(var(--tone-text-002-rgb) / 0.72)",
+    "rgba(210, 180, 140, .18)": "rgb(var(--tone-text-002-rgb) / 0.18)",
+    "rgba(120, 205, 255, .82)": "rgb(var(--tone-energy-028-rgb) / 0.82)",
+    "rgba(120, 205, 255, .25)": "rgb(var(--tone-energy-028-rgb) / 0.25)",
+    "rgba(120, 205, 255, .70)": "rgb(var(--tone-energy-028-rgb) / 0.7)",
+    "rgba(120, 205, 255, .18)": "rgb(var(--tone-energy-028-rgb) / 0.18)",
+    "rgba(0, 0, 0, .08)": "rgb(var(--tone-surface-001-rgb) / 0.08)",
+    "rgba(0, 0, 0, .40)": "rgb(var(--tone-surface-001-rgb) / 0.4)",
+    "rgba(255, 210, 72, .50)": "rgb(var(--tone-accent-055-rgb) / 0.5)",
+    "rgba(255, 64, 48, .58)": "rgb(var(--tone-danger-026-rgb) / 0.58)",
+    "rgba(80, 8, 4, .18)": "rgb(var(--tone-danger-001-rgb) / 0.18)",
+    "rgba(85, 170, 255, .92)": "rgb(var(--tone-energy-012-rgb) / 0.92)",
+    "rgba(45, 90, 190, .86)": "rgb(var(--tone-energy-002-rgb) / 0.86)",
+    "rgba(244, 225, 175, .74)": "rgb(var(--tone-text-031-rgb) / 0.74)",
+    "rgba(210, 180, 140, .24)": "rgb(var(--tone-text-002-rgb) / 0.24)",
+    "rgba(255, 170, 0, .70)": "rgb(var(--tone-accent-024-rgb) / 0.7)",
+    "#4ddc84": "rgb(var(--tone-success-016-rgb))",
+    "rgba(77, 220, 132, .46)": "rgb(var(--tone-success-016-rgb) / 0.46)",
+    "#ffd248": "rgb(var(--tone-accent-055-rgb))",
+    "#ff4030": "rgb(var(--tone-danger-026-rgb))",
+    "#ff3828": "rgb(var(--tone-danger-019-rgb))",
+    "rgba(255, 56, 40, .55)": "rgb(var(--tone-danger-019-rgb) / 0.55)",
+    "#58beff": "rgb(var(--tone-energy-021-rgb))",
+    "rgba(88, 190, 255, .48)": "rgb(var(--tone-energy-021-rgb) / 0.48)",
+    "rgba(120, 120, 120, .7)": "rgb(var(--tone-neutral-005-rgb) / 0.7)",
+    "rgba(255, 232, 190, .72)": "rgb(var(--tone-text-047-rgb) / 0.72)",
+    "rgba(0, 0, 0, .46)": "rgb(var(--tone-surface-001-rgb) / 0.46)",
+    "rgba(0, 0, 0, .10)": "rgb(var(--tone-surface-001-rgb) / 0.1)",
+    "rgba(88, 180, 255, .92)": "rgb(var(--tone-energy-019-rgb) / 0.92)",
+    "rgba(170, 28, 28, .88)": "rgb(var(--tone-danger-007-rgb) / 0.88)",
+    "#fff4cf": "rgb(var(--tone-text-059-rgb))",
+    "rgba(0, 0, 0, .12)": "rgb(var(--tone-surface-001-rgb) / 0.12)",
+    "rgba(112, 74, 255, .20)": "rgb(var(--tone-magic-003-rgb) / 0.2)",
+    "rgba(5, 5, 7, 0.64)": "rgb(var(--tone-surface-022-rgb) / 0.64)",
+    "rgba(255, 210, 180, 0.07)": "rgb(var(--tone-text-033-rgb) / 0.07)",
+    "rgba(255, 170, 0, 0.045)": "rgb(var(--tone-accent-024-rgb) / 0.045)",
+    "rgba(0, 0, 255, 0.055)": "rgb(var(--tone-energy-001-rgb) / 0.055)",
+    "rgba(0, 255, 0, 0.018)": "rgb(var(--tone-success-004-rgb) / 0.018)",
+    "rgba(255, 0, 0, 0.055)": "rgb(var(--tone-danger-009-rgb) / 0.055)",
+    "rgba(0, 0, 0, 0.25)": "rgb(var(--tone-surface-001-rgb) / 0.25)",
+    "rgba(18, 16, 16, 0)": "rgb(var(--tone-surface-107-rgb) / 0)",
+    "rgba(255, 170, 0, 0.26)": "rgb(var(--tone-accent-024-rgb) / 0.26)",
+    "rgba(255, 190, 96, 0.88)": "rgb(var(--tone-accent-060-rgb) / 0.88)",
+    "rgba(255, 190, 96, 0.94)": "rgb(var(--tone-accent-060-rgb) / 0.94)",
+    "rgba(245, 232, 204, 0.80)": "rgb(var(--tone-text-050-rgb) / 0.8)",
+    "rgba(255, 218, 144, 0.72)": "rgb(var(--tone-text-014-rgb) / 0.72)",
+    "rgba(230, 204, 172, 0.08)": "rgb(var(--tone-text-010-rgb) / 0.08)",
+    "rgba(255, 190, 96, 0.90)": "rgb(var(--tone-accent-060-rgb) / 0.9)",
+    "rgba(245, 232, 204, 0.86)": "rgb(var(--tone-text-050-rgb) / 0.86)",
+    "rgba(255, 190, 96, 0.66)": "rgb(var(--tone-accent-060-rgb) / 0.66)",
+    "rgba(255, 190, 96, 0.82)": "rgb(var(--tone-accent-060-rgb) / 0.82)",
+    "rgba(210, 180, 140, 0.54)": "rgb(var(--tone-text-002-rgb) / 0.54)",
+    "rgba(245, 232, 204, 0.72)": "rgb(var(--tone-text-050-rgb) / 0.72)",
+    "rgba(255, 170, 0, 0.40)": "rgb(var(--tone-accent-024-rgb) / 0.4)",
+    "rgba(255, 96, 72, 0.42)": "rgb(var(--tone-danger-047-rgb) / 0.42)",
+    "rgba(255, 190, 170, 0.92)": "rgb(var(--tone-danger-064-rgb) / 0.92)",
+    "rgba(1, 1, 1, .82)": "rgb(var(--tone-surface-002-rgb) / 0.82)",
+    "rgba(255, 51, 0, .055)": "rgb(var(--tone-danger-012-rgb) / 0.055)",
+    "rgba(255, 190, 120, .08)": "rgb(var(--tone-accent-067-rgb) / 0.08)",
+    "rgba(255, 51, 0, .28)": "rgb(var(--tone-danger-012-rgb) / 0.28)",
+    "rgba(68, 221, 136, .24)": "rgb(var(--tone-success-013-rgb) / 0.24)",
+    "rgba(68, 221, 136, .08)": "rgb(var(--tone-success-013-rgb) / 0.08)",
+    "rgba(255, 212, 128, .76)": "rgb(var(--tone-accent-076-rgb) / 0.76)",
+    "rgba(255, 231, 190, .72)": "rgb(var(--tone-text-046-rgb) / 0.72)",
+    "rgba(255, 231, 190, .94)": "rgb(var(--tone-text-046-rgb) / 0.94)",
+    "rgba(0, 0, 0, .92)": "rgb(var(--tone-surface-001-rgb) / 0.92)",
+    "rgba(255, 231, 190, .76)": "rgb(var(--tone-text-046-rgb) / 0.76)",
+    "rgba(255, 51, 0, .34)": "rgb(var(--tone-danger-012-rgb) / 0.34)",
+    "rgba(255, 118, 86, .92)": "rgb(var(--tone-danger-056-rgb) / 0.92)",
+    "rgba(68, 221, 136, .72)": "rgb(var(--tone-success-013-rgb) / 0.72)",
+    "rgba(255, 170, 0, .88)": "rgb(var(--tone-accent-024-rgb) / 0.88)",
+    "rgba(255, 51, 0, .64)": "rgb(var(--tone-danger-012-rgb) / 0.64)",
+    "rgba(255, 230, 160, .45)": "rgb(var(--tone-text-035-rgb) / 0.45)",
+    "rgba(0, 0, 0, 0.78)": "rgb(var(--tone-surface-001-rgb) / 0.78)",
+    "rgba(0, 0, 0, 0.58)": "rgb(var(--tone-surface-001-rgb) / 0.58)",
+    "#2ed36a": "rgb(var(--tone-success-008-rgb))",
+    "#d8b136": "rgb(var(--tone-accent-028-rgb))",
+    "#d66a18": "rgb(var(--tone-accent-016-rgb))",
+    "#b11d12": "rgb(var(--tone-danger-006-rgb))",
+    "rgba(46, 211, 106, 0.20)": "rgb(var(--tone-success-008-rgb) / 0.2)",
+    "rgba(209, 67, 28, .46)": "rgb(var(--tone-danger-011-rgb) / 0.46)",
+    "rgba(209, 67, 28, .18)": "rgb(var(--tone-danger-011-rgb) / 0.18)",
+    "rgba(1, 1, 1, .78)": "rgb(var(--tone-surface-002-rgb) / 0.78)",
+    "rgba(255, 196, 82, .16)": "rgb(var(--tone-accent-052-rgb) / 0.16)",
+    "rgba(46, 211, 106, .20)": "rgb(var(--tone-success-008-rgb) / 0.2)",
+    "rgba(255, 255, 255, .16)": "rgb(var(--tone-text-064-rgb) / 0.16)",
+    "rgba(255, 230, 174, .78)": "rgb(var(--tone-text-040-rgb) / 0.78)",
+    "rgba(2, 2, 4, 0.48)": "rgb(var(--tone-surface-005-rgb) / 0.48)",
+    "rgba(255, 170, 0, 0.04)": "rgb(var(--tone-accent-024-rgb) / 0.04)",
+    "rgba(255, 214, 118, 0.56)": "rgb(var(--tone-accent-074-rgb) / 0.56)",
+    "rgba(38, 96, 66, 0.16)": "rgb(var(--tone-success-001-rgb) / 0.16)",
+    "rgba(68, 146, 94, 0.32)": "rgb(var(--tone-success-006-rgb) / 0.32)",
+    "rgba(92, 104, 58, 0.12)": "rgb(var(--tone-success-003-rgb) / 0.12)",
+    "rgba(142, 154, 84, 0.24)": "rgb(var(--tone-success-010-rgb) / 0.24)",
+    "rgba(122, 86, 42, 0.14)": "rgb(var(--tone-accent-013-rgb) / 0.14)",
+    "rgba(186, 144, 58, 0.28)": "rgb(var(--tone-accent-018-rgb) / 0.28)",
+    "rgba(122, 58, 38, 0.15)": "rgb(var(--tone-danger-005-rgb) / 0.15)",
+    "rgba(184, 94, 52, 0.30)": "rgb(var(--tone-danger-016-rgb) / 0.3)",
+    "rgba(104, 36, 38, 0.16)": "rgb(var(--tone-danger-003-rgb) / 0.16)",
+    "rgba(166, 58, 54, 0.34)": "rgb(var(--tone-danger-010-rgb) / 0.34)",
+    "rgba(74, 42, 112, 0.16)": "rgb(var(--tone-magic-001-rgb) / 0.16)",
+    "rgba(130, 70, 176, 0.34)": "rgb(var(--tone-magic-002-rgb) / 0.34)",
+    "rgba(64, 64, 64, 0.04)": "rgb(var(--tone-neutral-001-rgb) / 0.04)",
+    "rgba(128, 128, 128, 0.10)": "rgb(var(--tone-neutral-006-rgb) / 0.1)",
+    "rgba(255, 214, 118, 0.64)": "rgb(var(--tone-accent-074-rgb) / 0.64)",
+    "rgba(230, 214, 176, 0.74)": "rgb(var(--tone-text-016-rgb) / 0.74)",
+    "rgba(134, 184, 148, 0.72)": "rgb(var(--tone-success-021-rgb) / 0.72)",
+    "rgba(210, 118, 92, 0.76)": "rgb(var(--tone-danger-046-rgb) / 0.76)",
+    "rgba(3, 3, 5, 0.96)": "rgb(var(--tone-surface-008-rgb) / 0.96)",
+    "rgba(255, 234, 176, 0.82)": "rgb(var(--tone-text-043-rgb) / 0.82)",
+    "rgba(255, 170, 0, 0.36)": "rgb(var(--tone-accent-024-rgb) / 0.36)",
+    "rgba(0, 0, 0, 0.92)": "rgb(var(--tone-surface-001-rgb) / 0.92)",
+    "rgba(92, 226, 136, 0.92)": "rgb(var(--tone-success-019-rgb) / 0.92)",
+    "rgba(238, 82, 72, 0.94)": "rgb(var(--tone-danger-033-rgb) / 0.94)",
+    "rgba(255, 214, 118, 0.46)": "rgb(var(--tone-accent-074-rgb) / 0.46)",
+    "rgba(206, 72, 54, 0.70)": "rgb(var(--tone-danger-017-rgb) / 0.7)",
+    "rgba(206, 72, 54, 0.28)": "rgb(var(--tone-danger-017-rgb) / 0.28)",
+    "rgba(230, 214, 176, 0.72)": "rgb(var(--tone-text-016-rgb) / 0.72)",
+    "rgba(130, 180, 255, 0.86)": "rgb(var(--tone-energy-027-rgb) / 0.86)",
+    "rgba(222, 104, 82, 0.92)": "rgb(var(--tone-danger-042-rgb) / 0.92)",
+    "rgba(168, 128, 212, 0.86)": "rgb(var(--tone-magic-010-rgb) / 0.86)",
+    "rgba(255, 190, 70, 0.92)": "rgb(var(--tone-accent-043-rgb) / 0.92)",
+    "rgba(68, 221, 136, 0.82)": "rgb(var(--tone-success-013-rgb) / 0.82)",
+    "rgba(68, 221, 136, 0.30)": "rgb(var(--tone-success-013-rgb) / 0.3)",
+    "rgba(70, 238, 142, 0.92)": "rgb(var(--tone-success-017-rgb) / 0.92)",
+    "rgba(70, 238, 142, 0.34)": "rgb(var(--tone-success-017-rgb) / 0.34)",
+    "rgba(255, 58, 42, 0.96)": "rgb(var(--tone-danger-020-rgb) / 0.96)",
+    "rgba(255, 58, 42, 0.44)": "rgb(var(--tone-danger-020-rgb) / 0.44)",
+    "rgba(245, 232, 204, 0.035)": "rgb(var(--tone-text-050-rgb) / 0.035)",
+    "rgba(5, 5, 7, 0.16)": "rgb(var(--tone-surface-022-rgb) / 0.16)",
+    "rgba(245, 232, 204, 0.025)": "rgb(var(--tone-text-050-rgb) / 0.025)",
+    "rgba(255, 234, 176, 0.95)": "rgb(var(--tone-text-043-rgb) / 0.95)",
+    "rgba(255, 196, 82, 0.72)": "rgb(var(--tone-accent-052-rgb) / 0.72)",
+    "rgba(5, 5, 7, 0.86)": "rgb(var(--tone-surface-022-rgb) / 0.86)",
+    "rgba(5, 5, 7, 0.84)": "rgb(var(--tone-surface-022-rgb) / 0.84)",
+    "rgba(255, 230, 160, 0.14)": "rgb(var(--tone-text-035-rgb) / 0.14)",
+    "rgba(5, 5, 7, 0.66)": "rgb(var(--tone-surface-022-rgb) / 0.66)",
+    "rgba(230, 204, 172, 0.76)": "rgb(var(--tone-text-010-rgb) / 0.76)",
+    "rgba(68, 221, 136, 0.34)": "rgb(var(--tone-success-013-rgb) / 0.34)",
+    "rgba(68, 221, 136, 0.9)": "rgb(var(--tone-success-013-rgb) / 0.9)",
+    "rgba(210, 180, 140, 0.18)": "rgb(var(--tone-text-002-rgb) / 0.18)",
+    "rgba(245, 232, 204, 0.08)": "rgb(var(--tone-text-050-rgb) / 0.08)",
+    "rgba(5, 5, 7, 0.08)": "rgb(var(--tone-surface-022-rgb) / 0.08)",
+    "rgba(5, 5, 7, 0.30)": "rgb(var(--tone-surface-022-rgb) / 0.3)",
+    "rgba(5, 5, 7, 0.02)": "rgb(var(--tone-surface-022-rgb) / 0.02)",
+    "rgba(245, 232, 204, 0.04)": "rgb(var(--tone-text-050-rgb) / 0.04)",
+    "rgba(0, 0, 0, 0.82)": "rgb(var(--tone-surface-001-rgb) / 0.82)",
+    "rgba(5, 5, 7, 0.56)": "rgb(var(--tone-surface-022-rgb) / 0.56)",
+    "rgba(255,255,255,.016)": "rgb(var(--tone-text-064-rgb) / 0.016)",
+    "rgba(255,170,0,.08)": "rgb(var(--tone-accent-024-rgb) / 0.08)",
+    "rgba(210,180,140,.16)": "rgb(var(--tone-text-002-rgb) / 0.16)",
+    "rgba(210,180,140,.09)": "rgb(var(--tone-text-002-rgb) / 0.09)",
+    "rgba(0,0,0,.5)": "rgb(var(--tone-surface-001-rgb) / 0.5)",
+    "rgba(210,180,140,.022)": "rgb(var(--tone-text-002-rgb) / 0.022)",
+    "rgba(210,180,140,.2)": "rgb(var(--tone-text-002-rgb) / 0.2)",
+    "rgba(0,0,0,.48)": "rgb(var(--tone-surface-001-rgb) / 0.48)",
+    "rgba(0,0,0,.9)": "rgb(var(--tone-surface-001-rgb) / 0.9)",
+    "rgba(210, 180, 140, 0.50)": "rgb(var(--tone-text-002-rgb) / 0.5)",
+    "rgba(4, 4, 4, .72)": "rgb(var(--tone-surface-010-rgb) / 0.72)",
+    "rgba(255, 177, 48, .10)": "rgb(var(--tone-accent-034-rgb) / 0.1)",
+    "rgba(255, 220, 145, .08)": "rgb(var(--tone-text-018-rgb) / 0.08)",
+    "rgba(255,170,0,.20)": "rgb(var(--tone-accent-024-rgb) / 0.2)",
+    "rgba(255,170,0,.42)": "rgb(var(--tone-accent-024-rgb) / 0.42)",
+    "rgba(255, 170, 0, 0.03)": "rgb(var(--tone-accent-024-rgb) / 0.03)",
+    "rgba(255, 255, 255, 0.02)": "rgb(var(--tone-text-064-rgb) / 0.02)",
+    "rgba(255, 170, 0, 0.3)": "rgb(var(--tone-accent-024-rgb) / 0.3)",
+    "rgba(255, 170, 0, 0.4)": "rgb(var(--tone-accent-024-rgb) / 0.4)",
+    "rgba(255, 218, 144, 0.90)": "rgb(var(--tone-text-014-rgb) / 0.9)",
+    "rgba(255, 96, 72, 0.34)": "rgb(var(--tone-danger-047-rgb) / 0.34)",
+    "rgba(255, 51, 0, 0.10)": "rgb(var(--tone-danger-012-rgb) / 0.1)",
+    "rgba(255, 168, 118, 0.96)": "rgb(var(--tone-accent-059-rgb) / 0.96)",
+    "rgba(68, 221, 136, 0.10)": "rgb(var(--tone-success-013-rgb) / 0.1)",
+    "rgba(132, 255, 178, 0.94)": "rgb(var(--tone-success-031-rgb) / 0.94)",
+    "rgba(255, 176, 0, 0.18)": "rgb(var(--tone-accent-025-rgb) / 0.18)",
+    "rgba(22, 12, 10, 0.72)": "rgb(var(--tone-surface-102-rgb) / 0.72)",
+    "rgba(210, 188, 145, 0.72)": "rgb(var(--tone-text-003-rgb) / 0.72)",
+    "rgba(255, 176, 0, 0.24)": "rgb(var(--tone-accent-025-rgb) / 0.24)",
+    "rgba(255, 176, 0, 0.78)": "rgb(var(--tone-accent-025-rgb) / 0.78)",
+    "rgba(255, 176, 0, 0.28)": "rgb(var(--tone-accent-025-rgb) / 0.28)",
+    "rgba(24, 19, 11, 0.7)": "rgb(var(--tone-surface-110-rgb) / 0.7)",
+    "rgba(255, 176, 0, 0.08)": "rgb(var(--tone-accent-025-rgb) / 0.08)",
+    "rgba(245, 231, 204, 0.94)": "rgb(var(--tone-text-049-rgb) / 0.94)",
+    "rgba(255, 176, 0, 0.58)": "rgb(var(--tone-accent-025-rgb) / 0.58)",
+    "rgba(255, 176, 0, 0.07)": "rgb(var(--tone-accent-025-rgb) / 0.07)",
+    "rgba(255, 176, 0, 0.38)": "rgb(var(--tone-accent-025-rgb) / 0.38)",
+    "rgba(255, 176, 0, 0.72)": "rgb(var(--tone-accent-025-rgb) / 0.72)",
+    "rgba(255, 176, 0, 0.45)": "rgb(var(--tone-accent-025-rgb) / 0.45)",
+    "rgba(5, 5, 5, 0.94)": "rgb(var(--tone-surface-018-rgb) / 0.94)",
+    "rgba(255, 176, 0, 0.06)": "rgb(var(--tone-accent-025-rgb) / 0.06)",
+    "rgba(255, 226, 160, 0.08)": "rgb(var(--tone-text-028-rgb) / 0.08)",
+    "rgba(0, 0, 0, 0.56)": "rgb(var(--tone-surface-001-rgb) / 0.56)",
+    "rgba(255, 176, 0, 0.22)": "rgb(var(--tone-accent-025-rgb) / 0.22)",
+    "rgba(255, 176, 0, 0.88)": "rgb(var(--tone-accent-025-rgb) / 0.88)",
+    "rgba(255, 176, 0, 0.16)": "rgb(var(--tone-accent-025-rgb) / 0.16)",
+    "rgba(210, 188, 145, 0.7)": "rgb(var(--tone-text-003-rgb) / 0.7)",
+    "rgba(5, 6, 7, 0.92)": "rgb(var(--tone-surface-024-rgb) / 0.92)",
+    "rgba(5, 6, 7, 0.18)": "rgb(var(--tone-surface-024-rgb) / 0.18)",
+    "rgba(5, 3, 3, 0.94)": "rgb(var(--tone-surface-009-rgb) / 0.94)",
+    "rgba(8, 5, 5, 0.18)": "rgb(var(--tone-surface-026-rgb) / 0.18)",
+    "rgba(236, 226, 205, 0.88)": "rgb(var(--tone-text-044-rgb) / 0.88)",
+    "rgba(255, 176, 0, 0.35)": "rgb(var(--tone-accent-025-rgb) / 0.35)",
+    "rgba(5, 5, 5, 0.82)": "rgb(var(--tone-surface-018-rgb) / 0.82)",
+    "rgba(3, 5, 5, 0.62)": "rgb(var(--tone-surface-013-rgb) / 0.62)",
+    "rgba(48, 94, 72, 0.10)": "rgb(var(--tone-success-002-rgb) / 0.1)",
+    "rgba(255, 220, 120, 0.05)": "rgb(var(--tone-accent-078-rgb) / 0.05)",
+    "rgba(255, 170, 0, 0.065)": "rgb(var(--tone-accent-024-rgb) / 0.065)",
+    "rgba(92, 226, 136, 0.08)": "rgb(var(--tone-success-019-rgb) / 0.08)",
+    "rgba(1, 3, 3, 0.92)": "rgb(var(--tone-surface-004-rgb) / 0.92)",
+    "rgba(0, 0, 0, 0.90)": "rgb(var(--tone-surface-001-rgb) / 0.9)",
+    "rgba(7, 12, 10, 0.82)": "rgb(var(--tone-surface-064-rgb) / 0.82)",
+    "rgba(92, 158, 226, 0.055)": "rgb(var(--tone-energy-007-rgb) / 0.055)",
+    "rgba(96, 218, 136, 0.12)": "rgb(var(--tone-success-018-rgb) / 0.12)",
+    "rgba(92, 226, 136, 0.045)": "rgb(var(--tone-success-019-rgb) / 0.045)",
+    "rgba(236, 221, 190, 0.16)": "rgb(var(--tone-text-036-rgb) / 0.16)",
+    "rgba(132, 172, 210, 0.24)": "rgb(var(--tone-energy-013-rgb) / 0.24)",
+    "rgba(112, 206, 170, 0.26)": "rgb(var(--tone-success-025-rgb) / 0.26)",
+    "rgba(255, 220, 120, 0.30)": "rgb(var(--tone-accent-078-rgb) / 0.3)",
+    "rgba(92, 226, 136, 0.05)": "rgb(var(--tone-success-019-rgb) / 0.05)",
+    "rgba(92, 226, 136, 0.035)": "rgb(var(--tone-success-019-rgb) / 0.035)",
+    "rgba(0, 0, 0, 0.72)": "rgb(var(--tone-surface-001-rgb) / 0.72)",
+    "rgba(0, 0, 0, 0.88)": "rgb(var(--tone-surface-001-rgb) / 0.88)",
+    "rgba(255, 170, 0, 0.30)": "rgb(var(--tone-accent-024-rgb) / 0.3)",
+    "rgba(8, 7, 6, 0.92)": "rgb(var(--tone-surface-038-rgb) / 0.92)",
+    "rgba(8, 8, 8, 0.92)": "rgb(var(--tone-surface-046-rgb) / 0.92)",
+    "rgba(255, 72, 32, 0.58)": "rgb(var(--tone-danger-023-rgb) / 0.58)",
+    "rgba(255, 72, 32, 0.08)": "rgb(var(--tone-danger-023-rgb) / 0.08)",
+    "rgba(255, 72, 32, 0.18)": "rgb(var(--tone-danger-023-rgb) / 0.18)",
+    "rgba(255, 188, 122, 0.95)": "rgb(var(--tone-accent-066-rgb) / 0.95)",
+    "rgba(236, 221, 190, 0.78)": "rgb(var(--tone-text-036-rgb) / 0.78)",
+    "rgba(236, 221, 190, 0.80)": "rgb(var(--tone-text-036-rgb) / 0.8)",
+    "rgba(58, 44, 18, 0.78)": "rgb(var(--tone-surface-129-rgb) / 0.78)",
+    "rgba(92, 226, 136, 0.70)": "rgb(var(--tone-success-019-rgb) / 0.7)",
+    "rgba(255, 72, 32, 0.82)": "rgb(var(--tone-danger-023-rgb) / 0.82)",
+    "rgba(255, 170, 0, 0.86)": "rgb(var(--tone-accent-024-rgb) / 0.86)",
+    "rgba(255, 72, 32, 0.42)": "rgb(var(--tone-danger-023-rgb) / 0.42)",
+    "rgba(255, 220, 120, 0.72)": "rgb(var(--tone-accent-078-rgb) / 0.72)",
+    "rgba(255, 132, 82, 0.76)": "rgb(var(--tone-danger-057-rgb) / 0.76)",
+    "rgba(255, 92, 54, 0.34)": "rgb(var(--tone-danger-039-rgb) / 0.34)",
+    "rgba(92, 226, 136, 0.86)": "rgb(var(--tone-success-019-rgb) / 0.86)",
+    "rgba(88, 214, 126, 0.62)": "rgb(var(--tone-success-015-rgb) / 0.62)",
+    "rgba(72, 200, 112, 0.24)": "rgb(var(--tone-success-011-rgb) / 0.24)",
+    "rgba(255, 174, 48, 0.72)": "rgb(var(--tone-accent-033-rgb) / 0.72)",
+    "rgba(255, 174, 48, 0.28)": "rgb(var(--tone-accent-033-rgb) / 0.28)",
+    "rgba(230, 214, 176, 0.42)": "rgb(var(--tone-text-016-rgb) / 0.42)",
+    "rgba(255, 234, 176, 0.86)": "rgb(var(--tone-text-043-rgb) / 0.86)",
+    "rgba(153, 160, 170, 0.24)": "rgb(var(--tone-neutral-010-rgb) / 0.24)",
+    "rgba(153, 160, 170, 0.28)": "rgb(var(--tone-neutral-010-rgb) / 0.28)",
+    "rgba(153, 160, 170, 0.18)": "rgb(var(--tone-neutral-010-rgb) / 0.18)",
+    "rgba(245, 232, 204, 0.88)": "rgb(var(--tone-text-050-rgb) / 0.88)",
+    "rgba(210, 180, 140, 0.52)": "rgb(var(--tone-text-002-rgb) / 0.52)",
+    "rgba(153, 160, 170, 0.44)": "rgb(var(--tone-neutral-010-rgb) / 0.44)",
+    "rgba(153, 160, 170, 0.42)": "rgb(var(--tone-neutral-010-rgb) / 0.42)",
+    "rgba(255, 92, 64, 0.28)": "rgb(var(--tone-danger-044-rgb) / 0.28)",
+    "rgba(255, 168, 118, 0.92)": "rgb(var(--tone-accent-059-rgb) / 0.92)",
+    "rgba(153, 160, 170, 0.22)": "rgb(var(--tone-neutral-010-rgb) / 0.22)",
+    "rgba(153, 160, 170, 0.08)": "rgb(var(--tone-neutral-010-rgb) / 0.08)",
+    "rgba(245, 232, 204, 0.12)": "rgb(var(--tone-text-050-rgb) / 0.12)",
+    "rgba(210, 180, 140, 0.48)": "rgb(var(--tone-text-002-rgb) / 0.48)",
+    "rgba(5, 5, 7, 0.92)": "rgb(var(--tone-surface-022-rgb) / 0.92)",
+    "rgba(0, 0, 0, 0.38)": "rgb(var(--tone-surface-001-rgb) / 0.38)",
+    "rgba(5, 5, 7, 0.46)": "rgb(var(--tone-surface-022-rgb) / 0.46)",
+    "rgba(153, 160, 170, 0.30)": "rgb(var(--tone-neutral-010-rgb) / 0.3)",
+    "rgba(245, 232, 204, 0.94)": "rgb(var(--tone-text-050-rgb) / 0.94)",
+    "rgba(153, 160, 170, 0.46)": "rgb(var(--tone-neutral-010-rgb) / 0.46)",
+    "rgba(220, 226, 232, 0.78)": "rgb(var(--tone-text-048-rgb) / 0.78)",
+    "#ffaa00": "rgb(var(--tone-accent-024-rgb))",
+    "rgba(0, 0, 255, 0.06)": "rgb(var(--tone-energy-001-rgb) / 0.06)",
+    "rgba(0, 255, 0, 0.02)": "rgb(var(--tone-success-004-rgb) / 0.02)",
+    "rgba(255, 0, 0, 0.06)": "rgb(var(--tone-danger-009-rgb) / 0.06)",
+    "rgba(153, 160, 170, 0.92)": "rgb(var(--tone-neutral-010-rgb) / 0.92)",
+    "rgba(220, 226, 232, 0.96)": "rgb(var(--tone-text-048-rgb) / 0.96)",
+    "rgba(153, 160, 170, 0.10)": "rgb(var(--tone-neutral-010-rgb) / 0.1)",
+    "rgba(8, 8, 11, 0.82)": "rgb(var(--tone-surface-057-rgb) / 0.82)",
+    "rgba(5, 5, 7, 0.54)": "rgb(var(--tone-surface-022-rgb) / 0.54)",
+    "rgba(153, 160, 170, 0.09)": "rgb(var(--tone-neutral-010-rgb) / 0.09)",
+    "rgba(210, 180, 140, 0.56)": "rgb(var(--tone-text-002-rgb) / 0.56)",
+    "rgba(255, 170, 0, 0.02)": "rgb(var(--tone-accent-024-rgb) / 0.02)",
+    "rgba(255, 170, 0, 0.2)": "rgb(var(--tone-accent-024-rgb) / 0.2)",
+    "rgba(255, 51, 0, 0.1)": "rgb(var(--tone-danger-012-rgb) / 0.1)",
+    "rgba(255, 51, 0, 0.3)": "rgb(var(--tone-danger-012-rgb) / 0.3)",
+    "rgba(255,170,0,.12)": "rgb(var(--tone-accent-024-rgb) / 0.12)",
+    "rgba(255,170,0,.025)": "rgb(var(--tone-accent-024-rgb) / 0.025)",
+    "rgba(255,170,0,.72)": "rgb(var(--tone-accent-024-rgb) / 0.72)",
+    "rgba(255,170,0,.13)": "rgb(var(--tone-accent-024-rgb) / 0.13)",
+    "rgba(0,0,0,.34)": "rgb(var(--tone-surface-001-rgb) / 0.34)",
+    "rgba(255,170,0,.012)": "rgb(var(--tone-accent-024-rgb) / 0.012)",
+    "rgba(255,170,0,.055)": "rgb(var(--tone-accent-024-rgb) / 0.055)",
+    "rgba(255,170,0,.34)": "rgb(var(--tone-accent-024-rgb) / 0.34)",
+    "rgba(0,0,0,.42)": "rgb(var(--tone-surface-001-rgb) / 0.42)",
+    "rgba(255,170,0,.02)": "rgb(var(--tone-accent-024-rgb) / 0.02)",
+    "rgba(210,180,140,.74)": "rgb(var(--tone-text-002-rgb) / 0.74)",
+    "rgba(255,170,0,.28)": "rgb(var(--tone-accent-024-rgb) / 0.28)",
+    "rgba(255,170,0,.07)": "rgb(var(--tone-accent-024-rgb) / 0.07)",
+    "rgba(255,170,0,.06)": "rgb(var(--tone-accent-024-rgb) / 0.06)",
+    "rgba(255,170,0,.15)": "rgb(var(--tone-accent-024-rgb) / 0.15)",
+    "#0a0a0c": "rgb(var(--tone-surface-073-rgb))",
+    "rgba(12, 12, 16, 0.7)": "rgb(var(--tone-surface-092-rgb) / 0.7)",
+    "rgba(255,170,0,0.45)": "rgb(var(--tone-accent-024-rgb) / 0.45)",
+    "rgba(210, 180, 140, 0.1)": "rgb(var(--tone-text-002-rgb) / 0.1)",
+    "rgba(0,0,0,.18)": "rgb(var(--tone-surface-001-rgb) / 0.18)",
+    "rgba(0,0,0,.36)": "rgb(var(--tone-surface-001-rgb) / 0.36)",
+    "rgba(255,170,0,.01)": "rgb(var(--tone-accent-024-rgb) / 0.01)",
+    "rgba(255,170,0,.045)": "rgb(var(--tone-accent-024-rgb) / 0.045)",
+    "rgba(255,170,0,.48)": "rgb(var(--tone-accent-024-rgb) / 0.48)",
+    "rgba(255,170,0,.38)": "rgb(var(--tone-accent-024-rgb) / 0.38)",
+    "rgba(255,170,0,.26)": "rgb(var(--tone-accent-024-rgb) / 0.26)",
+    "rgba(0,0,0,0.2)": "rgb(var(--tone-surface-001-rgb) / 0.2)",
+    "rgba(255,255,255,.014)": "rgb(var(--tone-text-064-rgb) / 0.014)",
+    "rgba(255,170,0,.14)": "rgb(var(--tone-accent-024-rgb) / 0.14)",
+    "rgba(210,180,140,.78)": "rgb(var(--tone-text-002-rgb) / 0.78)",
+    "rgba(68,255,136,.4)": "rgb(var(--tone-success-020-rgb) / 0.4)",
+    "rgba(255,255,255,0.05)": "rgb(var(--tone-text-064-rgb) / 0.05)",
+    "rgba(0,0,0,.22)": "rgb(var(--tone-surface-001-rgb) / 0.22)",
+    "rgba(255,170,0,.006)": "rgb(var(--tone-accent-024-rgb) / 0.006)",
+    "rgba(255,170,0,.028)": "rgb(var(--tone-accent-024-rgb) / 0.028)",
+    "rgba(255,170,0,.62)": "rgb(var(--tone-accent-024-rgb) / 0.62)",
+    "rgba(210,180,140,.42)": "rgb(var(--tone-text-002-rgb) / 0.42)",
+    "rgba(255,170,0,.32)": "rgb(var(--tone-accent-024-rgb) / 0.32)",
+    "rgba(255,100,0,.07)": "rgb(var(--tone-accent-017-rgb) / 0.07)",
+    "rgba(255,100,0,.25)": "rgb(var(--tone-accent-017-rgb) / 0.25)",
+    "rgba(255,130,50,.85)": "rgb(var(--tone-accent-027-rgb) / 0.85)",
+    "rgba(68,221,136,.06)": "rgb(var(--tone-success-013-rgb) / 0.06)",
+    "rgba(68,221,136,.20)": "rgb(var(--tone-success-013-rgb) / 0.2)",
+    "rgba(68,221,136,.80)": "rgb(var(--tone-success-013-rgb) / 0.8)",
+    "rgba(255,170,0,.60)": "rgb(var(--tone-accent-024-rgb) / 0.6)",
+    "rgba(255,170,0,0.25)": "rgb(var(--tone-accent-024-rgb) / 0.25)",
+    "rgba(0,0,0,0.4)": "rgb(var(--tone-surface-001-rgb) / 0.4)",
+    "#080706": "rgb(var(--tone-surface-038-rgb))",
+    "rgba(0,0,0,.24)": "rgb(var(--tone-surface-001-rgb) / 0.24)",
+    "rgba(0,0,0,.72)": "rgb(var(--tone-surface-001-rgb) / 0.72)",
+    "rgba(255, 190, 72, .24)": "rgb(var(--tone-accent-044-rgb) / 0.24)",
+    "rgba(25, 14, 6, .56)": "rgb(var(--tone-surface-103-rgb) / 0.56)",
+    "rgba(0, 0, 0, .2)": "rgb(var(--tone-surface-001-rgb) / 0.2)",
+    "rgba(255, 170, 0, .02)": "rgb(var(--tone-accent-024-rgb) / 0.02)",
+    "rgba(255, 224, 146, .08)": "rgb(var(--tone-text-021-rgb) / 0.08)",
+    "rgba(255, 190, 72, 0)": "rgb(var(--tone-accent-044-rgb) / 0)",
+    "rgba(255, 190, 72, .72)": "rgb(var(--tone-accent-044-rgb) / 0.72)",
+    "rgba(0,0,0,.32)": "rgb(var(--tone-surface-001-rgb) / 0.32)",
+    "rgba(0,0,0,0.9)": "rgb(var(--tone-surface-001-rgb) / 0.9)",
+    "rgba(255, 170, 0, 0.11)": "rgb(var(--tone-accent-024-rgb) / 0.11)",
+    "rgba(255, 170, 0, 0.018)": "rgb(var(--tone-accent-024-rgb) / 0.018)",
+    "rgba(255, 190, 64, 0.58)": "rgb(var(--tone-accent-041-rgb) / 0.58)",
+    "rgba(255, 198, 86, 0.88)": "rgb(var(--tone-accent-056-rgb) / 0.88)",
+    "rgba(255, 170, 0, 0.01)": "rgb(var(--tone-accent-024-rgb) / 0.01)",
+    "rgba(255, 170, 0, 0.6)": "rgb(var(--tone-accent-024-rgb) / 0.6)",
+    "rgba(6, 5, 8, 0.82)": "rgb(var(--tone-surface-030-rgb) / 0.82)",
+    "rgba(0,0,0,0.14)": "rgb(var(--tone-surface-001-rgb) / 0.14)",
+    "rgba(12, 12, 16, 0.9)": "rgb(var(--tone-surface-092-rgb) / 0.9)",
+    "rgba(68, 255, 136, 0.3)": "rgb(var(--tone-success-020-rgb) / 0.3)",
+    "rgba(255, 170, 0, 0.025)": "rgb(var(--tone-accent-024-rgb) / 0.025)",
+    "#ffd36a": "rgb(var(--tone-accent-068-rgb))",
+    "#050506": "rgb(var(--tone-surface-020-rgb))",
+    "rgba(4, 4, 6, 0.99)": "rgb(var(--tone-surface-016-rgb) / 0.99)",
+    "rgba(20, 14, 7, 0.98)": "rgb(var(--tone-surface-096-rgb) / 0.98)",
+    "rgba(245, 210, 134, 0.82)": "rgb(var(--tone-text-006-rgb) / 0.82)",
+    "rgba(245, 232, 204, 0.96)": "rgb(var(--tone-text-050-rgb) / 0.96)",
+    "rgba(18, 12, 5, 0.96)": "rgb(var(--tone-surface-084-rgb) / 0.96)",
+    "rgba(4, 4, 6, 0.98)": "rgb(var(--tone-surface-016-rgb) / 0.98)",
+    "rgba(0, 0, 0, 0.44)": "rgb(var(--tone-surface-001-rgb) / 0.44)",
+    "#08080a": "rgb(var(--tone-surface-053-rgb))",
+    "#121218": "rgb(var(--tone-surface-117-rgb))",
+    "#d2b48c": "rgb(var(--tone-text-002-rgb))",
+    "rgba(210, 180, 140, 0.6)": "rgb(var(--tone-text-002-rgb) / 0.6)",
+    "#050505": "rgb(var(--tone-surface-018-rgb))",
+    "#121215": "rgb(var(--tone-surface-115-rgb))",
+    "#020202": "rgb(var(--tone-surface-003-rgb))",
+    "#44aaff": "rgb(var(--tone-energy-010-rgb))",
+    "#55ee99": "rgb(var(--tone-success-024-rgb))",
+    "#8866ff": "rgb(var(--tone-magic-009-rgb))",
+    "#9999aa": "rgb(var(--tone-neutral-009-rgb))",
+    "rgba(255, 170, 0, 1.0)": "rgb(var(--tone-accent-024-rgb))",
+    "rgba(255, 170, 0, 0.75)": "rgb(var(--tone-accent-024-rgb) / 0.75)",
+    "rgba(230, 204, 172, 1.0)": "rgb(var(--tone-text-010-rgb))",
+    "rgba(230, 204, 172, 0.55)": "rgb(var(--tone-text-010-rgb) / 0.55)",
+    "rgba(10, 10, 12, 0.56)": "rgb(var(--tone-surface-073-rgb) / 0.56)",
+    "rgba(8, 8, 10, 0.96)": "rgb(var(--tone-surface-053-rgb) / 0.96)",
+    "rgba(255, 51, 0, 0.20)": "rgb(var(--tone-danger-012-rgb) / 0.2)",
+    "rgba(51, 153, 255, 0.18)": "rgb(var(--tone-energy-006-rgb) / 0.18)",
+    "rgba(119, 68, 255, 0.18)": "rgb(var(--tone-magic-005-rgb) / 0.18)",
+    "rgba(255, 170, 0,  0.55)": "rgb(var(--tone-accent-024-rgb) / 0.55)",
+    "rgba(85,  238, 153, 0.50)": "rgb(var(--tone-success-024-rgb) / 0.5)",
+    "rgba(153, 153, 170, 0.45)": "rgb(var(--tone-neutral-009-rgb) / 0.45)",
+    "rgba(136, 102, 255, 0.60)": "rgb(var(--tone-magic-009-rgb) / 0.6)",
+    "rgba(255, 58, 42, .08)": "rgb(var(--tone-danger-020-rgb) / 0.08)",
+    "rgba(5, 5, 7, .94)": "rgb(var(--tone-surface-022-rgb) / 0.94)",
+    "rgba(255, 238, 196, .12)": "rgb(var(--tone-text-054-rgb) / 0.12)",
+    "rgba(255, 238, 196, .025)": "rgb(var(--tone-text-054-rgb) / 0.025)",
+    "rgba(12, 14, 16, .82)": "rgb(var(--tone-surface-099-rgb) / 0.82)",
+    "rgba(24, 27, 30, .54)": "rgb(var(--tone-surface-122-rgb) / 0.54)",
+    "rgba(12, 13, 15, .62)": "rgb(var(--tone-surface-093-rgb) / 0.62)",
+    "rgba(255, 240, 205, .14)": "rgb(var(--tone-text-057-rgb) / 0.14)",
+    "rgba(255, 92, 64, .30)": "rgb(var(--tone-danger-044-rgb) / 0.3)",
+    "rgba(255, 238, 196, .13)": "rgb(var(--tone-text-054-rgb) / 0.13)",
+    "rgba(34, 12, 10, .46)": "rgb(var(--tone-surface-114-rgb) / 0.46)",
+    "rgba(18, 20, 23, .58)": "rgb(var(--tone-surface-118-rgb) / 0.58)",
+    "rgba(6, 8, 10, .72)": "rgb(var(--tone-surface-045-rgb) / 0.72)",
+    "rgba(12, 13, 15, .64)": "rgb(var(--tone-surface-093-rgb) / 0.64)",
+    "rgba(230, 204, 172, .07)": "rgb(var(--tone-text-010-rgb) / 0.07)",
+    "rgba(255, 190, 72, .42)": "rgb(var(--tone-accent-044-rgb) / 0.42)",
+    "rgba(255, 190, 72, .20)": "rgb(var(--tone-accent-044-rgb) / 0.2)",
+    "rgba(7, 7, 9, .82)": "rgb(var(--tone-surface-042-rgb) / 0.82)",
+    "rgba(255, 218, 130, .72)": "rgb(var(--tone-accent-080-rgb) / 0.72)",
+    "rgba(255, 190, 72, .30)": "rgb(var(--tone-accent-044-rgb) / 0.3)",
+    "rgba(18, 14, 8, .88)": "rgb(var(--tone-surface-094-rgb) / 0.88)",
+    "#fff0cc": "rgb(var(--tone-text-056-rgb))",
+    "rgba(255, 92, 64, .32)": "rgb(var(--tone-danger-044-rgb) / 0.32)",
+    "rgba(74, 163, 255, .34)": "rgb(var(--tone-energy-009-rgb) / 0.34)",
+    "rgba(77, 220, 132, .64)": "rgb(var(--tone-success-016-rgb) / 0.64)",
+    "rgba(77, 220, 132, .18)": "rgb(var(--tone-success-016-rgb) / 0.18)",
+    "rgba(77, 220, 132, .16)": "rgb(var(--tone-success-016-rgb) / 0.16)",
+    "rgba(255, 210, 72, .72)": "rgb(var(--tone-accent-055-rgb) / 0.72)",
+    "rgba(255, 210, 72, .20)": "rgb(var(--tone-accent-055-rgb) / 0.2)",
+    "rgba(255, 210, 72, .18)": "rgb(var(--tone-accent-055-rgb) / 0.18)",
+    "rgba(255, 64, 48, .82)": "rgb(var(--tone-danger-026-rgb) / 0.82)",
+    "rgba(255, 64, 48, .28)": "rgb(var(--tone-danger-026-rgb) / 0.28)",
+    "rgba(255, 64, 48, .24)": "rgb(var(--tone-danger-026-rgb) / 0.24)",
+    "rgba(255, 230, 190, .84)": "rgb(var(--tone-text-045-rgb) / 0.84)",
+    "rgba(255, 58, 42, .90)": "rgb(var(--tone-danger-020-rgb) / 0.9)",
+    "rgba(74, 163, 255, .88)": "rgb(var(--tone-energy-009-rgb) / 0.88)",
+    "rgba(255, 190, 72, .32)": "rgb(var(--tone-accent-044-rgb) / 0.32)",
+    "rgba(6, 6, 8, .96)": "rgb(var(--tone-surface-035-rgb) / 0.96)",
+    "rgba(12, 12, 14, .98)": "rgb(var(--tone-surface-089-rgb) / 0.98)",
+    "rgba(255, 230, 180, .10)": "rgb(var(--tone-text-042-rgb) / 0.1)",
+    "rgba(255, 190, 72, .28)": "rgb(var(--tone-accent-044-rgb) / 0.28)",
+    "rgba(255, 232, 190, .82)": "rgb(var(--tone-text-047-rgb) / 0.82)",
+    "rgba(255, 230, 190, .72)": "rgb(var(--tone-text-045-rgb) / 0.72)",
+    "rgba(255, 255, 255, .035)": "rgb(var(--tone-text-064-rgb) / 0.035)",
+    "rgba(255, 255, 255, .025)": "rgb(var(--tone-text-064-rgb) / 0.025)",
+    "rgba(255, 231, 190, .86)": "rgb(var(--tone-text-046-rgb) / 0.86)",
+    "rgba(255, 184, 20, .82)": "rgb(var(--tone-accent-030-rgb) / 0.82)",
+    "rgba(255, 184, 20, .22)": "rgb(var(--tone-accent-030-rgb) / 0.22)",
+    "rgba(255, 80, 64, .20)": "rgb(var(--tone-danger-038-rgb) / 0.2)",
+    "rgba(255, 190, 72, .34)": "rgb(var(--tone-accent-044-rgb) / 0.34)",
+    "rgba(255, 190, 72, .08)": "rgb(var(--tone-accent-044-rgb) / 0.08)",
+    "rgba(255, 190, 72, .18)": "rgb(var(--tone-accent-044-rgb) / 0.18)",
+    "rgba(255, 190, 72, .26)": "rgb(var(--tone-accent-044-rgb) / 0.26)",
+    "rgba(210, 180, 140, .40)": "rgb(var(--tone-text-002-rgb) / 0.4)",
+    "rgba(7, 8, 10, .78)": "rgb(var(--tone-surface-048-rgb) / 0.78)",
+    "rgba(0, 0, 0, .90)": "rgb(var(--tone-surface-001-rgb) / 0.9)",
+    "rgba(255, 215, 150, .62)": "rgb(var(--tone-text-017-rgb) / 0.62)",
+    "rgba(255, 235, 170, .16)": "rgb(var(--tone-text-041-rgb) / 0.16)",
+    "rgba(255, 225, 145, .95)": "rgb(var(--tone-text-022-rgb) / 0.95)",
+    "rgba(0, 255, 200, .18)": "rgb(var(--tone-action-002-rgb) / 0.18)",
+    "rgba(0, 255, 200, .055)": "rgb(var(--tone-action-002-rgb) / 0.055)",
+    "rgba(4, 12, 13, .78)": "rgb(var(--tone-surface-061-rgb) / 0.78)",
+    "rgba(210, 245, 232, .88)": "rgb(var(--tone-text-052-rgb) / 0.88)",
+    "rgba(255, 210, 85, .40)": "rgb(var(--tone-accent-063-rgb) / 0.4)",
+    "rgba(77, 220, 132, .82)": "rgb(var(--tone-success-016-rgb) / 0.82)",
+    "rgba(220, 255, 230, 1)": "rgb(var(--tone-text-058-rgb))",
+    "rgba(4, 14, 9, .82)": "rgb(var(--tone-surface-056-rgb) / 0.82)",
+    "rgba(190, 255, 210, .18)": "rgb(var(--tone-success-035-rgb) / 0.18)",
+    "rgba(77, 220, 132, .28)": "rgb(var(--tone-success-016-rgb) / 0.28)",
+    "rgba(77, 220, 132, .58)": "rgb(var(--tone-success-016-rgb) / 0.58)",
+    "rgba(20, 60, 40, .56)": "rgb(var(--tone-surface-128-rgb) / 0.56)",
+    "rgba(190, 255, 210, .96)": "rgb(var(--tone-success-035-rgb) / 0.96)",
+    "rgba(77, 220, 132, .68)": "rgb(var(--tone-success-016-rgb) / 0.68)",
+    "rgba(220, 255, 230, .98)": "rgb(var(--tone-text-058-rgb) / 0.98)",
+    "rgba(0, 0, 0, .04)": "rgb(var(--tone-surface-001-rgb) / 0.04)",
+    "rgba(6, 14, 9, .86)": "rgb(var(--tone-surface-063-rgb) / 0.86)",
+    "rgba(190, 255, 210, .22)": "rgb(var(--tone-success-035-rgb) / 0.22)",
+    "rgba(20, 60, 40, .54)": "rgb(var(--tone-surface-128-rgb) / 0.54)",
+    "rgba(77, 220, 132, .22)": "rgb(var(--tone-success-016-rgb) / 0.22)",
+    "rgba(0, 255, 200, .42)": "rgb(var(--tone-action-002-rgb) / 0.42)",
+    "rgba(190, 255, 240, .10)": "rgb(var(--tone-action-008-rgb) / 0.1)",
+    "rgba(0, 255, 200, .05)": "rgb(var(--tone-action-002-rgb) / 0.05)",
+    "rgba(255, 190, 75, .22)": "rgb(var(--tone-accent-045-rgb) / 0.22)",
+    "rgba(8, 9, 10, .80)": "rgb(var(--tone-surface-058-rgb) / 0.8)",
+    "rgba(255, 215, 150, .68)": "rgb(var(--tone-text-017-rgb) / 0.68)",
+    "rgba(220, 255, 240, .96)": "rgb(var(--tone-text-062-rgb) / 0.96)",
+    "rgba(255, 255, 255, .12)": "rgb(var(--tone-text-064-rgb) / 0.12)",
+    "rgba(50, 220, 190, .62)": "rgb(var(--tone-action-004-rgb) / 0.62)",
+    "rgba(80, 245, 210, .28)": "rgb(var(--tone-action-006-rgb) / 0.28)",
+    "rgba(40, 210, 185, .24)": "rgb(var(--tone-action-001-rgb) / 0.24)",
+    "rgba(6, 18, 18, .78)": "rgb(var(--tone-surface-098-rgb) / 0.78)",
+    "rgba(150, 255, 230, .98)": "rgb(var(--tone-action-007-rgb) / 0.98)",
+    "rgba(210, 255, 245, .22)": "rgb(var(--tone-action-009-rgb) / 0.22)",
+    "rgba(45, 230, 190, .14)": "rgb(var(--tone-action-005-rgb) / 0.14)",
+    "rgba(205, 255, 242, .68)": "rgb(var(--tone-success-037-rgb) / 0.68)",
+    "#35ffc8": "rgb(var(--tone-success-027-rgb))",
+    "rgba(53, 255, 200, .55)": "rgb(var(--tone-success-027-rgb) / 0.55)",
+    "rgba(95, 210, 255, .78)": "rgb(var(--tone-energy-025-rgb) / 0.78)",
+    "rgba(95, 210, 255, .36)": "rgb(var(--tone-energy-025-rgb) / 0.36)",
+    "rgba(75, 190, 255, .28)": "rgb(var(--tone-energy-015-rgb) / 0.28)",
+    "rgba(6, 14, 24, .78)": "rgb(var(--tone-surface-101-rgb) / 0.78)",
+    "rgba(190, 235, 255, 1)": "rgb(var(--tone-energy-031-rgb))",
+    "rgba(220, 245, 255, .26)": "rgb(var(--tone-text-063-rgb) / 0.26)",
+    "rgba(70, 190, 255, .22)": "rgb(var(--tone-energy-014-rgb) / 0.22)",
+    "rgba(255, 82, 70, .42)": "rgb(var(--tone-danger-041-rgb) / 0.42)",
+    "rgba(255, 78, 64, .14)": "rgb(var(--tone-danger-035-rgb) / 0.14)",
+    "rgba(255, 70, 55, .12)": "rgb(var(--tone-danger-030-rgb) / 0.12)",
+    "rgba(24, 7, 8, .80)": "rgb(var(--tone-surface-091-rgb) / 0.8)",
+    "rgba(255, 138, 118, .86)": "rgb(var(--tone-danger-058-rgb) / 0.86)",
+    "rgba(255, 170, 150, .12)": "rgb(var(--tone-danger-061-rgb) / 0.12)",
+    "rgba(255, 56, 48, .10)": "rgb(var(--tone-danger-022-rgb) / 0.1)",
+    "rgba(255, 150, 132, .54)": "rgb(var(--tone-danger-059-rgb) / 0.54)",
+    "#ff4d42": "rgb(var(--tone-danger-037-rgb))",
+    "rgba(255, 77, 66, .42)": "rgb(var(--tone-danger-037-rgb) / 0.42)",
+    "rgba(64, 255, 205, .46)": "rgb(var(--tone-success-029-rgb) / 0.46)",
+    "rgba(80, 205, 255, .58)": "rgb(var(--tone-energy-023-rgb) / 0.58)",
+    "rgba(255, 82, 70, .28)": "rgb(var(--tone-danger-041-rgb) / 0.28)",
+    "rgba(255, 214, 150, .20)": "rgb(var(--tone-text-015-rgb) / 0.2)",
+    "rgba(255, 244, 210, .10)": "rgb(var(--tone-text-061-rgb) / 0.1)",
+    "rgba(255, 244, 210, .025)": "rgb(var(--tone-text-061-rgb) / 0.025)",
+    "rgba(70, 120, 160, .10)": "rgb(var(--tone-energy-004-rgb) / 0.1)",
+    "rgba(120, 72, 40, .10)": "rgb(var(--tone-accent-012-rgb) / 0.1)",
+    "rgba(5, 5, 7, .48)": "rgb(var(--tone-surface-022-rgb) / 0.48)",
+    "rgba(255, 244, 210, .14)": "rgb(var(--tone-text-061-rgb) / 0.14)",
+    "rgba(8, 7, 6, 0.58)": "rgb(var(--tone-surface-038-rgb) / 0.58)",
+    "rgba(0, 0, 0, 0.50)": "rgb(var(--tone-surface-001-rgb) / 0.5)",
+    "rgba(255, 72, 32, 0.36)": "rgb(var(--tone-danger-023-rgb) / 0.36)",
+    "rgba(255, 72, 32, 0.07)": "rgb(var(--tone-danger-023-rgb) / 0.07)",
+    "rgba(8, 7, 6, 0.62)": "rgb(var(--tone-surface-038-rgb) / 0.62)",
+    "rgba(255, 170, 0, 0.66)": "rgb(var(--tone-accent-024-rgb) / 0.66)",
+    "rgba(255, 224, 172, 0.96)": "rgb(var(--tone-text-038-rgb) / 0.96)",
+    "rgba(236, 221, 190, 0.84)": "rgb(var(--tone-text-036-rgb) / 0.84)",
+    "rgba(180, 122, 108, 0.58)": "rgb(var(--tone-danger-043-rgb) / 0.58)",
+    "rgba(255, 132, 82, 0.34)": "rgb(var(--tone-danger-057-rgb) / 0.34)",
+    "rgba(255, 72, 32, 0.055)": "rgb(var(--tone-danger-023-rgb) / 0.055)",
+    "rgba(255, 72, 32, 0.04)": "rgb(var(--tone-danger-023-rgb) / 0.04)",
+    "rgba(255, 72, 32, 0.06)": "rgb(var(--tone-danger-023-rgb) / 0.06)",
+    "rgba(255, 132, 82, 0.80)": "rgb(var(--tone-danger-057-rgb) / 0.8)",
+    "rgba(255, 206, 164, 0.92)": "rgb(var(--tone-text-020-rgb) / 0.92)",
+    "rgba(136, 148, 134, 0.28)": "rgb(var(--tone-neutral-007-rgb) / 0.28)",
+    "rgba(48, 58, 54, 0.50)": "rgb(var(--tone-surface-131-rgb) / 0.5)",
+    "rgba(0, 0, 0, 0.52)": "rgb(var(--tone-surface-001-rgb) / 0.52)",
+    "rgba(10, 12, 12, 0.80)": "rgb(var(--tone-surface-080-rgb) / 0.8)",
+    "rgba(197, 205, 190, 0.62)": "rgb(var(--tone-text-007-rgb) / 0.62)",
+    "rgba(197, 205, 190, 0.24)": "rgb(var(--tone-text-007-rgb) / 0.24)",
+    "rgba(28, 18, 0, 0.82)": "rgb(var(--tone-surface-105-rgb) / 0.82)",
+    "rgba(255, 170, 0, 0.76)": "rgb(var(--tone-accent-024-rgb) / 0.76)",
+    "rgba(92, 226, 136, 0.36)": "rgb(var(--tone-success-019-rgb) / 0.36)",
+    "rgba(126, 232, 156, 0.82)": "rgb(var(--tone-success-028-rgb) / 0.82)",
+    "rgba(92, 226, 136, 0.34)": "rgb(var(--tone-success-019-rgb) / 0.34)",
+    "rgba(92, 226, 136, 0.48)": "rgb(var(--tone-success-019-rgb) / 0.48)",
+    "rgba(4, 17, 10, 0.72)": "rgb(var(--tone-surface-069-rgb) / 0.72)",
+    "rgba(116, 235, 153, 0.92)": "rgb(var(--tone-success-026-rgb) / 0.92)",
+    "rgba(92, 226, 136, 0.44)": "rgb(var(--tone-success-019-rgb) / 0.44)",
+    "rgba(255, 174, 48, 0.48)": "rgb(var(--tone-accent-033-rgb) / 0.48)",
+    "rgba(255, 174, 48, 0.10)": "rgb(var(--tone-accent-033-rgb) / 0.1)",
+    "rgba(22, 12, 2, 0.76)": "rgb(var(--tone-surface-087-rgb) / 0.76)",
+    "rgba(255, 174, 48, 0.82)": "rgb(var(--tone-accent-033-rgb) / 0.82)",
+    "rgba(255, 174, 48, 0.36)": "rgb(var(--tone-accent-033-rgb) / 0.36)",
+    "rgba(132, 172, 210, 0.36)": "rgb(var(--tone-energy-013-rgb) / 0.36)",
+    "rgba(32, 42, 50, 0.56)": "rgb(var(--tone-surface-130-rgb) / 0.56)",
+    "rgba(0, 0, 0, 0.54)": "rgb(var(--tone-surface-001-rgb) / 0.54)",
+    "rgba(7, 11, 16, 0.76)": "rgb(var(--tone-surface-078-rgb) / 0.76)",
+    "rgba(124, 160, 196, 0.74)": "rgb(var(--tone-energy-008-rgb) / 0.74)",
+    "rgba(132, 172, 210, 0.28)": "rgb(var(--tone-energy-013-rgb) / 0.28)",
+    "rgba(206, 72, 54, 0.24)": "rgb(var(--tone-danger-017-rgb) / 0.24)",
+    "rgba(18, 4, 3, 0.48)": "rgb(var(--tone-surface-052-rgb) / 0.48)",
+    "rgba(238, 104, 82, 0.54)": "rgb(var(--tone-danger-048-rgb) / 0.54)",
+    "rgba(140, 152, 140, 0.44)": "rgb(var(--tone-neutral-008-rgb) / 0.44)",
+    "rgba(140, 152, 140, 0.18)": "rgb(var(--tone-neutral-008-rgb) / 0.18)",
+    "rgba(92, 226, 136, 0.56)": "rgb(var(--tone-success-019-rgb) / 0.56)",
+    "rgba(92, 226, 136, 0.18)": "rgb(var(--tone-success-019-rgb) / 0.18)",
+    "rgba(255, 174, 48, 0.74)": "rgb(var(--tone-accent-033-rgb) / 0.74)",
+    "rgba(255, 174, 48, 0.22)": "rgb(var(--tone-accent-033-rgb) / 0.22)",
+    "rgba(230, 204, 172, 0.66)": "rgb(var(--tone-text-010-rgb) / 0.66)",
+    "rgba(255, 224, 172, 0.94)": "rgb(var(--tone-text-038-rgb) / 0.94)",
+    "rgba(236, 221, 190, 0.86)": "rgb(var(--tone-text-036-rgb) / 0.86)",
+    "rgba(236, 221, 190, 0.74)": "rgb(var(--tone-text-036-rgb) / 0.74)",
+    "rgba(206, 72, 54, 0.26)": "rgb(var(--tone-danger-017-rgb) / 0.26)",
+    "rgba(255, 200, 102, 0.94)": "rgb(var(--tone-accent-064-rgb) / 0.94)",
+    "rgba(255, 174, 48, 0.055)": "rgb(var(--tone-accent-033-rgb) / 0.055)",
+    "rgba(255, 174, 48, 0.08)": "rgb(var(--tone-accent-033-rgb) / 0.08)",
+    "rgba(92, 226, 136, 0.46)": "rgb(var(--tone-success-019-rgb) / 0.46)",
+    "rgba(135, 238, 164, 0.94)": "rgb(var(--tone-success-030-rgb) / 0.94)",
+    "rgba(92, 226, 136, 0.055)": "rgb(var(--tone-success-019-rgb) / 0.055)",
+    "rgba(132, 172, 210, 0.34)": "rgb(var(--tone-energy-013-rgb) / 0.34)",
+    "rgba(178, 205, 226, 0.88)": "rgb(var(--tone-energy-029-rgb) / 0.88)",
+    "rgba(132, 172, 210, 0.045)": "rgb(var(--tone-energy-013-rgb) / 0.045)",
+    "rgba(255, 170, 0, 0.62)": "rgb(var(--tone-accent-024-rgb) / 0.62)"
+  },
+  "rgb_channels": [
+    {
+      "original_rgb": [
+        64,
+        39,
+        20
+      ],
+      "token": "--tone-accent-001-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        80,
+        45,
+        0
+      ],
+      "token": "--tone-accent-002-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        72,
+        45,
+        27
+      ],
+      "token": "--tone-accent-003-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        78,
+        47,
+        23
+      ],
+      "token": "--tone-accent-004-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        96,
+        55,
+        0
+      ],
+      "token": "--tone-accent-005-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        75,
+        56,
+        29
+      ],
+      "token": "--tone-accent-006-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        97,
+        58,
+        18
+      ],
+      "token": "--tone-accent-007-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        111,
+        67,
+        24
+      ],
+      "token": "--tone-accent-008-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        108,
+        68,
+        27
+      ],
+      "token": "--tone-accent-009-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        119,
+        75,
+        24
+      ],
+      "token": "--tone-accent-010-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        122,
+        76,
+        29
+      ],
+      "token": "--tone-accent-011-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        120,
+        72,
+        40
+      ],
+      "token": "--tone-accent-012-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        122,
+        86,
+        42
+      ],
+      "token": "--tone-accent-013-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        138,
+        106,
+        47
+      ],
+      "token": "--tone-accent-014-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        168,
+        111,
+        36
+      ],
+      "token": "--tone-accent-015-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        214,
+        106,
+        24
+      ],
+      "token": "--tone-accent-016-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        100,
+        0
+      ],
+      "token": "--tone-accent-017-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        186,
+        144,
+        58
+      ],
+      "token": "--tone-accent-018-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        110,
+        35
+      ],
+      "token": "--tone-accent-019-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        150,
+        0
+      ],
+      "token": "--tone-accent-020-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        184,
+        150,
+        78
+      ],
+      "token": "--tone-accent-021-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        201,
+        154,
+        58
+      ],
+      "token": "--tone-accent-022-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        180,
+        145,
+        92
+      ],
+      "token": "--tone-accent-023-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        170,
+        0
+      ],
+      "token": "--tone-accent-024-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        176,
+        0
+      ],
+      "token": "--tone-accent-025-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        224,
+        138,
+        71
+      ],
+      "token": "--tone-accent-026-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        130,
+        50
+      ],
+      "token": "--tone-accent-027-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        216,
+        177,
+        54
+      ],
+      "token": "--tone-accent-028-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        176,
+        24
+      ],
+      "token": "--tone-accent-029-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        184,
+        20
+      ],
+      "token": "--tone-accent-030-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        179,
+        32
+      ],
+      "token": "--tone-accent-031-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        220,
+        0
+      ],
+      "token": "--tone-accent-032-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        174,
+        48
+      ],
+      "token": "--tone-accent-033-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        177,
+        48
+      ],
+      "token": "--tone-accent-034-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        35
+      ],
+      "token": "--tone-accent-035-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        185,
+        45
+      ],
+      "token": "--tone-accent-036-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        40
+      ],
+      "token": "--tone-accent-037-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        183,
+        55
+      ],
+      "token": "--tone-accent-038-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        180,
+        60
+      ],
+      "token": "--tone-accent-039-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        55
+      ],
+      "token": "--tone-accent-040-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        64
+      ],
+      "token": "--tone-accent-041-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        65
+      ],
+      "token": "--tone-accent-042-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        70
+      ],
+      "token": "--tone-accent-043-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        72
+      ],
+      "token": "--tone-accent-044-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        75
+      ],
+      "token": "--tone-accent-045-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        226,
+        191,
+        104
+      ],
+      "token": "--tone-accent-046-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        241,
+        195,
+        87
+      ],
+      "token": "--tone-accent-047-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        220,
+        50
+      ],
+      "token": "--tone-accent-048-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        204,
+        70
+      ],
+      "token": "--tone-accent-049-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        226,
+        195,
+        109
+      ],
+      "token": "--tone-accent-050-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        85
+      ],
+      "token": "--tone-accent-051-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        196,
+        82
+      ],
+      "token": "--tone-accent-052-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        198,
+        82
+      ],
+      "token": "--tone-accent-053-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        210,
+        70
+      ],
+      "token": "--tone-accent-054-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        210,
+        72
+      ],
+      "token": "--tone-accent-055-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        198,
+        86
+      ],
+      "token": "--tone-accent-056-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        95
+      ],
+      "token": "--tone-accent-057-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        215,
+        70
+      ],
+      "token": "--tone-accent-058-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        168,
+        118
+      ],
+      "token": "--tone-accent-059-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        96
+      ],
+      "token": "--tone-accent-060-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        202,
+        86
+      ],
+      "token": "--tone-accent-061-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        216,
+        77
+      ],
+      "token": "--tone-accent-062-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        210,
+        85
+      ],
+      "token": "--tone-accent-063-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        200,
+        102
+      ],
+      "token": "--tone-accent-064-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        205,
+        102
+      ],
+      "token": "--tone-accent-065-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        188,
+        122
+      ],
+      "token": "--tone-accent-066-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        120
+      ],
+      "token": "--tone-accent-067-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        211,
+        106
+      ],
+      "token": "--tone-accent-068-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        212,
+        109
+      ],
+      "token": "--tone-accent-069-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        215,
+        106
+      ],
+      "token": "--tone-accent-070-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        214,
+        112
+      ],
+      "token": "--tone-accent-071-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        215,
+        115
+      ],
+      "token": "--tone-accent-072-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        213,
+        118
+      ],
+      "token": "--tone-accent-073-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        214,
+        118
+      ],
+      "token": "--tone-accent-074-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        211,
+        125
+      ],
+      "token": "--tone-accent-075-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        212,
+        128
+      ],
+      "token": "--tone-accent-076-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        218,
+        122
+      ],
+      "token": "--tone-accent-077-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        220,
+        120
+      ],
+      "token": "--tone-accent-078-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        216,
+        125
+      ],
+      "token": "--tone-accent-079-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        255,
+        218,
+        130
+      ],
+      "token": "--tone-accent-080-rgb",
+      "family": "accent"
+    },
+    {
+      "original_rgb": [
+        40,
+        210,
+        185
+      ],
+      "token": "--tone-action-001-rgb",
+      "family": "action"
+    },
+    {
+      "original_rgb": [
+        0,
+        255,
+        200
+      ],
+      "token": "--tone-action-002-rgb",
+      "family": "action"
+    },
+    {
+      "original_rgb": [
+        45,
+        220,
+        190
+      ],
+      "token": "--tone-action-003-rgb",
+      "family": "action"
+    },
+    {
+      "original_rgb": [
+        50,
+        220,
+        190
+      ],
+      "token": "--tone-action-004-rgb",
+      "family": "action"
+    },
+    {
+      "original_rgb": [
+        45,
+        230,
+        190
+      ],
+      "token": "--tone-action-005-rgb",
+      "family": "action"
+    },
+    {
+      "original_rgb": [
+        80,
+        245,
+        210
+      ],
+      "token": "--tone-action-006-rgb",
+      "family": "action"
+    },
+    {
+      "original_rgb": [
+        150,
+        255,
+        230
+      ],
+      "token": "--tone-action-007-rgb",
+      "family": "action"
+    },
+    {
+      "original_rgb": [
+        190,
+        255,
+        240
+      ],
+      "token": "--tone-action-008-rgb",
+      "family": "action"
+    },
+    {
+      "original_rgb": [
+        210,
+        255,
+        245
+      ],
+      "token": "--tone-action-009-rgb",
+      "family": "action"
+    },
+    {
+      "original_rgb": [
+        80,
+        8,
+        4
+      ],
+      "token": "--tone-danger-001-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        88,
+        42,
+        20
+      ],
+      "token": "--tone-danger-002-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        104,
+        36,
+        38
+      ],
+      "token": "--tone-danger-003-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        176,
+        26,
+        0
+      ],
+      "token": "--tone-danger-004-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        122,
+        58,
+        38
+      ],
+      "token": "--tone-danger-005-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        177,
+        29,
+        18
+      ],
+      "token": "--tone-danger-006-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        170,
+        28,
+        28
+      ],
+      "token": "--tone-danger-007-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        143,
+        63,
+        32
+      ],
+      "token": "--tone-danger-008-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        0,
+        0
+      ],
+      "token": "--tone-danger-009-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        166,
+        58,
+        54
+      ],
+      "token": "--tone-danger-010-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        209,
+        67,
+        28
+      ],
+      "token": "--tone-danger-011-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        51,
+        0
+      ],
+      "token": "--tone-danger-012-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        30,
+        30
+      ],
+      "token": "--tone-danger-013-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        220,
+        48,
+        48
+      ],
+      "token": "--tone-danger-014-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        185,
+        87,
+        45
+      ],
+      "token": "--tone-danger-015-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        184,
+        94,
+        52
+      ],
+      "token": "--tone-danger-016-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        206,
+        72,
+        54
+      ],
+      "token": "--tone-danger-017-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        50,
+        45
+      ],
+      "token": "--tone-danger-018-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        56,
+        40
+      ],
+      "token": "--tone-danger-019-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        58,
+        42
+      ],
+      "token": "--tone-danger-020-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        60,
+        40
+      ],
+      "token": "--tone-danger-021-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        56,
+        48
+      ],
+      "token": "--tone-danger-022-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        72,
+        32
+      ],
+      "token": "--tone-danger-023-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        208,
+        104,
+        53
+      ],
+      "token": "--tone-danger-024-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        55,
+        55
+      ],
+      "token": "--tone-danger-025-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        64,
+        48
+      ],
+      "token": "--tone-danger-026-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        229,
+        82,
+        66
+      ],
+      "token": "--tone-danger-027-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        77,
+        46
+      ],
+      "token": "--tone-danger-028-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        84,
+        40
+      ],
+      "token": "--tone-danger-029-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        70,
+        55
+      ],
+      "token": "--tone-danger-030-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        72,
+        56
+      ],
+      "token": "--tone-danger-031-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        80,
+        50
+      ],
+      "token": "--tone-danger-032-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        238,
+        82,
+        72
+      ],
+      "token": "--tone-danger-033-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        70,
+        70
+      ],
+      "token": "--tone-danger-034-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        78,
+        64
+      ],
+      "token": "--tone-danger-035-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        80,
+        62
+      ],
+      "token": "--tone-danger-036-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        77,
+        66
+      ],
+      "token": "--tone-danger-037-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        80,
+        64
+      ],
+      "token": "--tone-danger-038-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        92,
+        54
+      ],
+      "token": "--tone-danger-039-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        85,
+        65
+      ],
+      "token": "--tone-danger-040-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        82,
+        70
+      ],
+      "token": "--tone-danger-041-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        222,
+        104,
+        82
+      ],
+      "token": "--tone-danger-042-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        180,
+        122,
+        108
+      ],
+      "token": "--tone-danger-043-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        92,
+        64
+      ],
+      "token": "--tone-danger-044-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        80,
+        80
+      ],
+      "token": "--tone-danger-045-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        210,
+        118,
+        92
+      ],
+      "token": "--tone-danger-046-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        96,
+        72
+      ],
+      "token": "--tone-danger-047-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        238,
+        104,
+        82
+      ],
+      "token": "--tone-danger-048-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        102,
+        68
+      ],
+      "token": "--tone-danger-049-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        100,
+        80
+      ],
+      "token": "--tone-danger-050-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        106,
+        77
+      ],
+      "token": "--tone-danger-051-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        112,
+        72
+      ],
+      "token": "--tone-danger-052-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        120,
+        70
+      ],
+      "token": "--tone-danger-053-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        125,
+        70
+      ],
+      "token": "--tone-danger-054-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        110,
+        90
+      ],
+      "token": "--tone-danger-055-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        118,
+        86
+      ],
+      "token": "--tone-danger-056-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        132,
+        82
+      ],
+      "token": "--tone-danger-057-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        138,
+        118
+      ],
+      "token": "--tone-danger-058-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        150,
+        132
+      ],
+      "token": "--tone-danger-059-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        155,
+        128
+      ],
+      "token": "--tone-danger-060-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        170,
+        150
+      ],
+      "token": "--tone-danger-061-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        179,
+        143
+      ],
+      "token": "--tone-danger-062-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        185,
+        170
+      ],
+      "token": "--tone-danger-063-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        255,
+        190,
+        170
+      ],
+      "token": "--tone-danger-064-rgb",
+      "family": "danger"
+    },
+    {
+      "original_rgb": [
+        0,
+        0,
+        255
+      ],
+      "token": "--tone-energy-001-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        45,
+        90,
+        190
+      ],
+      "token": "--tone-energy-002-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        26,
+        102,
+        204
+      ],
+      "token": "--tone-energy-003-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        70,
+        120,
+        160
+      ],
+      "token": "--tone-energy-004-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        47,
+        143,
+        211
+      ],
+      "token": "--tone-energy-005-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        51,
+        153,
+        255
+      ],
+      "token": "--tone-energy-006-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        92,
+        158,
+        226
+      ],
+      "token": "--tone-energy-007-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        124,
+        160,
+        196
+      ],
+      "token": "--tone-energy-008-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        74,
+        163,
+        255
+      ],
+      "token": "--tone-energy-009-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        68,
+        170,
+        255
+      ],
+      "token": "--tone-energy-010-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        118,
+        130,
+        255
+      ],
+      "token": "--tone-energy-011-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        85,
+        170,
+        255
+      ],
+      "token": "--tone-energy-012-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        132,
+        172,
+        210
+      ],
+      "token": "--tone-energy-013-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        70,
+        190,
+        255
+      ],
+      "token": "--tone-energy-014-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        75,
+        190,
+        255
+      ],
+      "token": "--tone-energy-015-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        80,
+        185,
+        255
+      ],
+      "token": "--tone-energy-016-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        90,
+        176,
+        255
+      ],
+      "token": "--tone-energy-017-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        53,
+        215,
+        255
+      ],
+      "token": "--tone-energy-018-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        88,
+        180,
+        255
+      ],
+      "token": "--tone-energy-019-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        104,
+        168,
+        255
+      ],
+      "token": "--tone-energy-020-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        88,
+        190,
+        255
+      ],
+      "token": "--tone-energy-021-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        80,
+        200,
+        255
+      ],
+      "token": "--tone-energy-022-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        80,
+        205,
+        255
+      ],
+      "token": "--tone-energy-023-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        102,
+        187,
+        255
+      ],
+      "token": "--tone-energy-024-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        95,
+        210,
+        255
+      ],
+      "token": "--tone-energy-025-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        120,
+        190,
+        255
+      ],
+      "token": "--tone-energy-026-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        130,
+        180,
+        255
+      ],
+      "token": "--tone-energy-027-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        120,
+        205,
+        255
+      ],
+      "token": "--tone-energy-028-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        178,
+        205,
+        226
+      ],
+      "token": "--tone-energy-029-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        170,
+        224,
+        255
+      ],
+      "token": "--tone-energy-030-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        190,
+        235,
+        255
+      ],
+      "token": "--tone-energy-031-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        205,
+        236,
+        248
+      ],
+      "token": "--tone-energy-032-rgb",
+      "family": "energy"
+    },
+    {
+      "original_rgb": [
+        74,
+        42,
+        112
+      ],
+      "token": "--tone-magic-001-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        130,
+        70,
+        176
+      ],
+      "token": "--tone-magic-002-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        112,
+        74,
+        255
+      ],
+      "token": "--tone-magic-003-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        140,
+        85,
+        216
+      ],
+      "token": "--tone-magic-004-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        119,
+        68,
+        255
+      ],
+      "token": "--tone-magic-005-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        153,
+        68,
+        238
+      ],
+      "token": "--tone-magic-006-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        122,
+        92,
+        255
+      ],
+      "token": "--tone-magic-007-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        160,
+        100,
+        220
+      ],
+      "token": "--tone-magic-008-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        136,
+        102,
+        255
+      ],
+      "token": "--tone-magic-009-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        168,
+        128,
+        212
+      ],
+      "token": "--tone-magic-010-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        153,
+        102,
+        255
+      ],
+      "token": "--tone-magic-011-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        190,
+        94,
+        255
+      ],
+      "token": "--tone-magic-012-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        255,
+        79,
+        216
+      ],
+      "token": "--tone-magic-013-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        180,
+        140,
+        240
+      ],
+      "token": "--tone-magic-014-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        180,
+        155,
+        225
+      ],
+      "token": "--tone-magic-015-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        170,
+        136,
+        255
+      ],
+      "token": "--tone-magic-016-rgb",
+      "family": "magic"
+    },
+    {
+      "original_rgb": [
+        64,
+        64,
+        64
+      ],
+      "token": "--tone-neutral-001-rgb",
+      "family": "neutral"
+    },
+    {
+      "original_rgb": [
+        80,
+        80,
+        72
+      ],
+      "token": "--tone-neutral-002-rgb",
+      "family": "neutral"
+    },
+    {
+      "original_rgb": [
+        85,
+        85,
+        85
+      ],
+      "token": "--tone-neutral-003-rgb",
+      "family": "neutral"
+    },
+    {
+      "original_rgb": [
+        111,
+        107,
+        98
+      ],
+      "token": "--tone-neutral-004-rgb",
+      "family": "neutral"
+    },
+    {
+      "original_rgb": [
+        120,
+        120,
+        120
+      ],
+      "token": "--tone-neutral-005-rgb",
+      "family": "neutral"
+    },
+    {
+      "original_rgb": [
+        128,
+        128,
+        128
+      ],
+      "token": "--tone-neutral-006-rgb",
+      "family": "neutral"
+    },
+    {
+      "original_rgb": [
+        136,
+        148,
+        134
+      ],
+      "token": "--tone-neutral-007-rgb",
+      "family": "neutral"
+    },
+    {
+      "original_rgb": [
+        140,
+        152,
+        140
+      ],
+      "token": "--tone-neutral-008-rgb",
+      "family": "neutral"
+    },
+    {
+      "original_rgb": [
+        153,
+        153,
+        170
+      ],
+      "token": "--tone-neutral-009-rgb",
+      "family": "neutral"
+    },
+    {
+      "original_rgb": [
+        153,
+        160,
+        170
+      ],
+      "token": "--tone-neutral-010-rgb",
+      "family": "neutral"
+    },
+    {
+      "original_rgb": [
+        38,
+        96,
+        66
+      ],
+      "token": "--tone-success-001-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        48,
+        94,
+        72
+      ],
+      "token": "--tone-success-002-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        92,
+        104,
+        58
+      ],
+      "token": "--tone-success-003-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        0,
+        255,
+        0
+      ],
+      "token": "--tone-success-004-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        34,
+        170,
+        85
+      ],
+      "token": "--tone-success-005-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        68,
+        146,
+        94
+      ],
+      "token": "--tone-success-006-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        79,
+        168,
+        107
+      ],
+      "token": "--tone-success-007-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        46,
+        211,
+        106
+      ],
+      "token": "--tone-success-008-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        70,
+        210,
+        92
+      ],
+      "token": "--tone-success-009-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        142,
+        154,
+        84
+      ],
+      "token": "--tone-success-010-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        72,
+        200,
+        112
+      ],
+      "token": "--tone-success-011-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        70,
+        210,
+        120
+      ],
+      "token": "--tone-success-012-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        68,
+        221,
+        136
+      ],
+      "token": "--tone-success-013-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        78,
+        220,
+        128
+      ],
+      "token": "--tone-success-014-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        88,
+        214,
+        126
+      ],
+      "token": "--tone-success-015-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        77,
+        220,
+        132
+      ],
+      "token": "--tone-success-016-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        70,
+        238,
+        142
+      ],
+      "token": "--tone-success-017-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        96,
+        218,
+        136
+      ],
+      "token": "--tone-success-018-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        92,
+        226,
+        136
+      ],
+      "token": "--tone-success-019-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        68,
+        255,
+        136
+      ],
+      "token": "--tone-success-020-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        134,
+        184,
+        148
+      ],
+      "token": "--tone-success-021-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        77,
+        255,
+        136
+      ],
+      "token": "--tone-success-022-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        82,
+        224,
+        170
+      ],
+      "token": "--tone-success-023-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        85,
+        238,
+        153
+      ],
+      "token": "--tone-success-024-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        112,
+        206,
+        170
+      ],
+      "token": "--tone-success-025-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        116,
+        235,
+        153
+      ],
+      "token": "--tone-success-026-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        53,
+        255,
+        200
+      ],
+      "token": "--tone-success-027-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        126,
+        232,
+        156
+      ],
+      "token": "--tone-success-028-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        64,
+        255,
+        205
+      ],
+      "token": "--tone-success-029-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        135,
+        238,
+        164
+      ],
+      "token": "--tone-success-030-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        132,
+        255,
+        178
+      ],
+      "token": "--tone-success-031-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        150,
+        244,
+        178
+      ],
+      "token": "--tone-success-032-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        136,
+        255,
+        204
+      ],
+      "token": "--tone-success-033-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        202,
+        238,
+        198
+      ],
+      "token": "--tone-success-034-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        190,
+        255,
+        210
+      ],
+      "token": "--tone-success-035-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        190,
+        255,
+        235
+      ],
+      "token": "--tone-success-036-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        205,
+        255,
+        242
+      ],
+      "token": "--tone-success-037-rgb",
+      "family": "success"
+    },
+    {
+      "original_rgb": [
+        0,
+        0,
+        0
+      ],
+      "token": "--tone-surface-001-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        1,
+        1,
+        1
+      ],
+      "token": "--tone-surface-002-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        2,
+        2,
+        2
+      ],
+      "token": "--tone-surface-003-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        1,
+        3,
+        3
+      ],
+      "token": "--tone-surface-004-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        2,
+        2,
+        4
+      ],
+      "token": "--tone-surface-005-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        3,
+        3,
+        4
+      ],
+      "token": "--tone-surface-006-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        5,
+        3,
+        2
+      ],
+      "token": "--tone-surface-007-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        3,
+        3,
+        5
+      ],
+      "token": "--tone-surface-008-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        5,
+        3,
+        3
+      ],
+      "token": "--tone-surface-009-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        4,
+        4,
+        4
+      ],
+      "token": "--tone-surface-010-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        5,
+        4,
+        3
+      ],
+      "token": "--tone-surface-011-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        3,
+        4,
+        6
+      ],
+      "token": "--tone-surface-012-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        3,
+        5,
+        5
+      ],
+      "token": "--tone-surface-013-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        4,
+        4,
+        5
+      ],
+      "token": "--tone-surface-014-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        6,
+        4,
+        3
+      ],
+      "token": "--tone-surface-015-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        4,
+        4,
+        6
+      ],
+      "token": "--tone-surface-016-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        7,
+        4,
+        3
+      ],
+      "token": "--tone-surface-017-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        5,
+        5,
+        5
+      ],
+      "token": "--tone-surface-018-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        4,
+        5,
+        7
+      ],
+      "token": "--tone-surface-019-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        5,
+        5,
+        6
+      ],
+      "token": "--tone-surface-020-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        7,
+        5,
+        4
+      ],
+      "token": "--tone-surface-021-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        5,
+        5,
+        7
+      ],
+      "token": "--tone-surface-022-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        8,
+        5,
+        4
+      ],
+      "token": "--tone-surface-023-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        5,
+        6,
+        7
+      ],
+      "token": "--tone-surface-024-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        7,
+        6,
+        5
+      ],
+      "token": "--tone-surface-025-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        8,
+        5,
+        5
+      ],
+      "token": "--tone-surface-026-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        8,
+        6,
+        4
+      ],
+      "token": "--tone-surface-027-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        4,
+        7,
+        8
+      ],
+      "token": "--tone-surface-028-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        5,
+        6,
+        8
+      ],
+      "token": "--tone-surface-029-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        6,
+        5,
+        8
+      ],
+      "token": "--tone-surface-030-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        8,
+        6,
+        5
+      ],
+      "token": "--tone-surface-031-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        12,
+        4,
+        3
+      ],
+      "token": "--tone-surface-032-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        3,
+        10,
+        7
+      ],
+      "token": "--tone-surface-033-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        5,
+        7,
+        8
+      ],
+      "token": "--tone-surface-034-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        6,
+        6,
+        8
+      ],
+      "token": "--tone-surface-035-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        10,
+        6,
+        4
+      ],
+      "token": "--tone-surface-036-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        11,
+        6,
+        3
+      ],
+      "token": "--tone-surface-037-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        8,
+        7,
+        6
+      ],
+      "token": "--tone-surface-038-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        10,
+        7,
+        4
+      ],
+      "token": "--tone-surface-039-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        6,
+        7,
+        9
+      ],
+      "token": "--tone-surface-040-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        7,
+        7,
+        8
+      ],
+      "token": "--tone-surface-041-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        7,
+        7,
+        9
+      ],
+      "token": "--tone-surface-042-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        15,
+        5,
+        3
+      ],
+      "token": "--tone-surface-043-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        4,
+        12,
+        8
+      ],
+      "token": "--tone-surface-044-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        6,
+        8,
+        10
+      ],
+      "token": "--tone-surface-045-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        8,
+        8,
+        8
+      ],
+      "token": "--tone-surface-046-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        9,
+        8,
+        7
+      ],
+      "token": "--tone-surface-047-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        7,
+        8,
+        10
+      ],
+      "token": "--tone-surface-048-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        8,
+        8,
+        9
+      ],
+      "token": "--tone-surface-049-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        12,
+        8,
+        5
+      ],
+      "token": "--tone-surface-050-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        13,
+        8,
+        4
+      ],
+      "token": "--tone-surface-051-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        18,
+        4,
+        3
+      ],
+      "token": "--tone-surface-052-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        8,
+        8,
+        10
+      ],
+      "token": "--tone-surface-053-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        12,
+        8,
+        6
+      ],
+      "token": "--tone-surface-054-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        13,
+        8,
+        5
+      ],
+      "token": "--tone-surface-055-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        4,
+        14,
+        9
+      ],
+      "token": "--tone-surface-056-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        8,
+        8,
+        11
+      ],
+      "token": "--tone-surface-057-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        8,
+        9,
+        10
+      ],
+      "token": "--tone-surface-058-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        14,
+        8,
+        5
+      ],
+      "token": "--tone-surface-059-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        9,
+        9,
+        10
+      ],
+      "token": "--tone-surface-060-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        4,
+        12,
+        13
+      ],
+      "token": "--tone-surface-061-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        5,
+        12,
+        12
+      ],
+      "token": "--tone-surface-062-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        6,
+        14,
+        9
+      ],
+      "token": "--tone-surface-063-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        7,
+        12,
+        10
+      ],
+      "token": "--tone-surface-064-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        9,
+        6,
+        14
+      ],
+      "token": "--tone-surface-065-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        15,
+        9,
+        5
+      ],
+      "token": "--tone-surface-066-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        8,
+        10,
+        12
+      ],
+      "token": "--tone-surface-067-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        16,
+        9,
+        5
+      ],
+      "token": "--tone-surface-068-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        4,
+        17,
+        10
+      ],
+      "token": "--tone-surface-069-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        9,
+        9,
+        13
+      ],
+      "token": "--tone-surface-070-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        5,
+        17,
+        10
+      ],
+      "token": "--tone-surface-071-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        9,
+        10,
+        13
+      ],
+      "token": "--tone-surface-072-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        10,
+        10,
+        12
+      ],
+      "token": "--tone-surface-073-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        12,
+        11,
+        9
+      ],
+      "token": "--tone-surface-074-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        21,
+        7,
+        4
+      ],
+      "token": "--tone-surface-075-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        17,
+        10,
+        6
+      ],
+      "token": "--tone-surface-076-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        4,
+        13,
+        17
+      ],
+      "token": "--tone-surface-077-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        7,
+        11,
+        16
+      ],
+      "token": "--tone-surface-078-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        9,
+        11,
+        14
+      ],
+      "token": "--tone-surface-079-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        10,
+        12,
+        12
+      ],
+      "token": "--tone-surface-080-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        11,
+        7,
+        16
+      ],
+      "token": "--tone-surface-081-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        15,
+        11,
+        8
+      ],
+      "token": "--tone-surface-082-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        18,
+        11,
+        5
+      ],
+      "token": "--tone-surface-083-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        18,
+        12,
+        5
+      ],
+      "token": "--tone-surface-084-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        10,
+        12,
+        14
+      ],
+      "token": "--tone-surface-085-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        18,
+        11,
+        7
+      ],
+      "token": "--tone-surface-086-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        22,
+        12,
+        2
+      ],
+      "token": "--tone-surface-087-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        9,
+        12,
+        16
+      ],
+      "token": "--tone-surface-088-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        12,
+        12,
+        14
+      ],
+      "token": "--tone-surface-089-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        18,
+        12,
+        8
+      ],
+      "token": "--tone-surface-090-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        24,
+        7,
+        8
+      ],
+      "token": "--tone-surface-091-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        12,
+        12,
+        16
+      ],
+      "token": "--tone-surface-092-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        12,
+        13,
+        15
+      ],
+      "token": "--tone-surface-093-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        18,
+        14,
+        8
+      ],
+      "token": "--tone-surface-094-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        22,
+        13,
+        5
+      ],
+      "token": "--tone-surface-095-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        20,
+        14,
+        7
+      ],
+      "token": "--tone-surface-096-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        21,
+        13,
+        7
+      ],
+      "token": "--tone-surface-097-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        6,
+        18,
+        18
+      ],
+      "token": "--tone-surface-098-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        12,
+        14,
+        16
+      ],
+      "token": "--tone-surface-099-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        20,
+        13,
+        9
+      ],
+      "token": "--tone-surface-100-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        6,
+        14,
+        24
+      ],
+      "token": "--tone-surface-101-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        22,
+        12,
+        10
+      ],
+      "token": "--tone-surface-102-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        25,
+        14,
+        6
+      ],
+      "token": "--tone-surface-103-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        24,
+        14,
+        8
+      ],
+      "token": "--tone-surface-104-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        28,
+        18,
+        0
+      ],
+      "token": "--tone-surface-105-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        16,
+        9,
+        24
+      ],
+      "token": "--tone-surface-106-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        18,
+        16,
+        16
+      ],
+      "token": "--tone-surface-107-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        16,
+        16,
+        21
+      ],
+      "token": "--tone-surface-108-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        24,
+        18,
+        12
+      ],
+      "token": "--tone-surface-109-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        24,
+        19,
+        11
+      ],
+      "token": "--tone-surface-110-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        28,
+        19,
+        8
+      ],
+      "token": "--tone-surface-111-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        24,
+        20,
+        12
+      ],
+      "token": "--tone-surface-112-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        31,
+        17,
+        8
+      ],
+      "token": "--tone-surface-113-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        34,
+        12,
+        10
+      ],
+      "token": "--tone-surface-114-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        18,
+        18,
+        21
+      ],
+      "token": "--tone-surface-115-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        27,
+        19,
+        12
+      ],
+      "token": "--tone-surface-116-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        18,
+        18,
+        24
+      ],
+      "token": "--tone-surface-117-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        18,
+        20,
+        23
+      ],
+      "token": "--tone-surface-118-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        50,
+        14,
+        8
+      ],
+      "token": "--tone-surface-119-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        39,
+        25,
+        11
+      ],
+      "token": "--tone-surface-120-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        8,
+        28,
+        44
+      ],
+      "token": "--tone-surface-121-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        24,
+        27,
+        30
+      ],
+      "token": "--tone-surface-122-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        28,
+        14,
+        42
+      ],
+      "token": "--tone-surface-123-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        45,
+        27,
+        12
+      ],
+      "token": "--tone-surface-124-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        48,
+        36,
+        8
+      ],
+      "token": "--tone-surface-125-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        47,
+        38,
+        27
+      ],
+      "token": "--tone-surface-126-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        58,
+        35,
+        19
+      ],
+      "token": "--tone-surface-127-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        20,
+        60,
+        40
+      ],
+      "token": "--tone-surface-128-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        58,
+        44,
+        18
+      ],
+      "token": "--tone-surface-129-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        32,
+        42,
+        50
+      ],
+      "token": "--tone-surface-130-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        48,
+        58,
+        54
+      ],
+      "token": "--tone-surface-131-rgb",
+      "family": "surface"
+    },
+    {
+      "original_rgb": [
+        200,
+        169,
+        119
+      ],
+      "token": "--tone-text-001-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        210,
+        180,
+        140
+      ],
+      "token": "--tone-text-002-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        210,
+        188,
+        145
+      ],
+      "token": "--tone-text-003-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        200,
+        191,
+        168
+      ],
+      "token": "--tone-text-004-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        232,
+        207,
+        149
+      ],
+      "token": "--tone-text-005-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        245,
+        210,
+        134
+      ],
+      "token": "--tone-text-006-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        197,
+        205,
+        190
+      ],
+      "token": "--tone-text-007-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        238,
+        196,
+        160
+      ],
+      "token": "--tone-text-008-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        241,
+        213,
+        143
+      ],
+      "token": "--tone-text-009-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        230,
+        204,
+        172
+      ],
+      "token": "--tone-text-010-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        218,
+        140
+      ],
+      "token": "--tone-text-011-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        219,
+        139
+      ],
+      "token": "--tone-text-012-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        220,
+        140
+      ],
+      "token": "--tone-text-013-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        218,
+        144
+      ],
+      "token": "--tone-text-014-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        214,
+        150
+      ],
+      "token": "--tone-text-015-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        230,
+        214,
+        176
+      ],
+      "token": "--tone-text-016-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        215,
+        150
+      ],
+      "token": "--tone-text-017-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        220,
+        145
+      ],
+      "token": "--tone-text-018-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        226,
+        142
+      ],
+      "token": "--tone-text-019-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        206,
+        164
+      ],
+      "token": "--tone-text-020-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        224,
+        146
+      ],
+      "token": "--tone-text-021-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        225,
+        145
+      ],
+      "token": "--tone-text-022-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        228,
+        214,
+        184
+      ],
+      "token": "--tone-text-023-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        218,
+        155
+      ],
+      "token": "--tone-text-024-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        225,
+        150
+      ],
+      "token": "--tone-text-025-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        222,
+        155
+      ],
+      "token": "--tone-text-026-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        230,
+        150
+      ],
+      "token": "--tone-text-027-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        226,
+        160
+      ],
+      "token": "--tone-text-028-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        240,
+        218,
+        184
+      ],
+      "token": "--tone-text-029-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        244,
+        223,
+        176
+      ],
+      "token": "--tone-text-030-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        244,
+        225,
+        175
+      ],
+      "token": "--tone-text-031-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        235,
+        220,
+        190
+      ],
+      "token": "--tone-text-032-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        210,
+        180
+      ],
+      "token": "--tone-text-033-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        225,
+        165
+      ],
+      "token": "--tone-text-034-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        230,
+        160
+      ],
+      "token": "--tone-text-035-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        236,
+        221,
+        190
+      ],
+      "token": "--tone-text-036-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        238,
+        220,
+        190
+      ],
+      "token": "--tone-text-037-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        224,
+        172
+      ],
+      "token": "--tone-text-038-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        226,
+        170
+      ],
+      "token": "--tone-text-039-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        230,
+        174
+      ],
+      "token": "--tone-text-040-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        235,
+        170
+      ],
+      "token": "--tone-text-041-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        230,
+        180
+      ],
+      "token": "--tone-text-042-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        234,
+        176
+      ],
+      "token": "--tone-text-043-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        236,
+        226,
+        205
+      ],
+      "token": "--tone-text-044-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        230,
+        190
+      ],
+      "token": "--tone-text-045-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        231,
+        190
+      ],
+      "token": "--tone-text-046-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        232,
+        190
+      ],
+      "token": "--tone-text-047-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        220,
+        226,
+        232
+      ],
+      "token": "--tone-text-048-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        245,
+        231,
+        204
+      ],
+      "token": "--tone-text-049-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        245,
+        232,
+        204
+      ],
+      "token": "--tone-text-050-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        238,
+        190
+      ],
+      "token": "--tone-text-051-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        210,
+        245,
+        232
+      ],
+      "token": "--tone-text-052-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        232,
+        200
+      ],
+      "token": "--tone-text-053-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        238,
+        196
+      ],
+      "token": "--tone-text-054-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        245,
+        190
+      ],
+      "token": "--tone-text-055-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        240,
+        204
+      ],
+      "token": "--tone-text-056-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        240,
+        205
+      ],
+      "token": "--tone-text-057-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        220,
+        255,
+        230
+      ],
+      "token": "--tone-text-058-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        244,
+        207
+      ],
+      "token": "--tone-text-059-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        216,
+        236,
+        255
+      ],
+      "token": "--tone-text-060-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        244,
+        210
+      ],
+      "token": "--tone-text-061-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        220,
+        255,
+        240
+      ],
+      "token": "--tone-text-062-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        220,
+        245,
+        255
+      ],
+      "token": "--tone-text-063-rgb",
+      "family": "text"
+    },
+    {
+      "original_rgb": [
+        255,
+        255,
+        255
+      ],
+      "token": "--tone-text-064-rgb",
+      "family": "text"
+    }
+  ],
+  "texture_tokens": {
+    "url(\"/static/images/ui/textures/button-candidates/button-surface-02-blackened-metal.webp\")": "--texture-chrome-01",
+    "url(\"/static/images/ui/textures/inventory/fabric_leather_02_diff_1k.webp\")": "--texture-chrome-02",
+    "url(\"/static/images/ui/textures/inventory/fabric_leather_01_diff_1k.webp\")": "--texture-chrome-03",
+    "url(\"/static/images/ui/textures/button-candidates/button-surface-01-dark-wood.webp\")": "--texture-chrome-04",
+    "url(\"/static/images/ui/textures/button-candidates/button-surface-03-aged-bronze.webp\")": "--texture-chrome-05",
+    "url(\"/static/images/ui/textures/button-candidates/button-surface-04-charcoal-stone.webp\")": "--texture-chrome-06",
+    "url('/static/images/parchment_dull.webp')": "--texture-chrome-07"
+  },
+  "original_source_sha256": {
+    "src/frontend/static/css/game/components/action_panel.css": "d3ba36ce7f545eadde354b155df80f8ea2345f83b794dc28091d96cba59924fd",
+    "src/frontend/static/css/game/components/avatar_picker.css": "4168e48ba3ab476cf3e6719ef6b5c8c070e308f387ec34458262527390b508ed",
+    "src/frontend/static/css/game/components/buttons.css": "e2e4a9b5fd000b1cbed772c892d6291dc4a3a33eb1844379add7d98fe65f13e9",
+    "src/frontend/static/css/game/components/cards.css": "02bd08cceba749826fd17cbb1f4d0638c841bd39a122b349aae2cd2425a7ee62",
+    "src/frontend/static/css/game/components/chat.css": "bc7059227079bb4d0c11f92c0ec06daae6bb488a6cdb20054a6d58be0c34e4b2",
+    "src/frontend/static/css/game/components/info_panel.css": "321e71301bb25d91417e90c9be52886cc06fea636043e983f3482a4174989a0c",
+    "src/frontend/static/css/game/components/inventory.css": "8ee356ebf77d0bea61890c5ab61e53924e8ded9ce731931a53f81ba25b6130de",
+    "src/frontend/static/css/game/components/modal.css": "73b6720adbe4e02e5e97fb8d4ccb75998335b7620638fa2fbe355941c1d78a5e",
+    "src/frontend/static/css/game/components/panel_dock.css": "4301f9866994e2f408feba2a4e2eb1067df578f3d827f9a66885250b7bfce90d",
+    "src/frontend/static/css/game/components/panels.css": "cd547dc5e86d40a53373fc1fe11f20cf8cd86f5e411aa43a741793d46adc7bbd",
+    "src/frontend/static/css/game/components/stats.css": "d583415394a31c19faf4fc535df83a37349b1dde623e7d87dad21db098b85418",
+    "src/frontend/static/css/game/components/status_widgets.css": "5dcdb4e8a2617987291d1460c3270fa815a95754a5c3993836c1006c55746577",
+    "src/frontend/static/css/game/components/tags_code.css": "e7f6fe3d39d1838e561a1752c0ee3893d6c7cb0a7b80b504161219feb43c28d6",
+    "src/frontend/static/css/game/components/tooltips.css": "59ef2211b780503267c877c136e08f3e229fee661b85770a2f47b91fe3677395",
+    "src/frontend/static/css/game/core/animations.css": "bcb6b375f07f76b4885bade406ca4947dea09153d9d74e83dfbeac67336ea7b1",
+    "src/frontend/static/css/game/core/reset.css": "f0b33affe446b30321c7804e1e938157016f708965715173e4fadd5bcdfab6fa",
+    "src/frontend/static/css/game/core/tokens.css": "33104757a3a35f97d590753fa5d051476e3112aec3571cb862675c6cd8a2dded",
+    "src/frontend/static/css/game/domains/arena/group_browser.css": "a8115b296796290a4d102ffd3b368d7949b58f11457eea16e9bfbe8e514b555a",
+    "src/frontend/static/css/game/domains/arena/groups.css": "2a50bebdc0d6dd563513b0a5109f4e45f8e51196b65ebdd757c3f836ed9645f2",
+    "src/frontend/static/css/game/domains/arena/index.css": "2d4ab1c17b4e4de89cef8d6d1543644cfc3646f141ab6c4f1fffc041c552c0d6",
+    "src/frontend/static/css/game/domains/arena/live_battles.css": "c9a862eafee3a65a3b77b100b07db6e7bf750e40368b0508522d67fde03552aa",
+    "src/frontend/static/css/game/domains/arena/lobby.css": "d20041df4f0f70820b7ff999b8b6db9e092a487daaf1f89dd5d3ab586ea7c27e",
+    "src/frontend/static/css/game/domains/arena/matchmaking.css": "e6cf6439cc6d4a2f73cc5f4ec8d36f2bd489eae71c11b8c05c9f262519c5f504",
+    "src/frontend/static/css/game/domains/arena/modals.css": "945ab233b10f74a2141b36db31982c346af2be7eff103905b42cb30aa37d67c4",
+    "src/frontend/static/css/game/domains/arena/modes.css": "8401f77180b8f9f55f78796e7676d0c0a822689d25ef86fcc91ddb23fc8cfcb4",
+    "src/frontend/static/css/game/domains/arena/repair.css": "7e15b8758849dd8fcde4f01ded1e3d6f96987bff76a31cf29c5f2466f4848f5f",
+    "src/frontend/static/css/game/domains/arena/right_sidebar.css": "f06bb00ba21c26a19d718641eccbb521149fdb203f84950567c3d77297d1aeca",
+    "src/frontend/static/css/game/domains/chat/index.css": "cefd3d91af4e17747730a7eb990fa9bdf004f982d62b7de3cfb38ec536056fdd",
+    "src/frontend/static/css/game/domains/chat/input.css": "2cb5e9dee0256d9d372098259e683ba65543b723196cf2c94083b6e3c208bd13",
+    "src/frontend/static/css/game/domains/chat/messages.css": "b538da8e7f81b3936c9b9acc9af9ea74458dbcefad29243eed8e2c3c8bd7a106",
+    "src/frontend/static/css/game/domains/chat/panel.css": "78a8e65936395572a95ad1df00fe595e370b23b9535f6acb706c18a3322e8cb4",
+    "src/frontend/static/css/game/domains/chat/responsive_states.css": "2199cbca1d41035f6a2e005ea7d744b5c624feb13d38e17ff84af468c67adb7c",
+    "src/frontend/static/css/game/domains/chat/shell.css": "be379f95bb23a6a4a41216e58fdb43b4a4fd6423feb8a647d68725559a04f7c8",
+    "src/frontend/static/css/game/domains/chat/tabs.css": "0bc9d95cab3ad32c30baa97e225be328039fda15b4ee041e0297eb0996bc721f",
+    "src/frontend/static/css/game/domains/chat/themes.css": "783ffd44164fb6573c94697054ad81478574134e246521e6b1b2d7c16aef4a16",
+    "src/frontend/static/css/game/domains/city_services/index.css": "84217d45978aa6908b0c5e0fc8c2f3e5a92f3f46b358c3bd51b29581ba74d9a6",
+    "src/frontend/static/css/game/domains/combat/actions.css": "494e27b32e057d89b46b43bbb0b11e4c78589098314ef77232432cab648cb823",
+    "src/frontend/static/css/game/domains/combat/index.css": "a74d5f7ec5f0322b80ead6a9e82de36aebdfd99d3f73fae5a819c0653603a5ba",
+    "src/frontend/static/css/game/domains/combat/logs.css": "c6ae3090745b01c460522290f68b7dac8a3f1b1db6ced0c015ad4d19ed2e3ef3",
+    "src/frontend/static/css/game/domains/combat/prototype.css": "2b509bdb2beb992616bceaaf6e10be2fd88dbacd1706fa45d85156320bcdedbd",
+    "src/frontend/static/css/game/domains/combat/responsive.css": "9b3a830393dfc89cf27099198d4fbf19dab5b3cfe4f2fbc5113afe5e0dbe21bc",
+    "src/frontend/static/css/game/domains/combat/result.css": "e296faa1a384f4c49bc533e159dd41aa008e3feefa440aa981f66aef7c6bb5a3",
+    "src/frontend/static/css/game/domains/combat/screen.css": "497e44ece718a869215e505ceef6b24420832e600c0894f90bed99e5c4e05137",
+    "src/frontend/static/css/game/domains/combat/sidebars.css": "076deb3858eb7ee245f1f0b668b83566bfa4662b57a2213b566e1859e67c772d",
+    "src/frontend/static/css/game/domains/combat/teams.css": "2231d4c99fc6eb4441f9406a94bc04c9916f9cd299da8a534678d6eb7d0469ee",
+    "src/frontend/static/css/game/domains/exploration/encounters.css": "c76f98a4bb73bf1eeab26aaed3ecdc85aba14601bb88b87256afd83f86261015",
+    "src/frontend/static/css/game/domains/exploration/index.css": "88cf777f7dfef41160048981c6d7e25312d971a8dff4bde940e5eef8a8d2ad22",
+    "src/frontend/static/css/game/domains/exploration/movement.css": "ac7624c2f90bb6008d752cd120621aa317380bd64bfa9f3180ff8e72f55c2a1f",
+    "src/frontend/static/css/game/domains/exploration/responsive.css": "d8ae13e62daa7a3f75d7c2b4eb35a2c75676f0b8d24f28357d6f4cf943a7e6ba",
+    "src/frontend/static/css/game/domains/exploration/right_sidebar.css": "2f870e3e4b8e7e0e70b903bfc2bfde81f91d9e7392e1dd74bdacd1453bde5271",
+    "src/frontend/static/css/game/domains/exploration/scene.css": "c1d034c3ca107ec58e3224eb95dceb135d4ef4cfc8a049278a82932a162535b9",
+    "src/frontend/static/css/game/domains/exploration/screen.css": "6e60fc8644f11c136fc264fdc5cbbde28c116b8cb78290b1d1c818d9f8feea18",
+    "src/frontend/static/css/game/domains/exploration/services.css": "ae9325e17e58baab23ddb45665381275e54964bd65033623637c0ad0a854be50",
+    "src/frontend/static/css/game/domains/field/equipment.css": "f9b06d8404b78ba7fa2f14b5505b581fc4efa4efbbfb1e292651e06c080f15bf",
+    "src/frontend/static/css/game/domains/field/exploration_encounters.css": "305a774f9f1f72a17142aac8e7514d4a89252401e32c0a7a1c5d6e78757875aa",
+    "src/frontend/static/css/game/domains/field/exploration_services.css": "db83d59c3a17e17d8f2bac1a39053ec4ebdf8290b4d302d470938d8059467fa9",
+    "src/frontend/static/css/game/domains/field/index.css": "cf748fea5a400830ccf1b748d0f166013d9239c9d878f938405189a816c12290",
+    "src/frontend/static/css/game/domains/field/inventory.css": "cd2d516c83ddf532a763594becb8dcc7433a44d918aa12b137b92a09f0e3cbe4",
+    "src/frontend/static/css/game/domains/field/panel.css": "1472bace599c94b6a7dd5a5fadef40cd54f0ce3645371667244374ddef867d2b",
+    "src/frontend/static/css/game/domains/loot/actions.css": "a70fe115887928378406756caab99331058df01ab4c5c1ff4934c71abcd88af0",
+    "src/frontend/static/css/game/domains/loot/death.css": "3aa1826b75669a0d04590b9d489d201b006825c43c2a24b0d470146dedd43b9e",
+    "src/frontend/static/css/game/domains/loot/index.css": "4273f055580e8c05b5e1ec84bdccd99912ac31e2dab98ac08ee6e7b71ba3c89d",
+    "src/frontend/static/css/game/domains/loot/loot.css": "50d43c03e37e79bad72e121a583eee3a98fdcc58935353917f255dd998341c15",
+    "src/frontend/static/css/game/domains/loot/screen.css": "e25464035ccfef959998676c382d416047d2b936d30e794846a7bcfefff44960",
+    "src/frontend/static/css/game/domains/rift/index.css": "e6a144ee0ddea72b8ea7815a52d7ff8a7cbf5899ce46abbc867afd8ea13da465",
+    "src/frontend/static/css/game/domains/rift/screen.css": "242f78ef8970df5f4e98e45c4c317d8a69d99abf2ca97e7102c2e2ccdf5e466a",
+    "src/frontend/static/css/game/domains/rift/sidebars.css": "e6d6725059a0e3880a4f95b6bdea3fd50a8a5eed192c739134ba04383f493de8",
+    "src/frontend/static/css/game/domains/scenario/choices.css": "681b4be0d7bf0232cc127efe8dee498e27b4eb24cc85452f275e24a03fdd7044",
+    "src/frontend/static/css/game/domains/scenario/index.css": "cf3b2147a59be9f343280f6faf118863c72b4d3f85b96b38359e6bd20b3d4a7e",
+    "src/frontend/static/css/game/domains/scenario/panels.css": "aef51a8ce15da3f3e3596c089ca3c42469ce658cfdad4a8d0dcc38efddc3a3ad",
+    "src/frontend/static/css/game/domains/scenario/result.css": "040a9deb682112e90fe583367fd9a24162de49f7d672c90ce40c21aa305e5551",
+    "src/frontend/static/css/game/domains/scenario/scene.css": "8b5c4ab4e8d992cb0c1960b77dc1ae70df279100116cd34aa81c6e574daae4b5",
+    "src/frontend/static/css/game/domains/scenario/screen.css": "b2841a10d2d067232110608536ceb300ad8e3df9ac6b9fbaa266f4a394ea38de",
+    "src/frontend/static/css/game/domains/selection/index.css": "414d45bfbacf453cd30e1ec5646b4bf30c882ce8a283001e39877cc4842ec805",
+    "src/frontend/static/css/game/domains/selection/screen.css": "88aa3060d5d2ea64027b5d5d523c121d04df6dad63dddd6fa865905d53f699f7",
+    "src/frontend/static/css/game/domains/status/attributes.css": "65038874e8b3e5aab3b460bb406a9430ec3133e2ec24a4f0aa7334f8721a20ee",
+    "src/frontend/static/css/game/domains/status/avatar.css": "68037f5360c178b130bb9999ee43c0497b941855bec094225a048ba41b3a1ec0",
+    "src/frontend/static/css/game/domains/status/index.css": "e1e0ced38604b0f6067aa0ef6111859296f7f0298d0b7a27caae61ce944080ca",
+    "src/frontend/static/css/game/domains/status/metrics.css": "7cc8ea62b4c5caa0f1210000cf081c7f092f52a2b132bd55a4869b1cf2029d8a",
+    "src/frontend/static/css/game/domains/status/shell.css": "0b18e392a3da183672eab8ba6c7751e7d3fb3e089d9e9b914ddab39523d6e165",
+    "src/frontend/static/css/game/domains/status/skills.css": "d74eac48c06f283dd372eacd40ca1491079ff24b9c7721c4649f1f2af5de7b54",
+    "src/frontend/static/css/game/domains/status/tags.css": "606ea000b6b1e8465959b893456716645100461540474ed502e52968cfcde7cf",
+    "src/frontend/static/css/game/domains/status/vitals.css": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "src/frontend/static/css/game/shell/ambient.css": "3ac67710cf74ca24183824bb488227cd3a00b9245bc17c166f7e94d4a6c01f2c",
+    "src/frontend/static/css/game/shell/hud_windows.css": "8f2b7adad0663859305a9ebf2071915815965544909e7b0caf124ed7a503ab5d",
+    "src/frontend/static/css/game/shell/layout/base.css": "e53f3f6a6c31113b73cf4ad23dffee4f6f3fe5506b11997bcf9c524e982ca4a2",
+    "src/frontend/static/css/game/shell/layout/center_nav.css": "52480fd8d84842bb9d9d2d292d21e4ddf29623115fd0d16885d176e679a28d06",
+    "src/frontend/static/css/game/shell/layout/columns.css": "b78051a47b98ca15f4682690916cd018690e3437e1642efb96332bd9ab10c72f",
+    "src/frontend/static/css/game/shell/layout/footer.css": "9e9f154ec19293b4590c344aaa5dbbdef0e6de091e9cd1954b728e28e1af9fde",
+    "src/frontend/static/css/game/shell/layout/header.css": "468131c52801a5f79f0efd7a4b4ddb9fdcae095d676a10fb39f1082aadfc78ed",
+    "src/frontend/static/css/game/shell/layout/index.css": "f48ab809a1239fc8cc7e72a9228bb6f66e27063193186c31234cc9a424137366",
+    "src/frontend/static/css/game/shell/layout/legacy_screen.css": "5b5b2328ea57687aabe4150609971a12fcdc06d6be2ff982661d36bd2c3209c4",
+    "src/frontend/static/css/game/shell/layout/neural_controls.css": "e81318f19ea18e2fcf62beed52af67cb8605e0d89e73b361045662ee9e0001c3",
+    "src/frontend/static/css/game/shell/layout/utilities.css": "e79056bfee5dc7aa5761648485a213af712e675004798f0fa683246c3aeb0cf8",
+    "src/frontend/static/css/game/shell/responsive/columns_desktop.css": "98747e49290dbc9a071bb7152fd99cc8bd8d317dfc599f41dd71ae202d0af935",
+    "src/frontend/static/css/game/shell/responsive/combat_desktop.css": "31a7de2d63504e056584d7ee10ad94be91946d36c10dd85de27b7892f8adcc2b",
+    "src/frontend/static/css/game/shell/responsive/desktop_wide.css": "9e3932527e2514a9f0130ca9f1fce0f2a1f768ec0bb55420878a81aba9914a50",
+    "src/frontend/static/css/game/shell/responsive/index.css": "a7a0d84c6a7b7f8e2f5fdb67c3c49af69bc30451fab3e63d6addef7d647d74d7",
+    "src/frontend/static/css/game/shell/responsive/system_menu.css": "322c1898cd44a389fa09dd668951c6784147c0f9195b7a9e0e1fc7f8b0c2337c",
+    "src/frontend/static/css/game/shell/responsive/tablet_drawers.css": "902b1d0395d4041cd207326efa00999294851938600c2427861bf236bdf30a31",
+    "src/frontend/static/css/game/shell/responsive/tokens.css": "2545ec613094fa6d059c2db4effa01b52577f0a72f207751bcfdcf8753d41681"
+  },
+  "note": "Stable family shade identifiers preserve exact legacy RGB values. Never renumber; append future shades. Usage alpha is structural intensity; themes supply channels.",
+  "filter_tokens": {
+    "--filter-inventory-01": {
+      "original_path": "src/frontend/static/css/game/components/inventory.css",
+      "classic": "sepia(1) saturate(1.65) hue-rotate(354deg) brightness(1.18)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-inventory-02": {
+      "original_path": "src/frontend/static/css/game/components/inventory.css",
+      "classic": "sepia(1) saturate(2) hue-rotate(356deg) brightness(1.45)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-inventory-03": {
+      "original_path": "src/frontend/static/css/game/components/inventory.css",
+      "classic": "sepia(1) saturate(2) hue-rotate(356deg) brightness(1.45)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-tooltips-01": {
+      "original_path": "src/frontend/static/css/game/components/tooltips.css",
+      "classic": "invert(84%) sepia(38%) saturate(729%) hue-rotate(352deg) brightness(99%) contrast(101%)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-tooltips-02": {
+      "original_path": "src/frontend/static/css/game/components/tooltips.css",
+      "classic": "invert(48%) sepia(72%) saturate(1860%) hue-rotate(348deg) brightness(102%) contrast(98%)",
+      "adventure": "invert(48%) sepia(72%) saturate(1860%) hue-rotate(348deg) brightness(102%) contrast(98%)"
+    },
+    "--filter-tooltips-03": {
+      "original_path": "src/frontend/static/css/game/components/tooltips.css",
+      "classic": "invert(82%) sepia(64%) saturate(820%) hue-rotate(2deg) brightness(102%) contrast(101%)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-tooltips-04": {
+      "original_path": "src/frontend/static/css/game/components/tooltips.css",
+      "classic": "invert(58%) sepia(58%) saturate(1280%) hue-rotate(232deg) brightness(102%) contrast(102%)",
+      "adventure": "invert(58%) sepia(58%) saturate(1280%) hue-rotate(232deg) brightness(102%) contrast(102%)"
+    },
+    "--filter-tooltips-05": {
+      "original_path": "src/frontend/static/css/game/components/tooltips.css",
+      "classic": "invert(64%) sepia(48%) saturate(1280%) hue-rotate(170deg) brightness(102%) contrast(101%)",
+      "adventure": "invert(64%) sepia(48%) saturate(1280%) hue-rotate(170deg) brightness(102%) contrast(101%)"
+    },
+    "--filter-messages-01": {
+      "original_path": "src/frontend/static/css/game/domains/chat/messages.css",
+      "classic": "invert(84%) sepia(38%) saturate(729%) hue-rotate(352deg) brightness(99%) contrast(101%)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-actions-01": {
+      "original_path": "src/frontend/static/css/game/domains/combat/actions.css",
+      "classic": "invert(84%) sepia(38%) saturate(729%) hue-rotate(352deg) brightness(99%) contrast(101%)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-actions-02": {
+      "original_path": "src/frontend/static/css/game/domains/combat/actions.css",
+      "classic": "invert(59%) sepia(55%) saturate(820%) hue-rotate(7deg) brightness(96%) contrast(96%)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-actions-03": {
+      "original_path": "src/frontend/static/css/game/domains/combat/actions.css",
+      "classic": "invert(84%) sepia(38%) saturate(729%) hue-rotate(352deg) brightness(99%) contrast(101%)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-actions-04": {
+      "original_path": "src/frontend/static/css/game/domains/combat/actions.css",
+      "classic": "invert(48%) sepia(72%) saturate(1860%) hue-rotate(348deg) brightness(102%) contrast(98%)",
+      "adventure": "invert(48%) sepia(72%) saturate(1860%) hue-rotate(348deg) brightness(102%) contrast(98%)"
+    },
+    "--filter-actions-05": {
+      "original_path": "src/frontend/static/css/game/domains/combat/actions.css",
+      "classic": "invert(82%) sepia(64%) saturate(820%) hue-rotate(2deg) brightness(102%) contrast(101%)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-actions-06": {
+      "original_path": "src/frontend/static/css/game/domains/combat/actions.css",
+      "classic": "invert(58%) sepia(58%) saturate(1280%) hue-rotate(232deg) brightness(102%) contrast(102%)",
+      "adventure": "invert(58%) sepia(58%) saturate(1280%) hue-rotate(232deg) brightness(102%) contrast(102%)"
+    },
+    "--filter-actions-07": {
+      "original_path": "src/frontend/static/css/game/domains/combat/actions.css",
+      "classic": "invert(64%) sepia(48%) saturate(1280%) hue-rotate(170deg) brightness(102%) contrast(101%)",
+      "adventure": "invert(64%) sepia(48%) saturate(1280%) hue-rotate(170deg) brightness(102%) contrast(101%)"
+    },
+    "--filter-actions-08": {
+      "original_path": "src/frontend/static/css/game/domains/combat/actions.css",
+      "classic": "brightness(0)\n        saturate(100%)\n        invert(89%)\n        sepia(40%)\n        saturate(1180%)\n        hue-rotate(111deg)\n        brightness(108%)\n        contrast(106%)\n        drop-shadow(0 0 6px rgb(var(--tone-success-029-rgb) / 0.46))",
+      "adventure": "brightness(0)\n        saturate(100%)\n        invert(89%)\n        sepia(40%)\n        saturate(1180%)\n        hue-rotate(111deg)\n        brightness(108%)\n        contrast(106%)\n        drop-shadow(0 0 6px rgb(var(--tone-success-029-rgb) / 0.46))"
+    },
+    "--filter-actions-09": {
+      "original_path": "src/frontend/static/css/game/domains/combat/actions.css",
+      "classic": "brightness(0)\n        saturate(100%)\n        invert(82%)\n        sepia(42%)\n        saturate(1220%)\n        hue-rotate(173deg)\n        brightness(112%)\n        contrast(108%)\n        drop-shadow(0 0 7px rgb(var(--tone-energy-023-rgb) / 0.58))",
+      "adventure": "brightness(0)\n        saturate(100%)\n        invert(82%)\n        sepia(42%)\n        saturate(1220%)\n        hue-rotate(173deg)\n        brightness(112%)\n        contrast(108%)\n        drop-shadow(0 0 7px rgb(var(--tone-energy-023-rgb) / 0.58))"
+    },
+    "--filter-actions-10": {
+      "original_path": "src/frontend/static/css/game/domains/combat/actions.css",
+      "classic": "brightness(0)\n        saturate(100%)\n        invert(58%)\n        sepia(54%)\n        saturate(1350%)\n        hue-rotate(322deg)\n        brightness(104%)\n        contrast(104%)\n        drop-shadow(0 0 5px rgb(var(--tone-danger-041-rgb) / 0.28))",
+      "adventure": "brightness(0)\n        saturate(100%)\n        invert(58%)\n        sepia(54%)\n        saturate(1350%)\n        hue-rotate(322deg)\n        brightness(104%)\n        contrast(104%)\n        drop-shadow(0 0 5px rgb(var(--tone-danger-041-rgb) / 0.28))"
+    },
+    "--filter-logs-01": {
+      "original_path": "src/frontend/static/css/game/domains/combat/logs.css",
+      "classic": "sepia(1) saturate(2.15) hue-rotate(348deg) brightness(1.08)",
+      "adventure": "sepia(1) saturate(2.15) hue-rotate(348deg) brightness(1.08)"
+    },
+    "--filter-logs-02": {
+      "original_path": "src/frontend/static/css/game/domains/combat/logs.css",
+      "classic": "sepia(1) saturate(2.1) hue-rotate(350deg) brightness(1.1)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-logs-03": {
+      "original_path": "src/frontend/static/css/game/domains/combat/logs.css",
+      "classic": "sepia(1) saturate(2.2) hue-rotate(350deg) brightness(1.08)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-prototype-01": {
+      "original_path": "src/frontend/static/css/game/domains/combat/prototype.css",
+      "classic": "invert(74%) sepia(11%) saturate(646%) hue-rotate(357deg) brightness(87%) contrast(84%)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    },
+    "--filter-teams-01": {
+      "original_path": "src/frontend/static/css/game/domains/combat/teams.css",
+      "classic": "grayscale(.78) brightness(.62) contrast(1.24) hue-rotate(180deg)",
+      "adventure": "brightness(0) saturate(100%) invert(83%) sepia(22%) saturate(663%) hue-rotate(345deg) brightness(91%) contrast(91%)"
+    }
+  },
+  "original_source_archive_root": "archive/game_theme_migration/2026-10-24/css-originals"
+}

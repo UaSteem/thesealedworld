@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import time
 from typing import TYPE_CHECKING, Any
+from uuid import uuid4
 
 from loguru import logger
+from redis.exceptions import ResponseError
 
+from src.backend.infrastructure.combat.managers.atomic_batch import STAGED_BATCH_SCRIPT
 from src.backend.infrastructure.diagnostic_pagination import scan_key_page
 
 if TYPE_CHECKING:
@@ -15,6 +19,10 @@ if TYPE_CHECKING:
 
     from src.backend.features.combat.dto.ids import ActorId
     from src.backend.features.combat.dto.session import SessionDataDTO, TargetReturnDTO
+
+
+class CombatPersistenceError(RuntimeError):
+    """A combat transition was rejected without publishing staged mutations."""
 
 
 class CombatSessionManager:
@@ -80,35 +88,122 @@ class CombatSessionManager:
             return self.redis.json_module
         return self._client().json()
 
+    @staticmethod
+    def creation_fingerprint(data: SessionDataDTO) -> str:
+        """Fallback identity for direct callers; lifecycle supplies request identity."""
+        meta = {key: value for key, value in data.meta.items() if key not in {"start_time", "last_activity_at"}}
+        payload = {"meta": meta, "actors": data.actors, "targets": data.targets}
+        return hashlib.sha256(json.dumps(payload, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+
+    async def _publish_staged(self, keys: list[str], request: dict[str, Any], *, ttl: int) -> bool:
+        if not isinstance(ttl, int) or ttl <= 0:
+            raise ValueError("Combat TTL must be a positive integer")
+        request.update(nonce=uuid4().hex, ttl=ttl)
+        try:
+            return bool(await self._client().eval(STAGED_BATCH_SCRIPT, len(keys), *keys, json.dumps(request)))
+        except ResponseError as exc:
+            raise CombatPersistenceError(str(exc)) from exc
+
     async def create_session_batch(
         self,
         session_id: str,
         data: SessionDataDTO,
         *,
         ttl: int = DEFAULT_TTL_SECONDS,
-    ) -> None:
-        client = self._client()
-        async with client.pipeline(transaction=False) as pipe:
-            pipe.hset(self.meta_key(session_id), mapping={k: self._redis_value(v) for k, v in data.meta.items()})
-            pipe.expire(self.meta_key(session_id), ttl)
+        analytics: list[dict[str, Any] | str] | None = None,
+    ) -> bool:
+        fingerprint = str(data.meta.get("creation_fingerprint") or self.creation_fingerprint(data))
+        keys = [self.meta_key(session_id)]
+        operations: list[dict[str, Any]] = []
 
-            pipe.json().set(self.targets_key(session_id), "$", data.targets)
-            pipe.expire(self.targets_key(session_id), ttl)
+        def add(key: str, command: str, *args: Any) -> None:
+            if key not in keys:
+                keys.append(key)
+            operations.append({"index": keys.index(key) + 1, "command": command, "args": args})
 
-            for actor_id, actor_data in data.actors.items():
-                actor_key = self.actor_key(session_id, actor_id)
-                pipe.json().set(actor_key, "$", actor_data)
-                pipe.expire(actor_key, ttl)
+        meta = {**data.meta, "creation_fingerprint": fingerprint, "creation_complete": 1, "revision": 0}
+        add(keys[0], "HSET", *[item for key, value in meta.items() for item in (key, self._redis_value(value))])
+        add(self.targets_key(session_id), "JSON.SET", "$", json.dumps(data.targets))
+        for actor_id, actor_data in data.actors.items():
+            add(self.actor_key(session_id, actor_id), "JSON.SET", "$", json.dumps(actor_data))
+            add(
+                self.moves_key(session_id, actor_id),
+                "JSON.SET",
+                "$",
+                '{"exchange":{},"item":{},"instant":{},"system":{}}',
+            )
+        for key in (self.action_queue_key(session_id), self.log_key(session_id), self.analytics_key(session_id)):
+            add(key, "DEL")
+        mapping = self._analytics_mapping(analytics or [])
+        if mapping:
+            add(self.analytics_key(session_id), "HSET", *[item for pair in mapping.items() for item in pair])
+        required_json = [self.targets_key(session_id)]
+        for actor in data.actors:
+            required_json.extend([self.actor_key(session_id, actor), self.moves_key(session_id, actor)])
+        created = await self._publish_staged(
+            keys,
+            {
+                "mode": "create",
+                "fingerprint": fingerprint,
+                "operations": operations,
+                "required_json": required_json,
+            },
+            ttl=ttl,
+        )
+        logger.bind(session_id=session_id, actor_count=len(data.actors), created=created).info("CombatSessionCreated")
+        return created
 
-                moves_key = self.moves_key(session_id, actor_id)
-                pipe.json().set(moves_key, "$", {"exchange": {}, "item": {}, "instant": {}, "system": {}})
-                pipe.expire(moves_key, ttl)
+    async def load_existing_creation(self, session_id: str, fingerprint: str) -> SessionDataDTO | None:
+        """Read retry inputs atomically, including completeness of required keys."""
+        from src.backend.features.combat.dto.session import SessionDataDTO
 
-            pipe.delete(self.action_queue_key(session_id))
-            pipe.delete(self.log_key(session_id))
-            pipe.delete(self.analytics_key(session_id))
-            await pipe.execute()
-        logger.bind(session_id=session_id, actor_count=len(data.actors)).info("CombatSessionCreated")
+        script = """
+        local meta = redis.call('HGETALL', KEYS[1])
+        if #meta == 0 then return nil end
+        if redis.call('HGET', KEYS[1], 'creation_fingerprint') ~= ARGV[1] then
+            return redis.error_reply('Combat creation conflict or incomplete session')
+        end
+        if redis.call('HGET', KEYS[1], 'creation_complete') ~= '1' then
+            return redis.error_reply('Combat incomplete session')
+        end
+        local targets = redis.call('JSON.GET', ARGV[2] .. ':targets', '$')
+        if not targets then return redis.error_reply('Combat incomplete targets') end
+        local teams = cjson.decode(redis.call('HGET', KEYS[1], 'teams') or '{}')
+        local actors = {}
+        local seen = {}
+        for _, members in pairs(teams) do
+            for _, actor in ipairs(members) do
+                local id = tostring(actor)
+                if not seen[id] then
+                    local key = ARGV[2] .. ':actor:' .. id
+                    local raw = redis.call('JSON.GET', key, '$')
+                    if not raw or not redis.call('JSON.GET', key .. ':moves', '$') then
+                        return redis.error_reply('Combat incomplete actor snapshot')
+                    end
+                    table.insert(actors, {id, raw})
+                    seen[id] = true
+                end
+            end
+        end
+        return {meta, actors, targets}
+        """
+        try:
+            result = await self._client().eval(
+                script, 1, self.meta_key(session_id), fingerprint, f"combat:rbc:{session_id}"
+            )
+        except ResponseError as exc:
+            raise CombatPersistenceError(str(exc)) from exc
+        if not result:
+            return None
+        raw_meta, actors, targets = result
+        meta = {
+            self._decode(key): self._decode(value) for key, value in zip(raw_meta[::2], raw_meta[1::2], strict=True)
+        }
+        return SessionDataDTO(
+            meta=meta,
+            actors={self._decode(actor): json.loads(raw)[0] for actor, raw in actors},
+            targets=json.loads(targets)[0],
+        )
 
     async def universal_hot_join(
         self,
@@ -552,19 +647,34 @@ class CombatSessionManager:
 
     async def load_full_context_data(self, session_id: str, actor_ids: Sequence[str | int]) -> dict[str, Any]:
         async with self._client().pipeline(transaction=False) as pipe:
+            # redis-py JSON registers a JSON.GET response decoder even for raw
+            # execute_command. Override it only on this private pipeline.
+            pipe.response_callbacks = dict(pipe.response_callbacks)
+            pipe.response_callbacks["JSON.GET"] = lambda response, **_options: response
             for actor_id in actor_ids:
-                pipe.json().get(self.actor_key(session_id, actor_id), "$")
-                pipe.json().get(self.moves_key(session_id, actor_id), "$")
+                # Preserve exact source serialization for compare-at-acceptance.
+                pipe.execute_command("JSON.GET", self.actor_key(session_id, actor_id), "$")
+                pipe.execute_command("JSON.GET", self.moves_key(session_id, actor_id), "$")
             pipe.lrange(self.action_queue_key(session_id), 0, -1)
             results = await pipe.execute(raise_on_error=False)
 
         data: dict[str, Any] = {}
         for index, actor_id in enumerate(actor_ids):
-            actor_data = self._first_dict(results[index * 2]) if index * 2 < len(results) else {}
-            moves_data = self._first(results[index * 2 + 1]) if index * 2 + 1 < len(results) else {}
+            source = results[index * 2] if index * 2 < len(results) else None
+            if not isinstance(source, (str, bytes)):
+                raise CombatPersistenceError(f"Missing combat actor snapshot: {actor_id}")
+            source_json = self._decode(source)
+            actor_data = self._first_dict(json.loads(source_json))
+            if not actor_data:
+                raise CombatPersistenceError(f"Missing combat actor snapshot: {actor_id}")
+            moves_raw = results[index * 2 + 1] if index * 2 + 1 < len(results) else None
+            if not isinstance(moves_raw, (str, bytes)):
+                raise CombatPersistenceError(f"Missing combat moves snapshot: {actor_id}")
+            moves_data = self._first(json.loads(moves_raw))
             actor_data = actor_data or {}
             meta = actor_data.get("meta", {})
             data[str(actor_id)] = {
+                "source_json": source_json,
                 "state": {
                     "hp": meta.get("hp", 0),
                     "max_hp": meta.get("max_hp", 0),
@@ -604,53 +714,117 @@ class CombatSessionManager:
         dead_actor_ids: Iterable[Any] | None = None,
         meta_update: dict[str, Any] | None = None,
         analytics: list[dict[str, Any] | str] | None = None,
-    ) -> None:
-        grouped_logs = await self._merge_logs_by_turn(session_id, logs) if logs else {}
-        analytics_entries = self._analytics_mapping(analytics or [])
-        async with self._client().pipeline(transaction=False) as pipe:
-            for actor_id, actor_update in updates.items():
-                key = self.actor_key(session_id, actor_id)
-                if "state" in actor_update:
-                    state_update = actor_update["state"]
-                    pipe.json().merge(key, "$.meta", state_update)
-                    if "feints" in state_update:
-                        pipe.json().set(key, "$.meta.feints", state_update["feints"])
-                if "statuses" in actor_update:
-                    pipe.json().set(key, "$.statuses", actor_update["statuses"])
-                if "xp" in actor_update:
-                    pipe.json().set(key, "$.xp_buffer", actor_update["xp"])
-                if "raw" in actor_update:
-                    pipe.json().set(key, "$.raw", actor_update["raw"])
-                if "raw_temp" in actor_update:
-                    pipe.json().set(key, "$.raw.temp", actor_update["raw_temp"])
-                if "stats" in actor_update:
-                    pipe.json().set(key, "$.stats", actor_update["stats"])
-                if "explanation" in actor_update:
-                    pipe.json().set(key, "$.explanation", actor_update["explanation"])
-            if grouped_logs:
-                pipe.hset(self.log_key(session_id), mapping=grouped_logs)
-            if analytics_entries:
-                pipe.hset(self.analytics_key(session_id), mapping=analytics_entries)
-            if processed_count > 0:
-                pipe.ltrim(self.action_queue_key(session_id), processed_count, -1)
-            if dead_actor_ids:
-                pipe.eval(
-                    self._prune_dead_targets_script(),
-                    1,
-                    self.targets_key(session_id),
-                    json.dumps([str(actor_id) for actor_id in dead_actor_ids]),
-                )
-            if target_returns:
-                for pair in target_returns:
-                    pipe.json().arrappend(
-                        self.targets_key(session_id), self._json_member_path(pair["source_id"]), pair["target_id"]
-                    )
-            if dead_actors is not None:
-                pipe.hset(self.meta_key(session_id), "dead_actors", dead_actors)
-            if meta_update:
-                pipe.hset(self.meta_key(session_id), mapping={k: self._redis_value(v) for k, v in meta_update.items()})
-            await pipe.execute()
-        await self.refresh_session_ttl(session_id)
+        *,
+        owner: str,
+        expected_revision: int,
+        exchange_id: str,
+        expected_actions: Sequence[str | bytes],
+        expected_actors: dict[str, str] | None = None,
+        expected_meta: dict[str, Any] | None = None,
+    ) -> bool:
+        """Accept one fenced exchange, or return False for its exact replay.
+
+        Fallible commands run on private copies. A failed command cannot expose
+        actors without matching queue, targets, logs, analytics and metadata.
+        """
+        if not owner or not exchange_id or expected_revision < 0:
+            raise ValueError("Combat commit requires owner, revision and exchange identity")
+        if processed_count < 0 or processed_count != len(expected_actions):
+            raise ValueError("Consumed count must match the exact action prefix")
+        if any(
+            key in (meta_update or {})
+            for key in (
+                "revision",
+                "last_exchange_id",
+                "last_exchange_digest",
+                "creation_fingerprint",
+                "creation_complete",
+            )
+        ):
+            raise ValueError("Reserved combat metadata")
+        keys = [self.meta_key(session_id)]
+        operations: list[dict[str, Any]] = []
+
+        def index(key: str) -> int:
+            if key not in keys:
+                keys.append(key)
+            return keys.index(key) + 1
+
+        def add(key: str, command: str, *args: Any, required: bool = False) -> None:
+            operations.append({"index": index(key), "command": command, "args": args, "required": required})
+
+        for actor_id, update in updates.items():
+            key = self.actor_key(session_id, actor_id)
+            if "state" in update:
+                add(key, "JSON.MERGE", "$.meta", json.dumps(update["state"]), required=True)
+                if "feints" in update["state"]:
+                    add(key, "JSON.SET", "$.meta.feints", json.dumps(update["state"]["feints"]), required=True)
+            for field, path in (
+                ("statuses", "$.statuses"),
+                ("xp", "$.xp_buffer"),
+                ("raw", "$.raw"),
+                ("raw_temp", "$.raw.temp"),
+                ("stats", "$.stats"),
+                ("explanation", "$.explanation"),
+            ):
+                if field in update:
+                    add(key, "JSON.SET", path, json.dumps(update[field]), required=True)
+        if logs:
+            operations.append(
+                {"index": index(self.log_key(session_id)), "kind": "logs", "entries": self._group_logs_by_turn(logs)}
+            )
+        mapping = self._analytics_mapping(analytics or [])
+        if mapping:
+            add(self.analytics_key(session_id), "HSET", *[item for pair in mapping.items() for item in pair])
+        if processed_count:
+            add(self.action_queue_key(session_id), "LTRIM", processed_count, -1)
+        dead = [str(actor) for actor in (dead_actor_ids or [])]
+        if dead:
+            operations.append({"index": index(self.targets_key(session_id)), "kind": "prune", "dead": dead})
+        for pair in target_returns or []:
+            add(
+                self.targets_key(session_id),
+                "JSON.ARRAPPEND",
+                self._json_member_path(pair["source_id"]),
+                json.dumps(pair["target_id"]),
+                required=True,
+            )
+        meta = dict(meta_update or {})
+        if dead_actors is not None:
+            meta["dead_actors"] = dead_actors
+        meta["revision"] = expected_revision + 1
+        add(keys[0], "HSET", *[item for key, value in meta.items() for item in (key, self._redis_value(value))])
+        request = {
+            "mode": "commit",
+            "lock_key": self.busy_lock_key(session_id),
+            "owner": owner,
+            "revision": expected_revision,
+            "exchange_id": exchange_id,
+            "queue_key": self.action_queue_key(session_id),
+            "actions": [self._decode(action) for action in expected_actions],
+            "expected_meta": {key: str(self._redis_value(value)) for key, value in (expected_meta or {}).items()},
+            "expected_actors": {
+                self.actor_key(session_id, actor): raw for actor, raw in (expected_actors or {}).items()
+            },
+            "operations": operations,
+        }
+        digest_payload = {key: value for key, value in request.items() if key != "owner"}
+        request["digest"] = hashlib.sha256(json.dumps(digest_payload, sort_keys=True).encode()).hexdigest()
+        add(keys[0], "HSET", "last_exchange_id", exchange_id, "last_exchange_digest", request["digest"])
+        # Refresh all runtime key TTLs inside publication, including unchanged
+        # move documents. Copying in Lua preserves concurrently appended intents.
+        current_meta = expected_meta if expected_meta is not None else await self.get_meta(session_id)
+        for key in (
+            self.targets_key(session_id),
+            self.action_queue_key(session_id),
+            self.log_key(session_id),
+            self.analytics_key(session_id),
+        ):
+            index(key)
+        for actor in self.actor_ids_from_meta(current_meta or {}):
+            index(self.actor_key(session_id, actor))
+            index(self.moves_key(session_id, actor))
+        return await self._publish_staged(keys, request, ttl=self.DEFAULT_TTL_SECONDS)
 
     @staticmethod
     def _prune_dead_targets_script() -> str:
@@ -744,8 +918,17 @@ class CombatSessionManager:
         return bool(result)
 
     async def append_log(self, session_id: str, entry: dict[str, Any] | str) -> None:
-        grouped = await self._merge_logs_by_turn(session_id, [entry])
-        await self._client().hset(self.log_key(session_id), mapping=grouped)
+        turn, additions = next(iter(self._group_logs_by_turn([entry]).items()))
+        # Other log writers must not overwrite an accepted exchange with a
+        # mapping read before its publication. Parsing precedes the sole write.
+        script = """
+        local raw = redis.call('HGET', KEYS[1], ARGV[1])
+        local values = raw and cjson.decode(raw) or {}
+        for _, value in ipairs(cjson.decode(ARGV[2])) do table.insert(values, value) end
+        local encoded = cjson.encode(values)
+        return redis.call('HSET', KEYS[1], ARGV[1], encoded)
+        """
+        await self._client().eval(script, 1, self.log_key(session_id), turn, additions)
 
     async def append_analytics(self, session_id: str, entry: dict[str, Any] | str) -> None:
         mapping = self._analytics_mapping([entry])

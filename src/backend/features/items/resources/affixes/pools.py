@@ -129,19 +129,6 @@ AFFIX_POOLS_BY_SLOT: dict[str, list[str]] = {
         "pathfinding_bonus",
         "cold_resistance_bonus",
     ],
-    "chest_garment": [
-        "evasion_bonus",
-        "cold_resistance_bonus",
-        "heat_resistance_bonus",
-        "bio_resistance_bonus",
-        "hp_regen_bonus",
-    ],
-    "legs_garment": [
-        "evasion_bonus",
-        "cold_resistance_bonus",
-        "heat_resistance_bonus",
-        "travel_speed",
-    ],
     "outer_garment": [
         "cold_resistance_bonus",
         "heat_resistance_bonus",

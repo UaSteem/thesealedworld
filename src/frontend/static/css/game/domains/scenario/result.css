@@ -3,19 +3,19 @@
     min-height: 0;
     display: grid;
     grid-template-rows: 170px minmax(0, 1fr) auto;
-    gap: 10px;
-    padding: 10px;
-    border: 1px solid rgba(153, 160, 170, 0.22);
+    gap: var(--space-10);
+    padding: var(--space-10);
+    border: 1px solid rgb(var(--tone-neutral-010-rgb) / 0.22);
     background:
-        linear-gradient(180deg, rgba(153, 160, 170, 0.08), rgba(5, 5, 7, 0.72)),
-        rgba(5, 5, 7, 0.86);
+        linear-gradient(180deg, rgb(var(--tone-neutral-010-rgb) / 0.08), rgb(var(--tone-surface-022-rgb) / 0.72)),
+        rgb(var(--tone-surface-022-rgb) / 0.86);
     overflow: hidden;
 }
 
 .scenario-result-art {
     min-width: 0;
     min-height: 0;
-    border: 1px solid rgba(245, 232, 204, 0.12);
+    border: 1px solid rgb(var(--tone-text-050-rgb) / 0.12);
     overflow: hidden;
 }
 
@@ -35,36 +35,36 @@
 .scenario-reward-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 6px;
+    gap: var(--space-6);
 }
 
 .scenario-reward-grid span {
     min-width: 0;
     display: grid;
-    gap: 5px;
-    padding: 8px;
-    border: 1px solid rgba(153, 160, 170, 0.18);
-    background: rgba(0, 0, 0, 0.26);
+    gap: var(--space-5);
+    padding: var(--sp-2);
+    border: 1px solid rgb(var(--tone-neutral-010-rgb) / 0.18);
+    background: rgb(var(--tone-surface-001-rgb) / 0.26);
 }
 
 .scenario-reward-grid b {
-    color: rgba(210, 180, 140, 0.48);
+    color: rgb(var(--tone-text-002-rgb) / 0.48);
     font-size: var(--text-2xs);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.12em;
 }
 
 .scenario-reward-grid strong {
     color: var(--scenario-accent);
     font-size: var(--text-sm);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.08em;
 }
 
 .scenario-final-actions {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
+    gap: var(--space-6);
 }
 
 @keyframes scenario-alert-flicker {
@@ -125,8 +125,8 @@
     .scenario-result-card {
         grid-template-columns: 300px minmax(0, 1fr);
         grid-template-rows: minmax(0, 1fr) auto;
-        gap: 16px;
-        padding: 16px;
+        gap: var(--sp-4);
+        padding: var(--sp-4);
     }
 
     .scenario-result-art {
@@ -138,130 +138,11 @@
     }
 }
 
-@media (max-width: 1279px) {
-    .scenario-copy h2,
-    .scenario-result-card h2 {
-        font-size: var(--text-2xl);
-    }
 
-    .scenario-text,
-    .scenario-result-card p {
-        font-size: var(--text-base);
-    }
 
-    .scenario-choice-list {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
 
-@media (max-width: 768px) {
-    .scenario-screen {
-        --scenario-padding: 8px;
-        width: 100%;
-    }
 
-    .scenario-statebar {
-        grid-template-columns: minmax(0, 1fr) auto;
-        min-height: 34px;
-    }
 
-    .scenario-statebar em {
-        display: none;
-    }
-
-    .scenario-stage {
-        padding: 8px;
-    }
-
-    .scenario-copy {
-        padding: 10px;
-    }
-
-    .scenario-copy h2,
-    .scenario-result-card h2 {
-        font-size: var(--text-xl);
-    }
-
-    .scenario-title {
-        gap: 5px;
-    }
-
-    .scenario-title-coords {
-        gap: 3px;
-        padding: 2px 4px;
-        font-size: var(--text-2xs);
-    }
-
-    .scenario-text,
-    .scenario-result-card p {
-        font-size: var(--text-sm);
-    }
-
-    .scenario-choice-list,
-    .scenario-final-actions {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .scenario-choice {
-        min-height: 36px;
-    }
-
-    .scenario-reward-grid {
-        grid-template-columns: minmax(0, 1fr);
-    }
-}
-
-@media (max-width: 500px) {
-    .scenario-screen {
-        --scenario-gap: 6px;
-        --scenario-padding: 6px;
-    }
-
-    .scenario-statebar strong,
-    .scenario-statebar span {
-        font-size: var(--text-2xs);
-    }
-
-    .scenario-title-coords {
-        font-size: var(--text-2xs);
-    }
-
-    .scenario-subject {
-        min-width: 78px;
-        margin-left: 9px;
-    }
-
-    .scenario-watch {
-        grid-template-columns: auto minmax(0, 1fr) 44px;
-        min-height: 38px;
-        gap: 6px;
-        padding: 6px;
-    }
-
-    .scenario-choice {
-        grid-template-columns: 24px minmax(0, 1fr);
-        gap: 7px;
-        padding: 6px 8px;
-    }
-
-    .scenario-choice-icon {
-        width: 22px;
-        height: 22px;
-    }
-
-    .scenario-choice-icon::before {
-        width: 13px;
-        height: 13px;
-    }
-
-    .scenario-choice-copy strong {
-        font-size: var(--text-2xs);
-    }
-
-    .scenario-choice-copy small {
-        font-size: var(--text-2xs);
-    }
-}
 
 
 
@@ -269,6 +150,6 @@
 .arena-screen {
     --center-content-max: 1040px;
     align-items: stretch;
-    gap: 8px;
+    gap: var(--sp-2);
     min-width: 0;
 }

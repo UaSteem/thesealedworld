@@ -112,6 +112,10 @@ def deterministic_resolver(monkeypatch):
         return resolve(source, target, ctx)
 
     monkeypatch.setattr(CombatResolver, "resolve_exchange", staticmethod(resolve_hit))
+    # Keep preparation ownership tests independent of random tactical entry.
+    from src.backend.features.combat.runtime.engine.tactical_state import TacticalStateService
+
+    monkeypatch.setattr(TacticalStateService, "roll", staticmethod(lambda seed, actor: 0.99))
 
 
 @pytest.mark.unit
@@ -153,7 +157,7 @@ async def test_partner_offhand_never_activates_players_self_preparation(determin
     for entry in strike_logs:
         if entry["execution"]["origin"] == "offhand":
             assert entry["execution"]["parent_id"] in primary_ids
-            assert ".off_hand." in entry["template"]["key"]
+            assert entry["format"] == "factual-v1"
 
 
 @pytest.mark.unit

@@ -44,12 +44,12 @@
     "prepared/impact/hatchet_main_hand/tier_3.py": "3de8f953df846b0f8dc37c4a836770e03496b6fc39d6c77381f072ea72e80c7c",
     "prepared/impact/hatchet_main_hand/tier_4.py": "cf24f4ca52c700fa0f7a25e7a4220a935c7fe9e84443e737859907e01ec7619b",
     "prepared/impact/hatchet_main_hand/tier_5.py": "f2d9af56ce99f692a6c838e2f3cb85a9c8345d8b6042a690fa5ed67642ce29b5",
-    "prepared/mobile/jerkin_chest_armor/tier_0.py": "1ef49ab3364f12f03463c1b568fe29007802beda44dc927edb9c16fbb0187f62",
-    "prepared/mobile/jerkin_chest_armor/tier_1.py": "70661159f3aba90c47ef829ca94f90f18005f237d1146e0b6b7a2ceeccb3e039",
-    "prepared/mobile/jerkin_chest_armor/tier_2.py": "1fae12e88523d92528d3d14458fa9ffe52f281f99e0db139ac42c61e3d4cabc0",
-    "prepared/mobile/jerkin_chest_armor/tier_3.py": "7f7e18164a593603b9f35415fe475365dbb95b4894ba7addd2a453cfbe859c77",
-    "prepared/mobile/jerkin_chest_armor/tier_4.py": "bc2caa467c2cb0bf9161d1c2de3a6e058d507c0abaa40ccce5dbfa49913a2483",
-    "prepared/mobile/jerkin_chest_armor/tier_5.py": "f888d941c7a8e0364ea97dd3f7295bcc207ad4131a4966aec47de953c59aabac",
+    "prepared/mobile/jerkin_chest_armor/tier_0.py": "b80d19818561724f9b6577f31b3270e1da26d14ac857bfcc3592019409fe0a70",
+    "prepared/mobile/jerkin_chest_armor/tier_1.py": "f4bcac4e0ccaac4fe30b247f3dac20505af4368c4db1134c1331bc8fda91e7a4",
+    "prepared/mobile/jerkin_chest_armor/tier_2.py": "813167ec9d873e32df351eff631cbdc604535f240600ab03f4ef147fc7b0d051",
+    "prepared/mobile/jerkin_chest_armor/tier_3.py": "972f31e622e99a6378275448b1f3d226d7bc6257046f9e01c43f98896f19fb2c",
+    "prepared/mobile/jerkin_chest_armor/tier_4.py": "21a41e21b84ebdb32c490c96a8cd0d02f0ac77ff046c590fff7ca4251ab3419e",
+    "prepared/mobile/jerkin_chest_armor/tier_5.py": "8513ac68dfdf8aab97b4287f78de1b22a9f431c698f2fcc69514c9ce06cafd92",
     "prepared/guard/kite_shield_off_hand/tier_0.py": "42b37755f716485193fba710a8353aa1c53d1c3e4b1dd78c5d892cd0c775a21a",
     "prepared/guard/kite_shield_off_hand/tier_1.py": "913b1f866cb3d3fac4bf3cdd5f3b2319ee12b8f61448b9d19eed99557c6d2bec",
     "prepared/guard/kite_shield_off_hand/tier_2.py": "461e82ddcde636e0ad75f6cd6973adb2863cae76c56bf687bd7b96b55f3fa2d1",
@@ -68,12 +68,12 @@
     "prepared/offhand/knife_off_hand/tier_3.py": "c9609b96d73ed95b6f0afa9152b629aa7382e86f8ea875a1a2c37ddd0c56e805",
     "prepared/offhand/knife_off_hand/tier_4.py": "083671d60113b1a31705c6609e108e1c437f588ff11c86bfade402f28af0d60e",
     "prepared/offhand/knife_off_hand/tier_5.py": "d0e0cb4b685b8e014ebc8f6f9281fb203c7cc7dbba765a782353967dba1e0021",
-    "prepared/mobile/leather_armor_chest_armor/tier_0.py": "ca3f54a23b2bb44ded54dacd0f6f85f645c43308dbbffc197ac8481f49fe86fb",
-    "prepared/mobile/leather_armor_chest_armor/tier_1.py": "c729878a18f08029d9e73c5210c68d74efc51aeacbb16ae9b25ec7252a0427d9",
-    "prepared/mobile/leather_armor_chest_armor/tier_2.py": "d4f77c90915f2290d5186cd91abf97d67d6a6f9482b5fbdac6342eef49424ca8",
-    "prepared/mobile/leather_armor_chest_armor/tier_3.py": "307940c2a0acf3edd43f4662c50c636f7da009a9209ab67293b33234e9b13a4f",
-    "prepared/mobile/leather_armor_chest_armor/tier_4.py": "be6102853cf6ffe334f64a1278febc3e7ba916db2ad858cc995495a51a457df3",
-    "prepared/mobile/leather_armor_chest_armor/tier_5.py": "abd88f0381285de9bc57d45bf0b2096be5512d8915ce02b669d48e6844cb78af",
+    "prepared/mobile/leather_armor_chest_armor/tier_0.py": "0d808297f9fd689559659e63c60bdadca744f0c9f97911cf0e79349a60067c89",
+    "prepared/mobile/leather_armor_chest_armor/tier_1.py": "45dcbf1d25daf13fb27c0f93575bae2624624dfa944a5798adf554a123c85d48",
+    "prepared/mobile/leather_armor_chest_armor/tier_2.py": "74f4e75a93ac958eed5d741620015728d0639d092ac09aa6cadf46107fe8c78f",
+    "prepared/mobile/leather_armor_chest_armor/tier_3.py": "6e92e062d01dccbda9a66ca336b1176e062610f76ff19b2f8d7d3e4b1850b9eb",
+    "prepared/mobile/leather_armor_chest_armor/tier_4.py": "c381f84109e3ed3d0a87800ce2f6ae30d3abdb4dad1b244681ed4935cd5aa31e",
+    "prepared/mobile/leather_armor_chest_armor/tier_5.py": "f15587791f3f48da94a50af7440951435df80b462588dc9a5b4ef776e6c36337",
     "prepared/impact/mace_main_hand/tier_0.py": "58a0e13db52d48c702562c9791a877d4838956eb4e671759601c474d068fa6b1",
     "prepared/impact/mace_main_hand/tier_1.py": "fe5b080500ce5d3ece1411bcdc3389ea1f1e74e9e605649a8b875c50ea88e537",
     "prepared/impact/mace_main_hand/tier_2.py": "23637ad87032c5ab896799851a191680f1c8bec1d43bab571fe57727059c1d12",
@@ -86,24 +86,24 @@
     "prepared/offhand/main_gauche_off_hand/tier_3.py": "40c4d74036c141abe16f116eb7007ca881a7e915d5b158a2532019ebc4cc6a25",
     "prepared/offhand/main_gauche_off_hand/tier_4.py": "70e5adea4cc444d4d0005debcb00dc33494f3be930c351622e4ce47a2e6f7099",
     "prepared/offhand/main_gauche_off_hand/tier_5.py": "7396c02ef0b15e778bc2cce23d6ee4ee7476d88fa04e3c7175b29b1eecb184de",
-    "prepared/fortified/plate_chest_chest_armor/tier_0.py": "dea39a8f6a192a7748743c9b6a66cd07cb8d0298322428e0a37367aa0309e845",
-    "prepared/fortified/plate_chest_chest_armor/tier_1.py": "5fea2973e0886f2539a26207db0c0def81f42afd689f980e34c85110f5f71265",
-    "prepared/fortified/plate_chest_chest_armor/tier_2.py": "2b3d5f4423122d75511e58016c2df8a416d3ae5699715231a1714bf08a78cf64",
-    "prepared/fortified/plate_chest_chest_armor/tier_3.py": "3028d868263f0712fc0ae70faf551ac3e941c499106cfe54bbe6f60a74857ba7",
-    "prepared/fortified/plate_chest_chest_armor/tier_4.py": "c57c43ffa79445407b9e269683bfd04870a3538fb3123c13c91b944f729a7153",
-    "prepared/fortified/plate_chest_chest_armor/tier_5.py": "15542d4becaad4d26d669f5f500cb2d77f03c5a68a483a13f2f3ff97eeab9ee3",
-    "prepared/ammunition/quiver_fire_quiver/tier_0.py": "31f080f2a9b3d5ad3b4ea677b907d862fc4f77ed6f167c34bc10f2d1e2088b99",
-    "prepared/ammunition/quiver_fire_quiver/tier_1.py": "4b84a02bb78c8934733adaceef9cc4ae0af43569ee1a3fc0ce87763e027829bd",
-    "prepared/ammunition/quiver_fire_quiver/tier_2.py": "38af7f613e6cb3e75709dbb91339340904c04ad8aa17a8cca14bc25571bc0925",
-    "prepared/ammunition/quiver_fire_quiver/tier_3.py": "279cb5b97d6b47dba705f9d1f421d566ce88041169927e8ca9e01c5c04e83acd",
-    "prepared/ammunition/quiver_fire_quiver/tier_4.py": "5dfcf099ebb1c359294781d202acbd850a5bdf99575550124bcaceb63b6c38e0",
-    "prepared/ammunition/quiver_fire_quiver/tier_5.py": "a885ae78b15a220e06f08b773ece05b00963179f35970f10b650055724642275",
-    "prepared/ammunition/quiver_training_quiver/tier_0.py": "b1310315a01132cbcf157981329451ebc4d28c65de3e84704561fc6e90d10bff",
-    "prepared/ammunition/quiver_training_quiver/tier_1.py": "bede249e2d1d51889f6c61164d7f96f56d52b0b7e671a2d21a54fd599e8b08f5",
-    "prepared/ammunition/quiver_training_quiver/tier_2.py": "c53ac151275c7cd37d44e717712955ef05a8df9095ca2e9f08528a9c0d1290c6",
-    "prepared/ammunition/quiver_training_quiver/tier_3.py": "ecbcd1cb45c1c98cd1e1aebdb449fa3682116106a99b58c2a0d4965c019a23c1",
-    "prepared/ammunition/quiver_training_quiver/tier_4.py": "0183ee86ae72a92539af5b1f77bcd80fa16357987d4cc11356a2acf8c88e137e",
-    "prepared/ammunition/quiver_training_quiver/tier_5.py": "73a0a2509de8a9c9d39b2f79f9be56413e18a9c799eb21c4ab291ef3d77ff3e1",
+    "prepared/fortified/plate_chest_chest_armor/tier_0.py": "8868af1c8a38910d8900fc473b27f994fbc23bc22fe0fb4cb1d825c6d86c703c",
+    "prepared/fortified/plate_chest_chest_armor/tier_1.py": "1f483b773b3b39cf7bfef2092a1d42e5d366ee0ccc2650f7e61a61e5ae246e9d",
+    "prepared/fortified/plate_chest_chest_armor/tier_2.py": "0f2b3e13a4830371a42be4721f08e89c61e700bb55617a7bc66176003e2b4de0",
+    "prepared/fortified/plate_chest_chest_armor/tier_3.py": "8e7ab05534471944cf36dbdb7cec12215b8fb04cd4b3ef055263851076dc33bd",
+    "prepared/fortified/plate_chest_chest_armor/tier_4.py": "ba6f0f5817c1ecfdccf9eb060e3f1d2943c8ef3b196bf50878c3f848e2f38d76",
+    "prepared/fortified/plate_chest_chest_armor/tier_5.py": "c8947d327ddfd4d3f12672b4a2f5eb3d22fdd43a9061acbb9c5c5708862e339d",
+    "prepared/ammunition/quiver_fire_quiver/tier_0.py": "5c3eeff6af49d444096b55629ef1cb2e65db00abd820665da6a470ea0c6d2b49",
+    "prepared/ammunition/quiver_fire_quiver/tier_1.py": "7cd51c56e68ec510dd83addf63714a6a14d00318635b1873bf937a5ab95bfd3c",
+    "prepared/ammunition/quiver_fire_quiver/tier_2.py": "9cd7f70793d5835d1d9ae10a5a4cd0d6c55733af4176ef069d5f2e08d467f4cc",
+    "prepared/ammunition/quiver_fire_quiver/tier_3.py": "36f6b8b90ebf42449d25c1acef631dac60b1db3c8e4469c5c787953958f7892f",
+    "prepared/ammunition/quiver_fire_quiver/tier_4.py": "9e254b395250a04d67d5d3f3a50c2f8b4a483344d94c67f28905364c8d01b62e",
+    "prepared/ammunition/quiver_fire_quiver/tier_5.py": "28219ece821319a35b3ded58e4b206dc9f6404a5c5561e682816cb5082e792f4",
+    "prepared/ammunition/quiver_training_quiver/tier_0.py": "59d59612ea6c3bbe8c18e01ff1428901b02b9810310da86be2f8b345a6a365c7",
+    "prepared/ammunition/quiver_training_quiver/tier_1.py": "743627d895b944dc5df6f77e5996f1222aa8e52f0432a876e6275456966e6d32",
+    "prepared/ammunition/quiver_training_quiver/tier_2.py": "96e4a6e5567ebc4bfad4cfc889427b0fcfd4cff556e7d885f10e14346a312b63",
+    "prepared/ammunition/quiver_training_quiver/tier_3.py": "f471c8e5e9da07361e1875f221c908d690a872423268815aaf1e05cf965d84cc",
+    "prepared/ammunition/quiver_training_quiver/tier_4.py": "1bb3b67ec1cc47cba600a4e3d881b8980504d8b0533a0c8c47096d1f71f393b7",
+    "prepared/ammunition/quiver_training_quiver/tier_5.py": "4da75d6133308414947abdfb8e9958f0c6f04a70c013b3e2e22b25836daf6dc9",
     "prepared/precision/rapier_main_hand/tier_0.py": "a17099ac564632de774a6bb6c551f8672d2a9c6d5dc30a4cf5e6d4d9d0c4a838",
     "prepared/precision/rapier_main_hand/tier_1.py": "79336c7e1b128ade97022c2b4ef2c8567af6f8b53d9c794556b9575857aa8f67",
     "prepared/precision/rapier_main_hand/tier_2.py": "a9aa05befd465ddc13db62a234edecb7676bd27222edadb3da662464111b17d6",
@@ -140,7 +140,7 @@
     "prepared/impact/warhammer_two_hand/tier_3.py": "015c33774227863a1bcfbbcac76bd0be8a58c30d77acb57e177ae556f0f700a0",
     "prepared/impact/warhammer_two_hand/tier_4.py": "a3b972aeeea9ddd38d04fe2bba235edfb2729dc701bd7d80952995e5d8e956c9",
     "prepared/impact/warhammer_two_hand/tier_5.py": "8c26710ece06308e31df50df9e9b01f9dcc6b8780a2415253d60e3fed5e54ca3",
-    "prepared/index.py": "19db586f0f384bc18393ebab738c283ac890444163798c3ed54a58a421306d9e"
+    "prepared/index.py": "e3af7604b924637aa0b9c3351abfda52277b51c0d1f5f4f9b3c7d684db6bbf97"
   },
   "definition_count": 138,
   "authoring": "Shared authored monster profiles, median rolls; existing tier/tick rules.",
@@ -168,5 +168,135 @@
       "amulet.amulet.nimble.t4": 3.0,
       "amulet.amulet.nimble.t5": 4.0
     }
-  }
+  },
+  "reviewed_identity_updates": [
+    {
+      "id": "item-base-slot-naming-2026-10-24",
+      "reason": "Catalog base ID normalization only. All 349 prepared payload files checked against tracked originals with exact ID-token substitution; no regeneration or numeric changes. Original provenance fields retained. Hashes include current Windows line endings.",
+      "base_id_renames": {
+        "hood": "light_hood",
+        "leather_armor": "light_chest_armor",
+        "soft_bracers": "light_bracers",
+        "scout_leggings": "light_leg_armor",
+        "leather_cap": "medium_helmet",
+        "jerkin": "medium_chest_armor",
+        "reinforced_gloves": "medium_bracers",
+        "breeches": "medium_leg_armor",
+        "helmet": "heavy_helmet",
+        "plate_chest": "heavy_chest_armor",
+        "gauntlets": "heavy_bracers",
+        "greaves": "heavy_leg_armor",
+        "linen_shirt": "shirt",
+        "wool_tunic": "tunic",
+        "fur_pants": "pants",
+        "travel_boots": "boots",
+        "work_gloves": "gloves",
+        "winter_cloak": "cloak",
+        "quiver_training": "quiver_standard"
+      },
+      "files": {
+        "prepared/mobile/jerkin_chest_armor/tier_0.py": {
+          "before": "1ef49ab3364f12f03463c1b568fe29007802beda44dc927edb9c16fbb0187f62",
+          "after": "b80d19818561724f9b6577f31b3270e1da26d14ac857bfcc3592019409fe0a70"
+        },
+        "prepared/mobile/jerkin_chest_armor/tier_1.py": {
+          "before": "70661159f3aba90c47ef829ca94f90f18005f237d1146e0b6b7a2ceeccb3e039",
+          "after": "f4bcac4e0ccaac4fe30b247f3dac20505af4368c4db1134c1331bc8fda91e7a4"
+        },
+        "prepared/mobile/jerkin_chest_armor/tier_2.py": {
+          "before": "1fae12e88523d92528d3d14458fa9ffe52f281f99e0db139ac42c61e3d4cabc0",
+          "after": "813167ec9d873e32df351eff631cbdc604535f240600ab03f4ef147fc7b0d051"
+        },
+        "prepared/mobile/jerkin_chest_armor/tier_3.py": {
+          "before": "7f7e18164a593603b9f35415fe475365dbb95b4894ba7addd2a453cfbe859c77",
+          "after": "972f31e622e99a6378275448b1f3d226d7bc6257046f9e01c43f98896f19fb2c"
+        },
+        "prepared/mobile/jerkin_chest_armor/tier_4.py": {
+          "before": "bc2caa467c2cb0bf9161d1c2de3a6e058d507c0abaa40ccce5dbfa49913a2483",
+          "after": "21a41e21b84ebdb32c490c96a8cd0d02f0ac77ff046c590fff7ca4251ab3419e"
+        },
+        "prepared/mobile/jerkin_chest_armor/tier_5.py": {
+          "before": "f888d941c7a8e0364ea97dd3f7295bcc207ad4131a4966aec47de953c59aabac",
+          "after": "8513ac68dfdf8aab97b4287f78de1b22a9f431c698f2fcc69514c9ce06cafd92"
+        },
+        "prepared/mobile/leather_armor_chest_armor/tier_0.py": {
+          "before": "ca3f54a23b2bb44ded54dacd0f6f85f645c43308dbbffc197ac8481f49fe86fb",
+          "after": "0d808297f9fd689559659e63c60bdadca744f0c9f97911cf0e79349a60067c89"
+        },
+        "prepared/mobile/leather_armor_chest_armor/tier_1.py": {
+          "before": "c729878a18f08029d9e73c5210c68d74efc51aeacbb16ae9b25ec7252a0427d9",
+          "after": "45dcbf1d25daf13fb27c0f93575bae2624624dfa944a5798adf554a123c85d48"
+        },
+        "prepared/mobile/leather_armor_chest_armor/tier_2.py": {
+          "before": "d4f77c90915f2290d5186cd91abf97d67d6a6f9482b5fbdac6342eef49424ca8",
+          "after": "74f4e75a93ac958eed5d741620015728d0639d092ac09aa6cadf46107fe8c78f"
+        },
+        "prepared/mobile/leather_armor_chest_armor/tier_3.py": {
+          "before": "307940c2a0acf3edd43f4662c50c636f7da009a9209ab67293b33234e9b13a4f",
+          "after": "6e92e062d01dccbda9a66ca336b1176e062610f76ff19b2f8d7d3e4b1850b9eb"
+        },
+        "prepared/mobile/leather_armor_chest_armor/tier_4.py": {
+          "before": "be6102853cf6ffe334f64a1278febc3e7ba916db2ad858cc995495a51a457df3",
+          "after": "c381f84109e3ed3d0a87800ce2f6ae30d3abdb4dad1b244681ed4935cd5aa31e"
+        },
+        "prepared/mobile/leather_armor_chest_armor/tier_5.py": {
+          "before": "abd88f0381285de9bc57d45bf0b2096be5512d8915ce02b669d48e6844cb78af",
+          "after": "f15587791f3f48da94a50af7440951435df80b462588dc9a5b4ef776e6c36337"
+        },
+        "prepared/fortified/plate_chest_chest_armor/tier_0.py": {
+          "before": "dea39a8f6a192a7748743c9b6a66cd07cb8d0298322428e0a37367aa0309e845",
+          "after": "8868af1c8a38910d8900fc473b27f994fbc23bc22fe0fb4cb1d825c6d86c703c"
+        },
+        "prepared/fortified/plate_chest_chest_armor/tier_1.py": {
+          "before": "5fea2973e0886f2539a26207db0c0def81f42afd689f980e34c85110f5f71265",
+          "after": "1f483b773b3b39cf7bfef2092a1d42e5d366ee0ccc2650f7e61a61e5ae246e9d"
+        },
+        "prepared/fortified/plate_chest_chest_armor/tier_2.py": {
+          "before": "2b3d5f4423122d75511e58016c2df8a416d3ae5699715231a1714bf08a78cf64",
+          "after": "0f2b3e13a4830371a42be4721f08e89c61e700bb55617a7bc66176003e2b4de0"
+        },
+        "prepared/fortified/plate_chest_chest_armor/tier_3.py": {
+          "before": "3028d868263f0712fc0ae70faf551ac3e941c499106cfe54bbe6f60a74857ba7",
+          "after": "8e7ab05534471944cf36dbdb7cec12215b8fb04cd4b3ef055263851076dc33bd"
+        },
+        "prepared/fortified/plate_chest_chest_armor/tier_4.py": {
+          "before": "c57c43ffa79445407b9e269683bfd04870a3538fb3123c13c91b944f729a7153",
+          "after": "ba6f0f5817c1ecfdccf9eb060e3f1d2943c8ef3b196bf50878c3f848e2f38d76"
+        },
+        "prepared/fortified/plate_chest_chest_armor/tier_5.py": {
+          "before": "15542d4becaad4d26d669f5f500cb2d77f03c5a68a483a13f2f3ff97eeab9ee3",
+          "after": "c8947d327ddfd4d3f12672b4a2f5eb3d22fdd43a9061acbb9c5c5708862e339d"
+        },
+        "prepared/ammunition/quiver_training_quiver/tier_0.py": {
+          "before": "b1310315a01132cbcf157981329451ebc4d28c65de3e84704561fc6e90d10bff",
+          "after": "6bae1d074089017841c478e8b88e205da091a570cbc8ede144343267074eb4e7"
+        },
+        "prepared/ammunition/quiver_training_quiver/tier_1.py": {
+          "before": "bede249e2d1d51889f6c61164d7f96f56d52b0b7e671a2d21a54fd599e8b08f5",
+          "after": "9592c37f809782241c5f1e4ed939dff1cbb8a27b37b94c3676a35d1039ee3f0c"
+        },
+        "prepared/ammunition/quiver_training_quiver/tier_2.py": {
+          "before": "c53ac151275c7cd37d44e717712955ef05a8df9095ca2e9f08528a9c0d1290c6",
+          "after": "529399c10767fa0ee2c4a1b6101e8020323ddad117ab404c8fb1167104aa5173"
+        },
+        "prepared/ammunition/quiver_training_quiver/tier_3.py": {
+          "before": "ecbcd1cb45c1c98cd1e1aebdb449fa3682116106a99b58c2a0d4965c019a23c1",
+          "after": "b05deb4cfe422658a33a4b3dfdb6213285c81de7ff5aed8f1a607060b4249c1a"
+        },
+        "prepared/ammunition/quiver_training_quiver/tier_4.py": {
+          "before": "0183ee86ae72a92539af5b1f77bcd80fa16357987d4cc11356a2acf8c88e137e",
+          "after": "7a00d0b296fc1eb6a3b2af4b11afc6cc846d32e8c3632200e9d21b081e48085c"
+        },
+        "prepared/ammunition/quiver_training_quiver/tier_5.py": {
+          "before": "73a0a2509de8a9c9d39b2f79f9be56413e18a9c799eb21c4ab291ef3d77ff3e1",
+          "after": "02d360b7034daced7d34e7c8e5eda0bc04d9f835172cd47fe9418c2993c1df17"
+        },
+        "prepared/index.py": {
+          "before": "19db586f0f384bc18393ebab738c283ac890444163798c3ed54a58a421306d9e",
+          "after": "be62d660097143ff7bd3d458338ea316acef91ce77e0652ddcfbf66b1f532e49"
+        }
+      },
+      "sources": {}
+    }
+  ]
 }

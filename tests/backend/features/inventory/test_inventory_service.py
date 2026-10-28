@@ -105,6 +105,8 @@ class FakeInstance:
         self.item_type = item.item_type
         self.rarity = item.rarity
         self.rarity_tier = item.rarity_tier
+        self.is_identified = item.is_identified
+        self.text_status = item.text_status
         self.name = item.name
         self.description = item.description
         self.mechanics = item.mechanics
@@ -331,7 +333,7 @@ async def test_open_window_uses_distinct_legwear_and_feetwear_icons(fake_redis_s
         [
             _item("pants-1", "garment", slot="legs_garment"),
             _item("boots-1", "garment", slot="feetwear"),
-            _item("greaves-1", "armor", slot="legs_armor"),
+            _item("heavy_leg_armor-1", "armor", slot="legs_armor"),
         ],
     )
 
@@ -340,7 +342,7 @@ async def test_open_window_uses_distinct_legwear_and_feetwear_icons(fake_redis_s
     rows = {row.item_id: row for row in window.visible_rows}
     assert rows["pants-1"].icon == "legwear"
     assert rows["boots-1"].icon == "feetwear"
-    assert rows["greaves-1"].icon == "legs_heavy"
+    assert rows["heavy_leg_armor-1"].icon == "legs_heavy"
 
 
 @pytest.mark.asyncio
@@ -375,16 +377,16 @@ async def test_open_window_exposes_equipped_quiver_slot(fake_redis_service, fake
         fake_redis_service,
         [
             _item("shortbow-1", "weapon", slot="two_hand", placement="equipped", tags=["bow", "archery"]),
-            _item("quiver_poison-1", "ammo", slot="quiver", placement="equipped", tags=["quiver", "arrows"]),
+            _item("quiver_poison-1", "ammo", slot="off_hand", placement="equipped", tags=["quiver", "arrows"]),
         ],
     )
 
     window = await service.open_window(7)
 
-    rows = {row.row_id: row for row in window.accessory_rows}
-    assert rows["quiver"].slots[0].slot_id == "quiver"
-    assert rows["quiver"].slots[0].label == "Колчан"
-    assert rows["quiver"].slots[0].item.item_id == "quiver_poison-1"
+    assert "quiver" not in {row.row_id for row in window.accessory_rows}
+    assert window.weapon_slots[1].slot_id == "off_hand"
+    assert window.weapon_slots[1].item.item_id == "quiver_poison-1"
+
 
 
 @pytest.mark.asyncio
@@ -443,6 +445,7 @@ async def test_open_window_builds_structured_item_tooltip_without_html(fake_redi
                 rarity="epic",
                 rarity_tier=4,
                 description="Structured item details.",
+                is_identified=True,
                 tags=["two_handed"],
             ),
         ],
@@ -1169,6 +1172,7 @@ def _item(
     description: str = "",
     tags: list[str] | None = None,
     is_unsecured: bool = False,
+    is_identified: bool = False,
 ) -> InventoryRuntimeItemDTO:
     mechanics = mechanics or {"valid_slots": [slot] if slot else []}
     return InventoryRuntimeItemDTO(
@@ -1180,6 +1184,8 @@ def _item(
         placement=placement,
         name=item_id,
         description=description,
+        is_identified=is_identified,
+        text_status="generated" if is_identified else "not_requested",
         rarity=rarity,
         rarity_tier=rarity_tier,
         sync_state="unsecured" if is_unsecured else "secured",

@@ -91,25 +91,26 @@ window.ExplorationRiskFrame = {
 
         let color;
         if (isEncounter) {
-            color = [255, 58, 42];
+            color = 'var(--game-risk-danger)';
         } else if (isSafeZone) {
-            color = [70, 238, 142];
+            color = 'var(--game-risk-safe)';
         } else if (threat < 0.5) {
             const t = threat / 0.5;
-            color = this.mix([220, 184, 48], [230, 106, 28], t);
+            color = this.mix('var(--game-risk-low)', 'var(--game-risk-medium)', t);
         } else {
             const t = (threat - 0.5) / 0.5;
-            color = this.mix([230, 106, 28], [255, 58, 42], t);
+            color = this.mix('var(--game-risk-medium)', 'var(--game-risk-danger)', t);
         }
 
         scene.classList.toggle('is-danger', isEncounter || (!isSafeZone && threat >= 0.75));
         scene.classList.toggle('is-safe', isSafeZone && !isEncounter);
-        scene.style.setProperty('--danger-color', `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.94)`);
-        scene.style.setProperty('--danger-glow-color', `rgba(${color[0]}, ${color[1]}, ${color[2]}, 0.36)`);
+        scene.style.setProperty('--danger-color', `color-mix(in srgb, ${color} 94%, transparent)`);
+        scene.style.setProperty('--danger-glow-color', `color-mix(in srgb, ${color} 36%, transparent)`);
     },
 
     mix(from, to, t) {
-        return from.map((value, index) => Math.round(value + (to[index] - value) * t));
+        const percent = Math.max(0, Math.min(1, t)) * 100;
+        return `color-mix(in srgb, ${from} ${100 - percent}%, ${to} ${percent}%)`;
     },
 };
 

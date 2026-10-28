@@ -70,6 +70,7 @@ def build_item_text_task_spec(
     *,
     item_id: str,
     request: ItemGenerationRequestDTO,
+    text_visual_hash: object | None = None,
 ) -> AIGenerationTaskSpecDTO:
     request_payload = request.model_dump(mode="json")
     return AIGenerationTaskSpecDTO(
@@ -78,7 +79,9 @@ def build_item_text_task_spec(
         entity_id=str(item_id),
         output_kind="json",
         input_payload={"item_id": str(item_id), "request": request_payload},
-        asset_hash=f"{item_id}:{request_payload.get('rarity_tier')}:{request_payload.get('source')}",
+        asset_hash=str(text_visual_hash)
+        if text_visual_hash
+        else f"{item_id}:{request_payload.get('rarity_tier')}:{request_payload.get('source')}",
         priority=80,
         max_attempts=4,
         metadata={"item_id": str(item_id), "source": request.source},

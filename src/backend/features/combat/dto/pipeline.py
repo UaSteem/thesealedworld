@@ -174,6 +174,9 @@ class PipelineFlagsDTO(BaseModel):
 
 
 class PipelineModsDTO(BaseModel):
+    tactical_crit_bonus: float = 0.0
+    tactical_parry_bonus: float = 0.0
+    tactical_anti_dodge_bonus: float = 0.0
     """Числовые модификаторы."""
 
     accuracy_mult: float = 1.0
@@ -329,6 +332,23 @@ class CombatTokenFactDTO(BaseModel):
     @classmethod
     def _normalize_actor_id(cls, value: ActorIdLike | None) -> ActorId | None:
         return normalize_actor_id(value) if value is not None else None
+
+
+class TacticalTransitionFactDTO(BaseModel):
+    """Actor-global state change, effective from the next exchange."""
+
+    actor_id: ActorId
+    style: Literal["skill_ranged_combat", "skill_two_handed", "skill_shield_mastery", "skill_dual_wield"]
+    before: Literal["far", "mid", "close", "normal", "advantage"]
+    after: Literal["far", "mid", "close", "normal", "advantage"]
+    reason: str
+    source_action_id: str | None = None
+    source_feint_id: str | None = None
+
+    @field_validator("actor_id", mode="before")
+    @classmethod
+    def _normalize_actor_id(cls, value: ActorIdLike) -> ActorId:
+        return normalize_actor_id(value)
 
 
 class CombatEffectFactDTO(BaseModel):
@@ -564,6 +584,7 @@ class InteractionResultDTO(BaseModel):
     # === Pipeline Facts (нормализованные факты для будущего public log mapping) ===
     resource_facts: list[CombatResourceFactDTO] = Field(default_factory=list)
     token_facts: list[CombatTokenFactDTO] = Field(default_factory=list)
+    tactical_transitions: list[TacticalTransitionFactDTO] = Field(default_factory=list)
     effect_facts: list[CombatEffectFactDTO] = Field(default_factory=list)
     death_facts: list[CombatDeathFactDTO] = Field(default_factory=list)
     trigger_facts: list[CombatTriggerFactDTO] = Field(default_factory=list)

@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 from ..modifier_contracts import MODIFIER_CONTRACTS
 from .bundles import ALL_BUNDLES
 from .definitions import ALL_AFFIX_DEFINITIONS
+from .narrative import validate_narrative_tags
 
 if TYPE_CHECKING:
     from .schemas import AffixBundleDTO, AffixCatalogEntryDTO
@@ -44,3 +45,7 @@ if _missing:
     raise ValueError(
         "Bundle affix_ids reference unknown affix catalog entries: " + ", ".join(f"{b}→{a}" for b, a in _missing)
     )
+
+
+for _entry in ALL_AFFIX_DEFINITIONS:
+    validate_narrative_tags(_entry.descriptive.narrative_tags)

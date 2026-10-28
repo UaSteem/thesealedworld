@@ -10,10 +10,12 @@ from src.backend.features.items.dto.instance import (
     ItemPlacementRefDTO,
     RuntimeItemProjectionDTO,
 )
+from src.backend.features.items.resources.affixes.narrative import normalize_lore_tags
 from src.backend.features.items.resources.item_grade import GRADE_BY_RARITY_TIER
 from src.backend.features.items.runtime import ItemFactory
 from src.backend.features.items.services.catalog_service import ItemCatalogService
 from src.backend.features.items.services.text_service import ITEM_TEXT_PROMPT_VERSION, ItemTextService
+from src.backend.features.items.services.visual_service import ItemVisualService
 
 if TYPE_CHECKING:
     from src.backend.features.generation_ai import GenerationAIService
@@ -52,6 +54,7 @@ class ItemGenerationService:
         self.catalog = catalog or ItemCatalogService.load_default()
         self.factory = ItemFactory(self.catalog)
         self.text_service = ItemTextService(self.catalog)
+        self.visual_service = ItemVisualService(self.catalog)
         self.generation_ai = generation_ai
 
     async def generate_mechanical(self, request: ItemGenerationRequestDTO) -> ItemGenerationResultDTO:
@@ -59,6 +62,15 @@ class ItemGenerationService:
             raise RuntimeError("Item persistence is required for mechanical item generation")
         placement_ref = self._resolve_placement_ref(request)
         item = self.factory.generate_player_item(request)
+        seed = request.origin_ref.seed if request.origin_ref else None
+        appearance = self.visual_service.select(
+            item, lore_tags=normalize_lore_tags(item.mechanics.get("affixes", [])), seed=seed
+        )
+        item = item.model_copy(update={"appearance": appearance})
+        baseline_name, baseline_description = self.visual_service.base_presentation(
+            item.base_id, item.material_id, appearance.visual_variant_id if appearance else None
+        )
+        item = item.model_copy(update={"name": baseline_name, "description": baseline_description})
         text_status = "pending" if self._should_request_ai_text(request) else "not_requested"
         text_requested = False
         generated_template_id: str | None = None
@@ -78,12 +90,9 @@ class ItemGenerationService:
             text_requested = text_status == "pending"
         else:
             text_status = str(getattr(template, "text_status", text_status) or text_status)
-            item = item.model_copy(
-                update={
-                    "name": str(getattr(template, "name", item.name) or item.name),
-                    "description": str(getattr(template, "description", item.description) or item.description),
-                }
-            )
+            if text_status in {"not_requested", "failed"} and self._should_request_ai_text(request):
+                text_requested = await self.persistence.request_template_text(str(template.id))
+                text_status = "pending" if text_requested else str(template.text_status)
         generated_template_id = str(getattr(template, "id", "")) if template is not None else None
         item = item.model_copy(
             update={
@@ -185,7 +194,13 @@ class ItemGenerationService:
         if self.generation_ai is not None:
             from src.backend.features.items.tasks_ai import build_item_text_task_spec
 
-            await self.generation_ai.enqueue_many([build_item_text_task_spec(item_id=item_id, request=request)])
+            await self.generation_ai.enqueue_many(
+                [
+                    build_item_text_task_spec(
+                        item_id=item_id, request=request, text_visual_hash=item.metadata.get("text_visual_hash")
+                    )
+                ]
+            )
         return item
 
     def _resolve_placement_ref(self, request: ItemGenerationRequestDTO) -> ItemPlacementRefDTO:

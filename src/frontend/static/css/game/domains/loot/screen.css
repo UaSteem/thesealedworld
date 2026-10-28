@@ -4,8 +4,8 @@
     min-height: 100%;
     display: grid;
     grid-template-rows: minmax(260px, 0.9fr) auto;
-    gap: 12px;
-    padding: 12px;
+    gap: var(--sp-3);
+    padding: var(--sp-3);
     color: var(--game-text-primary);
 }
 
@@ -13,16 +13,16 @@
 .death-screen-visual {
     position: relative;
     min-height: 260px;
-    border: 1px solid rgba(255, 176, 0, 0.45);
+    border: 1px solid rgb(var(--tone-accent-025-rgb) / 0.45);
     background:
-        linear-gradient(180deg, rgba(5, 6, 7, 0.18), rgba(5, 6, 7, 0.92)),
+        linear-gradient(180deg, rgb(var(--tone-surface-024-rgb) / 0.18), rgb(var(--tone-surface-024-rgb) / 0.92)),
         url("/static/images/scenes/ruins.webp") center / cover;
     overflow: hidden;
 }
 
 .death-screen-visual {
     background:
-        linear-gradient(180deg, rgba(8, 5, 5, 0.18), rgba(5, 3, 3, 0.94)),
+        linear-gradient(180deg, rgb(var(--tone-surface-026-rgb) / 0.18), rgb(var(--tone-surface-009-rgb) / 0.94)),
         url("/static/images/scenes/ruins.webp") center / cover;
 }
 
@@ -33,7 +33,7 @@
     right: 18px;
     bottom: 18px;
     display: grid;
-    gap: 8px;
+    gap: var(--sp-2);
     max-width: 560px;
 }
 
@@ -42,13 +42,13 @@
 .loot-screen-header span,
 .death-screen-panel header span {
     color: var(--game-accent);
-    font: 700 10px/1 var(--font-mono);
+    font: var(--weight-bold) var(--type-sm)/1 var(--font-mono);
     letter-spacing: 2px;
 }
 
 .loot-screen-copy strong,
 .death-screen-copy strong {
-    font: 800 34px/1 var(--font-display);
+    font: var(--weight-heavy) var(--type-heading-large)/1 var(--font-display);
     color: var(--game-accent);
     letter-spacing: 0;
 }
@@ -57,13 +57,13 @@
 .death-screen-copy p {
     max-width: 54ch;
     margin: 0;
-    color: rgba(236, 226, 205, 0.88);
-    font: 600 14px/1.5 var(--font-mono);
+    color: rgb(var(--tone-text-044-rgb) / 0.88);
+    font: var(--weight-semibold) var(--type-md)/1.5 var(--font-mono);
 }
 
 .loot-screen-panel,
 .death-screen-panel {
-    border: 1px solid rgba(255, 176, 0, 0.35);
-    background: rgba(5, 5, 5, 0.82);
-    padding: 10px;
+    border: 1px solid rgb(var(--tone-accent-025-rgb) / 0.35);
+    background: rgb(var(--tone-surface-018-rgb) / 0.82);
+    padding: var(--space-10);
 }

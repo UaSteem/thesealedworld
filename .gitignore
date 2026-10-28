@@ -211,3 +211,21 @@ pytest_output.txt
 /archive/data_retirement/cleanup-receipts/
 /.pytest_tmp_retire/
 /.pytest_tmp_retire_final/
+
+# Local-only pre-alpha archives, handoff builds and generated experiments.
+# Keep these files on the owner's machine; they are not repository sources.
+/archive/
+/output/rift-art-lab/
+/outputs/
+/exports/
+/.codex-remote-attachments/
+/tmp_standee_demo/
+
+# Local prototype applications and their standalone test suites.
+/game_ui_lab/
+/rift_lab/
+/tests/game_ui_lab/
+/tests/rift_lab/
+
+# Local one-off preview.
+/tmp_chest_preview.png

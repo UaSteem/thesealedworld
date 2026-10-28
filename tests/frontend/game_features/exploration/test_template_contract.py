@@ -22,6 +22,7 @@ from src.shared.schemas.exploration import (
     WorldNavigationDTO,
 )
 from src.shared.schemas.inventory import InventoryWindowDTO
+from tests.frontend.css_theme_assertions import resolve_geometry_and_classic_art
 
 
 def test_exploration_center_template_has_navigation_and_encounter_surfaces():
@@ -144,7 +145,7 @@ def test_runtime_surfaces_do_not_use_legacy_world_glass_contract():
         Path("src/frontend/templates/game/includes/world_theme_vars.html"),
         Path("src/frontend/static/css/game/shell/layout/base.css"),
         Path("src/frontend/static/css/game/shell/layout/columns.css"),
-        Path("src/frontend/static/css/game/shell/responsive/mobile_drawers.css"),
+        Path("src/frontend/static/css/game/shell/responsive/columns_desktop.css"),
         Path("src/frontend/static/css/game/components/panels.css"),
         Path("src/frontend/static/css/game/domains/exploration/scene.css"),
         Path("src/frontend/static/css/site/components/panels.css"),
@@ -166,7 +167,7 @@ def test_game_panel_and_scenario_readability_avoids_micro_text():
         Path("src/frontend/static/css/game/domains/scenario/panels.css"),
     ]
     combined = "\n".join(path.read_text(encoding="utf-8") for path in checked_paths)
-    tokens = Path("src/frontend/static/css/game/core/tokens.css").read_text(encoding="utf-8")
+    tokens = Path("src/frontend/static/css/game/core/scales.css").read_text(encoding="utf-8")
 
     assert "--game-panel-label-size" in tokens
     assert "--game-panel-value-size" in tokens
@@ -361,7 +362,8 @@ def test_exploration_uses_shared_base_css_contracts():
     assert ".exploration-main-dock.mobile-rift--encounter .exploration-action-panel" in responsive_css
     assert ".exploration-main-dock.mobile-rift--encounter .mobile-encounter-actions" in responsive_css
     assert ".exploration-main-dock.mobile-rift--encounter .mobile-encounter-target-switcher" in responsive_css
-    assert "@media (max-width: 899px)" in responsive_css
+    assert "@media (max-width: 899px)" not in responsive_css
+    assert "@media (min-width: 900px)" in responsive_css
     assert '@import url("game/components/action_panel.css");' in bundle
     assert '@import url("game/components/panel_dock.css");' in bundle
     assert '@import url("game/domains/exploration/index.css");' in bundle
@@ -508,7 +510,6 @@ def test_arena_css_is_a_dedicated_game_module():
     group_browser = arena_dir.joinpath("group_browser.css").read_text()
     modals = arena_dir.joinpath("modals.css").read_text()
     right_sidebar = arena_dir.joinpath("right_sidebar.css").read_text()
-    responsive = arena_dir.joinpath("responsive.css").read_text()
     source = "\n".join(
         path.read_text()
         for path in (
@@ -521,13 +522,13 @@ def test_arena_css_is_a_dedicated_game_module():
             arena_dir / "modals.css",
             arena_dir / "right_sidebar.css",
             arena_dir / "repair.css",
-            arena_dir / "responsive.css",
         )
     )
 
     assert '@import url("game/domains/arena/index.css");' in bundle
     assert '@import url("lobby.css");' in index
-    assert '@import url("responsive.css");' in index
+    assert '@import url("responsive.css");' not in index
+    assert not arena_dir.joinpath("responsive.css").exists()
     assert ".arena-lobby" in lobby
     assert "#arena-poll-region" in lobby
     assert ".arena-header-art" in lobby
@@ -545,7 +546,6 @@ def test_arena_css_is_a_dedicated_game_module():
     assert ".arena-search-stage" in matchmaking
     assert ".arena-countdown-value" in matchmaking
     assert ".arena-view-stat-grid" in right_sidebar
-    assert "@media (max-width: 900px) and (orientation: landscape)" in responsive
     assert "arena-icons/sword-clash.svg" in source
     assert "arena-icons/knight-banner.svg" in source
     assert "arena-icons/tattered-banner.svg" in source
@@ -554,7 +554,8 @@ def test_arena_css_is_a_dedicated_game_module():
     assert "team-battle-hall.webp" in source
     assert "queue-scanner.webp" in source
     assert "combat-pending-gate.webp" in source
-    assert "button-surface-02-blackened-metal.webp" in source
+    assert "var(--texture-" in source
+    assert "button-surface-02-blackened-metal.webp" in resolve_geometry_and_classic_art(source)
 
 
 def test_game_domain_css_uses_manifest_entrypoints():
@@ -590,10 +591,11 @@ def test_game_shell_layout_uses_manifest_entrypoint():
     assert ".game-system-menu" in header
     assert ".game-top-row" in columns
     assert ".col-center-inner" in columns
-    assert "--game-column-gutter-top: 10px" in base
+    assert "--game-column-gutter-top: 10px" in resolve_geometry_and_classic_art(base)
     assert "#game-left-content" in columns
     assert "#game-right-content" in columns
-    assert "padding: 6px 6px 36px" in columns
+    assert "padding: var(--space-6) var(--space-6) var(--space-36)" in columns
+    assert "padding: 6px 6px 36px" in resolve_geometry_and_classic_art(columns)
     assert ".cs-content" in legacy_screen
     assert ".status-dot.pulse" in utilities
 
@@ -606,30 +608,26 @@ def test_game_shell_responsive_uses_manifest_entrypoint():
     columns_desktop = responsive_dir.joinpath("columns_desktop.css").read_text()
     combat_desktop = responsive_dir.joinpath("combat_desktop.css").read_text()
     tablet_drawers = responsive_dir.joinpath("tablet_drawers.css").read_text()
-    mobile_drawers = responsive_dir.joinpath("mobile_drawers.css").read_text()
-    mobile_header = responsive_dir.joinpath("mobile_header.css").read_text()
     system_menu = responsive_dir.joinpath("system_menu.css").read_text()
-    narrow_phone = responsive_dir.joinpath("narrow_phone.css").read_text()
 
     assert '@import url("game/shell/responsive/index.css");' in bundle
     assert '@import url("game/shell/layout_responsive.css");' not in bundle
     assert not Path("src/frontend/static/css/game/shell/layout_responsive.css").exists()
     assert '@import url("tokens.css");' in index
-    assert '@import url("narrow_phone.css");' in index
+    for retired in ("mobile_drawers.css", "mobile_header.css", "narrow_phone.css"):
+        assert f'@import url("{retired}");' not in index
+        assert not responsive_dir.joinpath(retired).exists()
+        legacy_fixture = Path("tests/fixtures/legacy_css/responsive") / retired
+        assert legacy_fixture.is_file()
     assert "--game-drawer-width" in tokens
     assert "@media (min-width: 1280px)" in columns_desktop
     assert ".game-top-row.combat-layout" in combat_desktop
-    assert "@media (min-width: 768px) and (max-width: 1279px)" in tablet_drawers
-    assert "grid-template-columns: var(--side-panel-width) minmax(0, 1fr) 0 !important;" in tablet_drawers
-    assert ".col-right {\n        position: fixed;" in tablet_drawers
-    assert "@media (max-width: 767px)" in mobile_drawers
-    assert ".col-left.panel-open" in mobile_drawers
-    assert "--game-header-height: 40px;" in mobile_header
-    assert "--game-header-height: 72px;" not in mobile_header
     assert "@media (min-width: 768px)" in system_menu
     assert ".game-system-menu-toggle" in system_menu
-    assert "@media (max-width: 500px)" in narrow_phone
 
+    assert "@media (max-width: 1439px)" in tablet_drawers
+    assert "--side-panel-width: 320px" in tablet_drawers
+    assert "@media (max-width: 1279px)" not in tablet_drawers
 
 def test_status_main_uses_shared_compact_status_dock():
     template = Path("src/frontend/templates/game/components/status/main.html").read_text()
@@ -795,10 +793,10 @@ def test_inventory_window_template_defines_frontend_contract():
     assert "'ring_1': 'Кольцо 1'" in template
     assert "'ring_2': 'Кольцо 2'" in template
     assert "base_icon_map" in template
-    assert "'scout_leggings': 'legs_light'" in template
-    assert "'breeches': 'legs_medium'" in template
-    assert "'greaves': 'legs_heavy'" in template
-    assert "'legs_garment': 'legwear'" in template
+    assert "'light_leg_armor': 'legs_light'" in template
+    assert "'medium_leg_armor': 'legs_medium'" in template
+    assert "'heavy_leg_armor': 'legs_heavy'" in template
+    assert "legs_garment" not in template
     assert "'feetwear': 'feetwear'" in template
     assert "weapon_icon_base_map" in template
     assert "'greatsword': 'weapon_two_hand'" in template
@@ -884,7 +882,7 @@ def test_inventory_window_template_renders_backend_contract_dto():
                         "layer": "armor",
                         "item": {
                             "item_id": "item-1",
-                            "base_id": "leather_armor",
+                            "base_id": "light_chest_armor",
                             "item_type": "armor",
                             "placement": "equipped",
                             "name": "Leather Armor",
@@ -1079,7 +1077,8 @@ def test_inventory_css_has_loadout_container_and_table_contract():
     assert "--inventory-grid-viewport-height" in source
     assert "height: var(--inventory-grid-height)" in source
     assert "--inventory-grid-cols: 8" in source
-    assert "grid-template-columns: repeat(4, minmax(28px, 34px))" in source
+    assert "grid-template-columns: repeat(4, 32px)" in source
+    assert "@media (max-width: 720px)" not in source
     assert ".inventory-tooltip-card" in source
     assert ".inventory-tooltip-affix" in source
     assert ".inventory-tooltip-section-title" in source
@@ -1101,7 +1100,8 @@ def test_inventory_css_has_loadout_container_and_table_contract():
     assert "-webkit-mask" in source
     assert ".inventory-card--square" in source
     assert ".inventory-card--wide" in source
-    assert "fabric_leather_02_diff_1k.webp" in source
+    assert "--inventory-panel-texture: var(--texture-" in source
+    assert "fabric_leather_02_diff_1k.webp" in resolve_geometry_and_classic_art(source)
     assert legwear_icon.exists()
     assert legs_light_icon.exists()
     assert legs_medium_icon.exists()
@@ -1142,13 +1142,13 @@ def test_game_shell_drag_logic_lives_in_source_js():
     assert "hudOpenStorageKey" in source
     assert "panelStateStorageKey" in source
     assert "worldDesktopPanelsDefaultOpen" in source
+    assert "clearDrawerPanelState" not in source
+    assert "isDrawerViewport" not in source
+    assert "window.matchMedia" not in source
+    assert 'const viewportScope = "desktop";' in source
     assert '["exploration", "rift"].includes(domain)' in source
-    assert "clearDrawerPanelState" in source
-    assert "if (isDrawerViewport())" in source
     assert "window.localStorage.removeItem(panelStateStorageKey())" in source
     assert 'if (!["exploration", "rift"].includes(domain)) return false;' in source
-    assert 'window.matchMedia("(min-width: 1025px)")' in source
-    assert 'window.matchMedia("(max-width: 1024px)")' in source
     assert '${domainScope}:${scope}:${viewportScope}:v1' in source
     assert "savePanelState(this)" in source
     assert "panelStateUserEdited" in source
@@ -1171,7 +1171,7 @@ def test_status_runtime_does_not_accept_server_panel_state():
     assert "right_open" not in source
 
 
-def test_mobile_drawer_close_controls_live_in_panel_nav_only():
+def test_desktop_panel_close_controls_keep_nav_contract_and_mobile_styles_are_archived():
     template = Path("src/frontend/templates/game/session_content_inner.html").read_text()
     panel_templates = "\n".join(
         [
@@ -1183,9 +1183,7 @@ def test_mobile_drawer_close_controls_live_in_panel_nav_only():
     )
     responsive_dir = Path("src/frontend/static/css/game/shell/responsive")
     tablet_css = responsive_dir.joinpath("tablet_drawers.css").read_text()
-    mobile_css = responsive_dir.joinpath("mobile_drawers.css").read_text()
-    mobile_header_css = responsive_dir.joinpath("mobile_header.css").read_text()
-    layout_css = "\n".join((tablet_css, mobile_css, mobile_header_css))
+    layout_css = tablet_css
     panel_css = Path("src/frontend/static/css/game/components/panel_dock.css").read_text()
 
     assert "side-panel-close" not in template
@@ -1195,16 +1193,15 @@ def test_mobile_drawer_close_controls_live_in_panel_nav_only():
     assert ".dock-nav-button--close" in panel_css
     assert "@media (min-width: 768px)" in panel_css
     assert "display: none" in panel_css
-    assert "@media (min-width: 768px) and (max-width: 1279px)" in layout_css
-    assert "grid-template-columns: var(--side-panel-width) minmax(0, 1fr) 0 !important;" in layout_css
-    assert ".col-left {\n        position: relative;" in layout_css
-    assert ".col-right {\n        position: fixed;" in layout_css
-    assert "@media (max-width: 767px)" in layout_css
-    assert "--game-header-height: 40px;" in layout_css
-    assert "--game-header-height: 72px;" not in layout_css
-    assert "top: var(--game-header-height);" in layout_css
-    assert "bottom: var(--game-footer-height);" in layout_css
 
+    index = responsive_dir.joinpath("index.css").read_text()
+    for name in ("mobile_drawers.css", "mobile_header.css"):
+        assert name not in index
+        assert not responsive_dir.joinpath(name).exists()
+        legacy_fixture = Path("tests/fixtures/legacy_css/responsive") / name
+        assert legacy_fixture.is_file()
+    assert "@media (max-width: 1439px)" in layout_css
+    assert "@media (max-width: 1279px)" not in layout_css
 
 def test_inventory_frontend_route_proxies_actions_to_backend():
     route = Path("src/frontend/game_features/inventory/routes/fragments.py").read_text()

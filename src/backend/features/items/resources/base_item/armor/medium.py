@@ -1,10 +1,10 @@
 from src.backend.features.items.resources.schemas import BaseItemDTO
 
 MEDIUM_ARMOR_DB = {
-    "leather_cap": BaseItemDTO(
-        id="leather_cap",
-        name_ru="Кожаный шлем",
-        narrative_description="Усиленный кожаный шлем оставляет обзор открытым и помогает держать защитную стойку.",
+    "medium_helmet": BaseItemDTO(
+        id="medium_helmet",
+        name_ru="Средний шлем",
+        narrative_description="Средний шлем защищает голову и оставляет обзор открытым.",
         slot="head_armor",
         type="armor",
         defense_type="physical",
@@ -14,15 +14,15 @@ MEDIUM_ARMOR_DB = {
         base_power=2,
         base_durability=40,
         damage_spread=0.0,
-        narrative_tags=["cap", "medium", "leather"],
+        narrative_tags=["cap", "medium"],
         implicit_bonuses={
             "anti_dodge_chance": -0.010,
         },
     ),
-    "jerkin": BaseItemDTO(
-        id="jerkin",
-        name_ru="Куртка",
-        narrative_description="Плотная кожаная куртка принимает слабые удары корпусом, не ломая темп боя полностью.",
+    "medium_chest_armor": BaseItemDTO(
+        id="medium_chest_armor",
+        name_ru="Средний нагрудник",
+        narrative_description="Средний нагрудник закрывает корпус и сочетает защиту со свободой движений.",
         slot="chest_armor",
         type="armor",
         defense_type="physical",
@@ -32,16 +32,16 @@ MEDIUM_ARMOR_DB = {
         base_power=7,
         damage_spread=0.0,
         base_durability=60,
-        narrative_tags=["jerkin", "medium", "leather", "balanced"],
+        narrative_tags=["medium_chest_armor", "medium", "balanced"],
         implicit_bonuses={
             "evasion_penalty": -0.030,
             "main_hand_accuracy_penalty": 0.010,
         },
     ),
-    "reinforced_gloves": BaseItemDTO(
-        id="reinforced_gloves",
-        name_ru="Усиленные перчатки",
-        narrative_description="Жесткие вставки на перчатках помогают принять оружие на руку и сразу ответить.",
+    "medium_bracers": BaseItemDTO(
+        id="medium_bracers",
+        name_ru="Средние наручи",
+        narrative_description="Средние наручи защищают предплечья усиленными накладками.",
         slot="arms_armor",
         type="armor",
         defense_type="physical",
@@ -51,16 +51,16 @@ MEDIUM_ARMOR_DB = {
         base_power=2,
         damage_spread=0.0,
         base_durability=45,
-        narrative_tags=["gloves", "medium", "reinforced"],
+        narrative_tags=["bracers", "medium", "forearms"],
         implicit_bonuses={
             "main_hand_accuracy_penalty": 0.010,
             "off_hand_accuracy_penalty": 0.010,
         },
     ),
-    "breeches": BaseItemDTO(
-        id="breeches",
-        name_ru="Прочные штаны",
-        narrative_description="Усиленные кожей штаны для движения по руинам, грязи и острым обломкам.",
+    "medium_leg_armor": BaseItemDTO(
+        id="medium_leg_armor",
+        name_ru="Средние поножи",
+        narrative_description="Средние поножи защищают бёдра и колени усиленными накладками.",
         slot="legs_armor",
         type="armor",
         defense_type="physical",
@@ -70,7 +70,7 @@ MEDIUM_ARMOR_DB = {
         base_power=4,
         damage_spread=0.0,
         base_durability=45,
-        narrative_tags=["breeches", "medium", "pants", "travel"],
+        narrative_tags=["medium_leg_armor", "medium", "travel"],
         implicit_bonuses={},
     ),
 }

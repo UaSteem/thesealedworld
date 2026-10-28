@@ -8,8 +8,6 @@ from src.backend.infrastructure.mongo.chat_buckets import ChatBucketRepository
 from src.backend.infrastructure.mongo.client import get_mongo_provider
 from src.backend.infrastructure.mongo.combat_documents import CombatDocumentRepository
 from src.backend.infrastructure.monsters.actor_documents import GeneratedMonsterActorRepository
-from src.backend.infrastructure.rift.repositories.catalog_documents import RiftCatalogDocumentRepository
-from src.backend.infrastructure.rift.repositories.snapshots import RiftRuntimeSnapshotRepository
 
 
 class MongoIndexRepository(Protocol):
@@ -36,8 +34,6 @@ def _default_repositories() -> list[MongoIndexRepository]:
     return [
         CombatDocumentRepository(database),
         ChatBucketRepository(database),
-        RiftCatalogDocumentRepository(database),
-        RiftRuntimeSnapshotRepository(database),
         AIGenerationTaskDocumentRepository(database),
         GeneratedMonsterActorRepository(database),
     ]

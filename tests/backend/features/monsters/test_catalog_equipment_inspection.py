@@ -186,4 +186,4 @@ def test_remaining_equipment_endpoint_is_read_only(equipment_client, member_id):
     assert len(data["items"]) == len(data["item_cards"])
     slots = {item["slot"] for item in data["items"]}
     if member_id.endswith("screecher"):
-        assert {"two_hand", "quiver"} <= slots
+        assert {"two_hand", "off_hand"} <= slots

@@ -71,6 +71,12 @@ class InventoryRuntimeItemDTO(BaseModel):
     slot: str | None = None
     valid_slots: list[str] = Field(default_factory=list)
     placement: str = "backpack"
+    material_id: str | None = None
+    visual_variant_id: str | None = None
+    thumbnail_url: str | None = None
+    image_url: str | None = None
+    is_identified: bool = False
+    text_status: str = "not_requested"
     name: str
     description: str = ""
     rarity: str = "shared"
@@ -243,7 +249,7 @@ class InventoryMetaFieldDTO(BaseModel):
 
 
 class InventoryItemActionDTO(BaseModel):
-    action: Literal["equip", "unequip", "move_to_belt", "remove_from_belt", "use", "drop"]
+    action: Literal["equip", "unequip", "move_to_belt", "remove_from_belt", "use", "drop", "identify"]
     label: str
     enabled: bool = True
     reason: str | None = None
@@ -252,6 +258,11 @@ class InventoryItemActionDTO(BaseModel):
 
 
 class InventoryItemDetailsDTO(BaseModel):
+    visual_variant_id: str | None = None
+    thumbnail_url: str | None = None
+    image_url: str | None = None
+    is_identified: bool = False
+    text_status: str = "not_requested"
     item_id: str
     name: str
     item_type: str
@@ -319,6 +330,9 @@ class InventoryComparisonLineDTO(BaseModel):
 
 
 class InventoryContainerRowDTO(BaseModel):
+    visual_variant_id: str | None = None
+    thumbnail_url: str | None = None
+    image_url: str | None = None
     item_id: str
     icon: str | None = None
     name: str
@@ -362,7 +376,7 @@ class InventoryWindowDTO(BaseModel):
 
 class InventoryActionRequestDTO(BaseModel):
     char_id: int
-    action: Literal["equip", "unequip", "move_to_belt", "remove_from_belt", "use", "drop"]
+    action: Literal["equip", "unequip", "move_to_belt", "remove_from_belt", "use", "drop", "identify"]
     item_id: str
     slot_id: str | None = None
 

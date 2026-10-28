@@ -56,6 +56,7 @@ class CombatLogActorRefDTO(CombatJsonDTO):
 class CombatLogActionRefDTO(CombatJsonDTO):
     mode: str = "exchange"
     id: str | None = None
+    label: str | None = None
     catalog: str | None = None
     catalog_key: str | None = None
     event: str | None = None
@@ -126,9 +127,30 @@ class CombatExchangeStateDTO(CombatJsonDTO):
     badges: list[CombatLogBadgeDTO] = Field(default_factory=list)
 
 
+class CombatTacticalTransitionDTO(CombatJsonDTO):
+    actor_id: str
+    style: str
+    before: str
+    after: str
+    reason: str
+    source_action_id: str | None = None
+    source_feint_id: str | None = None
+    source_feint_label: str | None = None
+
+
+class CombatReportNumbersDTO(CombatJsonDTO):
+    damage: int = 0
+    healing: int = 0
+    absorbed: float = 0
+    reflected: int = 0
+
+
 class CombatEventDTO(CombatJsonDTO):
     type: str = "log"
     id: str | None = None
+    format: str | None = None
+    numbers: CombatReportNumbersDTO = Field(default_factory=CombatReportNumbersDTO)
+    tactical_transitions: list[CombatTacticalTransitionDTO] = Field(default_factory=list)
     kind: str = "log"
     text: str | None = "NO_DATA"
     severity: str = "normal"

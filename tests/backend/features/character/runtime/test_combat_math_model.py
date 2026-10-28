@@ -217,10 +217,10 @@ def test_builder_treats_compiled_bonuses_as_affix_math_source() -> None:
     raw = CharacterCombatMathModelBuilder().build_raw(
         attributes={},
         items={
-            "layout": {"equipment": {"chest_armor": "jerkin-1"}},
+            "layout": {"equipment": {"chest_armor": "medium_chest_armor-1"}},
             "by_id": {
-                "jerkin-1": {
-                    "item_id": "jerkin-1",
+                "medium_chest_armor-1": {
+                    "item_id": "medium_chest_armor-1",
                     "item_type": "armor",
                     "slot": "chest_armor",
                     "mechanics": {
@@ -237,7 +237,7 @@ def test_builder_treats_compiled_bonuses_as_affix_math_source() -> None:
     armor = raw["modifiers"]["armor"]
 
     assert armor["base"] == 4.0
-    assert armor["source"] == {"item:jerkin-1": 1.6}
+    assert armor["source"] == {"item:medium_chest_armor-1": 1.6}
 
 
 @pytest.mark.unit
@@ -449,7 +449,7 @@ def test_builder_applies_heavy_chest_dodge_cap_resistance_bonus_and_penalty_reli
             "by_id": {
                 "plate-1": {
                     "item_id": "plate-1",
-                    "base_id": "plate_chest",
+                    "base_id": "heavy_chest_armor",
                     "item_type": "armor",
                     "mechanics": {
                         "armor_class": "heavy",
@@ -480,7 +480,7 @@ def test_builder_uses_symbiote_item_delta_to_amplify_over_tier_armor_penalty() -
             "by_id": {
                 "plate-1": {
                     "item_id": "plate-1",
-                    "base_id": "plate_chest",
+                    "base_id": "heavy_chest_armor",
                     "item_type": "armor",
                     "mechanics": {
                         "armor_class": "heavy",
@@ -509,7 +509,7 @@ def test_builder_uses_symbiote_overdrive_to_reduce_tier_penalty_before_skill_rel
             "by_id": {
                 "plate-1": {
                     "item_id": "plate-1",
-                    "base_id": "plate_chest",
+                    "base_id": "heavy_chest_armor",
                     "item_type": "armor",
                     "mechanics": {
                         "armor_class": "heavy",
@@ -534,11 +534,11 @@ def test_builder_applies_medium_chest_dodge_cap_penalty_and_skill_recovery() -> 
     raw = CharacterCombatMathModelBuilder().build_raw(
         attributes={},
         items={
-            "layout": {"equipment": {"chest_armor": "jerkin-1"}},
+            "layout": {"equipment": {"chest_armor": "medium_chest_armor-1"}},
             "by_id": {
-                "jerkin-1": {
-                    "item_id": "jerkin-1",
-                    "base_id": "jerkin",
+                "medium_chest_armor-1": {
+                    "item_id": "medium_chest_armor-1",
+                    "base_id": "medium_chest_armor",
                     "item_type": "armor",
                     "mechanics": {"armor_class": "medium", "power": 4, "material": {"tier_mult": 1.5}},
                 }
@@ -549,7 +549,7 @@ def test_builder_applies_medium_chest_dodge_cap_penalty_and_skill_recovery() -> 
 
     sources = raw["modifiers"]["dodge_cap"]["source"]
 
-    assert sources["item:jerkin-1:medium_cap_penalty"] == pytest.approx(-0.30)
+    assert sources["item:medium_chest_armor-1:medium_cap_penalty"] == pytest.approx(-0.30)
     assert sources["skill:skill_medium_armor"] == pytest.approx(0.15)
 
 
@@ -562,7 +562,7 @@ def test_builder_applies_light_armor_skill_dodge_cap_boost() -> None:
             "by_id": {
                 "leather-1": {
                     "item_id": "leather-1",
-                    "base_id": "leather_armor",
+                    "base_id": "light_chest_armor",
                     "item_type": "armor",
                     "mechanics": {"armor_class": "light", "power": 3, "material": {"tier_mult": 1.5}},
                 }

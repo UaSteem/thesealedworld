@@ -1,7 +1,8 @@
-from typing import Annotated
+from typing import Annotated, Literal
 
 import httpx
 from fastapi import APIRouter, Depends, Form, HTTPException, Query, Request, Response, status
+from fastapi.responses import JSONResponse
 
 from src.frontend.core.renderer import UIRenderer, get_ui_renderer
 from src.frontend.features.auth.dependencies.providers import get_frontend_auth_service
@@ -12,6 +13,7 @@ from src.frontend.integrations.backend_api.inventory import BackendInventoryApi
 from src.shared.schemas.inventory import InventoryActionRequestDTO, InventoryTabId, InventoryWindowDTO
 
 router = APIRouter(tags=["Inventory"])
+InventoryPresentation = Literal["html", "client"]
 
 
 @router.get("/game/inventory/window", name="game_inventory_window")
@@ -22,6 +24,7 @@ async def inventory_window(
     inventory_api: Annotated[BackendInventoryApi, Depends(get_backend_inventory_api)],
     char_id: Annotated[int, Query()],
     tab: Annotated[InventoryTabId, Query()] = "items",
+    presentation: Annotated[InventoryPresentation, Query()] = "html",
 ):
     await auth_service.require_current_user(request)
     token = require_game_access_token(request)
@@ -29,6 +32,8 @@ async def inventory_window(
     if response.payload is None:
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Inventory payload is unavailable")
     inventory = InventoryWindowDTO.model_validate(response.payload)
+    if presentation == "client":
+        return JSONResponse({"inventory": inventory.model_dump(mode="json"), "notice": None})
     return await ui.render(
         "game/components/inventory/window.html",
         context={
@@ -52,6 +57,7 @@ async def inventory_action(
     item_id: Annotated[str, Form()],
     tab_id: Annotated[InventoryTabId, Form()] = "items",
     slot_id: Annotated[str | None, Form()] = None,
+    presentation: Annotated[InventoryPresentation, Form()] = "html",
 ):
     await auth_service.require_current_user(request)
     token = require_game_access_token(request)
@@ -70,7 +76,12 @@ async def inventory_action(
         raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Inventory payload is unavailable")
     inventory = InventoryWindowDTO.model_validate(backend_response.payload)
     http_response.headers["HX-Trigger"] = "character-status-refresh"
-    return await ui.render(
+    if presentation == "client":
+        return JSONResponse(
+            {"inventory": inventory.model_dump(mode="json"), "notice": notice},
+            headers={"HX-Trigger": "character-status-refresh"},
+        )
+    rendered = await ui.render(
         "game/components/inventory/window.html",
         context={
             "char_id": char_id,
@@ -79,6 +90,29 @@ async def inventory_action(
             "inventory_notice": notice,
             "inventory_target_id": "right-inventory-panel-body",
         },
+    )
+    rendered.headers["HX-Trigger"] = "character-status-refresh"
+    return rendered
+
+
+@router.get("/game/inventory/belt", name="game_inventory_belt")
+async def inventory_belt(
+    request: Request,
+    ui: Annotated[UIRenderer, Depends(get_ui_renderer)],
+    auth_service: Annotated[FrontendAuthService, Depends(get_frontend_auth_service)],
+    inventory_api: Annotated[BackendInventoryApi, Depends(get_backend_inventory_api)],
+    char_id: Annotated[int, Query()],
+):
+    """Project only real quick slots; the existing view may open its runtime session."""
+    await auth_service.require_current_user(request)
+    token = require_game_access_token(request)
+    response = await inventory_api.view(token, char_id=char_id)
+    if response.payload is None:
+        raise HTTPException(status_code=status.HTTP_502_BAD_GATEWAY, detail="Inventory payload is unavailable")
+    inventory = InventoryWindowDTO.model_validate(response.payload)
+    return await ui.render(
+        "game/components/status/belt.html",
+        context={"char_id": char_id, "belt_slots": inventory.quick_slots},
     )
 
 

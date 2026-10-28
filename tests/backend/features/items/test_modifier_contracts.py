@@ -178,7 +178,7 @@ def test_affix_pools_preserve_first_pass_build_identities():
         ItemFactory._pool_for_item(
             "armor",
             "chest_armor",
-            ["leather_armor", "light", "mobile"],
+            ["light_chest_armor", "light", "mobile"],
             item_tier=3,
             already_chosen=set(),
         )

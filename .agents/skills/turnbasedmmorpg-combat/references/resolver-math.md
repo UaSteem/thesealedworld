@@ -52,6 +52,13 @@ chance = min(0.50, 0.25 + 0.25 * skill_dual_wield)  # 0.25 base, 0.50 at full ma
 - `strategy == "item"` → `"item"`
 - `strategy == "exchange"` → `"main_hand"` or `"off_hand"` from `external_mods.hand`
 
+For physical weapon critical-trigger rolls, `CritStep` applies mastery only to
+the selected hand component: `hand_crit_chance * (1 + weapon_skill) + crit_chance`,
+then applies the existing critical cap. Global bonuses such as gloves are added
+after mastery and are never multiplied by it. Magic and item critical chances
+do not receive a weapon-mastery multiplier. The lookup table above describes
+unscaled source selection, not permission to multiply its aggregate by mastery.
+
 ---
 
 ## Resolver Dependency Table
@@ -92,7 +99,7 @@ chance = min(0.50, 0.25 + 0.25 * skill_dual_wield)  # 0.25 base, 0.50 at full ma
 | counter_attack_chance | `def.mods.counter_attack_chance` | CharMathModel | OK |
 | counter_attack_cap | `def.mods.counter_attack_cap` (default 0.50) | DTO default | OK |
 | skill_light/medium/heavy_armor | `def.skills.skill_{type}_armor` | Snapshot skills | OK |
-| skill_{weapon_class} (crit mult) | `atk.skills.skill_{class}` | Snapshot skills | OK (formula bug) |
+| skill_{weapon_class} (weapon crit mult) | `atk.skills.skill_{class}` | Snapshot skills | Multiplies hand crit only; global bonus added afterward |
 | healing base | `atk.mods.magical_damage` | CharMathModel | OK |
 
 ---

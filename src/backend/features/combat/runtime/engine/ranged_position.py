@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import random
 from dataclasses import dataclass
 from typing import Literal
 
@@ -9,6 +11,7 @@ from src.backend.features.combat.dto.pipeline import (
     CombatStatusApplicationDTO,
     InteractionResultDTO,
     PipelineContextDTO,
+    TacticalTransitionFactDTO,
 )
 from src.backend.features.combat.runtime.engine.math_core import MathCore
 from src.backend.features.combat.runtime.engine.tunables import current_tunables
@@ -160,7 +163,11 @@ class RangedPositionService:
     ) -> tuple[float, dict[str, float]]:
         position = RangedPositionService.normalize_position(ctx.flags.meta.target_ranged_position)
         ranged_skill = max(0.0, min(1.0, float(def_.skills.skill_ranged_combat or 0.0)))
-        evasion = max(0.0, float(def_.mods.evasion or 0.0) - max(0.0, float(atk.mods.anti_dodge_chance or 0.0)))
+        evasion = max(
+            0.0,
+            float(def_.mods.evasion or 0.0)
+            - max(0.0, float(atk.mods.anti_dodge_chance or 0.0) + ctx.mods.tactical_anti_dodge_bonus),
+        )
         parry_skill_mult = 1.0 + (current_tunables().parry_skill_mult_per_point * def_.skills.skill_parrying)
         line_control = max(0.0, float(def_.mods.parry or 0.0) * parry_skill_mult)
         cap = AVOID_CAP_BASE[position] + (AVOID_CAP_SKILL[position] * ranged_skill)
@@ -182,6 +189,7 @@ class RangedPositionService:
         *,
         participants: tuple[ActorSnapshot, ActorSnapshot] | None = None,
         final_result: InteractionResultDTO | None = None,
+        seed: str | None = None,
     ) -> None:
         # Legacy direct callers provide their primary pairs; executor supplies the
         # actual two exchange owners, including a forced defender without intent.
@@ -190,6 +198,7 @@ class RangedPositionService:
             main = list(unique.values())
         else:
             main = list(participants)
+        decisions = []
         for archer in main:
             if not archer.is_alive or not RangedPositionService.is_ranged_actor(archer):
                 continue
@@ -205,18 +214,37 @@ class RangedPositionService:
                 ),
                 None,
             )
+            if own_result is not None and own_result.skip_reason:
+                continue
             facts = own_result.action_facts if own_result else {}
             result = final_result if final_result is not None else own_result
             if result is None:
                 result = InteractionResultDTO(source_id=archer.char_id, target_id=enemy.char_id)
             next_counter = archer.meta.exchange_counter + 1
-            forced = any(
-                effect.effect_id == RANGED_POSITION_EFFECT_ID
-                and effect.active_from_exchange == next_counter
-                and effect.params.get("forced_close")
-                for effect in archer.statuses.effects
+            forced = next(
+                (
+                    effect
+                    for effect in archer.statuses.effects
+                    if effect.effect_id == RANGED_POSITION_EFFECT_ID
+                    and effect.active_from_exchange == next_counter
+                    and effect.params.get("forced_close")
+                ),
+                None,
             )
             if forced:
+                before = RangedPositionService.current_position(archer)
+                if before != "close":
+                    result.tactical_transitions.append(
+                        TacticalTransitionFactDTO(
+                            actor_id=archer.char_id,
+                            style="skill_ranged_combat",
+                            before=before,
+                            after="close",
+                            reason="feint_dislodge",
+                            source_action_id=forced.params.get("source_action_id"),
+                            source_feint_id=forced.params.get("source_feint_id"),
+                        )
+                    )
                 continue
             incoming = [r for _source, target, r in pairs if target is not None and target.char_id == archer.char_id]
             override = facts.get("next_ranged_position_override")
@@ -229,6 +257,18 @@ class RangedPositionService:
                     damage_taken=sum(max(0, int(r.damage_final or 0)) for r in incoming),
                     melee_pressure=sum(RangedPositionService._has_ranged_position_melee_contact(r) for r in incoming),
                     action_facts=facts,
+                    rng=(
+                        random.Random(
+                            int.from_bytes(
+                                hashlib.sha256(
+                                    f"{seed}:{archer.char_id}:{archer.meta.exchange_counter}:ranged-v1".encode()
+                                ).digest(),
+                                "big",
+                            )
+                        )
+                        if seed is not None
+                        else None
+                    ),
                 )
             )
             minimum = facts.get("next_ranged_position_min")
@@ -236,7 +276,22 @@ class RangedPositionService:
                 position = RangedPositionService.at_least_position(
                     position, RangedPositionService.normalize_position(minimum)
                 )
+            decisions.append((archer, position, result, facts, override, minimum))
+        for archer, position, result, facts, override, minimum in decisions:
+            before = RangedPositionService.current_position(archer)
             RangedPositionService.set_next_position(archer, position, result)
+            if before != position:
+                result.tactical_transitions.append(
+                    TacticalTransitionFactDTO(
+                        actor_id=archer.char_id,
+                        style="skill_ranged_combat",
+                        before=before,
+                        after=position,
+                        reason="feint_position" if override or minimum else "initiative_position",
+                        source_action_id=facts.get("id"),
+                        source_feint_id=facts.get("id") if facts.get("role") == "feint" else None,
+                    )
+                )
 
     @staticmethod
     def roll_next_position(
@@ -246,6 +301,7 @@ class RangedPositionService:
         damage_taken: int,
         melee_pressure: int = 0,
         action_facts: dict[str, object] | None = None,
+        rng: random.Random | None = None,
     ) -> RangedPosition:
         weights = RangedPositionService.position_weights(
             archer=archer,
@@ -257,7 +313,7 @@ class RangedPositionService:
         total = max(0.0, weights.far) + max(0.0, weights.mid) + max(0.0, weights.close)
         if total <= 0:
             return "mid"
-        roll = MathCore.random_range(0.0, total)
+        roll = rng.uniform(0.0, total) if rng is not None else MathCore.random_range(0.0, total)
         if roll <= max(0.0, weights.far):
             return "far"
         roll -= max(0.0, weights.far)
@@ -343,6 +399,8 @@ class RangedPositionService:
         recipient_increments: bool = True,
         at_action_end: bool = False,
         forced_close: bool = False,
+        source_action_id: str | None = None,
+        source_feint_id: str | None = None,
     ) -> None:
         active_from = archer.meta.exchange_counter + int(recipient_increments)
         expire_at = active_from + 1
@@ -358,7 +416,12 @@ class RangedPositionService:
             source_id=archer.char_id,
             active_from_exchange=active_from,
             expire_at_exchange=expire_at,
-            params={"position": position, "forced_close": forced_close},
+            params={
+                "position": position,
+                "forced_close": forced_close,
+                "source_action_id": source_action_id,
+                "source_feint_id": source_feint_id,
+            },
         )
         effect.resolved_temp_commands = []
         if not at_action_end:

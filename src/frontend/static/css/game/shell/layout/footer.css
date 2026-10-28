@@ -1,17 +1,17 @@
 /* ── GAME FOOTER ── */
 .game-footer {
     height: var(--game-footer-height);
-    background: rgba(12, 12, 16, 0.9);
-    border-top: 1px solid rgba(255, 170, 0, 0.05);
+    background: rgb(var(--tone-surface-092-rgb) / 0.9);
+    border-top: 1px solid rgb(var(--tone-accent-024-rgb) / 0.05);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 30px;
+    padding: 0 var(--space-30);
     font-size: var(--text-2xs);
     color: var(--col-parchment-dim);
     opacity: 0.4;
     letter-spacing: 0.05em;
-    font-family: 'JetBrains Mono', monospace;
+    font-family: var(--font-mono);
     z-index: 100;
     width: 100%;
 }
@@ -19,13 +19,13 @@
 .footer-technical-status {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: var(--sp-4);
     min-width: 0;
 }
 
 .footer-copyright {
     display: flex;
-    gap: 10px;
+    gap: var(--space-10);
     align-items: center;
     white-space: nowrap;
 }
@@ -40,6 +40,6 @@
 }
 
 .footer-status-log {
-    font-weight: 400;
+    font-weight: var(--weight-regular);
     white-space: nowrap;
 }

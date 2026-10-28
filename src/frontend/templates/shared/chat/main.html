@@ -3,6 +3,7 @@
      style="display: flex; flex-direction: column; height: 100%; width: 100%;"
      :class="'chat-theme-' + _chatThemeKey()"
      x-data="{
+         ...window.GameBattleFeed.create(),
          channels: {
              global: [],
              zone:   [],
@@ -43,6 +44,7 @@
          },
          _activateTab(key) {
              chatTab = key;
+             if (key === 'battle') { this.battle.unread = false; return; }
              this.unreadTabs[key] = false;
              this._markTabSeen(key);
           },
@@ -275,6 +277,7 @@
              window.dispatchEvent(new CustomEvent('chat-unread'));
          },
          _channelLabel(key) {
+             if (key === 'battle') return 'бой';
              const channelKey = key || 'global';
              if (channelKey.startsWith('dm_')) return 'личное';
              return { global: 'мир', zone: 'зона', system: 'система', trade: 'торговля', party: 'группа' }[channelKey] || channelKey;
@@ -299,6 +302,7 @@
              return 'world';
          },
          _activeTabCanSend() {
+             if (chatTab === 'battle') return false;
              if (chatTab === 'system') return false;
              return true;
          },
@@ -713,6 +717,7 @@
              Object.values(this.channels.dynamic || {}).forEach((entry) => refresh(entry.messages));
          },
          _clearActiveChatTab() {
+             if (chatTab === 'battle') return;
              const key = chatTab || 'global';
              const messages = this._messagesForTab(key);
              if (!messages.length) return;
@@ -779,7 +784,7 @@
                  });
          }
      }"
-     x-init="if (window.GameCatalogCache && window.GameCatalogCache.init) window.GameCatalogCache.init().then(() => { _refreshMessageViews(); }); window.addEventListener('htmx:wsAfterMessage', (e) => _onWsMessage(e)); window.addEventListener('chat-clear-request', () => _clearActiveChatTab())"
+     x-init="_battleInit(); if (window.GameCatalogCache && window.GameCatalogCache.init) window.GameCatalogCache.init().then(() => { _refreshMessageViews(); }); window.addEventListener('htmx:wsAfterMessage', (e) => _onWsMessage(e)); window.addEventListener('chat-clear-request', () => _clearActiveChatTab())"
 >
     <!-- WS connection — on the outer wrapper so all child forms can ws-send.
          Auth is read from the HttpOnly ``tbmmorpg_game_access_token`` cookie
@@ -800,6 +805,7 @@
          :class="{'chat-tabs-mini': chatStep === 0}"
          @pointerdown="if (!$event.target.closest('button, select, input, .chat-tab, .chat-tab-select-wrap, .chat-tab-select-trigger, .chat-tab-select-dropdown')) startHudWindowDrag('chat', $event, $el.closest('.hud-window'))">
         <div class="chat-tab-group">
+            <button type="button" class="chat-tab" x-show="battle.visible" x-cloak :class="{ active: chatTab === 'battle', unread: battle.unread }" @click="_activateTab('battle')" :aria-pressed="chatTab === 'battle'"><span x-text="battle.unread ? '[БОЙ •]' : '[БОЙ]'"></span></button>
             <div class="chat-tab" data-channel="global" :class="{ 'active': chatTab === 'global', 'unread': _isUnread('global') }" @click="_activateTab('global')"><span>[МИР]</span></div>
             <div class="chat-tab" data-channel="zone"   :class="{ 'active': chatTab === 'zone', 'unread': _isUnread('zone') }"   @click="_activateTab('zone')"><span>[ЗОНА]</span></div>
             <div class="chat-tab-divider"></div>
@@ -831,6 +837,7 @@
                 <span class="chevron" :style="mobileSelectOpen ? 'transform: rotate(180deg)' : ''">▼</span>
             </button>
             <div x-show="mobileSelectOpen" class="chat-tab-select-dropdown" x-cloak>
+                <button type="button" class="chat-tab-select-option" x-show="battle.visible" @click="_activateTab('battle'); mobileSelectOpen = false" x-text="battle.unread ? 'БОЙ •' : 'БОЙ'"></button>
                 <div class="chat-tab-select-option" :class="{ 'active': chatTab === 'global' }" @click="_activateTab('global'); mobileSelectOpen = false">
                     <span class="dot-world"></span> МИР
                 </div>
@@ -868,6 +875,7 @@
             <button class="btn-node sm ghost" @click="stepChatSize(1)" :disabled="chatStep === 3" title="Развернуть на шаг">▲</button>
             <button class="btn-node sm ghost"
                     @click="_clearActiveChatTab()"
+                    :disabled="chatTab === 'battle'"
                     title="Очистить видимые сообщения вкладки"
                     aria-label="Очистить видимые сообщения вкладки">CLR</button>
             <button class="btn-node sm"
@@ -916,7 +924,8 @@
 
     <!-- ── MAIN CHAT AREA ── -->
     <div class="chat-main-area" x-show="chatStep > 0" style="flex: 1; min-height: 0;">
-        <div class="chat-log" id="chat-log">
+        {% include "game/domains/combat/viewport/battle_feed.html" %}
+        <div class="chat-log" id="chat-log" x-show="chatTab !== 'battle'">
             <!-- WORLD -->
             <template x-if="chatTab === 'global'">
                 <div style="padding: 10px;">

@@ -162,10 +162,10 @@ async def test_materialize_starting_imprint_persists_attributes_skills_and_equip
     assert all(row["progress_state"] == SkillProgressState.PLUS for row in skill_repo.rows)
     assert ("sword", "equipped", "main_hand") in item_persistence.created
     assert ("shield", "equipped", "off_hand") in item_persistence.created
-    assert ("jerkin", "equipped", "chest_armor") in item_persistence.created
+    assert ("medium_chest_armor", "equipped", "chest_armor") in item_persistence.created
     assert ("belt", "equipped", "belt_accessory") in item_persistence.created
-    assert ("travel_boots", "equipped", "feetwear") in item_persistence.created
-    assert not any(base_id == "winter_cloak" for base_id, _, _ in item_persistence.created)
+    assert ("boots", "equipped", "feetwear") in item_persistence.created
+    assert not any(base_id == "cloak" for base_id, _, _ in item_persistence.created)
     assert result["item_ids"] == [f"item-{index}" for index in range(1, len(item_persistence.created) + 1)]
     assert character_repo.committed is True
 

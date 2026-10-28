@@ -57,6 +57,25 @@ class CombatCreationOrchestrator:
         if not player_ids:
             raise CombatLifecycleError("combat session requires at least one player commitment")
 
+        ready = {
+            "status": "ready",
+            "source": source,
+            "combat_id": combat_id,
+            "battle_type": battle_type,
+            "participants": participants,
+            "requested_by": request.get("requested_by"),
+            "arena_session_id": request.get("arena_session_id"),
+            "correlation_id": request.get("correlation_id"),
+        }
+        fingerprint = self.lifecycle.creation_fingerprint(battle_type, participants, request)
+        existing = await self.lifecycle.existing_creation(combat_id, fingerprint)
+        if existing is not None:
+            # An acknowledged session can outlive its source commitments. Retry
+            # ready delivery without rebuilding actors or replacing analytics.
+            await self._enqueue_loot(combat_id, battle_type, request, existing)
+            await self.integrator.publish_session_ready(ready)
+            return ready
+
         step_started_at = perf_counter()
         commitments = self._provided_commitments(participants, request)
         logger.bind(
@@ -112,26 +131,7 @@ class CombatCreationOrchestrator:
             actor_count=sum(len(members) for members in participants.values()),
             duration_ms=_elapsed_ms(step_started_at),
         ).debug("CombatCreationTiming")
-        if self.loot_preorder is not None:
-            try:
-                await self.loot_preorder.enqueue(
-                    combat_id=combat_id,
-                    battle_type=battle_type,
-                    location_id=str(session_data.meta.get("location_id") or request.get("location_id") or "unknown"),
-                    actors=session_data.actors,
-                )
-            except Exception:  # noqa: BLE001
-                logger.bind(combat_id=combat_id).exception("CombatLootPreorderFailed")
-        ready = {
-            "status": "ready",
-            "source": source,
-            "combat_id": combat_id,
-            "battle_type": battle_type,
-            "participants": participants,
-            "requested_by": request.get("requested_by"),
-            "arena_session_id": request.get("arena_session_id"),
-            "correlation_id": request.get("correlation_id"),
-        }
+        await self._enqueue_loot(combat_id, battle_type, request, session_data)
         step_started_at = perf_counter()
         await self.integrator.publish_session_ready(ready)
         logger.bind(
@@ -148,6 +148,18 @@ class CombatCreationOrchestrator:
         ).info("CombatCreationTiming")
         logger.bind(combat_id=combat_id, source=source).info("CombatLifecycleReady")
         return ready
+
+    async def _enqueue_loot(self, combat_id, battle_type, request, session_data) -> None:
+        if self.loot_preorder is not None:
+            try:
+                await self.loot_preorder.enqueue(
+                    combat_id=combat_id,
+                    battle_type=battle_type,
+                    location_id=str(session_data.meta.get("location_id") or request.get("location_id") or "unknown"),
+                    actors=session_data.actors,
+                )
+            except Exception:  # noqa: BLE001
+                logger.bind(combat_id=combat_id).exception("CombatLootPreorderFailed")
 
     async def fail_request(self, request: dict[str, Any], error: str) -> dict[str, Any]:
         failed = {

@@ -72,6 +72,8 @@ repos:
     rev: v1.5.0
     hooks:
       - id: detect-secrets
+        # All batches share one mutable baseline; avoid concurrent writes.
+        require_serial: true
         args: ["--baseline", ".secrets.baseline"]
         exclude: ^(src/lily_backend/system/fixtures/catalog/|src/backend/alembic/|src/frontend/static/js/vendor/phaser\.min\.js$)
 

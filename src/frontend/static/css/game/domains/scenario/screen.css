@@ -1,7 +1,7 @@
 .scenario-screen {
-    --scenario-accent: rgba(153, 160, 170, 0.92);
-    --scenario-accent-strong: rgba(220, 226, 232, 0.96);
-    --scenario-soft: rgba(153, 160, 170, 0.10);
+    --scenario-accent: rgb(var(--tone-neutral-010-rgb) / 0.92);
+    --scenario-accent-strong: rgb(var(--tone-text-048-rgb) / 0.96);
+    --scenario-soft: rgb(var(--tone-neutral-010-rgb) / 0.1);
     --scenario-gap: calc(8px * var(--game-ui-scale, 1));
     --scenario-padding: calc(10px * var(--game-ui-scale, 1));
     width: min(100%, var(--center-content-max, 920px));
@@ -17,17 +17,17 @@
 
 .scenario-statebar {
     min-width: 0;
-    min-height: 36px;
+    min-height: var(--size-36);
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto auto;
     align-items: center;
-    gap: 8px;
-    padding: 0 10px;
-    border: 1px solid rgba(153, 160, 170, 0.18);
+    gap: var(--sp-2);
+    padding: 0 var(--space-10);
+    border: 1px solid rgb(var(--tone-neutral-010-rgb) / 0.18);
     background:
-        linear-gradient(90deg, rgba(153, 160, 170, 0.09), rgba(5, 5, 7, 0.54)),
-        rgba(8, 8, 11, 0.82);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+        linear-gradient(90deg, rgb(var(--tone-neutral-010-rgb) / 0.09), rgb(var(--tone-surface-022-rgb) / 0.54)),
+        rgb(var(--tone-surface-057-rgb) / 0.82);
+    box-shadow: inset 0 1px 0 rgb(var(--tone-text-064-rgb) / 0.035);
 }
 
 .scenario-statebar strong,
@@ -38,7 +38,7 @@
     font-family: var(--font-ui);
     font-size: var(--game-panel-label-size);
     font-style: normal;
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: 0.08em;
     line-height: 1;
     text-overflow: ellipsis;
@@ -52,5 +52,5 @@
 }
 
 .scenario-statebar span {
-    color: rgba(210, 180, 140, 0.56);
+    color: rgb(var(--tone-text-002-rgb) / 0.56);
 }

@@ -1,14 +1,14 @@
 .char-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    gap: var(--space-10);
     width: 100%;
 }
 
 .char-slot {
-    padding: 15px 20px;
-    background: rgba(255, 170, 0, 0.02);
-    border: 1px solid rgba(255, 170, 0, 0.1);
+    padding: var(--space-15) var(--sp-5);
+    background: rgb(var(--tone-accent-024-rgb) / 0.02);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.1);
     cursor: pointer;
     clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
     transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
@@ -17,15 +17,15 @@
 }
 
 .char-slot:hover {
-    background: rgba(255, 170, 0, 0.06);
-    border-color: rgba(255, 170, 0, 0.3);
+    background: rgb(var(--tone-accent-024-rgb) / 0.06);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.3);
     transform: translateY(-2px);
 }
 
 .char-slot.sel {
-    background: rgba(255, 170, 0, 0.1);
+    background: rgb(var(--tone-accent-024-rgb) / 0.1);
     border-color: var(--col-accent);
-    box-shadow: 0 0 20px rgba(255, 170, 0, 0.1);
+    box-shadow: 0 0 20px rgb(var(--tone-accent-024-rgb) / 0.1);
 }
 
 .char-slot.empty {
@@ -36,7 +36,7 @@
 .char-name {
     font-size: var(--text-md);
     color: var(--col-parchment);
-    margin-bottom: 4px;
+    margin-bottom: var(--sp-1);
     letter-spacing: 0.05em;
 }
 
@@ -53,21 +53,21 @@
     right: 10px;
     font-size: var(--text-2xs);
     letter-spacing: 0.1em;
-    padding: 2px 6px;
-    background: rgba(255, 170, 0, 0.08);
-    border: 1px solid rgba(255, 170, 0, 0.2);
+    padding: var(--space-2) var(--space-6);
+    background: rgb(var(--tone-accent-024-rgb) / 0.08);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.2);
     color: var(--col-accent);
-    border-radius: 2px;
+    border-radius: var(--radius-sm);
 }
 
 .char-stage.combat {
-    background: rgba(255, 51, 0, 0.1);
-    border-color: rgba(255, 51, 0, 0.3);
+    background: rgb(var(--tone-danger-012-rgb) / 0.1);
+    border-color: rgb(var(--tone-danger-012-rgb) / 0.3);
     color: var(--col-danger);
 }
 
-.vitals-mini { display: flex; gap: 5px; margin-top: 12px; }
-.vbar { flex: 1; height: 2px; background: rgba(255, 255, 255, 0.05); }
+.vitals-mini { display: flex; gap: var(--space-5); margin-top: var(--sp-3); }
+.vbar { flex: 1; height: var(--size-2); background: rgb(var(--tone-text-064-rgb) / 0.05); }
 .vbar-fill { height: 100%; }
 .vbar-fill.hp { background: var(--col-danger); opacity: 0.7; }
 .vbar-fill.en { background: var(--col-info); opacity: 0.7; }

@@ -1,11 +1,15 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Annotated, Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, HTTPException, Request, status
 from loguru import logger
 
-from src.backend.features.combat.dependencies import CombatRuntimeOrchestratorDep  # noqa: TC001
+from src.backend.core.auth import User, get_current_user, require_game_character_scope
+from src.backend.features.combat.dependencies import (  # noqa: TC001
+    CombatCharacterRepositoryDep,
+    CombatRuntimeOrchestratorDep,
+)
 from src.backend.features.combat.exceptions import CombatActionRejectedError, CombatAPIError, CombatError
 from src.backend.features.combat.services.session_service import CombatSessionNotFound
 from src.shared.enums import CoreDomain
@@ -72,12 +76,18 @@ async def get_combat_snapshot(char_id: int, orchestrator: CombatRuntimeOrchestra
 
 @router.get("/{char_id}/logs", response_model=CombatLogDTO)
 async def get_combat_logs(
+    request: Request,
     char_id: int,
+    current_user: Annotated[User, Depends(get_current_user)],
+    characters: CombatCharacterRepositoryDep,
     orchestrator: CombatRuntimeOrchestratorDep,
     page: int = 1,
     page_size: int = 20,
 ) -> CombatLogDTO:
     """Return paginated combat logs from the live or archived combat source."""
+    require_game_character_scope(request, current_user, char_id)
+    if await characters.get_by_id_and_user_id(char_id, current_user.id) is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Character not found")
     try:
         return await orchestrator.get_logs(char_id, page=page, page_size=page_size)
     except CombatError as exc:

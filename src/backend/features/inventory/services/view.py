@@ -2,8 +2,10 @@ from __future__ import annotations
 
 from typing import Any, Literal
 
+from src.backend.features.inventory.repositories.items import public_inventory_metadata
 from src.backend.features.items.resources.affixes.catalog import AFFIX_CATALOG
 from src.backend.features.items.services.catalog_service import ItemCatalogService
+from src.backend.features.items.services.visual_service import ItemVisualService
 from src.shared.enums.item_enums import EquippedSlot, QuickSlot
 from src.shared.schemas.inventory import (
     InventoryAccessoryRowDTO,
@@ -26,6 +28,7 @@ from src.shared.schemas.inventory import (
     InventoryWindowSlotDTO,
 )
 
+from .equipment_rules import ACTIVE_SLOTS, can_equip, is_bow
 from .projection import belt_capacity, inventory_cell_capacity
 
 
@@ -198,17 +201,14 @@ class InventoryViewService:
         "arms_armor": "Наручи",
         "belt_accessory": "Пояс",
         "chest_armor": "Броня корпуса",
-        "chest_garment": "Одежда корпуса",
         "earring": "Серьги",
         "feetwear": "Обувь",
         "gloves_garment": "Перчатки",
-        "head_armor": "Голова",
-        "legs_armor": "Поножи",
-        "legs_garment": "Штаны",
+        "head_armor": "Броня головы",
+        "legs_armor": "Броня ног",
         "main_hand": "Основная",
         "off_hand": "Вторая",
         "outer_garment": "Плащ",
-        "quiver": "Колчан",
         "ring_1": "Кольцо 1",
         "ring_2": "Кольцо 2",
         "two_hand": "Две руки",
@@ -303,6 +303,18 @@ class InventoryViewService:
         avatar_name: str = "NO_DATA",
         strength: int = 0,
     ) -> InventoryWindowDTO:
+        # Cached runtime documents from older versions may contain generated text.
+        # Re-project before creating any public slots, rows or nested DTOs.
+        session = session.model_copy(deep=True)
+        visuals = ItemVisualService(catalog=self.catalog)
+        for item in session.by_id.values():
+            item.metadata = public_inventory_metadata(
+                item.metadata, is_identified=item.is_identified and item.text_status == "generated"
+            )
+            if not item.is_identified or item.text_status != "generated":
+                item.name, item.description = visuals.base_presentation(
+                    item.base_id, item.material_id, item.visual_variant_id
+                )
         stats = session.stats.model_copy()
         stats.slots_total = inventory_cell_capacity(session, strength=strength)
         stats.slots_used = self._slots_used(session)
@@ -314,17 +326,16 @@ class InventoryViewService:
             avatar_name=avatar_name,
             stats=stats,
             body_zones=[
-                self._zone(session, "head", "Голова", EquippedSlot.HEAD_ARMOR.value, "Шлем", "armor", "head"),
-                self._zone(session, "outer", "Плащ", EquippedSlot.OUTER_GARMENT.value, "Плащ", "garment", "outer"),
+                self._zone(session, "head", "Голова", EquippedSlot.HEAD_ARMOR.value, "Броня головы", "armor", "head"),
+                self._zone(session, "outer", "Плащ", EquippedSlot.OUTER_GARMENT.value, "Плащ", "accessory", "outer"),
                 self._zone(
                     session,
                     "chest",
                     "Корпус",
                     EquippedSlot.CHEST_ARMOR.value,
-                    "Броня",
+                    "Броня корпуса",
                     "armor",
                     "chest",
-                    secondary=(EquippedSlot.CHEST_GARMENT.value, "Одежда", "garment"),
                 ),
                 self._zone(
                     session,
@@ -334,17 +345,16 @@ class InventoryViewService:
                     "Наручи",
                     "armor",
                     "arms",
-                    secondary=(EquippedSlot.GLOVES_GARMENT.value, "Перчатки", "garment"),
+                    secondary=(EquippedSlot.GLOVES_GARMENT.value, "Перчатки", "accessory"),
                 ),
                 self._zone(
                     session,
                     "legs",
                     "Ноги",
                     EquippedSlot.LEGS_ARMOR.value,
-                    "Поножи",
+                    "Броня ног",
                     "armor",
                     "legs",
-                    secondary=(EquippedSlot.LEGS_GARMENT.value, "Штаны", "garment"),
                 ),
                 self._zone(session, "feet", "Обувь", EquippedSlot.FEETWEAR.value, "Обувь", "equipment", "feet"),
             ],
@@ -373,11 +383,6 @@ class InventoryViewService:
                     row_id="belt",
                     label="Пояс",
                     slots=[self._slot(session, EquippedSlot.BELT_ACCESSORY.value, "Пояс", "accessory")],
-                ),
-                InventoryAccessoryRowDTO(
-                    row_id="quiver",
-                    label="Колчан",
-                    slots=[self._slot(session, EquippedSlot.QUIVER.value, "Колчан", "accessory")],
                 ),
             ],
             quick_slots=self._quick_slots(session),
@@ -423,8 +428,12 @@ class InventoryViewService:
         )
 
     def _weapon_slots(self, session: InventoryRuntimeSessionDTO) -> list[InventoryWindowSlotDTO]:
-        if self._item_in_equipment_slot(session, EquippedSlot.TWO_HAND.value):
-            return [self._slot(session, EquippedSlot.TWO_HAND.value, "Две руки", "equipment")]
+        two_hand = self._item_in_equipment_slot(session, EquippedSlot.TWO_HAND.value)
+        if two_hand:
+            slots = [self._slot(session, EquippedSlot.TWO_HAND.value, "Две руки", "equipment")]
+            if is_bow(two_hand):
+                slots.append(self._slot(session, EquippedSlot.OFF_HAND.value, "Вторая", "equipment"))
+            return slots
         return [
             self._slot(session, EquippedSlot.MAIN_HAND.value, "Основная", "equipment"),
             self._slot(session, EquippedSlot.OFF_HAND.value, "Вторая", "equipment"),
@@ -460,6 +469,9 @@ class InventoryViewService:
             row = InventoryContainerRowDTO(
                 item_id=item.item_id,
                 icon=self._icon_key(item),
+                visual_variant_id=item.visual_variant_id,
+                thumbnail_url=item.thumbnail_url,
+                image_url=item.image_url,
                 name=item.name,
                 item_type=item.item_type,
                 filter_group=self._filter_group(item.item_type),
@@ -581,11 +593,11 @@ class InventoryViewService:
         if item.item_type == "weapon":
             return self._weapon_icon_key(item)
         base_icons = {
-            "scout_leggings": "legs_light",
-            "breeches": "legs_medium",
-            "greaves": "legs_heavy",
-            "fur_pants": "legwear",
-            "travel_boots": "feetwear",
+            "light_leg_armor": "legs_light",
+            "medium_leg_armor": "legs_medium",
+            "heavy_leg_armor": "legs_heavy",
+            "pants": "legwear",
+            "boots": "feetwear",
         }
         if item.base_id in base_icons:
             return base_icons[item.base_id]
@@ -593,11 +605,9 @@ class InventoryViewService:
             EquippedSlot.HEAD_ARMOR.value: "head",
             EquippedSlot.OUTER_GARMENT.value: "cloak",
             EquippedSlot.CHEST_ARMOR.value: "torso",
-            EquippedSlot.CHEST_GARMENT.value: "garment",
             EquippedSlot.ARMS_ARMOR.value: "arms",
             EquippedSlot.GLOVES_GARMENT.value: "arms",
             EquippedSlot.LEGS_ARMOR.value: "legs",
-            EquippedSlot.LEGS_GARMENT.value: "legwear",
             EquippedSlot.FEETWEAR.value: "feetwear",
             EquippedSlot.MAIN_HAND.value: "weapon",
             EquippedSlot.TWO_HAND.value: "weapon",
@@ -606,8 +616,9 @@ class InventoryViewService:
             EquippedSlot.RING_1.value: "ring",
             EquippedSlot.RING_2.value: "ring",
             EquippedSlot.BELT_ACCESSORY.value: "belt",
-            EquippedSlot.QUIVER.value: "quiver",
         }
+        if item.item_type == "ammo":
+            return "quiver"
         if slot == EquippedSlot.OFF_HAND.value:
             if item.item_type == "armor" or "shield" in item.tags or "shield" in item.name.lower():
                 return "shield"
@@ -708,6 +719,11 @@ class InventoryViewService:
         return InventoryItemDetailsDTO(
             item_id=item.item_id,
             name=item.name,
+            visual_variant_id=item.visual_variant_id,
+            thumbnail_url=item.thumbnail_url,
+            image_url=item.image_url,
+            is_identified=item.is_identified,
+            text_status=item.text_status,
             item_type=item.item_type,
             item_type_label=self._item_type_label(item.item_type),
             rarity=item.rarity,
@@ -841,12 +857,18 @@ class InventoryViewService:
                     slot_id=first_free,
                 )
             )
+        if not item.is_identified:
+            actions.append(InventoryItemActionDTO(action="identify", label="Раскрыть"))
         actions.append(InventoryItemActionDTO(action="drop", label="Выбросить", style="danger"))
         return actions
 
     @staticmethod
     def _equip_target(session: InventoryRuntimeSessionDTO, item: InventoryRuntimeItemDTO) -> str | None:
-        valid_slots = item.valid_slots or ([item.slot] if item.slot else [])
+        valid_slots = [
+            slot
+            for slot in (item.valid_slots or [item.mechanics.get("slot")])
+            if slot in ACTIVE_SLOTS and can_equip(session, item, slot)
+        ]
         if not valid_slots:
             return None
 
@@ -1023,18 +1045,18 @@ class InventoryViewService:
             "kris": (1, 2),
             "buckler": (2, 2),
             "shield": (2, 3),
-            "leather_cap": (2, 2),
-            "jerkin": (2, 3),
-            "reinforced_gloves": (2, 2),
-            "soft_bracers": (2, 2),
-            "scout_leggings": (2, 2),
-            "travel_boots": (2, 2),
-            "linen_shirt": (2, 2),
-            "wool_tunic": (2, 2),
+            "medium_helmet": (2, 2),
+            "medium_chest_armor": (2, 3),
+            "medium_bracers": (2, 2),
+            "light_bracers": (2, 2),
+            "light_leg_armor": (2, 2),
+            "boots": (2, 2),
+            "shirt": (2, 2),
+            "tunic": (2, 2),
             "apron": (2, 2),
-            "winter_cloak": (2, 3),
-            "work_gloves": (2, 1),
-            "fur_pants": (2, 2),
+            "cloak": (2, 3),
+            "gloves": (2, 1),
+            "pants": (2, 2),
         }
         if item.base_id in by_base:
             return by_base[item.base_id]
@@ -1042,11 +1064,9 @@ class InventoryViewService:
         by_slot = {
             EquippedSlot.HEAD_ARMOR.value: (2, 2),
             EquippedSlot.CHEST_ARMOR.value: (2, 3),
-            EquippedSlot.CHEST_GARMENT.value: (2, 2),
             EquippedSlot.ARMS_ARMOR.value: (2, 1),
             EquippedSlot.GLOVES_GARMENT.value: (2, 1),
             EquippedSlot.LEGS_ARMOR.value: (2, 2),
-            EquippedSlot.LEGS_GARMENT.value: (2, 2),
             EquippedSlot.FEETWEAR.value: (2, 2),
             EquippedSlot.OUTER_GARMENT.value: (2, 3),
             EquippedSlot.MAIN_HAND.value: (1, 3),
@@ -1057,7 +1077,6 @@ class InventoryViewService:
             EquippedSlot.RING_1.value: (1, 1),
             EquippedSlot.RING_2.value: (1, 1),
             EquippedSlot.BELT_ACCESSORY.value: (2, 1),
-            EquippedSlot.QUIVER.value: (1, 2),
         }
         if slot in by_slot:
             return by_slot[slot]

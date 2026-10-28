@@ -15,6 +15,7 @@ from src.shared.schemas.combat import (
     CombatDashboardDTO,
     CombatErrorDTO,
     CombatEventDTO,
+    CombatLogDTO,
     CombatPinFeintRequestDTO,
     CombatRegisterMoveRequestDTO,
     CombatResultDTO,
@@ -22,6 +23,20 @@ from src.shared.schemas.combat import (
 
 router = APIRouter(tags=["Combat"])
 LOG_PAGE_SIZE_OPTIONS = (4, 8, 12)
+
+
+@router.get("/game/combat/report", response_model=CombatLogDTO, name="game_combat_report")
+async def game_combat_report(
+    request: Request,
+    auth_service: Annotated[FrontendAuthService, Depends(get_frontend_auth_service)],
+    combat_api: Annotated[BackendCombatApi, Depends(get_backend_combat_api)],
+    char_id: int,
+    page: int = 1,
+) -> CombatLogDTO:
+    """Read-only, bounded combat snapshot; never enters chat delivery or storage."""
+    await auth_service.require_current_user(request)
+    token = require_game_access_token(request)
+    return await combat_api.logs(token, char_id=char_id, page=max(1, page), page_size=8)
 
 
 @router.get("/game/combat/logs", name="game_combat_logs")

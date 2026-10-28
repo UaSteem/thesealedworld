@@ -181,6 +181,7 @@
 {% set arena_modal_screens = ['match_found', 'shadow_offer', 'combat_pending', 'combat_failed'] %}
 
 <section id="center-screens" class="arena-center-screens">
+    {% include "game/includes/places_transport.html" %}
     {% if arena %}
         {% set arena_screen = arena.screen.value if arena.screen and arena.screen.value is defined else arena.screen %}
         <div class="game-screen-area game-screen-area--vertical arena-screen arena-screen--{{ arena_screen }}{{ ' arena-group-underwork' if arena_screen == 'mode_menu' and arena.mode == 'group' else '' }}">
@@ -364,7 +365,7 @@
                     </div>
                 </section>
                 {% if arena.mode == 'group' %}
-                    {{ arena_group_browser(group_lobby) }}
+                    {% if not places_client_payload %}{{ arena_group_browser(group_lobby) }}{% endif %}
                 {% else %}
                     {{ arena_battle_list(arena.mode or 'one_vs_one') }}
                 {% endif %}
@@ -423,7 +424,7 @@
                 </div>
                 {% endif %}
 
-                {% if arena_screen == 'searching' %}
+                {% if not places_client_payload and arena_screen == 'searching' %}
                     <div class="arena-pulse"
                          hx-post="/game/arena/action"
                          hx-trigger="every {{ arena.poll_after_ms }}ms"
@@ -432,7 +433,7 @@
                          hx-swap="outerHTML"
                          hx-vals='{"char_id": {{ char_id }}, "action": "check_match", "mode": "{{ arena.mode }}"}'>
                     </div>
-                {% elif arena_screen == 'combat_pending' and arena.arena_session_id and arena.metadata.get('polling') %}
+                {% elif not places_client_payload and arena_screen == 'combat_pending' and arena.arena_session_id and arena.metadata.get('polling') %}
                     <div class="arena-pulse"
                          hx-post="/game/arena/action"
                          hx-trigger="every {{ arena.poll_after_ms }}ms"

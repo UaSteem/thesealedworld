@@ -3,11 +3,11 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    width: 12px;
-    height: 12px;
+    width: var(--size-12);
+    height: var(--size-12);
     border-radius: 50%;
     border: 1px solid var(--col-accent);
-    background: rgba(255, 170, 0, 0.1);
+    background: rgb(var(--tone-accent-024-rgb) / 0.1);
     cursor: pointer;
     z-index: 10;
     transition: all 0.3s ease;
@@ -18,8 +18,8 @@
 
 .neural-control::after {
     content: '';
-    width: 4px;
-    height: 4px;
+    width: var(--size-4);
+    height: var(--size-4);
     border-radius: 50%;
     background: var(--col-accent);
     box-shadow: 0 0 8px var(--col-accent);
@@ -31,7 +31,7 @@
 }
 
 .neural-control:hover::after {
-    background: #000;
+    background: rgb(var(--tone-surface-001-rgb));
 }
 
 /* Position overrides if needed */

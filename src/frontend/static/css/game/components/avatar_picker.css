@@ -3,23 +3,23 @@
 }
 
 .avatar-picker-body {
-    padding: 12px 14px;
+    padding: var(--sp-3) var(--space-14);
 }
 
 .avatar-picker-tabs {
     display: flex;
-    gap: 8px;
-    margin-bottom: 14px;
+    gap: var(--sp-2);
+    margin-bottom: var(--space-14);
 }
 
 .avatar-picker-tab {
     flex: 1;
-    min-height: 28px;
-    border: 1px solid rgba(255, 170, 0, 0.20);
-    border-radius: 4px;
-    background: rgba(0, 0, 0, 0.35);
-    color: rgba(210, 180, 140, 0.62);
-    font: 800 9px/1 var(--font-mono);
+    min-height: var(--size-28);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.2);
+    border-radius: var(--radius-md);
+    background: rgb(var(--tone-surface-001-rgb) / 0.35);
+    color: rgb(var(--tone-text-002-rgb) / 0.62);
+    font: var(--weight-heavy) var(--type-xs)/1 var(--font-mono);
     letter-spacing: 0.12em;
     text-transform: uppercase;
     cursor: pointer;
@@ -27,27 +27,27 @@
 }
 
 .avatar-picker-tab:hover {
-    border-color: rgba(255, 170, 0, 0.35);
-    color: rgba(210, 180, 140, 0.82);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.35);
+    color: rgb(var(--tone-text-002-rgb) / 0.82);
 }
 
 .avatar-picker-tab.is-active {
-    border-color: rgba(255, 170, 0, 0.48);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.48);
     color: var(--col-accent);
-    background: rgba(255, 170, 0, 0.06);
+    background: rgb(var(--tone-accent-024-rgb) / 0.06);
 }
 
 .avatar-picker-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
+    gap: var(--sp-2);
 }
 
 .avatar-picker-cell {
     aspect-ratio: 1;
-    border: 2px solid rgba(255, 170, 0, 0.12);
-    border-radius: 4px;
-    background: rgba(0, 0, 0, 0.24);
+    border: 2px solid rgb(var(--tone-accent-024-rgb) / 0.12);
+    border-radius: var(--radius-md);
+    background: rgb(var(--tone-surface-001-rgb) / 0.24);
     cursor: pointer;
     overflow: hidden;
     transition: border-color 140ms, box-shadow 140ms;
@@ -62,23 +62,23 @@
 }
 
 .avatar-picker-cell:hover {
-    border-color: rgba(255, 170, 0, 0.38);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.38);
 }
 
 .avatar-picker-cell.is-selected {
     border-color: var(--col-accent);
-    box-shadow: 0 0 12px rgba(255, 170, 0, 0.24),
-                inset 0 0 0 1px rgba(255, 170, 0, 0.16);
+    box-shadow: 0 0 12px rgb(var(--tone-accent-024-rgb) / 0.24),
+                inset 0 0 0 1px rgb(var(--tone-accent-024-rgb) / 0.16);
 }
 
 .avatar-picker-apply {
-    background: rgba(255, 170, 0, 0.12);
-    border-color: rgba(255, 170, 0, 0.48);
+    background: rgb(var(--tone-accent-024-rgb) / 0.12);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.48);
     color: var(--col-accent);
 }
 
 .avatar-picker-apply:hover:not(:disabled) {
-    background: rgba(255, 170, 0, 0.18);
+    background: rgb(var(--tone-accent-024-rgb) / 0.18);
 }
 
 .avatar-picker-apply:disabled {
@@ -92,5 +92,5 @@
 }
 
 .status-widget-avatar--clickable:hover {
-    border-color: rgba(255, 170, 0, 0.52);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.52);
 }

@@ -46,7 +46,7 @@ def test_system_worker_consumes_exploration_knowledge_flush_jobs() -> None:
     assert "flush_exploration_knowledge_task" in function_names
 
 
-def test_system_worker_consumes_rift_run_flush_jobs() -> None:
+def test_system_worker_does_not_consume_retired_rift_jobs() -> None:
     function_names = {function.__name__ for function in SystemArqSettings.functions}
 
-    assert "flush_rift_run_task" in function_names
+    assert "flush_rift_run_task" not in function_names

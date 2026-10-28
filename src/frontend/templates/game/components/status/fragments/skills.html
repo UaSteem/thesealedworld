@@ -1,7 +1,7 @@
 <div class="status-section">
     <div class="sec">SKILLS & MASTERY</div>
 
-    <div style="display: flex; flex-direction: column; gap: 4px;">
+    <div style="display: flex; flex-direction: column; gap: var(--sp-1);">
         <div class="acc" x-data="accState('status:acc:system', true)" :class="{ 'open': open }">
             <div class="acc-head" @click="toggle()" style="border-left: 2px solid var(--col-psi);">
                 <span style="color: var(--col-psi);" x-text="agents[selectedAgentId].symbiote_name || 'SYSTEM'">SYSTEM</span>

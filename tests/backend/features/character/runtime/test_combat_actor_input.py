@@ -272,7 +272,7 @@ def test_builder_maps_equipped_quiver_payload_to_archery_main_hand() -> None:
             "attributes": {},
             "skills": {"skill_archery": 0.3, "skill_ranged_combat": 0.2},
             "items": {
-                "layout": {"equipment": {"two_hand": "shortbow-1", "quiver": "fire-quiver-1"}},
+                "layout": {"equipment": {"two_hand": "shortbow-1", "off_hand": "fire-quiver-1"}},
                 "by_id": {
                     "shortbow-1": {
                         "item_id": "shortbow-1",
@@ -286,7 +286,7 @@ def test_builder_maps_equipped_quiver_payload_to_archery_main_hand() -> None:
                     "fire-quiver-1": {
                         "item_id": "fire-quiver-1",
                         "item_type": "ammo",
-                        "slot": "quiver",
+                        "slot": "off_hand",
                         "mechanics": {
                             "power": 2.4,
                             "ammo_charge_base": 12,
@@ -341,7 +341,7 @@ def test_builder_ignores_equipped_quiver_payload_without_archery_weapon() -> Non
             "attributes": {},
             "skills": {"skill_swords": 0.3},
             "items": {
-                "layout": {"equipment": {"main_hand": "sword-1", "quiver": "fire-quiver-1"}},
+                "layout": {"equipment": {"main_hand": "sword-1", "off_hand": "fire-quiver-1"}},
                 "by_id": {
                     "sword-1": {
                         "item_id": "sword-1",
@@ -355,7 +355,7 @@ def test_builder_ignores_equipped_quiver_payload_without_archery_weapon() -> Non
                     "fire-quiver-1": {
                         "item_id": "fire-quiver-1",
                         "item_type": "ammo",
-                        "slot": "quiver",
+                        "slot": "off_hand",
                         "mechanics": {
                             "ammo_effect_payload": {
                                 "id": "dot_burn",

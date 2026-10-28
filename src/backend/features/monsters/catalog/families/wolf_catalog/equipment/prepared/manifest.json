@@ -2,72 +2,72 @@
   "schema_version": 1,
   "seed_version": "wolf-prepared-equipment-v1",
   "files": {
-    "alpha_prime/tier_0.py": "47955fee3f114d2b7a1ab0710e7ddbd990e288f774bf5c07e03779522e19c26a",
-    "alpha_prime/tier_1.py": "5d746230f9578f909701f4ad7013d127eeec0d180e13af5b66a55a59ae035115",
-    "alpha_prime/tier_2.py": "54b9837d8e411cb97166bdf746598b9b4d737e7152138cdf602bef4928457601",
-    "alpha_prime/tier_3.py": "b4c8ad4eb1cd3edca2a7b7e5fbf9669d3f76c11068af4e29744673e0b33cadb2",
-    "alpha_prime/tier_4.py": "6104a745ac78fb2a502acd0112ca48b55a9cde642b9f3112a56c6aa4b2078d7d",
-    "alpha_prime/tier_5.py": "ab178595397ec360991025140ddbef9666680b2e2c42b900d607afa0a59b0c5a",
-    "cub/tier_0.py": "c0682479ca03742c9171f7bc40aa7e8bb93a8858fad456cd924d8d423f25f391",
-    "cub/tier_1.py": "34de733d7c705a5c390dc52c11ee2719f2cda6a72b79fe2cc56a1c9f86bd046f",
-    "cub/tier_2.py": "093e78f6f10ab5b9d0b3c237f30244837be70055a29fac974610e158ec7009c0",
-    "cub/tier_3.py": "51df3e1517d797eaa33895e5f4c2c344381f8cb6188c422389d5f59d332a9998",
-    "cub/tier_4.py": "731847d5685ba8a03923e66e8d4206806bbdd9a4e555666b6638c6dfe8f5a6a5",
-    "cub/tier_5.py": "e41c7f633b43e2a1f3ebbb6bf7e189ad89dbc4bd43499dafb7cf3ed17a8745ad",
-    "dire_wolf/tier_0.py": "319fd5ab824db8b8080890b20329800b960b6a06e781bd8c77b518eac08e9442",
-    "dire_wolf/tier_1.py": "918c8bebee0a6471569534c9969954d5d378ebbbc11115f0f33416304be6560e",
-    "dire_wolf/tier_2.py": "f5de2c60b91afbf0dba076b95c9c2f9662409d1cdc070bf8c921934b9dfde9b9",
-    "dire_wolf/tier_3.py": "84dcf5d5d93510f3fcc27b264325a03cb0106c1c79c4c1e5fca6b08b652df22c",
-    "dire_wolf/tier_4.py": "fbc07a79464a940b2225282711eb95318740b0583007c19c48259b6e61a743ef",
-    "dire_wolf/tier_5.py": "a61e8ff7d2b053e5644f33cdde212d47df8420b9d6909de5f4468835a71dc40d",
-    "flanker/tier_0.py": "e1afdc5df7420f03edd10a76d6dc5fec19b57db7d65254cb1e8b4d4508cd99d8",
-    "flanker/tier_1.py": "0f2a47d4f32e7a544ab370424e591828b438412f259b326bf9ea93ba211b0276",
-    "flanker/tier_2.py": "2b198af95036fe257c2549e319f7a62e0150fd0d21c40212dbcb3698226c70f4",
-    "flanker/tier_3.py": "4ee893766e291bf9d75d65fb0ce125372a22a0eb3a1a551f039f9fa7fdbabc13",
-    "flanker/tier_4.py": "91bfd19ce44ac52d3fbed2ff37cbce050676d6cc3f260824a5a9400c93494bc1",
-    "flanker/tier_5.py": "5b3ee6bdd4a8d4628fd31ae22414650f3e85b7959a707edbc236f8bfa931bc99",
-    "mangy_biter/tier_0.py": "61d641adef3583838ab76550bb9231e6d6e3fa23c6ee63530be24ff0c42c54f4",
-    "mangy_biter/tier_1.py": "acc438efe710432b55a73415cb1290b32a706f33196d80997f30f3a1337d7e1f",
-    "mangy_biter/tier_2.py": "2b91800f898ea36af3d56d2f427327c1dfe1e27b9e58df98fed621a958663b71",
-    "mangy_biter/tier_3.py": "70a99f3bee08d58b48205b6f6a2c549a40b50f45b551ae3225015d2cdd177bfb",
-    "mangy_biter/tier_4.py": "8f1689056627e3a6ad5fa5e0186aeb1ea739ec8651f506107c27976e58b13e85",
-    "mangy_biter/tier_5.py": "4c74be35628293519da61521dac3ece653d0fee4acdb4087afd39f698a63aadb",
-    "old_fang/tier_0.py": "4cb234d76c9458f1e8cfbdbd2375917a9846d206abd61ca205aa05d74ab07b42",
-    "old_fang/tier_1.py": "d895b91ec2a90dd12fb4eee8dbcf5eae35c8386a557aa90e33f825e9f0d2ee44",
-    "old_fang/tier_2.py": "f9447ac61904575800c7f2a004dec7366580d2e72f89c76c6a0a61a376847d46",
-    "old_fang/tier_3.py": "e6ea0b695ecf07a8151a8c5b49473637f25ae72137b14807a2a3c8be72d9a649",
-    "old_fang/tier_4.py": "f5a8c06bb335febc5850a1a1a843c4559f77a47297aa34641dd64e62bae0ec2a",
-    "old_fang/tier_5.py": "3d74b39e0eeadac5072fa8526fa155cc916ef907ff22f84fbfd52bfbe4fce44a",
-    "pack_huntmaster/tier_0.py": "4b6e1988aacb55a75d9ae9fe0727d02b5b58ec95fbf489049e6703db448d1653",
-    "pack_huntmaster/tier_1.py": "5f64ae6f5515af690bb34b3f39b9f5c15d1aed489f36f78f6075a5653ecdbc84",
-    "pack_huntmaster/tier_2.py": "1e864ad369172367f4e86d711d1bb564b7f45ac33690124d7ede10a5fe344dfb",
-    "pack_huntmaster/tier_3.py": "5467d1e6ebc9b0479c33818b6a31ad8d2bc6c075a429a8408170e2d3e39eb3b5",
-    "pack_huntmaster/tier_4.py": "950066bc0a36ae1493a06c44e3dbd9fcdbc3f7b8ac773aade9d47a79f7de081b",
-    "pack_huntmaster/tier_5.py": "85392cbfb6ad7d842c43850132cbefc1cecf77d0cd65365722b59e2af94352f8",
-    "pack_leader/tier_0.py": "2bf39677f43d8178856f7f36d296c0ed257910c1c67d2463f2ff64c50fd052de",
-    "pack_leader/tier_1.py": "71282cb6120f5d8dbb0259712105a9aa9a7c1107080cd5dcba1b018ff4a3c23c",
-    "pack_leader/tier_2.py": "32c170f47d1e584154fb05bf8368d566ce9b7f32aa4bafa67f81d90a3765617e",
-    "pack_leader/tier_3.py": "89f3064df3f09a96b9b596ed65b0e2fb00071d80ef501cd21bceac5982f1cfaf",
-    "pack_leader/tier_4.py": "acd0c03e13d2cc0bfeca8ec455ade5947bc0948dbcc318797f10a532afbe2065",
-    "pack_leader/tier_5.py": "6d38649006115e166def425e721e1bc83835d55a045ee5e97e3201cb810b0a27",
-    "runner/tier_0.py": "30eeabfe1848d49dcc913bf8e1c33eaaaa4e100f35bc87c742b087e7fc44f4a1",
-    "runner/tier_1.py": "4f38860f01a0f88e348f975467574cc406cfe0af1a7eb2adbc4dc8c872949388",
-    "runner/tier_2.py": "e2b46e7ef7fd93d158ce42dd7610f4246ad87d9f7fbeb1dd151ff1542d112101",
-    "runner/tier_3.py": "4787404a1979344bc07cf1e2e916ec73a679f5f9ef749147e30e49f2d6b82581",
-    "runner/tier_4.py": "28303be5785429a8d7495568f290feeab76c6b0c22e533f197fc574db47ca344",
-    "runner/tier_5.py": "bf93bdae1912303108110b9a5c91b2f8c34cbb8fb6a85a1b3a6171e1399f7120",
-    "snapper/tier_0.py": "9a89a80144f7abc86b18a61ab015f1e6ab82826f9093cef1662f794b218d31a7",
-    "snapper/tier_1.py": "dc3f891334f78d64498197ed3ef3ace0db02ffbb0acce49573aaf62ce23ceba2",
-    "snapper/tier_2.py": "0df9363afe3cfcfbb03ccd077fe5dd86d9cc786169dc0141c40ec2623e4d09d6",
-    "snapper/tier_3.py": "bb41179376f1127ec0572e59aa15160e33d2e39cab9307529e8fb2fe9f18ea8f",
-    "snapper/tier_4.py": "a2baad300b7d7f18ea40dd49014e83d9ecaa506cf63d856416377fa997a80bbf",
-    "snapper/tier_5.py": "c199f7a55f3e92406cdd53c1d1ba96448f984b7639b193f91e492206f259b888",
-    "stalker/tier_0.py": "da8c961b25d91fad676f13b88a8c0e78a4f1bcb35921362b3fb84fb60b392dfa",
-    "stalker/tier_1.py": "690f9b644174f776ce79a90fa9bd5854ee0769caad1224f884229fb29623b1cf",
-    "stalker/tier_2.py": "1ab43a80d1ad37842bd44f51d5e4c8fdea8945c324235af82db712f4ec1ab709",
-    "stalker/tier_3.py": "b793a25389e5c6161c8d7656011fc532212f9139b97b58b81d30a85cefcb8cc9",
-    "stalker/tier_4.py": "09747476c714085f002fb3a29a3ef71bbc0af0e4335d62cbbecf76d6a9134e94",
-    "stalker/tier_5.py": "11b626dedaf480eb503f825007dac2b8f3b581d08fb775ed2c53c22f33b83949"
+    "alpha_prime/tier_0.py": "ac9026b5f1a3c553dcd556691b1bc50f4087dd3f34dadf7fef79a4725f3924d2",
+    "alpha_prime/tier_1.py": "42a8326b0ba050ec014cc7f2f0083e4ec09da9882e94b06fcc8dc2ff47ee8731",
+    "alpha_prime/tier_2.py": "b6cde1184e075132d993ae85f7abdb832d153683482f2da78eb4ffdd4a00086a",
+    "alpha_prime/tier_3.py": "192912d224a8aac5f447a0781a3f7e9d8d8ce36085d05a674f7ff166f5ec2cf2",
+    "alpha_prime/tier_4.py": "595dd63f02e1f3a815310e6e7c66e5ab377bd0c6fb1f1637dc63f4c517745bdc",
+    "alpha_prime/tier_5.py": "6d1e440536f133b2d7062f34f7fc6b5872be63794270f4dea7d04b635d6a2622",
+    "cub/tier_0.py": "2d17c93df27c279c7eb9a7808f5cf2e6e5b230fd35f445951d4a33c809b05d0f",
+    "cub/tier_1.py": "7ef23b0046eb079874c03b75e636cf88d6fea689c9024e277f5b4a98a1d8c580",
+    "cub/tier_2.py": "011ce1f21fb9ab699bbef4aaf77df54971d434375deae8ab242ccfaff337f91f",
+    "cub/tier_3.py": "a6738d546e804eebbd4c4707b23bc8c35c64cced817b1e4a2c9375e09d8d3e6b",
+    "cub/tier_4.py": "0c20b817acefc45c4deff5e4f9d75c45d897ccd8f38784e28a17a22f2ccda8de",
+    "cub/tier_5.py": "49a03c27cd4c86fccfa86dd46243a1dec952726ff6060e0c7236c1ec22d2af0f",
+    "dire_wolf/tier_0.py": "a726dafc925d23c953333c1c48fd010332af44fb9d33a5332d238b8a7ccd0767",
+    "dire_wolf/tier_1.py": "2c14a1fe72b88a142d0982cb2833493427f78ae4ac277971d8b2e625d6fccca1",
+    "dire_wolf/tier_2.py": "4785c57b5c0c2dd46637594086890a35d2ea11c65d8ebe6409c052c45ccd2f99",
+    "dire_wolf/tier_3.py": "c135b2c502abd6801ada3a81d91131fa9013d77dcddd0a812e65bda37668e775",
+    "dire_wolf/tier_4.py": "2146bb261f518ff0ce0fd8809d3e6bb6679c02f2ddab7ce442e84971fb0fd042",
+    "dire_wolf/tier_5.py": "9e38ae29e09cd907a5348e09ed8710a08cf69db97b8ec48e3013d1a15cedfa60",
+    "flanker/tier_0.py": "f10307d56810b50a65d979df64fe7756e86f900604ac886b673e9dd53b0f21bb",
+    "flanker/tier_1.py": "d5d2181b7d8fb5839686af77d5ff501e52aed974c025ddf45f8427051db5ec0c",
+    "flanker/tier_2.py": "35b610e99a75f1a1c10de42d2b5ce5dc307de94abbe8b888d961587d3d6209c7",
+    "flanker/tier_3.py": "3f9fc38f70b51363f7344990d277cf51ac0db39f024ebae00a20854f4c5ff78b",
+    "flanker/tier_4.py": "4b173c74aef018c75f71d851524414c3696a88d4fe9b380b78f37390875baf44",
+    "flanker/tier_5.py": "396c8af5e7d2aadd30ccf3163976ce8bc5b92ddf3cc4a1ae0e80b597aeb28a28",
+    "mangy_biter/tier_0.py": "6fb5ca974eeb39ffe99b4dcfbd95ed0d9fddb6496be9c3177b65c2cbdd99518c",
+    "mangy_biter/tier_1.py": "12babd64d30b92a24661edf8f34de80f445f368d9fedac88e111c3beb71c796a",
+    "mangy_biter/tier_2.py": "81ad547e72c9827a5a6d34bb8a2e9371c73643584c383fed0547c7946a29759d",
+    "mangy_biter/tier_3.py": "30f45500051ac1eb7da7ecd983bce73c116955ee8468cd12ed0ba2cb2364d569",
+    "mangy_biter/tier_4.py": "911c84705df0da17ce574ca3da9c5187f5da43ef02d2eae1ab53515d88adeef5",
+    "mangy_biter/tier_5.py": "9f958f3eb4da0db39dc67447fcc2612e5ab5eb9ffce22924064e304adb638659",
+    "old_fang/tier_0.py": "08e067c184ae7bdaa2632ca607d89fb41a5adbccd69cbe4583f76e3d00e5b73d",
+    "old_fang/tier_1.py": "c47e101da0cb01fe17f79b1ba6f0109a9943fd26b91d6d032cfdd25d2c5ea3fa",
+    "old_fang/tier_2.py": "f8ca0da45bd388932897a275697445fc749d2f5704771717d56704942f102485",
+    "old_fang/tier_3.py": "447422a434cbac0464590b9e524e404c4b85be7364f906f9966c8b7be438d266",
+    "old_fang/tier_4.py": "9add12afbe38ae1ce8966ea44805a615bc5eb9a19f9e6b82239c45167750a607",
+    "old_fang/tier_5.py": "942b88df4842ce35e4d131e834624013388b1de0fabae5c3db3dd1fbb3c3d07b",
+    "pack_huntmaster/tier_0.py": "8f6bba53f1cd0d96e1b6411b59fe6ba4172fc4c20b46f06339406d91fbd5d113",
+    "pack_huntmaster/tier_1.py": "d1ef6d53ddffc40a851257ad55f7cf3ae9d3b9d89c479a79c6ca7e30f2304864",
+    "pack_huntmaster/tier_2.py": "59b71427b2dd798b80abf9a65fde4d154c09f629363f43badd1b47fdd5eefa3d",
+    "pack_huntmaster/tier_3.py": "a8d0fab447dea04dd10282c1fca84a1ec6607acf874edbecb7ab95926b77ea30",
+    "pack_huntmaster/tier_4.py": "0e65bfe1f9ac20cc4b8ff2a943a569ca2d9e6a4635de9f3ff6685d696cb5f72d",
+    "pack_huntmaster/tier_5.py": "c662522b298c01773df000f527afc8672931ea34ae353637617bf30362f0a179",
+    "pack_leader/tier_0.py": "065da8f5f04805c6f77fc7df175047768e171439874267f95a5411adaa8ecd50",
+    "pack_leader/tier_1.py": "b47c1af9531cc3611b8874517fbc18720b097ed0986b8574ed78cd0d4b1cf7cc",
+    "pack_leader/tier_2.py": "5bdc7288d6fca6cbfcd621d0a056069dd93fed15b1df9b61209106cbaa493615",
+    "pack_leader/tier_3.py": "eda7af7e2ca57c7f8fe1d64dcbbf4a3ce7b944424119acf878412b556bddd7b9",
+    "pack_leader/tier_4.py": "f564054c63d96c27c3c14fb5400bcb22f0f5fefc6eec0d77decb39a404fb44bb",
+    "pack_leader/tier_5.py": "410eb967af73b83b73a2cf80bbabb92ab39ac269de04a28b1f6b7f8d1a0a9796",
+    "runner/tier_0.py": "0b4918c9282a2b47298b665517c37b436816c080cd9a94963f46daf1f2a8a67e",
+    "runner/tier_1.py": "94e5bfe46ec42eeb8e1845c6fcd1aea4e566d22b1375bc63b92412b4c9dd8bc0",
+    "runner/tier_2.py": "c4bfe593d8b0e2f79e68730a485a5ecd34c6767e6b14016b23a461ff82805069",
+    "runner/tier_3.py": "5ed60b96139f4d11628461d636cbdf5e653ad372d5fd9f02edaaea70dda68c05",
+    "runner/tier_4.py": "ce86bd9a7420e3ae6004dcfac566b0eaeff48e5125bbdee89f9ff1dd72a13ca7",
+    "runner/tier_5.py": "6d8b22e74f7ad8697ab5643c1af24ef044b9235b957057287b11ce3a9733374c",
+    "snapper/tier_0.py": "aa7a67860365ea282877d10274941b103cdad4650da02a3f8c8805a8be7e5be5",
+    "snapper/tier_1.py": "0621576088a7950405d89c27a4af9a8a7d74a2cc13c10c7db1329f337ccb5147",
+    "snapper/tier_2.py": "fd21d38a6b091b424a17b621a2645a816336181a289ba72654729545931fe00e",
+    "snapper/tier_3.py": "cab035d58e76e1864bc1b99eb59d73ef9b2fee06ec75eaa23cac89cebfc2f66a",
+    "snapper/tier_4.py": "27bb8f5aba1561ddf4fd021b144891ecab07dae7e71d79e50a5956814a0a9483",
+    "snapper/tier_5.py": "dda818551e9228bb7fc8de6f12b331ac4f21047b53a1ccf228638fff6181a543",
+    "stalker/tier_0.py": "7affa8e6a76f2358bf2b0678ac65e799a7b5dfa62a6e396ced55497613efb748",
+    "stalker/tier_1.py": "178a1ec15f9b771e2b60e959fea6d0beb1bf34e9e431adabf4eb9d0e21f25fa0",
+    "stalker/tier_2.py": "c0d26c5dcedc1b1731e2e836f513c35bc5fdc83d86de852eacfeefdd64cf0772",
+    "stalker/tier_3.py": "f5652801a77b49f09a8d51559529a179d3cbdee3bd8358e1ddd632026d5a4d64",
+    "stalker/tier_4.py": "587828d6feeb5bb49cfd0efcb447c0a532c45f51bd4a58892951e4bb1808a667",
+    "stalker/tier_5.py": "c3e089c869d733a6b4acb3f7c67cdbb5fa167dab0fe277b10fcdac5488915706"
   },
   "sources": {
     "src/backend/features/items/resources/__init__.py": "026502c3784f998abb8d5d44d16caa37b736af96cb741b5d451495f75d7c2a85",
@@ -92,23 +92,23 @@
     "src/backend/features/items/resources/affixes/pools.py": "bfb2eb343e97a4e3e20a1700a24b4478e561649dca817504a0217005b72af6df",
     "src/backend/features/items/resources/affixes/schemas.py": "8c484c6a721b43aa0a773d1b4e42e949bf9c6102ea19f0b2fb9f15c0d6b377f9",
     "src/backend/features/items/resources/base_item/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "src/backend/features/items/resources/base_item/accessories/__init__.py": "95258c0057cf291bad1d5c0475cb46f2c3ff41b8e3a728a03e887a9669d7e2d1",
-    "src/backend/features/items/resources/base_item/accessories/belts.py": "acb204474b5136cbd49552f1c4c2b9df36ff42c14bd55e29b530091509350f72",
-    "src/backend/features/items/resources/base_item/accessories/jewelry.py": "9d6f208361a11521aca03fbd3acd645315918414ccba98dc3be465e51e9ee2a6",
-    "src/backend/features/items/resources/base_item/accessories/quivers.py": "9c0d1bde28253fbbb28922f2499f3fbb06ad1a47e9c016214fcb36bb8343a171",
-    "src/backend/features/items/resources/base_item/armor/__init__.py": "c742f3b4a79c3c2f51bd65dcd50ae34f9ec9d288da9e1d1fb927cdac547cd9db",
-    "src/backend/features/items/resources/base_item/armor/heavy.py": "ab3de24338c5626942c1ce96dcf43288ff14ad2237cf8a33472eecdf38f73821",
-    "src/backend/features/items/resources/base_item/armor/light.py": "5c46f3c4a7a9c20edf21384fee9a056145e9a3f6aecf6f73b82010515e0e2f54",
-    "src/backend/features/items/resources/base_item/armor/medium.py": "8dea4fa22013681794ae4fcb267681237572dbb3fd2b25958f08fbfd26fb9034",
-    "src/backend/features/items/resources/base_item/garment/__init__.py": "95ca23d10e6ba5425bb4df79b1b80f49a092f33d927c26aa51aeed81ab5af52a",
-    "src/backend/features/items/resources/base_item/garment/basic.py": "5a092d876a2a3288609b2df295fe61effa2938c97d23dcb19d537bfcd6b1c762",
-    "src/backend/features/items/resources/base_item/weapons/__init__.py": "2faf4e8eb16f90e29bea94dce3063d39c34e335a2d5fcb23cc91429fde6192be",
-    "src/backend/features/items/resources/base_item/weapons/archery.py": "4f253007e6b1579488e6e88b0374ae9d675464882e505c03aa79e3021bc47c17",
-    "src/backend/features/items/resources/base_item/weapons/fencing.py": "5736d3c2876cc0da876205b519bc1fda9a812036b14bfae3e893bc1d6226900d",
-    "src/backend/features/items/resources/base_item/weapons/macing.py": "841cf84d8890fe5d7a1bdc84d1006f13b98e41c4fba9ca82d85965ce7b5db3b7",
-    "src/backend/features/items/resources/base_item/weapons/offhand.py": "af920f4bb74b57f71975bbd67cc38d8fce3aef5e3b2105376bdadaba4c47b88e",
-    "src/backend/features/items/resources/base_item/weapons/polearms.py": "b0b2050b02a4a65acdfa573db84908e667d7c6ef1226b5d66cc76a863e009378",
-    "src/backend/features/items/resources/base_item/weapons/swords.py": "8003745740e8ab1a34c5e5bc32fc717c32e57a1ff58c8cef26a7091205c61b71",
+    "src/backend/features/items/resources/base_item/accessories/__init__.py": "d06917ceea354052b5698fc458e44600e73b6daa825434b4909d3d160ad2ccf2",
+    "src/backend/features/items/resources/base_item/accessories/belts.py": "5807ba2cac24556c498a1547ab7247cccf4c39faeb86c07fe9a667141f4bb8ed",
+    "src/backend/features/items/resources/base_item/accessories/jewelry.py": "37a03704b3d378d7e31247c74966e46f1ffe8a067a9c59160a11d57761688929",
+    "src/backend/features/items/resources/base_item/accessories/quivers.py": "f8aad2878e9cb0007d1071bee5b7c89e9dfe0850a4eb7941612916803fd3c1bd",
+    "src/backend/features/items/resources/base_item/armor/__init__.py": "f9e63f03a59bb4342d38bb122a7a84afa599fd9e0743b29c3ca981d3d4209a45",
+    "src/backend/features/items/resources/base_item/armor/heavy.py": "fc1812496990441983e8234e246c4ad2d0e0a5f0e1a9125147555bc195fa98ab",
+    "src/backend/features/items/resources/base_item/armor/light.py": "a694ce5e39b47dff1b0598adbf229f56028ee2fdeed0c4cca5c6c63678001ac3",
+    "src/backend/features/items/resources/base_item/armor/medium.py": "679da560845837909bb5945a8938fbaa3528640f6425cb476d8e82dd43bac4fc",
+    "src/backend/features/items/resources/base_item/garment/__init__.py": "3885ba4049e43af0c2a5eda8849a669a31ca9f4347e972727334df8cb7186481",
+    "src/backend/features/items/resources/base_item/garment/basic.py": "b426c8c181d332b9aa87fd27303cc7134c905a6f5b34b6af5dc6880945c76fa0",
+    "src/backend/features/items/resources/base_item/weapons/__init__.py": "5dbd5da1f41e13455500a5110372466617a90295e06a0a13c45261e747bbc4b6",
+    "src/backend/features/items/resources/base_item/weapons/archery.py": "4710c7cc5b5d8fd1f84295ce8c714a884053aef2e46683f39f86686609f4ad9f",
+    "src/backend/features/items/resources/base_item/weapons/fencing.py": "9145fe518f11dfcd652e20f02ad32766c74e4eaa50a546a50791fa5d17efad96",
+    "src/backend/features/items/resources/base_item/weapons/macing.py": "8457543a410db520edc4e798cde98d81a48570e79d66125cd8d0d53cba4da0bf",
+    "src/backend/features/items/resources/base_item/weapons/offhand.py": "68b9cd6b3eeb4140549338323d51b28c2892efaaa29da7bbcc8df78ceca96168",
+    "src/backend/features/items/resources/base_item/weapons/polearms.py": "e1cb08b34072f6600b2f2ab49c996e4cfd8f3f7839ee0b5597c704d3148d2217",
+    "src/backend/features/items/resources/base_item/weapons/swords.py": "2636bdf06b6ad2dd17c4aa9f385b10eeb3c5d665b201f1fab5d09ea08f33479b",
     "src/backend/features/items/resources/bases.py": "942933bdc847f90b1ad7d2a506219dbaaebae0df0acc950924020d504530db44",
     "src/backend/features/items/resources/item_grade.py": "7113952cd279934226d22ab3f016a407be3d73d3e3f519fef81c4f9f1715c3a8",
     "src/backend/features/items/resources/material/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -125,7 +125,7 @@
     "src/backend/features/items/resources/modifier_contracts/schemas.py": "f4a7f20d19ae0ec96c823293f7530f0a26c83c4129689dcc948aa7e08a962d0b",
     "src/backend/features/items/resources/monster_equipment/__init__.py": "a5b3b51fb5d41f3f6b9bf6eff36cb5a25dafc7e36eb8d93a6bdc733b52bcd138",
     "src/backend/features/items/resources/monster_equipment/natural.py": "749e305482ea88a96e541f55f9f05772a958be4ac70f6e5170caaad33b28f8be",
-    "src/backend/features/items/resources/presentation_texts.py": "3780359ad115459275bbc85a345dcfc9bba28f246f8091854807dc2f98595a55",
+    "src/backend/features/items/resources/presentation_texts.py": "06efa7a72689c88321552b2f0aa4013692939b6cefafe802eff79f3ee8e925ce",
     "src/backend/features/items/resources/rarity_config.py": "ab4b7744c10f019009ea1c022790b24a2015dee11f3d6eac396cff5ce5a2136a",
     "src/backend/features/items/resources/raw_resource/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "src/backend/features/items/resources/raw_resource/bark.py": "b746df2820535cc96bd679047af7ebc1b27541db923e6e09ebe2305878aaf399",
@@ -142,7 +142,7 @@
     "src/backend/features/items/resources/schemas.py": "551337821840a462c87880a4f1f1d7a0f2ed360498d3a5bba67e771479355332",
     "src/backend/features/items/runtime/__init__.py": "d1cdd0cf19b9d2b6978ef8367c03198a38400936f00260bf31f9f1f56f929170",
     "src/backend/features/items/runtime/item_enricher.py": "9149d0335a5cf93f3f74ba3800026a577cf568b0f1f687403b60be5ff4fa41ed",
-    "src/backend/features/items/runtime/item_factory.py": "112eb699aa80caab8b030f9c8d3a0c1da82c8d5d7ffb52e0185a37d752237540",
+    "src/backend/features/items/runtime/item_factory.py": "afd203776acfb8e7ae903ac728512919eda1c6fecabbf26c0867b2379792aca9",
     "src/backend/features/items/services/generation_service.py": "6bab214bc65c0ebdadb69ddcd949f118c76176707e4ef2eda4e72cd0b0168141",
     "src/backend/features/monsters/catalog/families/wolf_catalog/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
     "src/backend/features/monsters/catalog/families/wolf_catalog/bases/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -175,7 +175,7 @@
     "src/backend/features/monsters/catalog/families/wolf_catalog/equipment/__init__.py": "1438c7619eed904bd456b61b18b848867b96672a46cbb6cfdc30720d964fdd9b",
     "src/backend/features/monsters/catalog/families/wolf_catalog/equipment/prepared_loader.py": "7e1bfa69ff42ba419b4bf76499a7572f9dc5316cacefea964cc00dd58ad33e83",
     "src/backend/features/monsters/catalog/families/wolf_catalog/family.py": "d069ad7f15ea03458078354b7f8d8aef32b5fdf0e232c8e1e186b2650800455b",
-    "src/backend/features/monsters/catalog/resources/equipment_mapping.py": "40db65b1ce96ae72b75f18927e92ce1abe1ad1fc5c6e77984b717946e4f747a4",
+    "src/backend/features/monsters/catalog/resources/equipment_mapping.py": "a44bb56cdeef26e957136faee1fe3dc8e2097ea1b4554ee67ba921f98dd9ed20",
     "src/backend/features/monsters/catalog/resources/item_affix_profiles.py": "d9afb1ec8fbd536e9890def4ec19633ce755ecc08412a5684cfe7dc3ab179f75",
     "src/backend/features/monsters/instances/integrations/item_generation.py": "39dce1ee0ea856042bbffd5383d1a1199abe17c4aa4f94064c0eb1a1c481efa5",
     "tools/monsters/prepare_wolf_equipment.py": "0744cdc2aab37ee3f4d014d6d8bb5da7a50aec052730eda237aeb483b79b253a"
@@ -243,7 +243,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 0,
           "item_grade": "no_grade",
@@ -483,7 +483,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 1,
           "item_grade": "common",
@@ -723,7 +723,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 2,
           "item_grade": "uncommon",
@@ -963,7 +963,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 3,
           "item_grade": "rare",
@@ -1203,7 +1203,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 4,
           "item_grade": "epic",
@@ -1443,7 +1443,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 5,
           "item_grade": "mythic",
@@ -1683,7 +1683,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 0,
           "item_grade": "no_grade",
@@ -1860,7 +1860,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 1,
           "item_grade": "common",
@@ -2037,7 +2037,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 2,
           "item_grade": "uncommon",
@@ -2214,7 +2214,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 3,
           "item_grade": "rare",
@@ -2391,7 +2391,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 4,
           "item_grade": "epic",
@@ -2568,7 +2568,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 5,
           "item_grade": "mythic",
@@ -2745,7 +2745,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 0,
           "item_grade": "no_grade",
@@ -2974,7 +2974,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 1,
           "item_grade": "common",
@@ -3203,7 +3203,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 2,
           "item_grade": "uncommon",
@@ -3432,7 +3432,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 3,
           "item_grade": "rare",
@@ -3661,7 +3661,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 4,
           "item_grade": "epic",
@@ -3890,7 +3890,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 5,
           "item_grade": "mythic",
@@ -4119,7 +4119,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 0,
           "item_grade": "no_grade",
@@ -4297,7 +4297,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 1,
           "item_grade": "common",
@@ -4475,7 +4475,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 2,
           "item_grade": "uncommon",
@@ -4653,7 +4653,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 3,
           "item_grade": "rare",
@@ -4831,7 +4831,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 4,
           "item_grade": "epic",
@@ -5009,7 +5009,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 5,
           "item_grade": "mythic",
@@ -5187,7 +5187,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 0,
           "item_grade": "no_grade",
@@ -5364,7 +5364,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 1,
           "item_grade": "common",
@@ -5541,7 +5541,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 2,
           "item_grade": "uncommon",
@@ -5718,7 +5718,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 3,
           "item_grade": "rare",
@@ -5895,7 +5895,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 4,
           "item_grade": "epic",
@@ -6072,7 +6072,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 5,
           "item_grade": "mythic",
@@ -6249,7 +6249,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 0,
           "item_grade": "no_grade",
@@ -6484,7 +6484,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 1,
           "item_grade": "common",
@@ -6719,7 +6719,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 2,
           "item_grade": "uncommon",
@@ -6954,7 +6954,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 3,
           "item_grade": "rare",
@@ -7189,7 +7189,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 4,
           "item_grade": "epic",
@@ -7424,7 +7424,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 5,
           "item_grade": "mythic",
@@ -7659,7 +7659,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 0,
           "item_grade": "no_grade",
@@ -7899,7 +7899,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 1,
           "item_grade": "common",
@@ -8139,7 +8139,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 2,
           "item_grade": "uncommon",
@@ -8379,7 +8379,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 3,
           "item_grade": "rare",
@@ -8619,7 +8619,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 4,
           "item_grade": "epic",
@@ -8859,7 +8859,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "plate_chest",
+          "base_id": "heavy_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 5,
           "item_grade": "mythic",
@@ -9099,7 +9099,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 0,
           "item_grade": "no_grade",
@@ -9328,7 +9328,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 1,
           "item_grade": "common",
@@ -9557,7 +9557,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 2,
           "item_grade": "uncommon",
@@ -9786,7 +9786,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 3,
           "item_grade": "rare",
@@ -10015,7 +10015,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 4,
           "item_grade": "epic",
@@ -10244,7 +10244,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "jerkin",
+          "base_id": "medium_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 5,
           "item_grade": "mythic",
@@ -10473,7 +10473,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 0,
           "item_grade": "no_grade",
@@ -10650,7 +10650,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 1,
           "item_grade": "common",
@@ -10827,7 +10827,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 2,
           "item_grade": "uncommon",
@@ -11004,7 +11004,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 3,
           "item_grade": "rare",
@@ -11181,7 +11181,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 4,
           "item_grade": "epic",
@@ -11358,7 +11358,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 5,
           "item_grade": "mythic",
@@ -11535,7 +11535,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 0,
           "item_grade": "no_grade",
@@ -11713,7 +11713,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 1,
           "item_grade": "common",
@@ -11891,7 +11891,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 2,
           "item_grade": "uncommon",
@@ -12069,7 +12069,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 3,
           "item_grade": "rare",
@@ -12247,7 +12247,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 4,
           "item_grade": "epic",
@@ -12425,7 +12425,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 5,
           "item_grade": "mythic",
@@ -12603,7 +12603,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 0,
           "item_grade": "no_grade",
@@ -12781,7 +12781,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 1,
           "item_grade": "common",
@@ -12959,7 +12959,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 2,
           "item_grade": "uncommon",
@@ -13137,7 +13137,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 3,
           "item_grade": "rare",
@@ -13315,7 +13315,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 4,
           "item_grade": "epic",
@@ -13493,7 +13493,7 @@
         },
         {
           "generation_mode": "runtime",
-          "base_id": "leather_armor",
+          "base_id": "light_chest_armor",
           "target_slot": "chest_armor",
           "rarity_tier": 5,
           "item_grade": "mythic",
@@ -30450,6 +30450,381 @@
           "return_item": true
         }
       ]
+    }
+  ],
+  "reviewed_identity_updates": [
+    {
+      "id": "item-base-slot-naming-2026-10-24",
+      "reason": "Catalog base ID normalization only. All 349 prepared payload files checked against tracked originals with exact ID-token substitution; no regeneration or numeric changes. Original provenance fields retained. Hashes include current Windows line endings.",
+      "base_id_renames": {
+        "hood": "light_hood",
+        "leather_armor": "light_chest_armor",
+        "soft_bracers": "light_bracers",
+        "scout_leggings": "light_leg_armor",
+        "leather_cap": "medium_helmet",
+        "jerkin": "medium_chest_armor",
+        "reinforced_gloves": "medium_bracers",
+        "breeches": "medium_leg_armor",
+        "helmet": "heavy_helmet",
+        "plate_chest": "heavy_chest_armor",
+        "gauntlets": "heavy_bracers",
+        "greaves": "heavy_leg_armor",
+        "linen_shirt": "shirt",
+        "wool_tunic": "tunic",
+        "fur_pants": "pants",
+        "travel_boots": "boots",
+        "work_gloves": "gloves",
+        "winter_cloak": "cloak",
+        "quiver_training": "quiver_standard"
+      },
+      "files": {
+        "alpha_prime/tier_0.py": {
+          "before": "47955fee3f114d2b7a1ab0710e7ddbd990e288f774bf5c07e03779522e19c26a",
+          "after": "ac9026b5f1a3c553dcd556691b1bc50f4087dd3f34dadf7fef79a4725f3924d2"
+        },
+        "alpha_prime/tier_1.py": {
+          "before": "5d746230f9578f909701f4ad7013d127eeec0d180e13af5b66a55a59ae035115",
+          "after": "42a8326b0ba050ec014cc7f2f0083e4ec09da9882e94b06fcc8dc2ff47ee8731"
+        },
+        "alpha_prime/tier_2.py": {
+          "before": "54b9837d8e411cb97166bdf746598b9b4d737e7152138cdf602bef4928457601",
+          "after": "b6cde1184e075132d993ae85f7abdb832d153683482f2da78eb4ffdd4a00086a"
+        },
+        "alpha_prime/tier_3.py": {
+          "before": "b4c8ad4eb1cd3edca2a7b7e5fbf9669d3f76c11068af4e29744673e0b33cadb2",
+          "after": "192912d224a8aac5f447a0781a3f7e9d8d8ce36085d05a674f7ff166f5ec2cf2"
+        },
+        "alpha_prime/tier_4.py": {
+          "before": "6104a745ac78fb2a502acd0112ca48b55a9cde642b9f3112a56c6aa4b2078d7d",
+          "after": "595dd63f02e1f3a815310e6e7c66e5ab377bd0c6fb1f1637dc63f4c517745bdc"
+        },
+        "alpha_prime/tier_5.py": {
+          "before": "ab178595397ec360991025140ddbef9666680b2e2c42b900d607afa0a59b0c5a",
+          "after": "6d1e440536f133b2d7062f34f7fc6b5872be63794270f4dea7d04b635d6a2622"
+        },
+        "cub/tier_0.py": {
+          "before": "c0682479ca03742c9171f7bc40aa7e8bb93a8858fad456cd924d8d423f25f391",
+          "after": "2d17c93df27c279c7eb9a7808f5cf2e6e5b230fd35f445951d4a33c809b05d0f"
+        },
+        "cub/tier_1.py": {
+          "before": "34de733d7c705a5c390dc52c11ee2719f2cda6a72b79fe2cc56a1c9f86bd046f",
+          "after": "7ef23b0046eb079874c03b75e636cf88d6fea689c9024e277f5b4a98a1d8c580"
+        },
+        "cub/tier_2.py": {
+          "before": "093e78f6f10ab5b9d0b3c237f30244837be70055a29fac974610e158ec7009c0",
+          "after": "011ce1f21fb9ab699bbef4aaf77df54971d434375deae8ab242ccfaff337f91f"
+        },
+        "cub/tier_3.py": {
+          "before": "51df3e1517d797eaa33895e5f4c2c344381f8cb6188c422389d5f59d332a9998",
+          "after": "a6738d546e804eebbd4c4707b23bc8c35c64cced817b1e4a2c9375e09d8d3e6b"
+        },
+        "cub/tier_4.py": {
+          "before": "731847d5685ba8a03923e66e8d4206806bbdd9a4e555666b6638c6dfe8f5a6a5",
+          "after": "0c20b817acefc45c4deff5e4f9d75c45d897ccd8f38784e28a17a22f2ccda8de"
+        },
+        "cub/tier_5.py": {
+          "before": "e41c7f633b43e2a1f3ebbb6bf7e189ad89dbc4bd43499dafb7cf3ed17a8745ad",
+          "after": "49a03c27cd4c86fccfa86dd46243a1dec952726ff6060e0c7236c1ec22d2af0f"
+        },
+        "dire_wolf/tier_0.py": {
+          "before": "319fd5ab824db8b8080890b20329800b960b6a06e781bd8c77b518eac08e9442",
+          "after": "a726dafc925d23c953333c1c48fd010332af44fb9d33a5332d238b8a7ccd0767"
+        },
+        "dire_wolf/tier_1.py": {
+          "before": "918c8bebee0a6471569534c9969954d5d378ebbbc11115f0f33416304be6560e",
+          "after": "2c14a1fe72b88a142d0982cb2833493427f78ae4ac277971d8b2e625d6fccca1"
+        },
+        "dire_wolf/tier_2.py": {
+          "before": "f5de2c60b91afbf0dba076b95c9c2f9662409d1cdc070bf8c921934b9dfde9b9",
+          "after": "4785c57b5c0c2dd46637594086890a35d2ea11c65d8ebe6409c052c45ccd2f99"
+        },
+        "dire_wolf/tier_3.py": {
+          "before": "84dcf5d5d93510f3fcc27b264325a03cb0106c1c79c4c1e5fca6b08b652df22c",
+          "after": "c135b2c502abd6801ada3a81d91131fa9013d77dcddd0a812e65bda37668e775"
+        },
+        "dire_wolf/tier_4.py": {
+          "before": "fbc07a79464a940b2225282711eb95318740b0583007c19c48259b6e61a743ef",
+          "after": "2146bb261f518ff0ce0fd8809d3e6bb6679c02f2ddab7ce442e84971fb0fd042"
+        },
+        "dire_wolf/tier_5.py": {
+          "before": "a61e8ff7d2b053e5644f33cdde212d47df8420b9d6909de5f4468835a71dc40d",
+          "after": "9e38ae29e09cd907a5348e09ed8710a08cf69db97b8ec48e3013d1a15cedfa60"
+        },
+        "flanker/tier_0.py": {
+          "before": "e1afdc5df7420f03edd10a76d6dc5fec19b57db7d65254cb1e8b4d4508cd99d8",
+          "after": "f10307d56810b50a65d979df64fe7756e86f900604ac886b673e9dd53b0f21bb"
+        },
+        "flanker/tier_1.py": {
+          "before": "0f2a47d4f32e7a544ab370424e591828b438412f259b326bf9ea93ba211b0276",
+          "after": "d5d2181b7d8fb5839686af77d5ff501e52aed974c025ddf45f8427051db5ec0c"
+        },
+        "flanker/tier_2.py": {
+          "before": "2b198af95036fe257c2549e319f7a62e0150fd0d21c40212dbcb3698226c70f4",
+          "after": "35b610e99a75f1a1c10de42d2b5ce5dc307de94abbe8b888d961587d3d6209c7"
+        },
+        "flanker/tier_3.py": {
+          "before": "4ee893766e291bf9d75d65fb0ce125372a22a0eb3a1a551f039f9fa7fdbabc13",
+          "after": "3f9fc38f70b51363f7344990d277cf51ac0db39f024ebae00a20854f4c5ff78b"
+        },
+        "flanker/tier_4.py": {
+          "before": "91bfd19ce44ac52d3fbed2ff37cbce050676d6cc3f260824a5a9400c93494bc1",
+          "after": "4b173c74aef018c75f71d851524414c3696a88d4fe9b380b78f37390875baf44"
+        },
+        "flanker/tier_5.py": {
+          "before": "5b3ee6bdd4a8d4628fd31ae22414650f3e85b7959a707edbc236f8bfa931bc99",
+          "after": "396c8af5e7d2aadd30ccf3163976ce8bc5b92ddf3cc4a1ae0e80b597aeb28a28"
+        },
+        "mangy_biter/tier_0.py": {
+          "before": "61d641adef3583838ab76550bb9231e6d6e3fa23c6ee63530be24ff0c42c54f4",
+          "after": "6fb5ca974eeb39ffe99b4dcfbd95ed0d9fddb6496be9c3177b65c2cbdd99518c"
+        },
+        "mangy_biter/tier_1.py": {
+          "before": "acc438efe710432b55a73415cb1290b32a706f33196d80997f30f3a1337d7e1f",
+          "after": "12babd64d30b92a24661edf8f34de80f445f368d9fedac88e111c3beb71c796a"
+        },
+        "mangy_biter/tier_2.py": {
+          "before": "2b91800f898ea36af3d56d2f427327c1dfe1e27b9e58df98fed621a958663b71",
+          "after": "81ad547e72c9827a5a6d34bb8a2e9371c73643584c383fed0547c7946a29759d"
+        },
+        "mangy_biter/tier_3.py": {
+          "before": "70a99f3bee08d58b48205b6f6a2c549a40b50f45b551ae3225015d2cdd177bfb",
+          "after": "30f45500051ac1eb7da7ecd983bce73c116955ee8468cd12ed0ba2cb2364d569"
+        },
+        "mangy_biter/tier_4.py": {
+          "before": "8f1689056627e3a6ad5fa5e0186aeb1ea739ec8651f506107c27976e58b13e85",
+          "after": "911c84705df0da17ce574ca3da9c5187f5da43ef02d2eae1ab53515d88adeef5"
+        },
+        "mangy_biter/tier_5.py": {
+          "before": "4c74be35628293519da61521dac3ece653d0fee4acdb4087afd39f698a63aadb",
+          "after": "9f958f3eb4da0db39dc67447fcc2612e5ab5eb9ffce22924064e304adb638659"
+        },
+        "old_fang/tier_0.py": {
+          "before": "4cb234d76c9458f1e8cfbdbd2375917a9846d206abd61ca205aa05d74ab07b42",
+          "after": "08e067c184ae7bdaa2632ca607d89fb41a5adbccd69cbe4583f76e3d00e5b73d"
+        },
+        "old_fang/tier_1.py": {
+          "before": "d895b91ec2a90dd12fb4eee8dbcf5eae35c8386a557aa90e33f825e9f0d2ee44",
+          "after": "c47e101da0cb01fe17f79b1ba6f0109a9943fd26b91d6d032cfdd25d2c5ea3fa"
+        },
+        "old_fang/tier_2.py": {
+          "before": "f9447ac61904575800c7f2a004dec7366580d2e72f89c76c6a0a61a376847d46",
+          "after": "f8ca0da45bd388932897a275697445fc749d2f5704771717d56704942f102485"
+        },
+        "old_fang/tier_3.py": {
+          "before": "e6ea0b695ecf07a8151a8c5b49473637f25ae72137b14807a2a3c8be72d9a649",
+          "after": "447422a434cbac0464590b9e524e404c4b85be7364f906f9966c8b7be438d266"
+        },
+        "old_fang/tier_4.py": {
+          "before": "f5a8c06bb335febc5850a1a1a843c4559f77a47297aa34641dd64e62bae0ec2a",
+          "after": "9add12afbe38ae1ce8966ea44805a615bc5eb9a19f9e6b82239c45167750a607"
+        },
+        "old_fang/tier_5.py": {
+          "before": "3d74b39e0eeadac5072fa8526fa155cc916ef907ff22f84fbfd52bfbe4fce44a",
+          "after": "942b88df4842ce35e4d131e834624013388b1de0fabae5c3db3dd1fbb3c3d07b"
+        },
+        "pack_huntmaster/tier_0.py": {
+          "before": "4b6e1988aacb55a75d9ae9fe0727d02b5b58ec95fbf489049e6703db448d1653",
+          "after": "8f6bba53f1cd0d96e1b6411b59fe6ba4172fc4c20b46f06339406d91fbd5d113"
+        },
+        "pack_huntmaster/tier_1.py": {
+          "before": "5f64ae6f5515af690bb34b3f39b9f5c15d1aed489f36f78f6075a5653ecdbc84",
+          "after": "d1ef6d53ddffc40a851257ad55f7cf3ae9d3b9d89c479a79c6ca7e30f2304864"
+        },
+        "pack_huntmaster/tier_2.py": {
+          "before": "1e864ad369172367f4e86d711d1bb564b7f45ac33690124d7ede10a5fe344dfb",
+          "after": "59b71427b2dd798b80abf9a65fde4d154c09f629363f43badd1b47fdd5eefa3d"
+        },
+        "pack_huntmaster/tier_3.py": {
+          "before": "5467d1e6ebc9b0479c33818b6a31ad8d2bc6c075a429a8408170e2d3e39eb3b5",
+          "after": "a8d0fab447dea04dd10282c1fca84a1ec6607acf874edbecb7ab95926b77ea30"
+        },
+        "pack_huntmaster/tier_4.py": {
+          "before": "950066bc0a36ae1493a06c44e3dbd9fcdbc3f7b8ac773aade9d47a79f7de081b",
+          "after": "0e65bfe1f9ac20cc4b8ff2a943a569ca2d9e6a4635de9f3ff6685d696cb5f72d"
+        },
+        "pack_huntmaster/tier_5.py": {
+          "before": "85392cbfb6ad7d842c43850132cbefc1cecf77d0cd65365722b59e2af94352f8",
+          "after": "c662522b298c01773df000f527afc8672931ea34ae353637617bf30362f0a179"
+        },
+        "pack_leader/tier_0.py": {
+          "before": "2bf39677f43d8178856f7f36d296c0ed257910c1c67d2463f2ff64c50fd052de",
+          "after": "065da8f5f04805c6f77fc7df175047768e171439874267f95a5411adaa8ecd50"
+        },
+        "pack_leader/tier_1.py": {
+          "before": "71282cb6120f5d8dbb0259712105a9aa9a7c1107080cd5dcba1b018ff4a3c23c",
+          "after": "b47c1af9531cc3611b8874517fbc18720b097ed0986b8574ed78cd0d4b1cf7cc"
+        },
+        "pack_leader/tier_2.py": {
+          "before": "32c170f47d1e584154fb05bf8368d566ce9b7f32aa4bafa67f81d90a3765617e",
+          "after": "5bdc7288d6fca6cbfcd621d0a056069dd93fed15b1df9b61209106cbaa493615"
+        },
+        "pack_leader/tier_3.py": {
+          "before": "89f3064df3f09a96b9b596ed65b0e2fb00071d80ef501cd21bceac5982f1cfaf",
+          "after": "eda7af7e2ca57c7f8fe1d64dcbbf4a3ce7b944424119acf878412b556bddd7b9"
+        },
+        "pack_leader/tier_4.py": {
+          "before": "acd0c03e13d2cc0bfeca8ec455ade5947bc0948dbcc318797f10a532afbe2065",
+          "after": "f564054c63d96c27c3c14fb5400bcb22f0f5fefc6eec0d77decb39a404fb44bb"
+        },
+        "pack_leader/tier_5.py": {
+          "before": "6d38649006115e166def425e721e1bc83835d55a045ee5e97e3201cb810b0a27",
+          "after": "410eb967af73b83b73a2cf80bbabb92ab39ac269de04a28b1f6b7f8d1a0a9796"
+        },
+        "runner/tier_0.py": {
+          "before": "30eeabfe1848d49dcc913bf8e1c33eaaaa4e100f35bc87c742b087e7fc44f4a1",
+          "after": "0b4918c9282a2b47298b665517c37b436816c080cd9a94963f46daf1f2a8a67e"
+        },
+        "runner/tier_1.py": {
+          "before": "4f38860f01a0f88e348f975467574cc406cfe0af1a7eb2adbc4dc8c872949388",
+          "after": "94e5bfe46ec42eeb8e1845c6fcd1aea4e566d22b1375bc63b92412b4c9dd8bc0"
+        },
+        "runner/tier_2.py": {
+          "before": "e2b46e7ef7fd93d158ce42dd7610f4246ad87d9f7fbeb1dd151ff1542d112101",
+          "after": "c4bfe593d8b0e2f79e68730a485a5ecd34c6767e6b14016b23a461ff82805069"
+        },
+        "runner/tier_3.py": {
+          "before": "4787404a1979344bc07cf1e2e916ec73a679f5f9ef749147e30e49f2d6b82581",
+          "after": "5ed60b96139f4d11628461d636cbdf5e653ad372d5fd9f02edaaea70dda68c05"
+        },
+        "runner/tier_4.py": {
+          "before": "28303be5785429a8d7495568f290feeab76c6b0c22e533f197fc574db47ca344",
+          "after": "ce86bd9a7420e3ae6004dcfac566b0eaeff48e5125bbdee89f9ff1dd72a13ca7"
+        },
+        "runner/tier_5.py": {
+          "before": "bf93bdae1912303108110b9a5c91b2f8c34cbb8fb6a85a1b3a6171e1399f7120",
+          "after": "6d8b22e74f7ad8697ab5643c1af24ef044b9235b957057287b11ce3a9733374c"
+        },
+        "snapper/tier_0.py": {
+          "before": "9a89a80144f7abc86b18a61ab015f1e6ab82826f9093cef1662f794b218d31a7",
+          "after": "aa7a67860365ea282877d10274941b103cdad4650da02a3f8c8805a8be7e5be5"
+        },
+        "snapper/tier_1.py": {
+          "before": "dc3f891334f78d64498197ed3ef3ace0db02ffbb0acce49573aaf62ce23ceba2",
+          "after": "0621576088a7950405d89c27a4af9a8a7d74a2cc13c10c7db1329f337ccb5147"
+        },
+        "snapper/tier_2.py": {
+          "before": "0df9363afe3cfcfbb03ccd077fe5dd86d9cc786169dc0141c40ec2623e4d09d6",
+          "after": "fd21d38a6b091b424a17b621a2645a816336181a289ba72654729545931fe00e"
+        },
+        "snapper/tier_3.py": {
+          "before": "bb41179376f1127ec0572e59aa15160e33d2e39cab9307529e8fb2fe9f18ea8f",
+          "after": "cab035d58e76e1864bc1b99eb59d73ef9b2fee06ec75eaa23cac89cebfc2f66a"
+        },
+        "snapper/tier_4.py": {
+          "before": "a2baad300b7d7f18ea40dd49014e83d9ecaa506cf63d856416377fa997a80bbf",
+          "after": "27bb8f5aba1561ddf4fd021b144891ecab07dae7e71d79e50a5956814a0a9483"
+        },
+        "snapper/tier_5.py": {
+          "before": "c199f7a55f3e92406cdd53c1d1ba96448f984b7639b193f91e492206f259b888",
+          "after": "dda818551e9228bb7fc8de6f12b331ac4f21047b53a1ccf228638fff6181a543"
+        },
+        "stalker/tier_0.py": {
+          "before": "da8c961b25d91fad676f13b88a8c0e78a4f1bcb35921362b3fb84fb60b392dfa",
+          "after": "7affa8e6a76f2358bf2b0678ac65e799a7b5dfa62a6e396ced55497613efb748"
+        },
+        "stalker/tier_1.py": {
+          "before": "690f9b644174f776ce79a90fa9bd5854ee0769caad1224f884229fb29623b1cf",
+          "after": "178a1ec15f9b771e2b60e959fea6d0beb1bf34e9e431adabf4eb9d0e21f25fa0"
+        },
+        "stalker/tier_2.py": {
+          "before": "1ab43a80d1ad37842bd44f51d5e4c8fdea8945c324235af82db712f4ec1ab709",
+          "after": "c0d26c5dcedc1b1731e2e836f513c35bc5fdc83d86de852eacfeefdd64cf0772"
+        },
+        "stalker/tier_3.py": {
+          "before": "b793a25389e5c6161c8d7656011fc532212f9139b97b58b81d30a85cefcb8cc9",
+          "after": "f5652801a77b49f09a8d51559529a179d3cbdee3bd8358e1ddd632026d5a4d64"
+        },
+        "stalker/tier_4.py": {
+          "before": "09747476c714085f002fb3a29a3ef71bbc0af0e4335d62cbbecf76d6a9134e94",
+          "after": "587828d6feeb5bb49cfd0efcb447c0a532c45f51bd4a58892951e4bb1808a667"
+        },
+        "stalker/tier_5.py": {
+          "before": "11b626dedaf480eb503f825007dac2b8f3b581d08fb775ed2c53c22f33b83949",
+          "after": "c3e089c869d733a6b4acb3f7c67cdbb5fa167dab0fe277b10fcdac5488915706"
+        }
+      },
+      "sources": {
+        "src/backend/features/items/resources/base_item/accessories/__init__.py": {
+          "before": "95258c0057cf291bad1d5c0475cb46f2c3ff41b8e3a728a03e887a9669d7e2d1",
+          "after": "d06917ceea354052b5698fc458e44600e73b6daa825434b4909d3d160ad2ccf2"
+        },
+        "src/backend/features/items/resources/base_item/accessories/belts.py": {
+          "before": "acb204474b5136cbd49552f1c4c2b9df36ff42c14bd55e29b530091509350f72",
+          "after": "5807ba2cac24556c498a1547ab7247cccf4c39faeb86c07fe9a667141f4bb8ed"
+        },
+        "src/backend/features/items/resources/base_item/accessories/jewelry.py": {
+          "before": "9d6f208361a11521aca03fbd3acd645315918414ccba98dc3be465e51e9ee2a6",
+          "after": "37a03704b3d378d7e31247c74966e46f1ffe8a067a9c59160a11d57761688929"
+        },
+        "src/backend/features/items/resources/base_item/accessories/quivers.py": {
+          "before": "9c0d1bde28253fbbb28922f2499f3fbb06ad1a47e9c016214fcb36bb8343a171",
+          "after": "f8aad2878e9cb0007d1071bee5b7c89e9dfe0850a4eb7941612916803fd3c1bd"
+        },
+        "src/backend/features/items/resources/base_item/armor/__init__.py": {
+          "before": "c742f3b4a79c3c2f51bd65dcd50ae34f9ec9d288da9e1d1fb927cdac547cd9db",
+          "after": "f9e63f03a59bb4342d38bb122a7a84afa599fd9e0743b29c3ca981d3d4209a45"
+        },
+        "src/backend/features/items/resources/base_item/armor/heavy.py": {
+          "before": "ab3de24338c5626942c1ce96dcf43288ff14ad2237cf8a33472eecdf38f73821",
+          "after": "fc1812496990441983e8234e246c4ad2d0e0a5f0e1a9125147555bc195fa98ab"
+        },
+        "src/backend/features/items/resources/base_item/armor/light.py": {
+          "before": "5c46f3c4a7a9c20edf21384fee9a056145e9a3f6aecf6f73b82010515e0e2f54",
+          "after": "a694ce5e39b47dff1b0598adbf229f56028ee2fdeed0c4cca5c6c63678001ac3"
+        },
+        "src/backend/features/items/resources/base_item/armor/medium.py": {
+          "before": "8dea4fa22013681794ae4fcb267681237572dbb3fd2b25958f08fbfd26fb9034",
+          "after": "679da560845837909bb5945a8938fbaa3528640f6425cb476d8e82dd43bac4fc"
+        },
+        "src/backend/features/items/resources/base_item/garment/__init__.py": {
+          "before": "95ca23d10e6ba5425bb4df79b1b80f49a092f33d927c26aa51aeed81ab5af52a",
+          "after": "3885ba4049e43af0c2a5eda8849a669a31ca9f4347e972727334df8cb7186481"
+        },
+        "src/backend/features/items/resources/base_item/garment/basic.py": {
+          "before": "5a092d876a2a3288609b2df295fe61effa2938c97d23dcb19d537bfcd6b1c762",
+          "after": "b426c8c181d332b9aa87fd27303cc7134c905a6f5b34b6af5dc6880945c76fa0"
+        },
+        "src/backend/features/items/resources/base_item/weapons/__init__.py": {
+          "before": "2faf4e8eb16f90e29bea94dce3063d39c34e335a2d5fcb23cc91429fde6192be",
+          "after": "5dbd5da1f41e13455500a5110372466617a90295e06a0a13c45261e747bbc4b6"
+        },
+        "src/backend/features/items/resources/base_item/weapons/archery.py": {
+          "before": "4f253007e6b1579488e6e88b0374ae9d675464882e505c03aa79e3021bc47c17",
+          "after": "4710c7cc5b5d8fd1f84295ce8c714a884053aef2e46683f39f86686609f4ad9f"
+        },
+        "src/backend/features/items/resources/base_item/weapons/fencing.py": {
+          "before": "5736d3c2876cc0da876205b519bc1fda9a812036b14bfae3e893bc1d6226900d",
+          "after": "9145fe518f11dfcd652e20f02ad32766c74e4eaa50a546a50791fa5d17efad96"
+        },
+        "src/backend/features/items/resources/base_item/weapons/macing.py": {
+          "before": "841cf84d8890fe5d7a1bdc84d1006f13b98e41c4fba9ca82d85965ce7b5db3b7",
+          "after": "8457543a410db520edc4e798cde98d81a48570e79d66125cd8d0d53cba4da0bf"
+        },
+        "src/backend/features/items/resources/base_item/weapons/offhand.py": {
+          "before": "af920f4bb74b57f71975bbd67cc38d8fce3aef5e3b2105376bdadaba4c47b88e",
+          "after": "68b9cd6b3eeb4140549338323d51b28c2892efaaa29da7bbcc8df78ceca96168"
+        },
+        "src/backend/features/items/resources/base_item/weapons/polearms.py": {
+          "before": "b0b2050b02a4a65acdfa573db84908e667d7c6ef1226b5d66cc76a863e009378",
+          "after": "e1cb08b34072f6600b2f2ab49c996e4cfd8f3f7839ee0b5597c704d3148d2217"
+        },
+        "src/backend/features/items/resources/base_item/weapons/swords.py": {
+          "before": "8003745740e8ab1a34c5e5bc32fc717c32e57a1ff58c8cef26a7091205c61b71",
+          "after": "2636bdf06b6ad2dd17c4aa9f385b10eeb3c5d665b201f1fab5d09ea08f33479b"
+        },
+        "src/backend/features/items/resources/presentation_texts.py": {
+          "before": "3780359ad115459275bbc85a345dcfc9bba28f246f8091854807dc2f98595a55",
+          "after": "06efa7a72689c88321552b2f0aa4013692939b6cefafe802eff79f3ee8e925ce"
+        },
+        "src/backend/features/items/runtime/item_factory.py": {
+          "before": "112eb699aa80caab8b030f9c8d3a0c1da82c8d5d7ffb52e0185a37d752237540",
+          "after": "afd203776acfb8e7ae903ac728512919eda1c6fecabbf26c0867b2379792aca9"
+        },
+        "src/backend/features/monsters/catalog/resources/equipment_mapping.py": {
+          "before": "40db65b1ce96ae72b75f18927e92ce1abe1ad1fc5c6e77984b717946e4f747a4",
+          "after": "a44bb56cdeef26e957136faee1fe3dc8e2097ea1b4554ee67ba921f98dd9ed20"
+        }
+      }
     }
   ]
 }

@@ -7,6 +7,7 @@ from src.backend.features.monsters.catalog.contracts import thaw_catalog_value
 from src.backend.features.monsters.catalog.registry import get_catalog
 from src.backend.features.monsters.inspection.services.catalog_view_service import CatalogMonsterViewService
 from src.backend.features.monsters.instances.runtime.tier_scaling import scale_monster_attributes
+from tests.backend.features.monsters.catalog.equipment_slot_expectations import before_equipment_slots
 
 ATTRIBUTES = (
     "strength",
@@ -39,7 +40,7 @@ def test_goblin_senior_definitions_prices_and_equipment_remain_unchanged():
         if member.family_id == "goblin_tribe" and member.role != "minion"
     }
     assert len(seniors) == 8
-    assert hashlib.sha256(json.dumps(seniors, sort_keys=True).encode()).hexdigest() == (
+    assert hashlib.sha256(json.dumps(before_equipment_slots(seniors), sort_keys=True).encode()).hexdigest() == (
         "43fd795b4936c2ce96df8e9eb9580dd9ae872f0c61e6d7a6833027b8f8be0e96"
     )
 

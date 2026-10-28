@@ -15,8 +15,8 @@
 }
 
 .status-dot.pulse {
-    width: 6px;
-    height: 6px;
+    width: var(--size-6);
+    height: var(--size-6);
     background: var(--col-accent);
     border-radius: 50%;
     box-shadow: 0 0 10px var(--col-accent);

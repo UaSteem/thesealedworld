@@ -1,0 +1,21 @@
+<section class="battle-report" x-show="chatTab === 'battle'" x-cloak aria-label="Фактический журнал боя">
+    <div class="battle-report-toolbar">
+        <strong x-text="battle.active ? 'Бой продолжается' : 'Итоговый журнал'"></strong>
+        <button type="button" class="btn-node sm ghost" :disabled="battle.loading" @click="_battleRefresh()">Обновить</button>
+        <button type="button" class="btn-node sm ghost" :disabled="battle.page >= battle.pages || battle.loading" @click="_battleRefresh(battle.page + 1)">Раньше</button>
+        <span x-text="battle.page + ' / ' + battle.pages"></span>
+        <button type="button" class="btn-node sm ghost" :disabled="battle.page <= 1 || battle.loading" @click="_battleRefresh(battle.page - 1)">Позже</button>
+    </div>
+    <p class="battle-report-notice" x-show="battle.error" x-text="battle.error" role="status"></p>
+    <div class="battle-report-scroll" x-ref="battleScroll" :aria-busy="battle.loading">
+        <template x-for="(turn, turnIndex) in battle.turns" :key="turnIndex">
+            <article class="battle-report-turn">
+                <strong x-text="turn.title || ('Размен ' + (turn.global_turn ?? '—'))"></strong>
+                <template x-for="(line, lineIndex) in turn.entries" :key="line.id || lineIndex">
+                    <p class="battle-report-line" x-text="_battleText(line)"></p>
+                </template>
+            </article>
+        </template>
+        <p class="battle-report-notice" x-show="!battle.turns.length" x-text="battle.loading ? 'Загрузка фактов боя…' : 'Событий боя пока нет.'"></p>
+    </div>
+</section>

@@ -2,10 +2,15 @@
 
 ## First Reads
 
+First read [game-viewport-contract.md](game-viewport-contract.md) for the owner's
+2026-10-25 shell agreement. It overrides experimental Lab dimensions: the full
+status/canvas/chat container is capped at 1920px, independently of the page-wide
+header and available height. Current implementation is not proof of acceptance.
+
 Read:
 
 - `.agents/skills/turnbasedmmorpg-frontend/references/responsive-shell.md`
-- `GAME_LAYOUT_RESPONSIVE_PLAN.md`
+- The current shell task and [game-viewport-contract.md](game-viewport-contract.md).
 
 Also use:
 
@@ -17,10 +22,11 @@ Also use:
 
 - Treat `src/frontend/static/css/game.css` as compiled output. Do not edit it directly.
 - Treat `src/frontend/static/css/game_bundle.css` as the game CSS source entry.
-- Treat `src/frontend/static/css/pages/game/layout.css` as the base desktop-first shell model.
-- Treat `src/frontend/static/css/pages/game/layout_responsive.css` as the shared responsive and drawer contract.
+- Load compiled `theme.css` before `game.css`; tokens come from theme_bundle.css, not imports from the game layout bundle. Standalone Lab's game/core/tokens.css compatibility entry must not be restored to the runtime game bundle.
+- Trace base shell styles from `src/frontend/static/css/game/shell/layout/index.css` and responsive/drawer styles from `src/frontend/static/css/game/shell/responsive/index.css` to their imported sources. Verify selectors against current templates before choosing the file to edit.
+- For game token/theme changes and the approved future shell direction, read [game-theme-tokens.md](game-theme-tokens.md). Its target contract does not mean runtime migration is complete.
 - Keep shell behavior in shell CSS. Domain CSS should style content inside shell containers.
-- If side panel behavior or breakpoint behavior is wrong across screens, fix `layout_responsive.css`, not every domain CSS file.
+- If side panel behavior or breakpoint behavior is wrong across screens, fix the owning shared shell source found through those imports, not every domain CSS file.
 - If one feature's content overflows, fix that feature's internal CSS using shell tokens.
 - Before editing shared shell selectors, inspect all current definitions with `rg`.
 - Gameplay action panel placement, chat slot behavior, side panel slots, and viewport sizing are shell/component contracts. Do not reimplement them independently in exploration, combat, scenario, loot, or inventory CSS.
@@ -78,5 +84,5 @@ For shell/responsive work:
 - Render affected template states with `tools/game_preview/render.py`; for responsive checks, use fixtures that stress the changed state.
 - Do not hand-edit compiled `game.css`.
 - Compile static output before browser validation when source CSS changed.
-- Check viewports: `1600`, `1440`, `1280`, `1024`, `768`, `500`.
+- Required owner checkpoints: `2560×1440`, `1920×1080`, `1600×900`, `1366×768`, plus reduced browser content height. Larger screens are additional checks; mobile/tablet work is deferred. Follow [game-viewport-contract.md](game-viewport-contract.md).
 - Search for accidental shell selector duplication in domain CSS.

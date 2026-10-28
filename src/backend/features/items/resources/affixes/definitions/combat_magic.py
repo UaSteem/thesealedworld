@@ -17,7 +17,7 @@ magic_damage_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Magic Damage",
         ui_template="+{value}% Magic Damage",
-        narrative_tags=("arcane", "charged", "spellbound"),
+        narrative_tags=("arcane",),
     ),
 )
 
@@ -33,7 +33,7 @@ magic_penetration_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Magic Penetration",
         ui_template="+{value}% Magic Penetration",
-        narrative_tags=("piercing", "arcane", "resonant"),
+        narrative_tags=("arcane",),
     ),
 )
 
@@ -49,7 +49,7 @@ fire_damage_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Fire Damage",
         ui_template="+{value}% Fire Damage",
-        narrative_tags=("fire", "plasma", "burning"),
+        narrative_tags=("flame",),
     ),
 )
 
@@ -65,7 +65,7 @@ fire_resistance_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Fire Resistance",
         ui_template="+{value}% Fire Resistance",
-        narrative_tags=("fireproof", "plasma", "warded"),
+        narrative_tags=("heat_ward",),
     ),
 )
 
@@ -81,7 +81,7 @@ arcane_resistance_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Arcane Resistance",
         ui_template="+{value}% Arcane Resistance",
-        narrative_tags=("arcane", "warded", "resonant"),
+        narrative_tags=("arcane", "protection"),
     ),
 )
 

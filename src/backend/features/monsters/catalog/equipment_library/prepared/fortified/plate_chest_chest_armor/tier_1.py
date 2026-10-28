@@ -1,11 +1,11 @@
 """Authored shared mechanics. Edit deliberately."""
 
-DATA = {'id': 'plate_chest.chest_armor.fortified.t1',
+DATA = {'id': 'heavy_chest_armor.chest_armor.fortified.t1',
  'tier': 1,
  'profile_id': 'fortified',
- 'item': {'item_id': 'plate_chest.chest_armor.fortified.t1',
+ 'item': {'item_id': 'heavy_chest_armor.chest_armor.fortified.t1',
           'owner_key': None,
-          'base_id': 'plate_chest',
+          'base_id': 'heavy_chest_armor',
           'item_type': 'armor',
           'slot': 'chest_armor',
           'combat': {'power': 9.0,

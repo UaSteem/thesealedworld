@@ -9,6 +9,7 @@ from src.backend.features.game_catalog.combat.resources import CombatResourceCat
 from src.backend.features.game_catalog.dto import GameCatalogBootstrapDTO, GameCatalogManifestDTO
 from src.backend.features.game_catalog.skills.services import SkillCatalogService
 from src.backend.features.items.services import ItemCatalogService
+from src.backend.features.items.services.visual_service import ItemVisualService
 from src.backend.features.monsters.public import get_all_family_configs, get_family_config, get_family_visual
 
 if TYPE_CHECKING:
@@ -16,7 +17,7 @@ if TYPE_CHECKING:
 
 
 class GameCatalogBootstrapService:
-    VERSION = "game-catalog:2026-05-16.1"
+    VERSION = "game-catalog:2026-10-24.1"
 
     def __init__(
         self,
@@ -32,6 +33,10 @@ class GameCatalogBootstrapService:
     def build_bootstrap(self) -> GameCatalogBootstrapDTO:
         catalogs = {
             "items": self.items.all_public_text(),
+            "item_visuals": {
+                key: value.model_dump(mode="json")
+                for key, value in ItemVisualService(catalog=self.items).public_catalog().items()
+            },
             "skills": self.skills.all_public_text(),
             "attributes": CHARACTER_ATTRIBUTE_TEXT,
             "monster_families": self.build_monster_families_catalog(),
@@ -212,8 +217,6 @@ _LOADOUT_LABELS = {
     "arms_armor": "Руки",
     "legs_armor": "Ноги",
     "feetwear": "Обувь",
-    "chest_garment": "Одежда",
-    "legs_garment": "Поножи",
     "outer_garment": "Верхняя одежда",
     "gloves_garment": "Перчатки",
     "amulet": "Амулет",

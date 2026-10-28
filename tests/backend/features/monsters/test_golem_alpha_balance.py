@@ -8,6 +8,7 @@ from src.backend.features.monsters.catalog.registry import get_catalog
 from src.backend.features.monsters.encounters.dto.selection import MonsterEncounterOrderDTO
 from src.backend.features.monsters.encounters.policies.composition import MonsterCompositionPolicyResolver
 from src.backend.features.monsters.encounters.services.squad_selection_service import MonsterEncounterSelectionService
+from tests.backend.features.monsters.catalog.equipment_slot_expectations import before_equipment_slots
 
 
 def test_golem_price_ladder_preserves_nonstat_mechanics_skills_abilities_art_and_equipment():
@@ -29,7 +30,7 @@ def test_golem_price_ladder_preserves_nonstat_mechanics_skills_abilities_art_and
             "image": m.image.model_dump(mode="json") if m.image else None,
         }
     assert (
-        hashlib.sha256(json.dumps(proof, sort_keys=True).encode()).hexdigest()
+        hashlib.sha256(json.dumps(before_equipment_slots(proof), sort_keys=True).encode()).hexdigest()
         == "8020b645796b8d7d9bf2142108feea22fd68dd4ebc0fa7e0ff94e5ade7fb3ab9"
     )
 

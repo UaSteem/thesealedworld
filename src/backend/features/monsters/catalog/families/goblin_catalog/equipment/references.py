@@ -26,10 +26,10 @@ AMULET_PROFILES = MappingProxyType(
 def profile_for(member, slot: str, base_id: str) -> str:
     if slot == "amulet":
         return AMULET_PROFILES[member.variant_id]
-    if slot == "quiver":
+    if slot == "off_hand" and base_id.startswith("quiver_"):
         return "ammunition"
     if slot == "chest_armor":
-        return "fortified" if base_id == "plate_chest" else "mobile"
+        return "fortified" if base_id == "heavy_chest_armor" else "mobile"
     if slot == "off_hand":
         return "guard" if base_id in {"buckler", "shield", "kite_shield"} else "offhand"
     if slot in {"main_hand", "two_hand"}:

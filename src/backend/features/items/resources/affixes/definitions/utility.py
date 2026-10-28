@@ -18,7 +18,7 @@ luck_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Luck",
         ui_template="+{value}% Luck",
-        narrative_tags=("lucky", "fortunate", "blessed"),
+        narrative_tags=("fortune",),
     ),
 )
 

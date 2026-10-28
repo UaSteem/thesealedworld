@@ -1,0 +1,51 @@
+{
+  "style": "painted-medieval-fantasy",
+  "source": "owner-provided restyles; original JPEG bytes, no resize or re-encode",
+  "images": [
+    {
+      "file": "administrative-quarter.jpg",
+      "original_filename": "KD-7-30182-all-rooms.jpg",
+      "width": 4096,
+      "height": 2284,
+      "mode": "RGB",
+      "bytes": 4880413,
+      "sha256": "92557ab9b0a13c12acce39a791105a420c0d4b44373a77abfd5e0306054095a0"
+    },
+    {
+      "file": "arena-hall.jpg",
+      "original_filename": "Polish_20261026_205959435.jpg",
+      "width": 4096,
+      "height": 2284,
+      "mode": "RGB",
+      "bytes": 3941587,
+      "sha256": "db739f5c27c5e8b789e5caeaab11f85656235415e3b42467b789b1e5c9c32f00"
+    },
+    {
+      "file": "trading-quarter.jpg",
+      "original_filename": "Polish_20261026_211513698.jpg",
+      "width": 4096,
+      "height": 2284,
+      "mode": "RGB",
+      "bytes": 4684884,
+      "sha256": "cb367d989825a674f6d775ec1ed916dece60022da77484a9a00aede04cf116d2"
+    },
+    {
+      "file": "crafting-quarter.jpg",
+      "original_filename": "Polish_20261026_211614564.jpg",
+      "width": 4096,
+      "height": 2284,
+      "mode": "RGB",
+      "bytes": 5034021,
+      "sha256": "93b62f8612be4f70c5a6f21928140d43f0b0d5ef6c00f446ba8eb4134bccddff"
+    },
+    {
+      "file": "residential-quarter.jpg",
+      "original_filename": "Polish_20261026_211724711.jpg",
+      "width": 4096,
+      "height": 2284,
+      "mode": "RGB",
+      "bytes": 4695881,
+      "sha256": "3645f6adde4605799366f63e01ae33b04b3e1dcc2271a9045a0db962b0f745cf"
+    }
+  ]
+}

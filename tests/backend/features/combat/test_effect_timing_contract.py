@@ -263,7 +263,11 @@ async def test_force_close_wins_final_roll_and_does_not_replace_current_position
         for task in final_tasks
         for f in task["result"]["effect_facts"]
     )
-    assert any(log.get("action", {}).get("id") == "ranged_position" for log in ctx.pending_logs)
+    assert any(
+        f["style"] == "skill_ranged_combat" and f["after"] == "close"
+        for task in final_tasks
+        for f in task["result"]["tactical_transitions"]
+    )
 
 
 @pytest.mark.unit
@@ -302,6 +306,13 @@ async def test_force_close_unidirectional_does_not_increment_or_roll(monkeypatch
     )
     assert target.meta.exchange_counter == 4
     assert RangedPositionService.current_position(target) == "close"
+    transitions = [fact for task in ctx.pending_result_support_tasks for fact in task["result"]["tactical_transitions"]]
+    assert len(transitions) == 1
+    assert (transitions[0]["before"], transitions[0]["after"], transitions[0]["source_action_id"]) == (
+        "far",
+        "close",
+        "basic_splinter_strike",
+    )
     assert not any(
         f["reason"] == "combat_regen"
         for task in ctx.pending_result_support_tasks

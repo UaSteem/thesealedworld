@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"{% if is_debug %} data-app-env="dev"{% endif %}>
+<html lang="en" data-game-theme="adventure"{% if is_debug %} data-app-env="dev"{% endif %}>
 <head>
     <!-- No SEO Meta needed for game shell -->
     <meta charset="UTF-8">
@@ -15,6 +15,9 @@
         <link rel="preload" href="/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR1SDk.woff2" as="font" type="font/woff2" crossorigin>
         <link rel="preload" href="/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2" as="font" type="font/woff2" crossorigin>
         <link rel="preload" href="/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2" as="font" type="font/woff2" crossorigin>
+        <!-- Theme values load before game component/layout rules. -->
+        <link rel="preload" href="/static/css/theme.css?v={{ static_version }}" as="style">
+        <link rel="stylesheet" href="/static/css/theme.css?v={{ static_version }}">
         <!-- Game Specific Styles -->
         <link rel="preload" href="/static/css/game.css?v={{ static_version }}" as="style">
         <link rel="stylesheet" href="/static/css/game.css?v={{ static_version }}">
@@ -33,6 +36,8 @@
 
     <!-- Game runtime must be registered before Alpine initializes x-data. -->
     <script src="/static/js/game.js?v={{ static_version }}" defer></script>
+    <script src="/static/js/game/combat/battle_feed.js?v={{ static_version }}" defer></script>
+    <link rel="stylesheet" href="/static/css/game/domains/chat/battle_report.css?v={{ static_version }}">
 
     <script src="/static/js/vendor/alpine-persist.js" defer></script>
     <script src="/static/js/vendor/alpine-collapse.js" defer></script>
@@ -40,6 +45,7 @@
 
     <!-- Game Engine / Core -->
     <script src="/static/js/core/status.js" defer></script>
+    <script src="/static/js/game/client/shell.js?v={{ static_version }}" defer></script>
 </head>
 <body class="game-body {% block body_class %}{% endblock body_class %}">
     {% set active_char_id = char_id if char_id else (scenario.extra_data.get('char_id') if scenario and scenario.extra_data else '') %}
@@ -52,11 +58,14 @@
         'stamina': 0,
         'max_stamina': 1
     } %}
+    {% set client_shell = domain in ['scenario', 'exploration', 'arena', 'city_services', 'combats', 'death', 'loot', 'rift'] %}
     <div id="app-viewport"
          class="game-container"
+         {% if client_shell %}data-game-client-shell{% endif %}
          data-domain="{{ domain if domain is defined else '' }}"
          x-data='gameShell({
             activeCharId: {{ active_char_id|string|tojson }},
+            docked: {{ client_shell|tojson }},
             domain: {{ (domain if domain is defined else '')|tojson }},
             initialStatus: {{ initial_status|tojson }}
          })'
@@ -71,6 +80,9 @@
         <header id="game-header" class="game-header">
             {% include "game/includes/header.html" %}
         </header>
+
+        {# Persistent canvas stays outside the HTMX-replaced session fragment. #}
+        <div id="game-client-canvas-host" aria-hidden="true"></div>
 
         <main id="main-content">
             <div class="shell-constrained">

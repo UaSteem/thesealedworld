@@ -110,7 +110,9 @@ async def select_monster_encounter(
     try:
         result, status = await service.select(parsed)
     except EncounterPoolCacheUnavailable as exc:
-        raise HTTPException(status_code=503, detail={"code": "monster_pool_cache_unavailable", "message": str(exc)}) from exc
+        raise HTTPException(
+            status_code=503, detail={"code": "monster_pool_cache_unavailable", "message": str(exc)}
+        ) from exc
     response.headers["X-Monster-Pool-Cache"] = status
     return result
 

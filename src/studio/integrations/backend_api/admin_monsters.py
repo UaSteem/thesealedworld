@@ -270,8 +270,7 @@ _SLOT_LABELS = {
     "amulet": "Амулет",
     "chest_armor": "Броня",
     "main_hand": "Правая рука",
-    "off_hand": "Левая рука",
-    "quiver": "Боезапас",
+    "off_hand": "Вторая рука",
     "two_hand": "Две руки",
 }
 

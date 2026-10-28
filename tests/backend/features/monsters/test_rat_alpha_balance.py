@@ -4,6 +4,7 @@ from src.backend.features.monsters.catalog.prepared_equipment import get_member_
 from src.backend.features.monsters.catalog.registry import get_catalog
 from src.backend.features.monsters.encounters.dto.selection import MonsterEncounterOrderDTO
 from src.backend.features.monsters.encounters.policies.composition import MonsterCompositionPolicyResolver
+from tests.backend.features.monsters.catalog.equipment_slot_expectations import before_equipment_slots
 
 EXPECTED = {
     "sewer_rat": (5, (7, 10, 7, 3, 4, 6, 8, 3, 5)),
@@ -171,7 +172,7 @@ def test_rat_roles_native_skills_loadouts_and_senior_bases_are_preserved():
         if member.family_id == "rat_swarm"
     }
     assert (
-        hashlib.sha256(json.dumps(actual, sort_keys=True).encode()).hexdigest()
+        hashlib.sha256(json.dumps(before_equipment_slots(actual), sort_keys=True).encode()).hexdigest()
         == "cf5352ea9dda69b6b14a5c93e964f9bbffebd99ba4e1261741b6af5150eb27d2"
     )
 

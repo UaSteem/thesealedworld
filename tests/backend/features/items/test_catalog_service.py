@@ -2,8 +2,8 @@ import pytest
 
 from src.backend.features.combat.dto.actor import ActorStats
 from src.backend.features.combat.dto.pipeline import PipelineContextDTO
-from src.backend.features.combat.runtime.engine.resolver.support import armor_math
 from src.backend.features.combat.dto.trigger_rules import TriggerRulesFlagsDTO
+from src.backend.features.combat.runtime.engine.resolver.support import armor_math
 from src.backend.features.items.resources.affixes.catalog import AFFIX_CATALOG
 from src.backend.features.items.resources.affixes.pools import AFFIX_POOLS_BY_SLOT
 from src.backend.features.items.resources.modifier_contracts import MODIFIER_CONTRACTS
@@ -18,7 +18,7 @@ WEAPON_DIRECTIONS_EXCEPT_ARCHERY = {
 }
 ARCHERY_BOWS = {"shortbow", "longbow", "composite_bow"}
 ARCHERY_QUIVERS = {
-    "quiver_training",
+    "quiver_standard",
     "quiver_fire",
     "quiver_poison",
     "quiver_broadhead",
@@ -72,7 +72,7 @@ def test_item_catalog_loads_structured_base_resources_through_pydantic():
     assert catalog.get_base_item("sword")
     assert catalog.get_base_item("warhammer")
     assert catalog.get_base_item("quarterstaff")
-    assert catalog.get_base_item("plate_chest")
+    assert catalog.get_base_item("heavy_chest_armor")
     assert catalog.get_base_item("belt")
     assert catalog.get_material("mat_iron_ingot")
     assert catalog.get_raw_resource("currency_dust")
@@ -86,22 +86,22 @@ def test_mvp_armor_catalog_has_exact_three_four_piece_sets():
     catalog = ItemCatalogService.load_default()
     expected_sets = {
         "light": {
-            "hood": ("head_armor", 2),
-            "leather_armor": ("chest_armor", 4),
-            "soft_bracers": ("arms_armor", 2),
-            "scout_leggings": ("legs_armor", 2),
+            "light_hood": ("head_armor", 2),
+            "light_chest_armor": ("chest_armor", 4),
+            "light_bracers": ("arms_armor", 2),
+            "light_leg_armor": ("legs_armor", 2),
         },
         "medium": {
-            "leather_cap": ("head_armor", 2),
-            "jerkin": ("chest_armor", 7),
-            "reinforced_gloves": ("arms_armor", 2),
-            "breeches": ("legs_armor", 4),
+            "medium_helmet": ("head_armor", 2),
+            "medium_chest_armor": ("chest_armor", 7),
+            "medium_bracers": ("arms_armor", 2),
+            "medium_leg_armor": ("legs_armor", 4),
         },
         "heavy": {
-            "helmet": ("head_armor", 3),
-            "plate_chest": ("chest_armor", 9),
-            "gauntlets": ("arms_armor", 3),
-            "greaves": ("legs_armor", 5),
+            "heavy_helmet": ("head_armor", 3),
+            "heavy_chest_armor": ("chest_armor", 9),
+            "heavy_bracers": ("arms_armor", 3),
+            "heavy_leg_armor": ("legs_armor", 5),
         },
     }
     removed_armor_ids = {
@@ -137,7 +137,7 @@ def test_armor_set_power_order_and_tier_seven_resolver_headroom() -> None:
     catalog = ItemCatalogService.load_default()
     targets = {
         "light": {
-            "item_ids": ("hood", "leather_armor", "soft_bracers", "scout_leggings"),
+            "item_ids": ("light_hood", "light_chest_armor", "light_bracers", "light_leg_armor"),
             "base_total": 10,
             "tier_mult": 6.8,
             "skill": "skill_light_armor",
@@ -145,7 +145,7 @@ def test_armor_set_power_order_and_tier_seven_resolver_headroom() -> None:
             "naked_tier_seven_pct": 0.4877,
         },
         "medium": {
-            "item_ids": ("leather_cap", "jerkin", "reinforced_gloves", "breeches"),
+            "item_ids": ("medium_helmet", "medium_chest_armor", "medium_bracers", "medium_leg_armor"),
             "base_total": 15,
             "tier_mult": 6.8,
             "skill": "skill_medium_armor",
@@ -153,7 +153,7 @@ def test_armor_set_power_order_and_tier_seven_resolver_headroom() -> None:
             "naked_tier_seven_pct": 0.6474,
         },
         "heavy": {
-            "item_ids": ("helmet", "plate_chest", "gauntlets", "greaves"),
+            "item_ids": ("heavy_helmet", "heavy_chest_armor", "heavy_bracers", "heavy_leg_armor"),
             "base_total": 20,
             "tier_mult": 7.0,
             "skill": "skill_heavy_armor",
@@ -335,8 +335,8 @@ def test_equipped_armor_does_not_reduce_regeneration_resources() -> None:
 @pytest.mark.unit
 def test_heavy_armor_penalty_totals_stay_above_medium_after_tuning() -> None:
     catalog = ItemCatalogService.load_default()
-    medium = _armor_penalty_totals(catalog, ("leather_cap", "jerkin", "reinforced_gloves", "breeches"))
-    heavy = _armor_penalty_totals(catalog, ("helmet", "plate_chest", "gauntlets", "greaves"))
+    medium = _armor_penalty_totals(catalog, ("medium_helmet", "medium_chest_armor", "medium_bracers", "medium_leg_armor"))
+    heavy = _armor_penalty_totals(catalog, ("heavy_helmet", "heavy_chest_armor", "heavy_bracers", "heavy_leg_armor"))
 
     assert heavy["evasion_penalty"] < medium["evasion_penalty"]
     assert heavy["main_hand_accuracy_penalty"] > medium["main_hand_accuracy_penalty"]
@@ -390,9 +390,9 @@ def test_offhand_defense_items_keep_guard_or_parry_but_no_offense_profile() -> N
 def test_jewelry_power_is_flat_magic_armor_and_implicits_are_slot_profiles() -> None:
     catalog = ItemCatalogService.load_default()
     expected_profiles = {
-        "ring": ("ring_1", 1.0, {"mental_resistance", "hp_regen"}),
-        "amulet": ("amulet", 2.0, {"debuff_avoidance", "en_regen"}),
-        "earring": ("earring", 1.0, {"initiative", "stamina_regen"}),
+        "ring": ("ring_1", 1.0, {"mental_resistance"}),
+        "amulet": ("amulet", 2.0, {"en_regen"}),
+        "earring": ("earring", 1.0, {"initiative"}),
     }
 
     for item_id, (slot, power, implicit_keys) in expected_profiles.items():
@@ -411,13 +411,13 @@ def test_jewelry_power_is_flat_magic_armor_and_implicits_are_slot_profiles() -> 
 
 
 @pytest.mark.unit
-def test_garment_templates_carry_anchor_environment_implicit_profile() -> None:
+def test_garment_templates_carry_support_implicit_profile() -> None:
     catalog = ItemCatalogService.load_default()
 
     missing_profile = [
         item_id
         for item_id, item in catalog.base_items.items()
-        if item.type == "garment" and not (set(item.implicit_bonuses) & GARMENT_ANCHOR_PROFILE_KEYS)
+        if item.type == "garment" and not (set(item.implicit_bonuses) & {"stamina", "stamina_regen", "anti_dodge_chance", "physical_crit_chance", "hp_regen"})
     ]
 
     assert missing_profile == []
@@ -516,7 +516,7 @@ def test_archery_quivers_are_single_ammo_items_scaled_by_material_tier():
         assert item is not None
         assert not item_id.endswith("_t1")
         assert catalog.entries[item_id].category == "accessory"
-        assert item.slot == "quiver"
+        assert item.slot == "off_hand"
         assert item.type == "ammo"
         assert item.related_skill == "skill_archery"
         assert item.allowed_materials == ["woods"]
@@ -547,7 +547,7 @@ def test_archery_quiver_payloads_reference_existing_post_calc_effects():
             assert effect["params"] == {"power": 1.0}
             assert "arrow" in effect["tags"]
 
-    training = catalog.get_base_item("quiver_training")
+    training = catalog.get_base_item("quiver_standard")
     assert training is not None
     assert getattr(training, "ammo_effect_payload", None) is None
 

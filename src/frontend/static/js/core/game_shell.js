@@ -42,6 +42,7 @@ window.inventoryGridLayout = function(element) {
 };
 
 window.gameShell = function(initial = {}) {
+    const docked = initial.docked === true;
     const activeCharId = initial.activeCharId || "";
     const domain = initial.domain || "";
     const parseCssPx = (value, fallback) => {
@@ -53,14 +54,13 @@ window.gameShell = function(initial = {}) {
         const styles = window.getComputedStyle(root);
         const header = parseCssPx(styles.getPropertyValue("--game-header-height"), 40);
         const footer = parseCssPx(styles.getPropertyValue("--game-footer-height"), 24);
-        const inset = window.matchMedia("(max-width: 768px)").matches ? 6 : 8;
+        const inset = 8;
         return {
             header,
             footer,
             inset,
             top: header + inset,
             bottom: footer + inset,
-            isMobile: window.matchMedia("(max-width: 768px)").matches,
         };
     };
     const hudStorageKey = (name) => `tbmmorpg:hud:${name}:geometry:v1`;
@@ -71,20 +71,12 @@ window.gameShell = function(initial = {}) {
     const panelStateStorageKey = () => {
         const scope = activeCharId || "global";
         const domainScope = domain || "global";
-        const viewportScope = isDrawerViewport() ? "drawer" : "desktop";
+        const viewportScope = "desktop";
         return `tbmmorpg:shell:panels:${domainScope}:${scope}:${viewportScope}:v1`;
-    };
-    const isDrawerViewport = () => window.matchMedia("(max-width: 1024px)").matches;
-    const clearDrawerPanelState = () => {
-        try {
-            window.localStorage.removeItem(panelStateStorageKey());
-        } catch (_error) {
-            return;
-        }
     };
     const worldDesktopPanelsDefaultOpen = () => {
         if (!["exploration", "rift"].includes(domain)) return false;
-        return window.matchMedia("(min-width: 1025px)").matches;
+        return true;
     };
     const unavailableModalCopy = {
         quests: {
@@ -114,16 +106,12 @@ window.gameShell = function(initial = {}) {
         if (domain === "combats" && !["enemies", "log"].includes(view)) {
             return "enemies";
         }
-        if (noInventoryDomains.includes(domain) && view === "inventory") {
+        if ((docked || noInventoryDomains.includes(domain)) && view === "inventory") {
             return defaultRightPanelView;
         }
         return view;
     };
     const loadPanelState = () => {
-        if (isDrawerViewport()) {
-            clearDrawerPanelState();
-            return null;
-        }
         try {
             const raw = window.localStorage.getItem(panelStateStorageKey());
             if (!raw) return null;
@@ -141,10 +129,6 @@ window.gameShell = function(initial = {}) {
         }
     };
     const savePanelState = (state) => {
-        if (isDrawerViewport()) {
-            clearDrawerPanelState();
-            return;
-        }
         try {
             window.localStorage.setItem(panelStateStorageKey(), JSON.stringify({
                 leftOpen: Boolean(state.leftOpen),
@@ -198,8 +182,8 @@ window.gameShell = function(initial = {}) {
     const savedPanelState = loadPanelState();
     const defaultPanelsOpen = worldDesktopPanelsDefaultOpen();
     const initialPanelState = savedPanelState || {
-        leftOpen: !isDrawerViewport() && defaultPanelsOpen,
-        rightOpen: !isDrawerViewport() && defaultPanelsOpen,
+        leftOpen: defaultPanelsOpen,
+        rightOpen: defaultPanelsOpen,
         leftPanelView: "status",
         rightPanelView: defaultRightPanelView,
     };
@@ -226,8 +210,8 @@ window.gameShell = function(initial = {}) {
         chatTab: "global",
         chatHeight: chatWindowObj.open ? chatWindowObj.height : 30,
         chatMinimized: !chatWindowObj.open,
-        chatStep: chatWindowObj.open ? 2 : 0,
-        chatClosed: !chatWindowObj.open,
+        chatStep: docked ? 2 : (chatWindowObj.open ? 2 : 0),
+        chatClosed: docked ? false : !chatWindowObj.open,
         chatUnread: false,
         selectedAgentId: activeCharId,
         domain,
@@ -241,10 +225,14 @@ window.gameShell = function(initial = {}) {
             chat: chatWindowObj
         },
         chatLauncher,
-        leftOpen: initialPanelState.leftOpen,
-        rightOpen: initialPanelState.rightOpen,
+        leftOpen: docked ? true : initialPanelState.leftOpen,
+        rightOpen: docked ? false : initialPanelState.rightOpen,
 
         togglePanel(detail = {}) {
+            if (docked && detail.side === 'right' && detail.view === 'inventory') {
+                if (!noInventoryDomains.includes(document.getElementById('game-session-root')?.dataset.gameState || domain)) window.GameClientShell?.openInventory();
+                return;
+            }
             if (detail.side === "left") {
                 const nextView = detail.view || this.leftPanelView;
                 if (!detail.forceOpen && this.leftOpen && this.leftPanelView === nextView) {
@@ -360,9 +348,9 @@ window.gameShell = function(initial = {}) {
         },
 
         startHudWindowDrag(name, event, element) {
+            if (docked && name === 'chat') return;
             const hudWindow = this.windows[name];
             if (!hudWindow || !element) return;
-            if (shellMetrics().isMobile) return;
 
             const rect = element.getBoundingClientRect();
             hudWindow.x = rect.left;
@@ -380,9 +368,9 @@ window.gameShell = function(initial = {}) {
         },
 
         startHudWindowResize(name, edge, event, element) {
+            if (docked && name === 'chat') return;
             const hudWindow = this.windows[name];
             if (!hudWindow || !element) return;
-            if (shellMetrics().isMobile) return;
 
             const rect = element.getBoundingClientRect();
             hudWindow.x = rect.left;
@@ -513,7 +501,6 @@ window.gameShell = function(initial = {}) {
         hudWindowStyle(name) {
             const hudWindow = this.windows[name];
             if (!hudWindow) return "";
-            if (shellMetrics().isMobile) return "";
             const parts = [];
             if (hudWindow.x !== null) {
                 parts.push(`left: ${hudWindow.x}px`, `top: ${hudWindow.y}px`, "right: auto", "bottom: auto");

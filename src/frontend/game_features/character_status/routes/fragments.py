@@ -1,7 +1,7 @@
-from typing import Annotated
+from typing import Annotated, Literal
 
 from fastapi import APIRouter, Depends, Form, Query, Request
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 
 from src.frontend.core.renderer import UIRenderer, get_ui_renderer
 from src.frontend.features.auth.dependencies.providers import get_frontend_auth_service
@@ -20,9 +20,30 @@ async def character_status_panel(
     auth_service: Annotated[FrontendAuthService, Depends(get_frontend_auth_service)],
     service: Annotated[StatusPanelService, Depends(get_status_panel_service)],
     char_id: Annotated[int, Query()],
+    presentation: Annotated[Literal["html", "client"], Query()] = "html",
 ):
     await auth_service.require_current_user(request)
     actor_core = await service.get_panel(request, char_id=char_id)
+    if presentation == "client":
+        # Presentation-only projection; never expose sessions, ownership or extra core fields.
+        return JSONResponse(
+            {
+                "character": actor_core.model_dump(
+                    mode="json",
+                    include={
+                        "char_id",
+                        "bio",
+                        "vitals",
+                        "attributes",
+                        "metrics",
+                        "skills",
+                        "symbiote",
+                        "active_quest",
+                        "panel",
+                    },
+                )
+            }
+        )
     return await ui.render(
         "game/components/status/main.html",
         context={"char_id": char_id, "character_status": actor_core},

@@ -9,12 +9,14 @@ src/ is the target application tree. Frontend and backend communicate through HT
 Frontend directly owns the site database (`tbmmorpg_site`: accounts, auth, news, surveys, site Alembic migrations) and is strictly forbidden from directly accessing the game database (`tbmmorpg_game`), Redis game state, or Mongo game collections.
 Distinguish stages: Legacy (old node-based Rift), Experimental / Dev-only (Hex Rift), and Pre-alpha active target (World, Expedition, Exploration). Procedural generation and simulations must use isolated `random.Random(seed)` rather than mutating global `random.seed()`.
 Treat planning notes as proposals unless a current owner decision approves them. Existing user authorization carries forward; ask only for unresolved consequential choices.
-For agent-skill edits, follow the global project-skills-maintainer workflow. Character skills are a game catalog owned by game-content.
+For server catalogs, bootstrap payloads and visual-reference registries, inspect existing project patterns before proposing a new layout or data source; read the catalog conventions reference below.
+For agent-skill edits, follow the global project-skills-maintainer workflow. Character skills are a game catalog owned by game-content. Domain skills must route callers to `references/contract.md` and domain changes to `references/properties.md`; keep essential ownership constraints in the short entrypoint. Process skills retain task-based routing; see the maintenance reference for inventory and migration limits.
 
 ## Read the relevant reference
 
 | Task | Reference |
 | --- | --- |
+| Shared catalog, Python/Pydantic, bootstrap and asset-reference conventions | [references/catalog-conventions.md](references/catalog-conventions.md) |
 | Repository boundaries, donor code, handoff | [references/repository-operations.md](references/repository-operations.md) |
 | Agent-skill edits | [references/agent-skill-maintenance.md](references/agent-skill-maintenance.md) |
 | Compatibility or workaround choice | [references/compatibility-decisions.md](references/compatibility-decisions.md) |

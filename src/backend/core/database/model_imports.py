@@ -45,11 +45,6 @@ from src.backend.infrastructure.combat.models import (
 from src.backend.infrastructure.inventory import InventoryItem, ResourceWallet
 from src.backend.infrastructure.inventory.models import DurabilityApplication
 from src.backend.infrastructure.monsters import GeneratedClanORM, GeneratedMonsterORM, HabitatClanPoolEntryORM
-from src.backend.infrastructure.rift import (
-    RiftMembership,
-    RiftNodePoolRecord,
-    RiftSetting,
-)
 from src.backend.infrastructure.scenario.models import CharacterQuestState, ScenarioMaster, ScenarioNode
 from src.backend.infrastructure.world.models import WorldGrid, WorldRegion, WorldZone
 
@@ -81,9 +76,6 @@ __all__ = [
     "GeneratedClanORM",
     "GeneratedMonsterORM",
     "HabitatClanPoolEntryORM",
-    "RiftSetting",
-    "RiftNodePoolRecord",
-    "RiftMembership",
     "ScenarioMaster",
     "ScenarioNode",
     "CharacterQuestState",

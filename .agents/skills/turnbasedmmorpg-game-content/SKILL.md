@@ -5,23 +5,11 @@ description: Item, monster, character skill catalog, generation, and lore contra
 
 # TurnBasedMMORPG Game Content
 
-Keep item, monster, and character skill definitions in their owning catalogs and resources. Preserve ID and surface contracts across runtime, API, and UI.
-Treat player-visible lore, balance, and visual intent as creative decisions; use project creative guidance when a choice is unresolved.
+Keep item, monster and character skill definitions in their owning catalogs/resources and preserve IDs and runtime/API/UI surfaces. Lore, balance and visual intent require project creative guidance when unresolved. Monsters owns encounter orders/readiness/instance orchestration; Combat owns battle execution.
 
-For Monster encounter orders, readiness/instance orchestration and other-domain consumers, use [the Monsters skill](../turnbasedmmorpg-monsters/SKILL.md). Definitions and item catalogs remain owned here.
+## Choose the route
 
-## Read the relevant reference
+- **Use this domain from a caller or adjacent domain:** read [Consumer contract](references/contract.md). Stay within supported entry points and handle documented limits/errors.
+- **Change this domain:** read [Properties and implementation guidance](references/properties.md), then only the relevant thematic references.
 
-| Task | Reference |
-| --- | --- |
-| Items, affixes, scaling, text resources | [references/items.md](references/items.md) |
-| Monster family structure and equipment | [references/monster-families.md](references/monster-families.md) |
-| Monster abilities, loot, combat compatibility | [references/monster-abilities-and-compatibility.md](references/monster-abilities-and-compatibility.md) |
-| Character skill IDs and progression | [references/skill-ids-and-progression.md](references/skill-ids-and-progression.md) |
-| Skill DTO/surface contracts or migration | [references/skill-contracts-and-migration.md](references/skill-contracts-and-migration.md) |
-| AI generation identity and determinism | [references/generation-determinism.md](references/generation-determinism.md) |
-| Lore and public library interface | [references/lore-interface.md](references/lore-interface.md) |
-| Lore source map | [references/source-map.md](references/source-map.md) |
-
-Read the referenced details for the task at hand. Verify implementation claims against current code and tests.
-
+This stage separates existing guidance structurally. Verify implementation claims against current code, tests and configuration; missing contract details remain pending substantive refresh.

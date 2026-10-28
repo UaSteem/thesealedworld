@@ -2,6 +2,7 @@ from typing import Any
 
 from fastapi import Request
 
+from src.frontend.game_features.city_services.view_models.client import build_places_client_payload
 from src.frontend.game_features.session.services.session_context_builder import SessionContextBuilder
 from src.shared.enums import CoreDomain
 from src.shared.schemas import CoreResponseDTO
@@ -75,6 +76,7 @@ class ResponseDirector:
             "domain": CoreDomain.ARENA,
             "char_id": char_id,
             "arena": response.payload,
+            "places_client_payload": build_places_client_payload(arena=response.payload, char_id=char_id),
             "payload_type": response.payload_type,
             "oob_panels": True,
         }
@@ -88,6 +90,7 @@ class ResponseDirector:
             "domain": CoreDomain.CITY_SERVICES,
             "char_id": char_id,
             "city_service": response.payload,
+            "places_client_payload": build_places_client_payload(city_service=response.payload, char_id=char_id),
             "payload_type": response.payload_type,
             "oob_panels": True,
         }

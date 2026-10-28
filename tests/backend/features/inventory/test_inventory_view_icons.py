@@ -17,10 +17,10 @@ def _item(base_id: str, item_type: str, *, slot: str, tags: list[str] | None = N
 def test_inventory_view_uses_specific_leg_armor_icons() -> None:
     service = InventoryViewService()
 
-    assert service._icon_key(_item("fur_pants", "garment", slot="legs_garment")) == "legwear"
-    assert service._icon_key(_item("scout_leggings", "armor", slot="legs_armor")) == "legs_light"
-    assert service._icon_key(_item("breeches", "armor", slot="legs_armor")) == "legs_medium"
-    assert service._icon_key(_item("greaves", "armor", slot="legs_armor")) == "legs_heavy"
+    assert service._icon_key(_item("pants", "garment", slot="legs_garment")) == "legwear"
+    assert service._icon_key(_item("light_leg_armor", "armor", slot="legs_armor")) == "legs_light"
+    assert service._icon_key(_item("medium_leg_armor", "armor", slot="legs_armor")) == "legs_medium"
+    assert service._icon_key(_item("heavy_leg_armor", "armor", slot="legs_armor")) == "legs_heavy"
 
 
 def test_inventory_view_splits_polearm_family_icons() -> None:
@@ -46,4 +46,4 @@ def test_inventory_view_uses_distinct_resource_icons_by_category() -> None:
 def test_inventory_view_uses_quiver_icon_for_ammo_slot() -> None:
     service = InventoryViewService()
 
-    assert service._icon_key(_item("quiver_poison", "ammo", slot="quiver", tags=["quiver", "arrows"])) == "quiver"
+    assert service._icon_key(_item("quiver_poison", "ammo", slot="off_hand", tags=["quiver", "arrows"])) == "quiver"

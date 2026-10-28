@@ -5,13 +5,14 @@ import json
 from dataclasses import dataclass
 from typing import TYPE_CHECKING, Any
 
+from src.backend.features.items.resources.affixes.narrative import NARRATIVE_TAGS, normalize_lore_tags
 from src.backend.features.items.resources.item_grade import GRADE_BY_RARITY_TIER
 from src.backend.features.items.services.catalog_service import ItemCatalogService
 
 if TYPE_CHECKING:
     from src.backend.features.items.dto.instance import GeneratedItemDTO, ItemGenerationRequestDTO
 
-ITEM_TEXT_PROMPT_VERSION = "item_name_description:mvp_text_visual_no_affixes:v1"
+ITEM_TEXT_PROMPT_VERSION = "item_name_description:affix_lore_visual_material_tier:v2"
 
 
 @dataclass(slots=True)
@@ -28,13 +29,12 @@ class ItemTextService:
             item.rarity_tier, "no_grade"
         )
 
-        narrative_tags = list(
-            dict.fromkeys(
-                [
-                    *(base.narrative_tags if base else []),
-                    *(material.narrative_tags if material else []),
-                ]
-            )
+        from src.backend.features.items.services.visual_service import ItemVisualService
+
+        lore_tags = normalize_lore_tags(item.mechanics.get("affixes", []))
+        visual_variant_id = item.appearance.visual_variant_id if item.appearance else None
+        _, appearance_description = ItemVisualService(self.catalog).base_presentation(
+            item.base_id, item.material_id, visual_variant_id
         )
         payload: dict[str, Any] = {
             "type": item.item_type,
@@ -56,7 +56,11 @@ class ItemTextService:
                 "tags": material.narrative_tags if material else [],
             },
             "grade": item_grade,
-            "narrative_tags": narrative_tags,
+            "item_tier": int(material.tier) if material else 0,
+            "narrative_tags": list(lore_tags),
+            "narrative_meanings": {tag: NARRATIVE_TAGS[tag] for tag in lore_tags},
+            "visual_variant_id": visual_variant_id,
+            "appearance_description": appearance_description,
         }
 
         if request.source_context:
@@ -65,6 +69,7 @@ class ItemTextService:
         return payload
 
     def _build_template_hash_payload(self, item: GeneratedItemDTO, request: ItemGenerationRequestDTO) -> dict[str, Any]:
+        material = self.catalog.get_material(item.material_id) if item.material_id else None
         source_context = request.source_context or {}
         owner_family = source_context.get("owner_family")
         clan_id = source_context.get("clan_id")
@@ -74,8 +79,10 @@ class ItemTextService:
         return {
             "clan_id": str(clan_id) if clan_id is not None else None,
             "base_id": item.base_id,
-            "item_tier": item.rarity_tier,
+            "item_tier": int(material.tier) if material else 0,
             "material_id": item.material_id,
+            "lore_tags": list(normalize_lore_tags(item.mechanics.get("affixes", []))),
+            "visual_variant_id": item.appearance.visual_variant_id if item.appearance else None,
         }
 
     def build_text_visual_hash(self, payload: dict[str, Any]) -> str:

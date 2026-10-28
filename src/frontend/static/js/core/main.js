@@ -8,6 +8,16 @@ function _applyChatStep(newStep) {
     const chatRow   = document.querySelector('.game-chat-row') || document.querySelector('.game-chat-overlay');
     if (!container || !chatRow) return;
 
+    if (container.hasAttribute?.('data-game-client-shell')) {
+        const step = Math.max(0, Math.min(3, newStep));
+        if (step) container.style.setProperty('--client-chat-share', [0, '15%', '17.5%', '20%'][step]);
+        const state = window.Alpine?.$data(container);
+        if (state) { state.chatStep = step; state.chatClosed = step === 0; state.chatMinimized = step === 0; }
+        chatRow.querySelectorAll('[data-chat-minmax-label]').forEach(node => {node.textContent = step === 1 ? 'MAX' : 'MIN';});
+        window.GameClientShell?.refresh();
+        return;
+    }
+
     const styles = window.getComputedStyle(container);
     const footerHeight = Number.parseFloat(styles.getPropertyValue('--game-footer-height')) || 30;
     const available = window.innerHeight - 80;
@@ -17,8 +27,7 @@ function _applyChatStep(newStep) {
         Math.round(available * 0.50),
         Math.round(available * 0.75),
     ];
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    const minStep = isMobile ? 0 : 1;
+    const minStep = 1;
     const clamped = Math.max(minStep, Math.min(steps.length - 1, newStep));
     const height  = steps[clamped];
     const minMaxLabel = clamped === minStep ? 'MAX' : 'MIN';
@@ -52,10 +61,6 @@ function _applyChatStep(newStep) {
                     data.windows.chat.height = height;
                 }
             }
-            if (window.matchMedia("(max-width: 767px)").matches) {
-                data.chatClosed = clamped === 0;
-                if (clamped > 0) data.chatUnread = false;
-            }
         }
     }
 }
@@ -69,8 +74,7 @@ window.stepChatSize = function(dirOrTarget) {
         if (data && data.chatStep !== undefined) currentStep = data.chatStep;
     }
 
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    const minStep = isMobile ? 0 : 1;
+    const minStep = 1;
 
     let newStep;
     if (dirOrTarget === 'min')      newStep = minStep;
@@ -92,8 +96,7 @@ window.toggleChatMinMax = function() {
         const data = Alpine.$data(container);
         if (data && data.chatStep !== undefined) currentStep = data.chatStep;
     }
-    const isMobile = window.matchMedia("(max-width: 768px)").matches;
-    const minStep = isMobile ? 0 : 1;
+    const minStep = 1;
     _applyChatStep(currentStep === minStep ? 3 : minStep);
 };
 

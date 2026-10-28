@@ -12,6 +12,7 @@ from src.backend.features.combat.dto import (
 from src.backend.features.combat.dto.trigger_rules import TriggerRulesFlagsDTO
 from src.backend.features.combat.runtime.engine.execution import StrikeExecution
 from src.backend.features.combat.runtime.engine.ranged_position import RangedPositionService
+from src.backend.features.combat.runtime.engine.tactical_state import TacticalStateService
 from src.backend.features.combat.runtime.engine.trigger_activation import activate_trigger
 
 
@@ -69,6 +70,7 @@ class ContextBuilder:
             ctx.result.target_id = target.char_id if target else None
             ctx.result.hand = ctx.flags.meta.source_type
 
+        TacticalStateService.apply_context(ctx, actor, target)
         return ctx
 
     @staticmethod

@@ -80,14 +80,14 @@ class FakeItemGeneration:
                     "quarterstaff": "skill_polearms",
                     "sling": "skill_archery",
                     "shortbow": "skill_archery",
-                    "quiver_training": "skill_archery",
+                    "quiver_standard": "skill_archery",
                     "quiver_fire": "skill_archery",
                     "buckler": "skill_shield_mastery",
                     "shield": "skill_shield_mastery",
                     "kite_shield": "skill_shield_mastery",
-                    "jerkin": "skill_medium_armor",
-                    "leather_armor": "skill_light_armor",
-                    "plate_chest": "skill_heavy_armor",
+                    "medium_chest_armor": "skill_medium_armor",
+                    "light_chest_armor": "skill_light_armor",
+                    "heavy_chest_armor": "skill_heavy_armor",
                 }.get(str(request.base_id), "skill_unarmed")
             if request.base_id == "amulet":
                 related_skill = None
@@ -97,7 +97,7 @@ class FakeItemGeneration:
                     owner_key=str(request.runtime_metadata["owner_key"]),
                     base_id=request.base_id,
                     item_type="ammo"
-                    if request.target_slot == "quiver"
+                    if request.base_id.startswith("quiver_")
                     else (
                         "accessory"
                         if request.target_slot == "amulet"
@@ -361,47 +361,47 @@ def test_bandit_gang_uses_authored_bow_and_armor_loadouts() -> None:
     assert family.resource_version == 1.4
     expected = {
         "bandit_thug": (
-            {"main_hand": "hatchet", "off_hand": "buckler", "chest_armor": "jerkin", "amulet": "amulet"},
+            {"main_hand": "hatchet", "off_hand": "buckler", "chest_armor": "medium_chest_armor", "amulet": "amulet"},
             {"skill_macing", "skill_medium_armor"},
         ),
         "bandit_poacher": (
-            {"two_hand": "shortbow", "quiver": "quiver_training", "chest_armor": "leather_armor", "amulet": "amulet"},
+            {"two_hand": "shortbow", "off_hand": "quiver_standard", "chest_armor": "light_chest_armor", "amulet": "amulet"},
             {"skill_archery", "skill_ranged_combat", "skill_light_armor"},
         ),
         "bandit_lookout": (
-            {"main_hand": "spear", "chest_armor": "leather_armor", "amulet": "amulet"},
+            {"main_hand": "spear", "chest_armor": "light_chest_armor", "amulet": "amulet"},
             {"skill_polearms", "skill_light_armor"},
         ),
         "bandit_knife_rat": (
-            {"main_hand": "dagger", "off_hand": "dagger", "chest_armor": "leather_armor", "amulet": "amulet"},
+            {"main_hand": "dagger", "off_hand": "dagger", "chest_armor": "light_chest_armor", "amulet": "amulet"},
             {"skill_fencing", "skill_dual_wield", "skill_light_armor"},
         ),
         "bandit_raider": (
-            {"main_hand": "mace", "off_hand": "shield", "chest_armor": "jerkin", "amulet": "amulet"},
+            {"main_hand": "mace", "off_hand": "shield", "chest_armor": "medium_chest_armor", "amulet": "amulet"},
             {"skill_macing", "skill_medium_armor", "skill_shield_mastery"},
         ),
         "bandit_billhook": (
-            {"main_hand": "spear", "chest_armor": "jerkin", "amulet": "amulet"},
+            {"main_hand": "spear", "chest_armor": "medium_chest_armor", "amulet": "amulet"},
             {"skill_polearms", "skill_medium_armor"},
         ),
         "bandit_hedge_wizard": (
-            {"two_hand": "quarterstaff", "chest_armor": "leather_armor", "amulet": "amulet"},
+            {"two_hand": "quarterstaff", "chest_armor": "light_chest_armor", "amulet": "amulet"},
             {"skill_polearms", "skill_light_armor", "skill_two_handed"},
         ),
         "bandit_captain": (
-            {"main_hand": "sword", "off_hand": "shield", "chest_armor": "jerkin", "amulet": "amulet"},
+            {"main_hand": "sword", "off_hand": "shield", "chest_armor": "medium_chest_armor", "amulet": "amulet"},
             {"skill_swords", "skill_medium_armor", "skill_shield_mastery", "skill_tactics", "skill_parrying"},
         ),
         "bandit_kingpin": (
-            {"two_hand": "warhammer", "chest_armor": "plate_chest", "amulet": "amulet"},
+            {"two_hand": "warhammer", "chest_armor": "heavy_chest_armor", "amulet": "amulet"},
             {"skill_macing", "skill_heavy_armor", "skill_two_handed", "skill_tactics", "skill_anatomy"},
         ),
         "bandit_warlord": (
-            {"two_hand": "longbow", "quiver": "quiver_bodkin", "chest_armor": "leather_armor", "amulet": "amulet"},
+            {"two_hand": "longbow", "off_hand": "quiver_bodkin", "chest_armor": "light_chest_armor", "amulet": "amulet"},
             {"skill_archery", "skill_ranged_combat", "skill_light_armor", "skill_tactics", "skill_anatomy"},
         ),
         "bandit_cutthroat": (
-            {"main_hand": "dagger", "off_hand": "dagger", "chest_armor": "leather_armor", "amulet": "amulet"},
+            {"main_hand": "dagger", "off_hand": "dagger", "chest_armor": "light_chest_armor", "amulet": "amulet"},
             {
                 "skill_fencing",
                 "skill_light_armor",
@@ -412,7 +412,7 @@ def test_bandit_gang_uses_authored_bow_and_armor_loadouts() -> None:
             },
         ),
         "bandit_blackguard": (
-            {"main_hand": "mace", "off_hand": "shield", "chest_armor": "plate_chest", "amulet": "amulet"},
+            {"main_hand": "mace", "off_hand": "shield", "chest_armor": "heavy_chest_armor", "amulet": "amulet"},
             {
                 "skill_macing",
                 "skill_heavy_armor",
@@ -431,9 +431,9 @@ def test_bandit_gang_uses_authored_bow_and_armor_loadouts() -> None:
 
         assert actual_loadout == loadout
         assert skills <= set(variant.skills)
-        assert ("quiver" in actual_loadout) == (variant_key in archer_variants)
+        assert (actual_loadout.get("off_hand", "").startswith("quiver_")) == (variant_key in archer_variants)
         if variant_key in archer_variants:
-            assert actual_loadout["chest_armor"] == "leather_armor"
+            assert actual_loadout["chest_armor"] == "light_chest_armor"
             assert "skill_light_armor" in variant.skills
             assert "skill_medium_armor" not in variant.skills
             assert "skill_heavy_armor" not in variant.skills
@@ -451,13 +451,13 @@ def test_rat_swarm_uses_natural_loadouts_for_current_tactical_styles() -> None:
         "swarm_rat": ("single", {"main_hand": "rat_bite_claws"}),
         "tunnel_rat": ("dual", {"main_hand": "rat_veteran_claws", "off_hand": "rat_offhand_bite"}),
         "pack_rat": ("shield", {"main_hand": "rat_veteran_claws", "off_hand": "rat_bone_growth"}),
-        "screecher": ("ranged", {"two_hand": "rat_poison_spit", "quiver": "rat_poison_glands"}),
-        "burrow_guard": ("ranged", {"two_hand": "rat_poison_spit", "quiver": "rat_poison_glands"}),
+        "screecher": ("ranged", {"two_hand": "rat_poison_spit", "off_hand": "rat_poison_glands"}),
+        "burrow_guard": ("ranged", {"two_hand": "rat_poison_spit", "off_hand": "rat_poison_glands"}),
         "ironfang": ("two_handed", {"two_hand": "rat_crushing_bite"}),
         "heavy_rat": ("shield", {"main_hand": "rat_elite_claws", "off_hand": "rat_spiked_growth"}),
         "rat_brute": ("two_handed", {"two_hand": "rat_crushing_bite"}),
         "brood_alpha": ("shield", {"main_hand": "rat_boss_claws", "off_hand": "rat_spiked_growth"}),
-        "rat_king": ("ranged", {"two_hand": "rat_poison_spit", "quiver": "rat_poison_glands"}),
+        "rat_king": ("ranged", {"two_hand": "rat_poison_spit", "off_hand": "rat_poison_glands"}),
     }
     required_skills = {
         "single": {"skill_fencing"},
@@ -484,62 +484,62 @@ def test_goblin_tribe_uses_balanced_progression_loadouts_and_tags() -> None:
     assert family.resource_version == 1.4
     expected = {
         "goblin_sneak": (
-            {"main_hand": "knife", "off_hand": "knife", "chest_armor": "leather_armor", "amulet": "amulet"},
+            {"main_hand": "knife", "off_hand": "knife", "chest_armor": "light_chest_armor", "amulet": "amulet"},
             {"skill_fencing", "skill_dual_wield", "skill_light_armor"},
             {"stealth", "dual_wield", "knife"},
         ),
         "goblin_scavenger": (
-            {"main_hand": "mace", "off_hand": "buckler", "chest_armor": "leather_armor", "amulet": "amulet"},
+            {"main_hand": "mace", "off_hand": "buckler", "chest_armor": "light_chest_armor", "amulet": "amulet"},
             {"skill_macing", "skill_shield_mastery", "skill_light_armor"},
             {"scavenger", "scrap", "buckler"},
         ),
         "goblin_cutter": (
-            {"main_hand": "dagger", "off_hand": "knife", "chest_armor": "leather_armor", "amulet": "amulet"},
+            {"main_hand": "dagger", "off_hand": "knife", "chest_armor": "light_chest_armor", "amulet": "amulet"},
             {"skill_fencing", "skill_dual_wield", "skill_light_armor"},
             {"knife", "bleeder", "dual_wield"},
         ),
         "goblin_sparkpick": (
-            {"main_hand": "hatchet", "off_hand": "buckler", "chest_armor": "leather_armor", "amulet": "amulet"},
+            {"main_hand": "hatchet", "off_hand": "buckler", "chest_armor": "light_chest_armor", "amulet": "amulet"},
             {"skill_macing", "skill_shield_mastery", "skill_light_armor"},
             {"scrap", "ether", "buckler"},
         ),
         "goblin_spearman": (
-            {"main_hand": "spear", "off_hand": "shield", "chest_armor": "jerkin", "amulet": "amulet"},
+            {"main_hand": "spear", "off_hand": "shield", "chest_armor": "medium_chest_armor", "amulet": "amulet"},
             {"skill_polearms", "skill_medium_armor", "skill_shield_mastery"},
             {"infantry", "shield"},
         ),
         "goblin_slinger": (
-            {"two_hand": "shortbow", "quiver": "quiver_training", "chest_armor": "leather_armor", "amulet": "amulet"},
+            {"two_hand": "shortbow", "off_hand": "quiver_standard", "chest_armor": "light_chest_armor", "amulet": "amulet"},
             {"skill_archery", "skill_ranged_combat", "skill_light_armor"},
             {"ranged", "archer", "quiver"},
         ),
         "goblin_scrapguard": (
-            {"main_hand": "mace", "off_hand": "shield", "chest_armor": "jerkin", "amulet": "amulet"},
+            {"main_hand": "mace", "off_hand": "shield", "chest_armor": "medium_chest_armor", "amulet": "amulet"},
             {"skill_macing", "skill_medium_armor", "skill_shield_mastery"},
             {"shield", "defender", "scrap"},
         ),
         "goblin_tinkerer": (
-            {"main_hand": "rapier", "off_hand": "buckler", "chest_armor": "jerkin", "amulet": "amulet"},
+            {"main_hand": "rapier", "off_hand": "buckler", "chest_armor": "medium_chest_armor", "amulet": "amulet"},
             {"skill_fencing", "skill_shield_mastery", "skill_medium_armor", "skill_tactics"},
             {"engineer", "duelist", "scrap", "buckler"},
         ),
         "goblin_bomber": (
-            {"two_hand": "shortbow", "quiver": "quiver_fire", "chest_armor": "jerkin", "amulet": "amulet"},
+            {"two_hand": "shortbow", "off_hand": "quiver_fire", "chest_armor": "medium_chest_armor", "amulet": "amulet"},
             {"skill_archery", "skill_medium_armor", "skill_ranged_combat", "skill_tactics"},
             {"bomber", "explosives", "archer", "fire_arrows"},
         ),
         "goblin_trapmaster": (
-            {"main_hand": "stiletto", "off_hand": "main_gauche", "chest_armor": "jerkin", "amulet": "amulet"},
+            {"main_hand": "stiletto", "off_hand": "main_gauche", "chest_armor": "medium_chest_armor", "amulet": "amulet"},
             {"skill_fencing", "skill_dual_wield", "skill_medium_armor", "skill_tactics", "skill_anatomy"},
             {"trapper", "controller", "dual_wield", "precision"},
         ),
         "goblin_chief": (
-            {"main_hand": "battle_axe", "off_hand": "kite_shield", "chest_armor": "plate_chest", "amulet": "amulet"},
+            {"main_hand": "battle_axe", "off_hand": "kite_shield", "chest_armor": "heavy_chest_armor", "amulet": "amulet"},
             {"skill_macing", "skill_shield_mastery", "skill_heavy_armor", "skill_tactics", "skill_anatomy"},
             {"leader", "commander", "heavy_armor", "shield"},
         ),
         "scrap_king": (
-            {"two_hand": "warhammer", "chest_armor": "plate_chest", "amulet": "amulet"},
+            {"two_hand": "warhammer", "chest_armor": "heavy_chest_armor", "amulet": "amulet"},
             {"skill_macing", "skill_heavy_armor", "skill_two_handed", "skill_tactics", "skill_anatomy"},
             {"king", "heavy_armor", "two_handed", "scrap"},
         ),

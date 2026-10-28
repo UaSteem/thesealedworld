@@ -59,6 +59,7 @@ class BattleMeta(BaseModel):
     # battle start from CombatAiConfig.ACTIVE_POLICY_ID; empty string defers
     # to PolicyStore env/default resolution.
     ai_policy_id: str = ""
+    revision: int = 0
 
 
 class BattleContext(BaseModel):
@@ -86,6 +87,8 @@ class BattleContext(BaseModel):
     # executor's post-exchange hook; read by the AI runtime. Reset when the
     # battle session ends. See runtime/ai/ai_memory.py for the contract.
     ai_memory: dict[str, AiMemoryDTO] = Field(default_factory=dict)
+    storage_actor_snapshots: dict[str, str] = Field(default_factory=dict)
+    storage_meta_snapshot: dict[str, Any] = Field(default_factory=dict)
 
     def get_actor(self, char_id: ActorIdLike) -> ActorSnapshot | None:
         return self.actors.get(str(char_id))

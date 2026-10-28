@@ -531,7 +531,8 @@ async def test_build_current_returns_full_scenario_shell_context():
     assert context["inventory_window"].avatar_url == "/avatar.png"
     assert context["inventory_window"].contract_state == "FRONTEND_CONTRACT_PENDING"
     assert len(context["inventory_window"].body_zones) == 6
-    assert len(context["inventory_window"].accessory_rows) == 5
+    assert [row.row_id for row in context["inventory_window"].accessory_rows] == ["amulet", "earrings", "rings", "belt"]
+    # Quivers share off_hand with bows rather than a separate accessory row.
     assert len(context["inventory_window"].quick_slots) == 8
     assert context["nav"] == {"l2": None, "l1": None, "center": None, "r1": None, "r2": None}
     assert context["initial_inventory_open"] is False
@@ -896,21 +897,17 @@ async def test_build_state_arena_normalizes_dict_payload_before_render_context()
     assert context["nav"]["r2"]["panel_view"] == "context"
 
 
-@pytest.mark.asyncio
-async def test_build_state_rift_loads_runtime_screen_with_status_and_inventory_contract():
+def test_build_state_rift_rejects_before_loading_status_or_runtime():
     status_api = FakeCharacterStatusApi()
     rift_api = FakeRiftApi()
     service = rift_builder(status_api, rift_api)
 
-    context = await service.build_state(request(), state=CoreDomain.RIFT, char_id=7)
+    with pytest.raises(HTTPException) as error:
+        service.build_state(request(), state=CoreDomain.RIFT, char_id=7).send(None)
 
-    assert rift_api.calls == [("rift", 7)]
-    assert status_api.calls == [("status", 7)]
-    assert context["domain"] == "rift"
-    assert context["rift"]["hud"]["title"] == "Рваный тракт"
-    assert context["status_seed"]["hp"] == 88
-    assert context["inventory_window"].contract_state == "FRONTEND_CONTRACT_PENDING"
-    assert context["game_state_scripts"] == ["/static/js/game/states/rift.js"]
+    assert error.value.status_code == 410
+    assert rift_api.calls == []
+    assert status_api.calls == []
 
 
 @pytest.mark.asyncio

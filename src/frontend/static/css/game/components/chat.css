@@ -1,17 +1,17 @@
 /* ── CHAT & COMBAT LOG ── */
 
 .chat-demo {
-  background: rgba(0, 0, 0, .38);
-  border: 1px solid rgba(255, 170, 0, 0.10);
+  background: rgb(var(--tone-surface-001-rgb) / 0.38);
+  border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.1);
   animation: breathe 5.2s ease-in-out .6s infinite;
   overflow: hidden;
   width: 280px;
 }
 
 .chat-h {
-  padding: 5px 9px;
-  background: rgba(255, 170, 0, .04);
-  border-bottom: 1px solid rgba(255, 170, 0, .08);
+  padding: var(--space-5) var(--space-9);
+  background: rgb(var(--tone-accent-024-rgb) / 0.04);
+  border-bottom: 1px solid rgb(var(--tone-accent-024-rgb) / 0.08);
   font-size: var(--text-2xs);
   letter-spacing: .22em;
   text-transform: uppercase;
@@ -22,11 +22,11 @@
 }
 
 .ch-dot {
-  width: 5px;
-  height: 5px;
+  width: var(--size-5);
+  height: var(--size-5);
   border-radius: 50%;
-  background: #44ff88;
-  box-shadow: 0 0 6px #44ff88;
+  background: rgb(var(--tone-success-020-rgb));
+  box-shadow: 0 0 6px rgb(var(--tone-success-020-rgb));
   animation: pulse 1.6s ease-in-out infinite;
 }
 
@@ -34,7 +34,7 @@
   padding: var(--sp-2);
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: var(--sp-1);
 }
 
 .cm {
@@ -45,63 +45,63 @@
 .cm .ct {
   font-size: var(--text-2xs);
   letter-spacing: .1em;
-  margin-right: 3px;
+  margin-right: var(--space-3);
   opacity: .55;
 }
 
 .cm.sys {
-  color: rgba(255, 170, 0, .50);
+  color: rgb(var(--tone-accent-024-rgb) / 0.5);
 }
 
 .cm.player {
-  color: rgba(210, 180, 140, .85);
+  color: rgb(var(--tone-text-002-rgb) / 0.85);
 }
 
 .cm.npc {
-  color: rgba(180, 155, 225, .80);
+  color: rgb(var(--tone-magic-015-rgb) / 0.8);
 }
 
 .cm.danger {
-  color: rgba(255, 100, 80, .80);
+  color: rgb(var(--tone-danger-050-rgb) / 0.8);
 }
 
 /* ── COMBAT LOG ENTRY ── */
 .log-demo {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: var(--space-3);
 }
 
 .le {
   font-size: var(--text-sm);
   line-height: 1.5;
-  padding: 3px 8px;
-  border-left: 2px solid rgba(255, 170, 0, .10);
+  padding: var(--space-3) var(--sp-2);
+  border-left: 2px solid rgb(var(--tone-accent-024-rgb) / 0.1);
 }
 
 .le .lt {
   font-size: var(--text-2xs);
   color: var(--col-text-secondary);
-  margin-right: 5px;
+  margin-right: var(--space-5);
 }
 
 .le.hit {
-  border-color: rgba(255, 51, 0, .35);
-  color: rgba(255, 100, 80, .8);
+  border-color: rgb(var(--tone-danger-012-rgb) / 0.35);
+  color: rgb(var(--tone-danger-050-rgb) / 0.8);
 }
 
 .le.miss {
-  border-color: rgba(255, 170, 0, .20);
-  color: rgba(255, 170, 0, .5);
+  border-color: rgb(var(--tone-accent-024-rgb) / 0.2);
+  color: rgb(var(--tone-accent-024-rgb) / 0.5);
 }
 
 .le.effect {
-  border-color: rgba(119, 68, 255, .30);
-  color: rgba(153, 102, 255, .75);
+  border-color: rgb(var(--tone-magic-005-rgb) / 0.3);
+  color: rgb(var(--tone-magic-011-rgb) / 0.75);
 }
 
 .le.system {
-  border-color: rgba(255, 170, 0, .15);
-  color: rgba(255, 170, 0, .52);
+  border-color: rgb(var(--tone-accent-024-rgb) / 0.15);
+  color: rgb(var(--tone-accent-024-rgb) / 0.52);
   font-size: var(--text-2xs);
 }

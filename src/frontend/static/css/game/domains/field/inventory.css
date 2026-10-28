@@ -11,7 +11,7 @@
     flex-wrap: wrap;
     gap: var(--sp-1);
     margin-bottom: var(--sp-2);
-    border-bottom: 1px solid rgba(255, 170, 0, 0.1);
+    border-bottom: 1px solid rgb(var(--tone-accent-024-rgb) / 0.1);
     padding-bottom: var(--sp-1);
 }
 
@@ -19,10 +19,10 @@
     font-family: var(--font-ui);
     font-size: var(--text-2xs);
     letter-spacing: 0.1em;
-    color: rgba(255, 170, 0, 0.4);
+    color: rgb(var(--tone-accent-024-rgb) / 0.4);
     background: transparent;
     border: none;
-    padding: 2px var(--sp-2);
+    padding: var(--space-2) var(--sp-2);
     cursor: pointer;
     transition: color 0.2s;
 }
@@ -45,21 +45,21 @@
     align-items: center;
     gap: var(--sp-2);
     padding: var(--sp-1) var(--sp-2);
-    border: 1px solid rgba(255, 170, 0, 0.08);
-    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.08);
+    background: rgb(var(--tone-text-064-rgb) / 0.02);
     cursor: pointer;
     transition: background 0.18s;
 }
 
 .inv-item:hover {
-    background: rgba(255, 170, 0, 0.05);
-    border-color: rgba(255, 170, 0, 0.25);
+    background: rgb(var(--tone-accent-024-rgb) / 0.05);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.25);
 }
 
 .inv-item-icon {
-    width: 32px;
-    height: 32px;
-    border: 1px solid rgba(255, 170, 0, 0.15);
+    width: var(--size-32);
+    height: var(--size-32);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.15);
     clip-path: var(--clip-node-sm);
     display: flex;
     align-items: center;
@@ -83,30 +83,6 @@
 
 .inv-item-meta {
     font-size: var(--text-2xs);
-    color: rgba(255, 170, 0, 0.4);
+    color: rgb(var(--tone-accent-024-rgb) / 0.4);
     letter-spacing: 0.06em;
-}
-
-@media (max-width: 500px) {
-    .doll-section {
-        padding: var(--sp-2);
-    }
-
-    .doll-wrap {
-        grid-template-columns: 36px minmax(70px, 1fr) 36px;
-        grid-template-rows: repeat(4, 38px);
-    }
-
-    .eq-slot {
-        width: 34px;
-        height: 34px;
-    }
-
-    .doll-silhouette {
-        height: 76px;
-    }
-
-    .inv-section {
-        padding-inline: var(--sp-2);
-    }
 }

@@ -53,7 +53,15 @@ class FamilyEquipmentDTO:
             if catalog.get_base_item(entry.base_id) is None:
                 raise ValueError(f"Unknown item base: {entry.base_id}")
         for equipment_set in self.sets:
-            if "two_hand" in equipment_set.slots and ({"main_hand", "off_hand"} & equipment_set.slots.keys()):
+            two_entry = entries.get(equipment_set.slots.get("two_hand", ""))
+            off_entry = entries.get(equipment_set.slots.get("off_hand", ""))
+            bow_ammunition = bool(
+                two_entry
+                and off_entry
+                and two_entry.base_id in {"shortbow", "longbow", "composite_bow"}
+                and catalog.get_base_item(off_entry.base_id).type == "ammo"
+            )
+            if two_entry and ("main_hand" in equipment_set.slots or (off_entry and not bow_ammunition)):
                 raise ValueError("Two-hand slot conflicts with hand slots")
             for slot, entry_id in equipment_set.slots.items():
                 if entry_id not in entries:

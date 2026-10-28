@@ -102,7 +102,7 @@ Examples:
 - armor penalties such as evasion, anti-dodge, accuracy, or resource penalties;
 - jewelry type profile bonuses; jewelry `base_power` maps to flat
   `magic_armor`;
-- garment anchor/environment profile bonuses such as cold, heat, gravity, or
+- garment environment profile bonuses such as cold, heat, gravity, or
   bio resistance;
 - environmental resistance;
 - quick-slot capacity;
@@ -124,7 +124,7 @@ Combat base-item implicit rules:
   implicit bonuses are slot profiles, not affix duplicates: ring currently
   carries `mental_resistance`, amulet carries `debuff_avoidance`, and earring
   carries `initiative`;
-- garments use implicit bonuses as their anchor/environment protection layer:
+- garments use implicit bonuses as their environment protection layer:
   cold, heat, gravity, and bio resistance come from garment identity. Garment
   `base_power` does not become physical armor or jewelry-style magical armor.
   Future garment-only affix pools may add combat elemental resistances, but

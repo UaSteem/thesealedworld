@@ -1,0 +1,215 @@
+{
+  "schema_version": 1,
+  "revision": "33d31c487a231383",
+  "assets": [
+    {
+      "key": "ui-controls-frame",
+      "group": "combat-control",
+      "url": "/static/images/game-client/controls-frame.7f54b2650e5b.png",
+      "width": 920,
+      "height": 350,
+      "bytes": 213412,
+      "sha256": "7f54b2650e5b43b3ae369200317c0498a7477e689cfffaea5d99615b5f10b4b2",
+      "source": {
+        "master": "control-zone-v3.png",
+        "sha256": "dbe6a65e6eac268149700a88a71a4ffbf119b41a571fc89722bf089b988af86a",
+        "crop": [
+          52,
+          330,
+          920,
+          350
+        ]
+      }
+    },
+    {
+      "key": "ui-controls-plate",
+      "group": "combat-control",
+      "url": "/static/images/game-client/controls-plate.5205b39fc889.png",
+      "width": 920,
+      "height": 286,
+      "bytes": 137733,
+      "sha256": "5205b39fc8899c0586e8f0294add4bc7103765fd11dfa135249a34ddb2f2aaa5",
+      "source": {
+        "master": "control-zone-v3.png",
+        "sha256": "dbe6a65e6eac268149700a88a71a4ffbf119b41a571fc89722bf089b988af86a",
+        "crop": [
+          1076,
+          394,
+          920,
+          286
+        ]
+      }
+    },
+    {
+      "key": "ui-controls-feint",
+      "group": "ui-buttons",
+      "url": "/static/images/game-client/controls-feint.c8436c38abdc.png",
+      "width": 840,
+      "height": 106,
+      "bytes": 66306,
+      "sha256": "c8436c38abdc64e3e05f4717c419cd2f3f1d98cf9cb1774b517a56f90b4ee077",
+      "source": {
+        "master": "control-zone-v3.png",
+        "sha256": "dbe6a65e6eac268149700a88a71a4ffbf119b41a571fc89722bf089b988af86a",
+        "crop": [
+          92,
+          1290,
+          840,
+          106
+        ]
+      }
+    },
+    {
+      "key": "ui-controls-attack",
+      "group": "ui-buttons",
+      "url": "/static/images/game-client/controls-attack.e0afcc176f3f.png",
+      "width": 840,
+      "height": 116,
+      "bytes": 102235,
+      "sha256": "e0afcc176f3fc815f9b076ca88f637af01b355713305a26a07785e86b5700b9d",
+      "source": {
+        "master": "control-zone-v3.png",
+        "sha256": "dbe6a65e6eac268149700a88a71a4ffbf119b41a571fc89722bf089b988af86a",
+        "crop": [
+          92,
+          1580,
+          840,
+          116
+        ]
+      }
+    },
+    {
+      "key": "ui-controls-slot",
+      "group": "ui-slot",
+      "url": "/static/images/game-client/controls-slot.165a13eafdd6.png",
+      "width": 640,
+      "height": 640,
+      "bytes": 202657,
+      "sha256": "165a13eafdd670214dc33160db4046d5c816e9eaa6e12a5e593342215dd6af36",
+      "source": {
+        "master": "control-zone-v3.png",
+        "sha256": "dbe6a65e6eac268149700a88a71a4ffbf119b41a571fc89722bf089b988af86a",
+        "crop": [
+          1216,
+          1216,
+          640,
+          640
+        ]
+      }
+    },
+    {
+      "key": "ui-inspector-panel",
+      "group": "ui-inspector",
+      "url": "/static/images/game-client/inspector-panel.135e7b0425d5.png",
+      "width": 553,
+      "height": 975,
+      "bytes": 495413,
+      "sha256": "135e7b0425d530fa3a7964dc2ecf1ca077c60b6598dabade324af0b286c8a2b7",
+      "source": {
+        "master": "target-inspector-v1.png",
+        "sha256": "53cdb10ad6454f31d7a62503695e7dee3ac9593ba7b57a882ace6a7c20d16756",
+        "crop": [
+          1219,
+          25,
+          553,
+          975
+        ]
+      }
+    },
+    {
+      "key": "ui-inspector-row",
+      "group": "ui-inspector",
+      "url": "/static/images/game-client/inspector-row.6341d7987a23.png",
+      "width": 980,
+      "height": 125,
+      "bytes": 110346,
+      "sha256": "6341d7987a235c70935a86566739ef54d09d22b4abe805e50bf7a547261b4ab4",
+      "source": {
+        "master": "target-inspector-v1.png",
+        "sha256": "53cdb10ad6454f31d7a62503695e7dee3ac9593ba7b57a882ace6a7c20d16756",
+        "crop": [
+          22,
+          1228,
+          980,
+          125
+        ]
+      }
+    },
+    {
+      "key": "ui-inspector-bar",
+      "group": "ui-inspector",
+      "url": "/static/images/game-client/inspector-bar.feafcfbf9928.png",
+      "width": 943,
+      "height": 88,
+      "bytes": 72158,
+      "sha256": "feafcfbf9928f7bd6998d6316fa05bd0047ffa4fccc760cec71b9231777d1af7",
+      "source": {
+        "master": "target-inspector-v1.png",
+        "sha256": "53cdb10ad6454f31d7a62503695e7dee3ac9593ba7b57a882ace6a7c20d16756",
+        "crop": [
+          41,
+          1435,
+          943,
+          88
+        ]
+      }
+    },
+    {
+      "key": "ui-inspector-attack",
+      "group": "combat-intents",
+      "url": "/static/images/game-client/inspector-attack.7f18920dacbd.png",
+      "width": 302,
+      "height": 304,
+      "bytes": 127007,
+      "sha256": "7f18920dacbd931fbc00c08ed92f884ceef4618fcfafe99b565ef0afd39d738b",
+      "source": {
+        "master": "target-inspector-v1.png",
+        "sha256": "53cdb10ad6454f31d7a62503695e7dee3ac9593ba7b57a882ace6a7c20d16756",
+        "crop": [
+          26,
+          1702,
+          302,
+          304
+        ]
+      }
+    },
+    {
+      "key": "ui-inspector-wait",
+      "group": "combat-intents",
+      "url": "/static/images/game-client/inspector-wait.2f0b5ec48ef0.png",
+      "width": 303,
+      "height": 304,
+      "bytes": 121104,
+      "sha256": "2f0b5ec48ef06b46661c0d635bb95ca7f72201fe098f0b3d0dd145a4d8cfd96e",
+      "source": {
+        "master": "target-inspector-v1.png",
+        "sha256": "53cdb10ad6454f31d7a62503695e7dee3ac9593ba7b57a882ace6a7c20d16756",
+        "crop": [
+          361,
+          1702,
+          303,
+          304
+        ]
+      }
+    },
+    {
+      "key": "ui-inspector-defend",
+      "group": "combat-intents",
+      "url": "/static/images/game-client/inspector-defend.318c0a93d223.png",
+      "width": 302,
+      "height": 304,
+      "bytes": 121629,
+      "sha256": "318c0a93d2233ced2acf1a49292992894b8e0b26d5ebacd54b94cc691eba63f1",
+      "source": {
+        "master": "target-inspector-v1.png",
+        "sha256": "53cdb10ad6454f31d7a62503695e7dee3ac9593ba7b57a882ace6a7c20d16756",
+        "crop": [
+          696,
+          1702,
+          302,
+          304
+        ]
+      }
+    }
+  ]
+}

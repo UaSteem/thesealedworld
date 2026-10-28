@@ -35,9 +35,9 @@ def test_reference_player_uses_real_player_rolls_and_complete_legal_equipment():
     player = payload.player_comparison
     assert player.input_attributes == dict(STARTING_IMPRINTS["starter_dual_blades_01"].attribute_values)
     gear = player.technical["equipment"]
-    assert len(gear) == 16
+    assert len(gear) == 14
     slots = {item["slot"] for item in gear}
-    assert len(slots) == 16
+    assert len(slots) == 14
     assert {"main_hand", "off_hand", "ring_1", "ring_2"} <= slots
     assert not {"two_hand", "quiver"} & slots
     assert all(affix["roll"]["step_count"] == 5 for item in gear for affix in item["mechanics"]["affixes"])

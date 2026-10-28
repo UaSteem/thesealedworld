@@ -92,13 +92,13 @@ STARTING_COMBAT_STYLES: dict[str, StartingLoadoutPack] = {
 }
 
 STARTING_ARMOR_PACKS: dict[str, StartingLoadoutPack] = {
-    "heavy_full": StartingLoadoutPack(("plate_chest",)),
-    "medium_full": StartingLoadoutPack(("jerkin",)),
-    "light_full": StartingLoadoutPack(("leather_armor",)),
+    "heavy_full": StartingLoadoutPack(("heavy_chest_armor",)),
+    "medium_full": StartingLoadoutPack(("medium_chest_armor",)),
+    "light_full": StartingLoadoutPack(("light_chest_armor",)),
 }
 
 STARTING_UTILITY_PACKS: dict[str, StartingLoadoutPack] = {
-    "starter_basic": StartingLoadoutPack(("linen_shirt", "fur_pants", "travel_boots", "belt")),
+    "starter_basic": StartingLoadoutPack(("boots", "belt")),
 }
 
 # Fixed T0 starts selected from the reviewed 14-style reference. No runtime dependency on var/.

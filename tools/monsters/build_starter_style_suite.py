@@ -30,7 +30,7 @@ ATTRS = {
     "shortbow": (12, 20, 17, 12, 16, 13, 18, 13, 14),
     "longbow": (13, 19, 17, 12, 15, 14, 18, 13, 14),
 }
-ARMOR = {"light": "leather_armor", "medium": "jerkin", "heavy": "plate_chest"}
+ARMOR = {"light": "light_chest_armor", "medium": "medium_chest_armor", "heavy": "heavy_chest_armor"}
 TACTICS = {
     "shield": "skill_shield_mastery",
     "two_handed": "skill_two_handed",
@@ -84,9 +84,7 @@ def build_suite():
         skill = {f"skill_{d['weapon']}": 0.10, TACTICS[d["tactic"]]: 0.075, f"skill_{d['armor']}_armor": 0.05}
         d["skills"] = skill
         plan = {
-            "chest_garment": "linen_shirt",
-            "legs_garment": "fur_pants",
-            "feetwear": "travel_boots",
+            "feetwear": "boots",
             "belt_accessory": "belt",
             "chest_armor": ARMOR[d["armor"]],
         }
@@ -96,7 +94,7 @@ def build_suite():
         elif d["tactic"] == "dual":
             plan["off_hand"] = "main_gauche" if d["weapon"] == "fencing" else d["base"]
         elif d["tactic"] == "ranged":
-            plan["quiver"] = "quiver_frost" if d["base"] == "shortbow" else "quiver_fire"
+            plan["off_hand"] = "quiver_frost" if d["base"] == "shortbow" else "quiver_fire"
         d["plan"] = plan
         invalid = [
             f"{base_id}/{slot}"

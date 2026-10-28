@@ -6,8 +6,6 @@ class EquippedSlot(StrEnum):
     CHEST_ARMOR = "chest_armor"
     ARMS_ARMOR = "arms_armor"
     LEGS_ARMOR = "legs_armor"
-    CHEST_GARMENT = "chest_garment"
-    LEGS_GARMENT = "legs_garment"
     OUTER_GARMENT = "outer_garment"
     GLOVES_GARMENT = "gloves_garment"
     FEETWEAR = "feetwear"
@@ -19,7 +17,6 @@ class EquippedSlot(StrEnum):
     RING_1 = "ring_1"
     RING_2 = "ring_2"
     BELT_ACCESSORY = "belt_accessory"
-    QUIVER = "quiver"
 
 
 class QuickSlot(StrEnum):

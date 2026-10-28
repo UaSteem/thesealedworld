@@ -14,6 +14,7 @@ from src.backend.features.items.dto.instance import (
 )
 from src.backend.features.items.resources.affix_balance import GLOBAL_AFFIX_STEPS
 from src.backend.features.items.resources.affixes.catalog import AFFIX_CATALOG, BUNDLE_CATALOG
+from src.backend.features.items.resources.affixes.narrative import normalize_lore_tags
 from src.backend.features.items.resources.affixes.pools import (
     AFFIX_POOLS_BY_ITEM_TYPE,
     AFFIX_POOLS_BY_SLOT,
@@ -21,6 +22,7 @@ from src.backend.features.items.resources.affixes.pools import (
 )
 from src.backend.features.items.resources.item_grade import AFFIX_CONTAINER_RULES, GRADE_BY_RARITY_TIER
 from src.backend.features.items.resources.modifier_contracts import MODIFIER_CONTRACTS, compile_modifier_command
+from src.backend.features.items.resources.support_progression import support_bonus_at_tier
 from src.backend.features.items.runtime.accessory_bonuses import resolve_accessory_bonuses
 
 if TYPE_CHECKING:
@@ -86,10 +88,15 @@ class ItemFactory:
 
     def generate_player_item(self, request: ItemGenerationRequestDTO) -> GeneratedItemDTO:
         base = self._resolve_base(request.base_id)
-        material = self._resolve_material(base.allowed_materials, request.material_id, request.rarity_tier)
+        material = self._resolve_material(
+            base.allowed_materials,
+            request.material_id,
+            request.material_tier if request.material_tier is not None else request.rarity_tier,
+            explicit_tier=request.material_tier,
+        )
         slot = self._resolve_target_slot(base, request.target_slot)
         item_grade = self._resolve_item_grade(request)
-        item_tier = self._resolve_item_tier(material, request.rarity_tier)
+        item_tier = self._resolve_item_tier(material)
         tier_mult = self._resolve_tier_mult(material)
         scaled = self._scale_item_stats(base, material, tier_mult)
         item_type = self._resolve_item_type(base)
@@ -139,10 +146,15 @@ class ItemFactory:
 
     def generate_runtime_item(self, request: ItemGenerationRequestDTO) -> GeneratedItemDTO:
         base = self._resolve_base(request.base_id)
-        material = self._resolve_material(base.allowed_materials, request.material_id, request.rarity_tier)
+        material = self._resolve_material(
+            base.allowed_materials,
+            request.material_id,
+            request.material_tier if request.material_tier is not None else request.rarity_tier,
+            explicit_tier=request.material_tier,
+        )
         slot = self._resolve_target_slot(base, request.target_slot)
         item_grade = self._resolve_item_grade(request)
-        item_tier = self._resolve_item_tier(material, request.rarity_tier)
+        item_tier = self._resolve_item_tier(material)
         tier_mult = self._resolve_tier_mult(material)
         scaled = self._scale_item_stats(base, material, tier_mult)
         item_type = self._resolve_item_type(base)
@@ -262,8 +274,8 @@ class ItemFactory:
         return request.affix_profile or item_grade
 
     @staticmethod
-    def _resolve_item_tier(material, rarity_tier: int) -> int:
-        return material.tier if material else rarity_tier
+    def _resolve_item_tier(material) -> int:
+        return int(material.tier) if material else 0
 
     @staticmethod
     def _resolve_tier_mult(material) -> float:
@@ -386,6 +398,7 @@ class ItemFactory:
             "material": {
                 "material_id": material.id if material else None,
                 "tier_mult": tier_mult,
+                "tier": int(material.tier) if material else 0,
                 "tags": list(material.narrative_tags) if material else [],
             },
             "affixes": affixes,
@@ -451,6 +464,8 @@ class ItemFactory:
             item_type=item_type,
             rarity=rarity.enum_key,
             rarity_tier=request.rarity_tier,
+            item_tier=ItemFactory._resolve_item_tier(material),
+            lore_tags=list(normalize_lore_tags(mechanics.get("affixes", []))),
             name=name,
             description=description,
             base_id=base.id,
@@ -503,6 +518,10 @@ class ItemFactory:
         scaled: dict[str, float] = {}
         for key, value in base.implicit_bonuses.items():
             numeric = float(value)
+            support_value = support_bonus_at_tier(base.id, key, material_tier)
+            if support_value is not None:
+                scaled[key] = support_value
+                continue
             if base.id == "belt" and key == "quick_slot_capacity":
                 scaled[key] = float(min(8, max(0, int(numeric) + material_tier)))
                 continue
@@ -798,7 +817,9 @@ class ItemFactory:
         self,
         allowed_categories: list[str],
         material_id: str | None,
-        rarity_tier: int,
+        material_tier: int,
+        *,
+        explicit_tier: int | None = None,
     ):
         if material_id:
             material = self.catalog.get_material(material_id)
@@ -809,10 +830,14 @@ class ItemFactory:
                     f"Material {material_id!r} category {material.category!r} is not allowed for item "
                     f"categories {allowed_categories!r}"
                 )
+            if explicit_tier is not None and material.tier != explicit_tier:
+                raise ValueError(f"Material {material_id!r} has tier {material.tier}, not {explicit_tier}")
             return material
         for category in allowed_categories:
-            material = self.catalog.get_material_for_tier(category, rarity_tier)
+            material = self.catalog.get_material_for_tier(category, material_tier)
             if material is not None:
+                if explicit_tier is not None and material.tier != explicit_tier:
+                    raise ValueError(f"No material in category {category!r} for tier {explicit_tier}")
                 return material
         return None
 

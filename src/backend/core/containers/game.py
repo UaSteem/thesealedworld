@@ -5,7 +5,6 @@ from loguru import logger
 
 from src.backend.config.settings import settings
 from src.backend.core.database import get_manual_session_context, get_session_context
-from src.backend.core.mongo import get_mongo_provider
 
 # Feature Services
 from src.backend.features.items.services import ItemGenerationService
@@ -13,16 +12,9 @@ from src.backend.features.monsters.public import (
     AnchorProjectionBootstrapService,
     HabitatClanPoolMaterializationResult,
 )
-from src.backend.features.rift.resources.loader import RiftResourceLoader
-from src.backend.features.rift.services import (
-    RiftCatalogBootstrapService,
-    RiftPopulationBootstrapResult,
-)
 from src.backend.features.scenario.integrations import ScenarioImportIntegration
 from src.backend.features.world.integrations import WorldDataIntegration, WorldLocationIntegration
 from src.backend.features.world.services import WorldBootstrapService, WorldCacheService, WorldGenerator
-from src.backend.infrastructure.rift.repositories import RiftNodePoolRepository, RiftSettingRepository
-from src.backend.infrastructure.rift.repositories.catalog_documents import RiftCatalogDocumentRepository
 from src.backend.infrastructure.world.repositories import WorldRepository
 
 
@@ -56,44 +48,14 @@ class GameFeatureContainer:
             loaded_count = await bootstrap.bootstrap()
             population_result = HabitatClanPoolMaterializationResult(scopes=0, pool_entries=0, clans=0)
             logger.info("LegacyMonsterPopulationRetired")
-            rift_loader = RiftResourceLoader()
-            rift_catalog_result = await RiftCatalogBootstrapService(
-                loader=rift_loader,
-                setting_repository=RiftSettingRepository(session),
-                node_pool_repository=RiftNodePoolRepository(session),
-                catalog_document_repository=RiftCatalogDocumentRepository(get_mongo_provider().database()),
-            ).sync_fixtures()
-            rift_population_result = RiftPopulationBootstrapResult(
-                rifts=0,
-                family_slots=0,
-                clans=0,
-                pruned_clans=0,
-                bindings={},
-            )
-            logger.info("LegacyRiftMonsterPopulationRetired")
             app.state.world_cache_loaded_count = loaded_count
             app.state.monster_population_contexts = population_result.scopes
             app.state.monster_population_clans = population_result.clans
-            app.state.rift_catalog_settings = rift_catalog_result.settings
-            app.state.rift_catalog_nodes = rift_catalog_result.nodes
-            app.state.rift_population_rifts = rift_population_result.rifts
-            app.state.rift_population_family_slots = rift_population_result.family_slots
-            app.state.rift_population_clans = rift_population_result.clans
-            app.state.rift_population_bindings = rift_population_result.bindings
             logger.bind(location_count=loaded_count).info("WorldBootstrapFinished")
             logger.bind(
                 context_count=population_result.scopes,
                 clan_count=population_result.clans,
             ).info("MonsterPopulationBootstrapFinished")
-            logger.bind(
-                setting_count=rift_catalog_result.settings,
-                node_count=rift_catalog_result.nodes,
-            ).info("RiftCatalogBootstrapFinished")
-            logger.bind(
-                rift_count=rift_population_result.rifts,
-                slot_count=rift_population_result.family_slots,
-                clan_count=rift_population_result.clans,
-            ).info("RiftPopulationBootstrapFinished")
             await session.commit()
 
     async def _bootstrap_anchor_projections(self, app: FastAPI) -> None:

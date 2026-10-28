@@ -53,9 +53,9 @@ Those may exist only as domain wrappers or temporary prototype debt, not as the 
 Every gameplay screen that has player commands uses the shared action panel contract.
 
 - The action panel position is common behavior.
-- On mobile portrait, the action panel is pinned to the bottom of the main game area, above the chat drawer.
+- Current owner scope is desktop 2560×1440 and larger down to 1366×768. Mobile layout rules are deferred; earlier guidance is archived in archive/game_mobile_legacy/2026-10-24/related-originals/.
 - The central screen/field takes remaining space above the action panel.
-- The action panel must not consume half of mobile height unless the domain explicitly enters a dedicated command-selection mode.
+- Keep the main field and action controls usable at the minimum desktop content height.
 - Drawers inside the action panel open as overlays and must not move the button that opened them.
 - Clicking the same place should be able to close a drawer.
 - Belt, abilities, local services, navigation, scenario choices, combat feints, loot actions, and encounter decisions are domain content inside the common action panel.
@@ -67,7 +67,7 @@ For `design_prototype/`:
 
 - Do not put all states into one giant HTML file.
 - Create purpose pages such as `exploration.html`, `combat.html`, `status.html`, `inventory.html`, `scenario.html`, and `loot.html`.
-- Each purpose page may show mobile, mobile landscape, tablet, and desktop frames side by side.
+- Current purpose-page previews cover the desktop matrix in game-theme-tokens.md; mobile/tablet previews are deferred.
 - Keep shared prototype imports in entry CSS and reusable components.
 - Keep domain-specific layout in `design_prototype/css/screens/<domain>.css`.
 - When a pattern appears in two domains, stop and move the base behavior into `design_prototype/css/components/` before extending it further.

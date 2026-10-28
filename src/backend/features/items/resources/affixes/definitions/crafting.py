@@ -18,7 +18,7 @@ crafting_speed = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Crafting Speed",
         ui_template="+{value}% Crafting Speed",
-        narrative_tags=("artisan", "skilled", "efficient"),
+        narrative_tags=("craft",),
     ),
 )
 
@@ -34,7 +34,7 @@ resource_find_chance = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Resource Find",
         ui_template="+{value}% Resource Find",
-        narrative_tags=("gatherer", "lucky", "perceptive"),
+        narrative_tags=("fortune", "awareness"),
     ),
 )
 

@@ -8,6 +8,9 @@
 <div id="game-session-root"
      class="game-session-shell"
      data-game-state="{{ game_state_name }}"
+     data-character-id="{{ char_id }}"
+     data-battle-id="{{ combat_screen.session_id if combat_screen is defined and combat_screen else '' }}"
+     data-battle-active="{{ 'true' if domain == 'combats' and not combat_result else 'false' }}"
      data-game-scripts='{{ versioned_game_scripts.items|tojson|forceescape }}'
      {% if domain == 'combats' %}x-init="rightPanelView = 'enemies'"{% elif domain in ['death', 'loot'] %}x-init="rightPanelView = 'context'"{% endif %}
      style="display: flex; flex-direction: column; flex: 1; position: relative;">
@@ -68,7 +71,8 @@
         </aside>
 
         {# Center Viewport (Scenario/World/Combat) #}
-        <main id="game-viewport" class="col-center" style="flex: 1; display: flex; flex-direction: column;">
+        <main id="game-viewport" class="col-center">
+            <div id="game-client-scene-anchor" class="game-client-scene-anchor">
             <div id="game-center" class="col-center-inner" style="flex: 1; display: flex; align-items: center; justify-content: center;">
                 {% block session_content %}
                     {% if domain == 'scenario' %}
@@ -86,16 +90,17 @@
                     {% elif domain == 'loot' %}
                         {% include "game/domains/loot/viewport/main.html" %}
                     {% elif domain == 'rift' %}
-                        {% include "game/domains/rift/viewport/main.html" %}
+                        <p role="status">Прежний режим рифта недоступен в новой сборке.</p>
                     {% else %}
                         {% include "game/domains/exploration/viewport/main.html" %}
                     {% endif %}
                 {% endblock %}
             </div>
-        </main>
-
-        {# Right Panel (Social/Intel/Enemies) #}
-        <aside id="game-right" class="col-right" :class="{ 'panel-open': rightOpen }">
+                {# Transitional context overlay retains existing actions while
+                   each domain receives its new scene-owned presentation. #}
+                <details id="game-client-context" class="game-client-context" :open="rightOpen">
+                    <summary @click.prevent="rightOpen = !rightOpen">Сведения и действия</summary>
+                    <aside id="game-right" class="game-client-context-body">
             <div id="game-right-content">
                 {% block game_right %}
                     <div {% if domain in ['combats', 'death', 'loot'] %}x-show="true"{% else %}x-show="rightPanelView === 'context'"{% endif %}>
@@ -110,8 +115,6 @@
                                 {% include "game/domains/city_services/right_sidebar/main.html" %}
                             {% elif domain == 'combats' %}
                                 {% include "game/domains/combat/right_sidebar/main.html" %}
-                            {% elif domain == 'rift' %}
-                                {% include "game/domains/rift/right_sidebar/main.html" %}
                             {% endif %}
                         </div>
                     </div>
@@ -122,7 +125,20 @@
                     {% endif %}
                 {% endblock %}
             </div>
-        </aside>
+                    </aside>
+                </details>
+            </div>
+            <div id="game-client-chat-divider" class="game-client-chat-divider"
+                 role="separator" tabindex="0" aria-label="Высота чата"
+                 aria-orientation="horizontal" aria-controls="game-client-chat-anchor"
+                 aria-valuemin="15" aria-valuemax="20" aria-valuenow="17.5"></div>
+            <div id="game-client-chat-anchor" class="game-client-chat-anchor">
+                <button type="button" class="game-client-chat-reopen"
+                        x-show="chatClosed" @click="chatClosed = false"
+                        aria-controls="game-chat-container">Открыть чат</button>
+            </div>
+        </main>
+
         {% if combat_layout and combat_screen %}
             {% include "game/domains/combat/stat_sheet_layer.html" %}
         {% endif %}

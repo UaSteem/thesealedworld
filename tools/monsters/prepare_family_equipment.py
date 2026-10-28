@@ -34,7 +34,7 @@ FAMILIES = {"rat_swarm": (RAT_FAMILY, "rat_catalog"), "bandit_gang": (BANDIT_FAM
 
 def item_kind(slot: str, base_id: str) -> str:
     """Classify the authored narrow loadout without changing its item bases."""
-    if slot == "quiver" or base_id.startswith("quiver_"):
+    if base_id.startswith("quiver_"):
         return "ammo"
     if slot == "amulet":
         return "accessory"

@@ -7,6 +7,7 @@ from loguru import logger
 
 from src.backend.features.character.repositories import CharacterRepository
 from src.backend.features.character.schemas.session import CharacterSessionDocumentDTO
+from src.backend.features.rift.retirement import LegacyRiftRetiredError
 from src.backend.features.scenario.exceptions import ScenarioSessionNotFound
 from src.shared.enums import CoreDomain
 
@@ -157,40 +158,7 @@ class GameSessionIntegrator:
         self,
         session_doc: CharacterSessionDocumentDTO,
     ) -> dict[str, Any] | None:
-        if self.rift_runtime is None:
-            return None
-        rift_session_id = session_doc.sessions.rift_session_id
-        rift_instance_id = session_doc.sessions.rift_instance_id
-        if not rift_session_id or not rift_instance_id:
-            return None
-
-        try:
-            instance = await self.rift_runtime.require_instance(rift_instance_id)
-            setting = _object_mapping(_read_field(instance, "setting"))
-            population_context = _object_mapping(_read_field(instance, "population_context"))
-            setting_key = str(setting.get("setting_key") or population_context.get("setting_key") or "")
-            if setting_key != "starter_rift":
-                return None
-            run_session = await self.rift_runtime.require_run_session(rift_session_id)
-        except Exception:
-            logger.bind(
-                char_id=session_doc.char_id,
-                rift_session_id=rift_session_id,
-                rift_instance_id=rift_instance_id,
-            ).exception("StarterRiftDeathContextResolveFailed")
-            return None
-
-        return {
-            "rift_key": setting_key,
-            "rift_session_id": rift_session_id,
-            "rift_instance_id": rift_instance_id,
-            "current_node_id": _read_field(run_session, "current_node_id"),
-            "active_encounter_id": _read_field(run_session, "active_encounter_id"),
-            "death_run_id": session_doc.sessions.death_run_id,
-            "attributes_before": session_doc.attributes.model_dump(mode="json"),
-            "vitals_before": session_doc.vitals.model_dump(mode="json"),
-            "metrics_before": session_doc.metrics.model_dump(mode="json"),
-        }
+        raise LegacyRiftRetiredError("Legacy starter Rift reset is retired")
 
     async def reset_starter_rift_character(
         self,
@@ -200,27 +168,7 @@ class GameSessionIntegrator:
         starter_context: dict[str, Any],
         respawn_result: dict[str, Any],
     ) -> dict[str, Any]:
-        if self.starter_reset_integration is None:
-            raise RuntimeError("starter_reset_integration is required to reset starter rift character")
-
-        previous_attempt_count = _int_or_zero(starter_context.get("attempt_count"))
-        attempt_index = previous_attempt_count + 1
-        seed = _starter_rift_reset_seed(
-            character_id=character_id,
-            respawn_result=respawn_result,
-            attempt_index=attempt_index,
-        )
-        reset_result = await self.starter_reset_integration.reset_character_to_starting_imprint(
-            user_id=user_id,
-            character_id=character_id,
-            seed=seed,
-        )
-        return {
-            **reset_result,
-            "attempt_index": attempt_index,
-            "reset_seed": seed,
-            "starter_context": starter_context,
-        }
+        raise LegacyRiftRetiredError("Legacy starter Rift reset is retired")
 
     async def list_starting_imprints(self) -> list[dict[str, Any]]:
         from src.backend.features.character.services import StartingImprintService
@@ -242,23 +190,7 @@ class GameSessionIntegrator:
         user_id: UUID,
         imprint_key: str,
     ) -> dict[str, Any]:
-        if self.starter_reset_integration is None:
-            raise RuntimeError("starter_reset_integration is required to reset starter rift character")
-
-        from src.backend.features.character.services import StartingImprintService
-
-        StartingImprintService.get_definition(imprint_key)
-        seed = f"dev-starter-rift-reset:{character_id}:{imprint_key}"
-        reset_result = await self.starter_reset_integration.reset_character_to_starting_imprint(
-            user_id=user_id,
-            character_id=character_id,
-            seed=seed,
-            imprint_key=imprint_key,
-        )
-        return {
-            **reset_result,
-            "reset_seed": seed,
-        }
+        raise LegacyRiftRetiredError("Legacy starter Rift reset is retired")
 
     async def claim_post_combat_loot(self, character_id: int, corpse_ids: list[str]) -> dict[str, Any]:
         if self.loot_manager is None:
@@ -479,16 +411,6 @@ def _read_field(value: Any, key: str) -> Any:
 
 def _object_mapping(value: Any) -> dict[str, Any]:
     return dict(value) if isinstance(value, dict) else {}
-
-
-def _starter_rift_reset_seed(
-    *,
-    character_id: int,
-    respawn_result: dict[str, Any],
-    attempt_index: int,
-) -> str:
-    run_id = str(respawn_result.get("run_id") or "no-run")
-    return f"starter-rift-reset:{character_id}:{run_id}:{attempt_index}"
 
 
 def _int_or_zero(value: Any) -> int:

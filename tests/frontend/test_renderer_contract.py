@@ -64,3 +64,20 @@ def test_static_version_tracks_fonts_css(monkeypatch, tmp_path: Path) -> None:
     monkeypatch.setattr(renderer, "_mtime", lambda path: newer_mtime if path == fonts_css else 1)
 
     assert renderer._static_version() == str(newer_mtime)
+
+
+def test_static_version_tracks_persistent_client_entry(monkeypatch, tmp_path: Path) -> None:
+    client = tmp_path / 'js/game/client/shell.js'
+    monkeypatch.setattr(renderer.settings, 'static_dir', tmp_path)
+    monkeypatch.setattr(renderer, '_mtime', lambda path: 2_000_000_002 if path == client else 1)
+    assert renderer._static_version() == '2000000002'
+
+
+@pytest.mark.parametrize("asset", [
+    "js/game/client/assets.js", "js/game/client/components.js", "images/game-client/catalog.json",
+])
+def test_static_version_tracks_client_dependencies(monkeypatch, tmp_path: Path, asset: str) -> None:
+    dependency = tmp_path / asset
+    monkeypatch.setattr(renderer.settings, "static_dir", tmp_path)
+    monkeypatch.setattr(renderer, "_mtime", lambda path: 2_000_000_003 if path == dependency else 1)
+    assert renderer._static_version() == "2000000003"

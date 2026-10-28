@@ -51,7 +51,7 @@ class EvasionStep(ResolverStep):
 
         base_evasion = def_.mods.evasion
         evasion_cap = def_.mods.dodge_cap
-        anti_evasion = atk.mods.anti_dodge_chance
+        anti_evasion = atk.mods.anti_dodge_chance + ctx.mods.tactical_anti_dodge_bonus
 
         final_chance = base_evasion if ctx.flags.formula.zero_anti_evasion else base_evasion - anti_evasion
         final_chance = min(final_chance, evasion_cap)

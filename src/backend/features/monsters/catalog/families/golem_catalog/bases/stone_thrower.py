@@ -22,7 +22,7 @@ STONE_THROWER = MemberBaseDTO(
     ),
     loadout=BaseLoadoutDTO(
         two_hand="golem_stone_throw",
-        quiver="golem_stone_reserve",
+        off_hand="golem_stone_reserve",
         chest_armor="golem_shell",
         amulet="golem_core",
     ),

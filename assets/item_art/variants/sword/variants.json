@@ -1,0 +1,68 @@
+{
+  "status": "art_trial_not_runtime",
+  "source": "../../svg/sword.svg",
+  "source_sha256": "9ee84d0b58525dfa1b07cf11d230f6b4055be2a6bf36bfcc0b121b607d0abfed",
+  "base_id": "sword",
+  "variants": [
+    {
+      "visual_variant_id": "sword.basic.scrap_metal.t0",
+      "file": "sword__basic__scrap_metal__t0.svg",
+      "base_id": "sword",
+      "material_id": "mat_scrap_metal",
+      "material_tier": 0,
+      "label_ru": "Ржавый лом",
+      "condition": "worn",
+      "sha256": "de45c2a6d581fa962f047faa4dca9b5c8a591e92217e2d08e192ed00b12d529e"
+    },
+    {
+      "visual_variant_id": "sword.basic.iron.t1",
+      "file": "sword__basic__iron__t1.svg",
+      "base_id": "sword",
+      "material_id": "mat_iron_ingot",
+      "material_tier": 1,
+      "label_ru": "Железо",
+      "condition": "clean",
+      "sha256": "804a5f60fd559af61a03ca16b9aaa774f18eb0d78129e689c08f95ae30010e33"
+    },
+    {
+      "visual_variant_id": "sword.basic.cobalt.t2",
+      "file": "sword__basic__cobalt__t2.svg",
+      "base_id": "sword",
+      "material_id": "mat_cobalt_ingot",
+      "material_tier": 2,
+      "label_ru": "Кобальт",
+      "condition": "clean",
+      "sha256": "addf763fdba2214008d7d38a4c47298f3ed5fc17fdb4add2db57019e72f44939"
+    },
+    {
+      "visual_variant_id": "sword.basic.mithril.t3",
+      "file": "sword__basic__mithril__t3.svg",
+      "base_id": "sword",
+      "material_id": "mat_mithril_ingot",
+      "material_tier": 3,
+      "label_ru": "Мифрил",
+      "condition": "clean",
+      "sha256": "2fa5c11b8b423c5850db774a9dbeeca84625f5575d706661f7afb5efc46f651f"
+    },
+    {
+      "visual_variant_id": "sword.basic.adamantite.t4",
+      "file": "sword__basic__adamantite__t4.svg",
+      "base_id": "sword",
+      "material_id": "mat_adamantite_ingot",
+      "material_tier": 4,
+      "label_ru": "Адамантит",
+      "condition": "clean",
+      "sha256": "dfd3877a48429b06b54d88f17e5d9f11e8c054fed560aeba82e50f8d6c55a0b8"
+    },
+    {
+      "visual_variant_id": "sword.basic.thorium.t5",
+      "file": "sword__basic__thorium__t5.svg",
+      "base_id": "sword",
+      "material_id": "mat_thorium_ingot",
+      "material_tier": 5,
+      "label_ru": "Торий",
+      "condition": "clean",
+      "sha256": "af606d3ff43b96adc3a75ccc63106f6f3509c331acffa37e2fb0891e1e61fd23"
+    }
+  ]
+}

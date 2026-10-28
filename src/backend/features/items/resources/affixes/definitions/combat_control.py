@@ -17,7 +17,7 @@ control_chance_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Control Chance",
         ui_template="+{value}% Control Chance",
-        narrative_tags=("controlling", "commanding", "tactical"),
+        narrative_tags=("control",),
     ),
 )
 
@@ -33,7 +33,7 @@ control_resistance_bonus = AffixCatalogEntryDTO(
     descriptive=AffixDescriptiveDTO(
         display_name="Control Resistance",
         ui_template="+{value}% Control Resistance",
-        narrative_tags=("resolute", "unbowed", "iron-willed"),
+        narrative_tags=("resolve",),
     ),
 )
 

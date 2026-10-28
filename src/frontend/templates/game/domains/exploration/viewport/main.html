@@ -306,6 +306,19 @@
 {% endif %}
 
 <section id="center-screens" class="exploration-center-screens">
+{% if exploration_client_payload %}
+<script type="application/json" data-game-client-exploration>{{ exploration_client_payload|tojson }}</script>
+<div hidden data-game-client-exploration-transport>
+{% for action in exploration_client_payload.actions if action.endpoint %}
+<button type="button" data-game-client-exploration-action="{{ action.id }}"
+ hx-post="{{ action.endpoint }}" hx-vals='{{ action.params|tojson }}'
+ hx-target="#game-center" hx-swap="innerHTML"
+ hx-sync="closest [data-game-client-exploration-transport]:drop" hx-disabled-elt="this"
+ {% if not action.enabled %}disabled{% endif %}>{{ action.label }}</button>
+{% endfor %}
+</div>
+{% endif %}
+
     {% if exploration %}
         {% set active_encounter = encounter if encounter is defined and encounter else exploration if payload_type == 'exploration_encounter' else none %}
         {% set location_view = exploration %}

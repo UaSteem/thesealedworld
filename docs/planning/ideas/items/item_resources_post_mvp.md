@@ -168,7 +168,7 @@ Goal: make generated item text feel tied to the world without making the LLM own
 
 Planned work:
 
-- enrich `source_context` with monster family, clan, biome, anchor, location, and scenario data;
+- enrich `source_context` with monster family, clan, biome, environmental context, location, and scenario data;
 - add batch generation or queued generation for high-volume loot;
 - store compact item name/description and AI status only;
 - add item history snippets for artifacts and crafted items;

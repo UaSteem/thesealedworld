@@ -1,4 +1,4 @@
-import time
+from uuid import uuid4
 
 from loguru import logger as log
 
@@ -42,7 +42,7 @@ async def execute_batch_task(ctx: dict, job_data: dict) -> None:
     try:
         job = WorkerBatchJobDTO(**job_data)
         session_id = job.session_id
-        my_id = f"worker_{int(time.time() * 1000)}"  # Уникальный ID текущего исполнения
+        my_id = f"worker_{uuid4().hex}"
 
         # 0. Извлечение сервисов
         executor: CombatExecutor = ctx["combat_executor"]
@@ -56,17 +56,7 @@ async def execute_batch_task(ctx: dict, job_data: dict) -> None:
                 log.bind(reason="service_not_found").error("ExecutorFailed")
                 return
 
-        # 1. Load Context (Heavy IO)
-        battle_ctx = await data_service.load_battle_context(session_id)
-
-        if not battle_ctx or not battle_ctx.meta.active:
-            log.bind(reason="inactive_session", session_id=session_id).warning("ExecutorSkipped")
-            # Снимаем зависшие блокировки, если есть
-            if data_service:
-                await data_service.combat_manager.release_worker_lock_safe(session_id, "force")
-            return
-
-        # 2. Acquire Worker Lock (Concurrency Check)
+        # Acquire the lease before loading the snapshot it fences.
         # Гарантирует, что только один executor пишет в базу для этой сессии
         acquired = await data_service.combat_manager.acquire_worker_lock(session_id, my_id)
         if not acquired:
@@ -74,6 +64,10 @@ async def execute_batch_task(ctx: dict, job_data: dict) -> None:
             return
 
         try:
+            battle_ctx = await data_service.load_battle_context(session_id)
+            if not battle_ctx or not battle_ctx.meta.active:
+                log.bind(reason="inactive_session", session_id=session_id).warning("ExecutorSkipped")
+                return
             # 3. Fetch Actions from Redis Queue
             # Берем пачку действий
             raw_actions = await data_service.load_actions_batch(session_id, job.batch_size)
@@ -115,18 +109,19 @@ async def execute_batch_task(ctx: dict, job_data: dict) -> None:
                 target_return_count=len(battle_ctx.pending_target_returns),
             ).debug("ExecutorBatchProcessed")
 
-            # 5. Commit (Zombie Check & Save)
-            # Перед записью проверяем, не истек ли наш лок пока мы считали
-            is_mine = await data_service.combat_manager.check_worker_lock(session_id, my_id)
-
-            if not is_mine:
-                log.bind(session_id=session_id, error="lock_lost_during_calc").error("ExecutorZombieDetected")
-                return
-
-            # 5.1. АТОМАРНЫЙ Save (state + logs + actions + targets)
-            await data_service.commit_session(battle_ctx, processed_ids)
-            await _enqueue_result_support_tasks(ctx, battle_ctx)
-            await _publish_combat_refresh_notices(ctx, battle_ctx)
+            # Acceptance checks ownership, revision and source snapshots in the
+            # same script that publishes. Consume the actual raw prefix, also
+            # removing malformed entries that were deliberately skipped above.
+            accepted = await data_service.commit_session(
+                battle_ctx,
+                processed_ids,
+                owner=my_id,
+                exchange_id=f"{session_id}:{battle_ctx.meta.revision}",
+                expected_actions=raw_actions,
+            )
+            if accepted:
+                await _enqueue_result_support_tasks(ctx, battle_ctx)
+                await _publish_combat_refresh_notices(ctx, battle_ctx)
 
             log.bind(
                 session_id=session_id,

@@ -299,6 +299,23 @@ def actor(actor_id: int | str, team: str, hp: int = 100) -> ActorSnapshot:
     )
 
 
+def assert_factual_entry(entry, ctx, result=None):
+    """Check resolved direction and numbers without body-specific variants."""
+    assert entry["format"] == "factual-v1"
+    assert "(F)" not in entry["text"]
+    for role in ("source", "target"):
+        ref = entry.get(role)
+        if ref is not None:
+            assert ref["id"] in ctx.actors
+            assert ref["name"] == ctx.actors[ref["id"]].meta.name
+            assert ref["name"] in entry["text"]
+    if result is not None and "numbers" in entry:
+        assert entry["source"]["id"] == str(result.source_id)
+        assert entry["target"]["id"] == str(result.target_id)
+        assert entry["numbers"]["damage"] == result.damage_final
+        assert entry["numbers"]["reflected"] == result.reflected_damage
+
+
 @pytest.mark.unit
 def test_feint_service_refill_skips_feints_on_cooldown() -> None:
     meta = ActorMetaDTO(
@@ -412,9 +429,7 @@ def test_queued_effect_resistance_uses_source_and_param_apply_bonus(monkeypatch:
     ctx.result.target_id = target.char_id
     ctx.result.is_hit = True
     ctx.result.damage_final = 10
-    ctx.result.applied_effects.append(
-        {"id": "dot_poison", "target_id": target.char_id, "params": {"apply_bonus": 0.1}}
-    )
+    ctx.result.applied_effects.append({"id": "dot_poison", "target_id": target.char_id, "params": {"apply_bonus": 0.1}})
 
     AbilityService().post_process(
         ctx,
@@ -772,12 +787,9 @@ def test_executor_log_entries_use_actor_names_and_result_summary() -> None:
     ]
     assert ctx.pending_logs[0]["result"]["resources"] == ctx.pending_logs[0]["resources"]
     assert ctx.pending_logs[0]["catalog"] == "combat_text"
-    assert (
-        ctx.pending_logs[0]["template"]["key"]
-        == "combat.exchange.skill_swords.main_hand.hit.humanoid_to_humanoid.weapon"
-    )
+    assert ctx.pending_logs[0]["template"]["key"] == "combat.fact.basic_exchange.attack.hit"
     assert ctx.pending_logs[0]["template"]["text"]
-    assert ctx.pending_logs[0]["text"].endswith("нанося 7 урона.")
+    assert_factual_entry(ctx.pending_logs[0], ctx, result)
     assert "damage_final" not in ctx.pending_logs[0]
     assert "chain_events" not in ctx.pending_logs[0]
 
@@ -805,7 +817,7 @@ def test_executor_log_entries_include_reflected_shield_damage() -> None:
     CombatExecutor()._append_result_logs(ctx, result, action=action, wave=1)
 
     entry = ctx.pending_logs[0]
-    assert "Щит A2 возвращает A1 12 урона." in entry["text"]
+    assert_factual_entry(entry, ctx, result)
     assert entry["resources"] == [
         {"actor_id": "2", "resource": "hp", "before": 100, "after": 93, "max": 100, "delta": -7, "label": "HP 93/100"},
         {"actor_id": "1", "resource": "hp", "before": 100, "after": 88, "max": 100, "delta": -12, "label": "HP 88/100"},
@@ -831,7 +843,7 @@ def test_executor_death_log_entries_include_killing_damage() -> None:
     entry = ctx.pending_logs[0]
     assert entry["kind"] == "death"
     assert entry["outcome"] == "death"
-    assert "7 урона" in entry["text"]
+    assert_factual_entry(entry, ctx, result)
     assert entry["variables"]["damage"] == 7
     assert entry["flags"]["death"] is True
 
@@ -861,8 +873,8 @@ def test_executor_log_entries_use_dual_wield_proc_text_without_runtime_fallback(
 
     assert len(ctx.pending_logs) == 2
     trigger_entry = ctx.pending_logs[1]
-    assert trigger_entry["catalog_key"] == "combat.trigger.style.dual_cross_cut.proc.humanoid"
-    assert trigger_entry["text"] == "A1 усиливает критический удар перекрестным срезом."
+    assert trigger_entry["action"]["id"] == "style_dual_cross_cut"
+    assert_factual_entry(trigger_entry, ctx, result)
     assert "(F)" not in trigger_entry["text"]
 
 
@@ -889,7 +901,7 @@ def test_executor_log_entries_use_combat_text_for_beast_natural_exchange() -> No
 
     entry = ctx.pending_logs[0]
     assert entry["catalog"] == "combat_text"
-    assert entry["template"]["key"] == "combat.exchange.natural_weapon.fangs.main_hand.hit.beast_to_humanoid.natural"
+    assert entry["template"]["key"] == "combat.fact.basic_exchange.attack.hit"
     assert entry["template"]["text"]
     assert all(forbidden not in entry["text"].casefold() for forbidden in ("клинк", "остри", "доспех"))
     assert "(F)" not in entry["text"]
@@ -925,8 +937,8 @@ def test_executor_log_entries_use_archery_basic_exchange_text_for_bow_attacks() 
 
     entry = ctx.pending_logs[0]
     assert entry["catalog"] == "combat_text"
-    assert entry["catalog_key"] == "combat.exchange.skill_archery.main_hand.hit.humanoid_to_humanoid.weapon"
-    assert "стрел" in entry["text"].casefold() or "выстрел" in entry["text"].casefold()
+    assert entry["catalog_key"] == "combat.fact.basic_exchange.attack.hit"
+    assert_factual_entry(entry, ctx, result)
     assert "режущ" not in entry["text"].casefold()
     assert "рубящ" not in entry["text"].casefold()
 
@@ -937,15 +949,15 @@ def test_executor_log_entries_use_archery_basic_exchange_text_for_bow_attacks() 
     [
         (
             InteractionResultDTO(source_id=1, target_id=2, is_miss=True),
-            "combat.exchange.natural_weapon.fangs.main_hand.miss.beast_to_humanoid.natural",
+            "combat.fact.basic_exchange.attack.miss",
         ),
         (
             InteractionResultDTO(source_id=1, target_id=2, is_dodged=True),
-            "combat.exchange.natural_weapon.fangs.main_hand.dodge.beast_to_humanoid.natural",
+            "combat.fact.basic_exchange.attack.dodge",
         ),
         (
             InteractionResultDTO(source_id=1, target_id=2, is_parried=True),
-            "combat.exchange.natural_weapon.fangs.main_hand.parry.beast_to_humanoid.natural",
+            "combat.fact.basic_exchange.attack.parry",
         ),
     ],
 )
@@ -988,10 +1000,8 @@ def test_executor_log_entries_treat_beast_monster_without_surface_as_natural() -
     CombatExecutor()._append_result_logs(ctx, result, action=action, wave=1)
 
     entry = ctx.pending_logs[0]
-    assert (
-        entry["template"]["key"] == "combat.exchange.natural_weapon.default.main_hand.parry.beast_to_humanoid.natural"
-    )
-    assert entry["catalog_key"] == "combat.exchange.natural_weapon.default.main_hand.parry.beast_to_humanoid.natural"
+    assert entry["template"]["key"] == "combat.fact.basic_exchange.attack.parry"
+    assert entry["catalog_key"] == "combat.fact.basic_exchange.attack.parry"
     assert entry["catalog_tooltip"] == ""
     assert "(F)" not in entry["text"]
 
@@ -1002,11 +1012,11 @@ def test_executor_log_entries_treat_beast_monster_without_surface_as_natural() -
     [
         (
             InteractionResultDTO(source_id=1, target_id=2, is_miss=True),
-            "combat.exchange.skill_swords.main_hand.miss.humanoid_to_beast.weapon",
+            "combat.fact.basic_exchange.attack.miss",
         ),
         (
             InteractionResultDTO(source_id=1, target_id=2, is_dodged=True),
-            "combat.exchange.skill_swords.main_hand.dodge.humanoid_to_beast.weapon",
+            "combat.fact.basic_exchange.attack.dodge",
         ),
     ],
 )
@@ -1065,14 +1075,16 @@ def test_executor_log_entries_use_natural_weapon_template_for_beast_surface_even
 
     entry = ctx.pending_logs[0]
     assert entry["catalog"] == "combat_text"
-    assert entry["template"]["key"] == "combat.exchange.natural_weapon.fangs.main_hand.crit.beast_to_humanoid.natural"
+    assert entry["template"]["key"] == "combat.fact.basic_exchange.attack.crit"
     assert "(F)" not in entry["text"]
-    assert entry["text"].endswith("7 урона.")
+    assert_factual_entry(entry, ctx, result)
 
 
 @pytest.mark.unit
 def test_combat_log_missing_combat_text_template_uses_runtime_fallback(monkeypatch) -> None:
-    monkeypatch.setattr(CombatCatalogIntegrator, "get_combat_text_template", staticmethod(lambda **_kwargs: None), raising=False)
+    monkeypatch.setattr(
+        CombatCatalogIntegrator, "get_combat_text_template", staticmethod(lambda **_kwargs: None), raising=False
+    )
     source = actor(1, "a")
     source.loadout.layout["main_hand"] = "skill_swords"
     target = actor(2, "b")
@@ -1092,14 +1104,16 @@ def test_combat_log_missing_combat_text_template_uses_runtime_fallback(monkeypat
 
     entry = ctx.pending_logs[0]
     assert entry["catalog"] == "combat_text"
-    assert entry["template"]["key"] == "combat_text.runtime_fallback.basic_exchange.hit"
-    assert entry["text"].endswith("(F)")
+    assert entry["template"]["key"] == "combat.fact.basic_exchange.attack.hit"
+    assert "(F)" not in entry["text"]
     assert entry["variables"]["target_results"] == "A2 получает 7 урона"
 
 
 @pytest.mark.unit
 def test_combat_trigger_log_missing_combat_text_template_uses_runtime_fallback(monkeypatch) -> None:
-    monkeypatch.setattr(CombatCatalogIntegrator, "get_combat_text_template", staticmethod(lambda **_kwargs: None), raising=False)
+    monkeypatch.setattr(
+        CombatCatalogIntegrator, "get_combat_text_template", staticmethod(lambda **_kwargs: None), raising=False
+    )
     source = actor(1, "a")
     source.loadout.layout["main_hand"] = "skill_swords"
     target = actor(2, "b")
@@ -1120,8 +1134,8 @@ def test_combat_trigger_log_missing_combat_text_template_uses_runtime_fallback(m
 
     entry = ctx.pending_logs[1]
     assert entry["kind"] == "trigger_proc"
-    assert entry["template"]["key"] == "combat_text.runtime_fallback.trigger.parry_proc"
-    assert entry["text"].endswith("(F)")
+    assert entry["action"]["id"] == "weapon_riposte_on_parry"
+    assert "(F)" not in entry["text"]
 
 
 @pytest.mark.unit
@@ -1147,7 +1161,7 @@ def test_combat_riposte_trigger_log_uses_beast_target_template() -> None:
 
     entry = ctx.pending_logs[1]
     assert entry["kind"] == "trigger_proc"
-    assert entry["template"]["key"] == "combat.trigger.weapon.riposte_on_parry.parry_proc.beast"
+    assert entry["action"]["id"] == "weapon_riposte_on_parry"
     assert "(F)" not in entry["text"]
 
 
@@ -1170,8 +1184,8 @@ def test_executor_log_entries_render_counter_as_counterattack() -> None:
 
     entry = ctx.pending_logs[0]
     assert entry["catalog"] == "combat_text"
-    assert entry["template"]["key"] == "combat.exchange.skill_swords.main_hand.hit.humanoid_to_humanoid.weapon"
-    assert entry["text"].endswith("нанося 4 урона.")
+    assert entry["template"]["key"] == "combat.fact.basic_exchange.attack.hit"
+    assert_factual_entry(entry, ctx, result)
     assert entry["targets"] == [{"id": "1", "name": "A1", "team": "a", "actor_type": "player"}]
     assert entry["flags"]["counter"] is True
     assert "выжидает момент" not in entry["text"]
@@ -1191,15 +1205,17 @@ def test_executor_tick_logs_ignore_current_move_feint_template() -> None:
         ),
     )
     result = InteractionResultDTO(source_id=1, target_id=1)
-    result.events.append(CombatEventDTO(type="TICK", source_id=1, target_id=1, action_id="dot_bleed", value=-1, resource="hp"))
+    result.events.append(
+        CombatEventDTO(type="TICK", source_id=1, target_id=1, action_id="dot_bleed", value=-1, resource="hp")
+    )
 
     CombatExecutor()._append_result_logs(ctx, result, action=action, wave=0)
 
     entry = ctx.pending_logs[0]
     assert entry["kind"] == "effect_tick"
     assert entry["catalog"] == "combat_text"
-    assert entry["catalog_key"] == "combat.effect.dot_bleed.tick.humanoid.hp"
-    assert entry["text"] == "Кровотечение терзает A1: -1 hp."
+    assert entry["catalog_key"] == "combat.fact.effect.dot_bleed.tick"
+    assert_factual_entry(entry, ctx, result)
     assert "выжидает момент" not in entry["text"]
 
 
@@ -1217,13 +1233,15 @@ def test_executor_tick_log_uses_effect_text_even_without_action_id_priority() ->
         ),
     )
     result = InteractionResultDTO(source_id=1, target_id=1)
-    result.events.append(CombatEventDTO(type="TICK", source_id=1, target_id=1, action_id="dot_bleed", value=-1, resource="hp"))
+    result.events.append(
+        CombatEventDTO(type="TICK", source_id=1, target_id=1, action_id="dot_bleed", value=-1, resource="hp")
+    )
 
     CombatExecutor()._append_result_logs(ctx, result, action=action, wave=0)
 
     entry = ctx.pending_logs[0]
     assert entry["catalog"] == "combat_text"
-    assert entry["text"] == "Кровотечение терзает A1: -1 hp."
+    assert_factual_entry(entry, ctx, result)
     assert "future_feint_placeholder" not in entry["text"]
 
 
@@ -1251,8 +1269,8 @@ def test_executor_lethal_tick_log_stays_effect_tick_text() -> None:
     assert entry["kind"] == "effect_tick"
     assert entry["outcome"] == "tick"
     assert entry["catalog"] == "combat_text"
-    assert entry["template"]["key"] == "combat.effect.dot_bleed.tick.humanoid.hp"
-    assert entry["text"] == "Кровотечение терзает A1: -3 hp."
+    assert entry["template"]["key"] == "combat.fact.effect.dot_bleed.tick"
+    assert_factual_entry(entry, ctx, result)
     assert entry["flags"]["death"] is True
     assert entry["result"]["effects"][0]["effect_id"] == "death"
     assert "применяет Кровотечение" not in entry["text"]
@@ -1279,8 +1297,8 @@ async def test_executor_periodic_tick_before_feint_keeps_effect_text() -> None:
     await CombatExecutor().process_batch(ctx, [action])
 
     tick_entry = next(entry for entry in ctx.pending_logs if entry["kind"] == "effect_tick")
-    assert tick_entry["text"] == "Кровотечение терзает A1: -2 hp."
-    assert tick_entry["catalog_key"] == "combat.effect.dot_bleed.tick.humanoid.hp"
+    assert_factual_entry(tick_entry, ctx)
+    assert tick_entry["catalog_key"] == "combat.fact.effect.dot_bleed.tick"
     assert "future_feint_placeholder" not in tick_entry["text"]
 
 
@@ -1305,10 +1323,10 @@ def test_executor_log_entries_use_ability_catalog_templates() -> None:
 
     entry = ctx.pending_logs[0]
     assert entry["catalog"] == "combat_text"
-    assert entry["catalog_key"] == "combat.ability.fireball.target.hit.humanoid"
+    assert entry["catalog_key"] == "combat.fact.ability.fireball.hit"
     assert entry["template"]["event"] == "hit"
     assert entry["variables"]["ability"] == "Огненный Шар"
-    assert entry["text"] == "пламя ударяет в A2"
+    assert_factual_entry(entry, ctx, result)
     assert entry["result"]["resources"] == [
         {"actor_id": "2", "resource": "hp", "before": 100, "after": 84, "max": 100, "delta": -16, "label": "HP 84/100"}
     ]
@@ -1332,9 +1350,9 @@ def test_executor_log_entries_use_ability_no_resource_template() -> None:
 
     entry = ctx.pending_logs[0]
     assert entry["catalog"] == "combat_text"
-    assert entry["catalog_key"] == "combat.ability.fireball.no_resource"
+    assert entry["catalog_key"] == "combat.fact.ability.fireball.no_resource"
     assert entry["template"]["event"] == "no_resource"
-    assert entry["text"] == "A1 пытается собрать Огненный Шар, но жар гаснет раньше броска"
+    assert_factual_entry(entry, ctx, result)
     assert entry["result"]["resources"] == []
 
 
@@ -1359,9 +1377,10 @@ def test_executor_feint_hit_against_beast_uses_combat_text_template() -> None:
     CombatExecutor()._append_result_logs(ctx, result, action=action, wave=1)
 
     entry = ctx.pending_logs[0]
-    assert entry["template"]["key"] == "combat.feint.fencing_precise_prick.hit.humanoid_to_beast.weapon"
+    assert entry["template"]["key"] == "combat.fact.feint.fencing_precise_prick.hit"
     assert "(F)" not in entry["text"]
-    assert entry["text"].endswith("8 урона.")
+    assert_factual_entry(entry, ctx, result)
+    assert entry["numbers"]["damage"] == 8
 
 
 @pytest.mark.unit
@@ -1384,9 +1403,10 @@ def test_executor_feint_no_resource_uses_feint_template_without_runtime_fallback
     CombatExecutor()._append_result_logs(ctx, result, action=action, wave=1)
 
     entry = ctx.pending_logs[0]
-    assert entry["template"]["key"] == "combat.feint.dual_cross_slash.no_resource.weapon"
+    assert entry["template"]["key"] == "combat.fact.feint.dual_cross_slash.no_resource"
     assert "(F)" not in entry["text"]
-    assert entry["text"] == "A1 пытается провести Крестовой срез, но темп финта срывается."
+    assert_factual_entry(entry, ctx, result)
+    assert entry["outcome"] == "no_resource"
 
 
 @pytest.mark.unit
@@ -1396,14 +1416,14 @@ def test_executor_feint_no_resource_uses_feint_template_without_runtime_fallback
         (
             {"damage_final": 16, "is_hit": True, "is_crit": True},
             "crit",
-            "combat.ability.fireball.target.crit.humanoid",
+            "combat.fact.ability.fireball.crit",
             False,
         ),
-        ({"is_dodged": True}, "dodge", "combat.ability.fireball.target.dodge.humanoid", False),
-        ({"is_parried": True}, "parry", "combat.ability.fireball.target.parry.humanoid", False),
-        ({"is_blocked": True}, "block", "combat.ability.fireball.target.block.humanoid", False),
-        ({"skip_reason": "CONTROLLED"}, "controlled", "combat_text.runtime_fallback.ability.controlled", True),
-        ({}, "cast", "combat.ability.fireball.cast.single", False),
+        ({"is_dodged": True}, "dodge", "combat.fact.ability.fireball.dodge", False),
+        ({"is_parried": True}, "parry", "combat.fact.ability.fireball.parry", False),
+        ({"is_blocked": True}, "block", "combat.fact.ability.fireball.block", False),
+        ({"skip_reason": "CONTROLLED"}, "controlled", "combat.fact.ability.fireball.controlled", True),
+        ({}, "cast", "combat.fact.ability.fireball.cast", False),
     ],
 )
 def test_executor_log_entries_use_ability_templates_for_instant_outcomes(
@@ -1433,7 +1453,7 @@ def test_executor_log_entries_use_ability_templates_for_instant_outcomes(
     assert entry["template"]["event"] == expected_outcome
     assert entry["outcome"] == expected_outcome
     assert entry["variables"]["ability"] == "Огненный Шар"
-    assert entry["text"].endswith("(F)") is uses_runtime_fallback
+    assert "(F)" not in entry["text"]
 
 
 @pytest.mark.unit
@@ -1457,9 +1477,9 @@ def test_executor_log_entries_use_item_template_when_item_delegates_to_ability()
 
     entry = ctx.pending_logs[0]
     assert entry["catalog"] == "combat_text"
-    assert entry["catalog_key"] == "combat.item.fire_grenade.target.hit.humanoid"
+    assert entry["catalog_key"] == "combat.fact.item.fire_grenade.hit"
     assert entry["variables"]["item"] == "Огненная граната"
-    assert entry["text"] == "A2 получает 10 урона от Огненная граната"
+    assert_factual_entry(entry, ctx, result)
 
 
 @pytest.mark.unit
@@ -1491,8 +1511,8 @@ def test_executor_log_entries_use_area_contract_for_multi_target_actions() -> No
     assert entry["variables"]["targets_count"] == 2
     assert [target["id"] for target in entry["targets"]] == ["2", "3"]
     assert entry["catalog"] == "combat_text"
-    assert entry["catalog_key"] == "combat.ability.fireball.cast.area"
-    assert entry["text"] == "пламя расходится по 2 целям"
+    assert entry["catalog_key"] == "combat.fact.ability.fireball.area_result"
+    assert_factual_entry(entry, ctx, result)
     assert entry["result"]["resources"][0]["delta"] == -9
 
 
@@ -1527,7 +1547,9 @@ async def test_executor_groups_multi_target_ability_logs_into_single_comma_messa
     ]
     for result in results:
         result.events.append(
-            CombatEventDTO(type="HIT", source_id=1, target_id=result.target_id, value=result.damage_final, resource="hp")
+            CombatEventDTO(
+                type="HIT", source_id=1, target_id=result.target_id, value=result.damage_final, resource="hp"
+            )
         )
 
     async def fake_create_task(source, target, move, *, mods=None):  # noqa: ANN001
@@ -1561,10 +1583,10 @@ def test_executor_log_entries_use_combat_text_for_humanoid_effect_apply() -> Non
     CombatExecutor()._append_result_logs(ctx, result, action=action, wave=1)
 
     assert len(ctx.pending_logs) == 1
-    assert ctx.pending_logs[0]["text"] == "A2 получает Кровотечение."
+    assert_factual_entry(ctx.pending_logs[0], ctx, result)
     assert ctx.pending_logs[0]["kind"] == "effect_apply"
     assert ctx.pending_logs[0]["catalog"] == "combat_text"
-    assert ctx.pending_logs[0]["catalog_key"] == "combat.effect.dot_bleed.apply.humanoid"
+    assert ctx.pending_logs[0]["catalog_key"] == "combat.fact.basic_exchange.attack.apply_effect"
     assert ctx.pending_logs[0]["catalog_tooltip"] == ""
     assert ctx.pending_logs[0]["result"]["effects"][0]["effect_id"] == "dot_bleed"
 
@@ -1585,7 +1607,7 @@ def test_executor_effect_resist_log_does_not_use_runtime_fallback_text() -> None
     assert len(ctx.pending_logs) == 1
     assert ctx.pending_logs[0]["kind"] == "effect_resist"
     assert "(F)" not in ctx.pending_logs[0]["text"]
-    assert "не срабатывает" in ctx.pending_logs[0]["text"]
+    assert_factual_entry(ctx.pending_logs[0], ctx, result)
 
 
 @pytest.mark.unit
@@ -1604,8 +1626,8 @@ def test_executor_basic_ability_hit_log_uses_ability_event_text() -> None:
     CombatExecutor()._append_result_logs(ctx, result, action=action, wave=1)
 
     entry = ctx.pending_logs[0]
-    assert entry["catalog_key"] == "combat.ability.basic_break_stance.target.hit.humanoid"
-    assert entry["text"] == "A1 ломает устойчивость A2"
+    assert entry["catalog_key"] == "combat.fact.ability.basic_break_stance.hit"
+    assert_factual_entry(entry, ctx, result)
     assert "(F)" not in entry["text"]
 
 
@@ -1624,8 +1646,8 @@ def test_executor_basic_ability_no_resource_log_uses_ability_event_text() -> Non
     CombatExecutor()._append_result_logs(ctx, result, action=action, wave=1)
 
     entry = ctx.pending_logs[0]
-    assert entry["catalog_key"] == "combat.ability.basic_break_stance.no_resource"
-    assert entry["text"] == "A1 не удерживает темп для сбития стойки"
+    assert entry["catalog_key"] == "combat.fact.ability.basic_break_stance.no_resource"
+    assert_factual_entry(entry, ctx, result)
     assert "(F)" not in entry["text"]
 
 
@@ -1650,8 +1672,8 @@ async def test_basic_debuff_strike_logs_hit_text_not_runtime_fallback() -> None:
 
     entry = ctx.pending_logs[0]
     assert result.action_facts["outcome"] == "apply"
-    assert entry["catalog_key"] == "combat.ability.basic_break_stance.target.hit.humanoid"
-    assert entry["text"] == "A1 ломает устойчивость A2"
+    assert entry["catalog_key"] == "combat.fact.ability.basic_break_stance.hit"
+    assert_factual_entry(entry, ctx, result)
     assert "(F)" not in entry["text"]
 
 
@@ -1674,12 +1696,12 @@ def test_executor_hit_with_effect_event_keeps_attack_template() -> None:
 
     entry = ctx.pending_logs[0]
     assert entry["catalog"] == "combat_text"
-    assert entry["catalog_key"] == "combat.exchange.skill_swords.main_hand.hit.humanoid_to_humanoid.weapon"
+    assert entry["catalog_key"] == "combat.fact.basic_exchange.attack.hit"
     assert "применяет Кровотечение" not in entry["text"]
     assert len(ctx.pending_logs) == 2
     assert ctx.pending_logs[1]["kind"] == "effect_apply"
     assert "A2" in ctx.pending_logs[1]["text"]
-    assert "кровоточ" in ctx.pending_logs[1]["text"]
+    assert ctx.pending_logs[1]["effects"][0]["effect_id"] == "dot_bleed"
     assert entry["result"]["effects"][0]["effect_id"] == "dot_bleed"
 
 
@@ -1736,7 +1758,12 @@ async def test_executor_stun_blocks_dodge_and_expires_after_exchange() -> None:
 
     assert all(entry["outcome"] != "dodge" for entry in ctx.pending_logs)
     assert [effect.effect_id for effect in target.statuses.effects] == []
-    assert any(entry["kind"] == "effect_expire" and entry["text"] == "Оглушение A2 проходит." for entry in ctx.pending_logs)
+    assert any(
+        entry["kind"] == "effect_expire"
+        and entry["target"]["id"] == "2"
+        and any(f["effect_id"] == "stun" for f in entry["effects"])
+        for entry in ctx.pending_logs
+    )
 
 
 @pytest.mark.unit
@@ -1768,9 +1795,11 @@ async def test_executor_controlled_skip_uses_effect_text_without_fallback(
 
     controlled_entry = next(entry for entry in ctx.pending_logs if entry.get("outcome") == "controlled")
     assert "(F)" not in controlled_entry["text"]
-    assert controlled_entry["text"].startswith("A2 оглушён")
+    assert_factual_entry(controlled_entry, ctx)
+    assert controlled_entry["source"]["id"] == "2"
+    assert controlled_entry["outcome"] == "controlled"
     assert not controlled_entry["text"].startswith("A1 оглушён")
-    assert controlled_entry["template"]["key"] == "combat.effect.stun.control_prevent_action.runtime"
+    assert controlled_entry["template"]["key"] == "combat.fact.basic_exchange.attack.controlled"
     assert "fallback" not in controlled_entry["tags"]
 
 
@@ -1804,7 +1833,7 @@ async def test_commit_session_persists_step_and_actor_exchange_counters() -> Non
     ctx.meta.step_counter = 3
     ctx.actors["1"].meta.exchange_counter = 2
 
-    await integration.commit_session(ctx, ["m1"])
+    await integration.commit_session(ctx, ["m1"], owner="worker", exchange_id="exchange", expected_actions=["action"])
 
     assert manager.commit_kwargs is not None
     updates = manager.commit_kwargs["args"][1]
@@ -1850,7 +1879,7 @@ async def test_session_integration_round_trips_stamina_state() -> None:
     snapshot.meta.token_progress["blood"] = 3
     snapshot.meta.ability_cooldowns["basic_break_stance"] = 4
 
-    await integration.commit_session(ctx, ["m1"])
+    await integration.commit_session(ctx, ["m1"], owner="worker", exchange_id="exchange", expected_actions=["action"])
 
     updates = manager.commit_kwargs["args"][1]
     assert updates["1"]["state"]["stamina"] == 12
@@ -1879,7 +1908,7 @@ async def test_commit_session_sends_dead_actor_prune_and_alive_counts() -> None:
     )
     ctx.pending_dead_actors = ["2"]
 
-    await integration.commit_session(ctx, ["m1"])
+    await integration.commit_session(ctx, ["m1"], owner="worker", exchange_id="exchange", expected_actions=["action"])
 
     assert manager.commit_kwargs is not None
     kwargs = manager.commit_kwargs["kwargs"]
@@ -3660,7 +3689,7 @@ def test_executor_log_merges_prepared_reaction_into_defender_outcome() -> None:
 
     entry = ctx.pending_logs[0]
     assert entry["catalog"] == "combat_text"
-    assert entry["template"]["key"] == "combat.exchange.skill_swords.main_hand.parry.humanoid_to_humanoid.weapon"
+    assert entry["template"]["key"] == "combat.fact.basic_exchange.attack.parry"
     assert entry["outcome"] == "parry"
     assert "переводит парирование в контратаку" not in entry["text"]
 
@@ -3828,9 +3857,9 @@ def test_basic_break_stance_applies_flat_damage_down_from_skill_damage_for_four_
     assert active.effect_id == "basic_break_stance"
     assert active.expire_at_exchange == source.meta.exchange_counter + 4
     assert active.modified_keys == ["physical_damage_bonus"]
-    assert target.raw.modifiers["physical_damage_bonus"]["temp"][active.modified_sources["physical_damage_bonus"][0]] == (
-        "-6"
-    )
+    assert target.raw.modifiers["physical_damage_bonus"]["temp"][
+        active.modified_sources["physical_damage_bonus"][0]
+    ] == ("-6")
 
 
 @pytest.mark.unit
@@ -4097,9 +4126,9 @@ def test_basic_blood_hunger_applies_damage_and_vampiric_power_buff_without_regen
     assert active.expire_at_exchange == source.meta.exchange_counter + 5
     assert active.modified_keys == ["physical_damage_bonus", "vampiric_power"]
     assert source.raw.modifiers["hp_regen"]["temp"] == {}
-    assert source.raw.modifiers["physical_damage_bonus"]["temp"][active.modified_sources["physical_damage_bonus"][0]] == (
-        "+2"
-    )
+    assert source.raw.modifiers["physical_damage_bonus"]["temp"][
+        active.modified_sources["physical_damage_bonus"][0]
+    ] == ("+2")
     assert source.raw.modifiers["vampiric_power"]["temp"][active.modified_sources["vampiric_power"][0]] == "+0.15"
     StatsEngine.ensure_stats(source)
     assert source.stats is not None
@@ -4830,9 +4859,7 @@ async def test_start_announcement_publishes_once_from_collector_context() -> Non
     assert payload["template_key"] == "combat.started"
     assert payload["presentation"] == "system_chat"
     assert json.loads(payload["character_ids"]) == [1]
-    assert json.loads(payload["variables"])["participants"] == (
-        "Команда 1: Hero[42/100] против Команда 2: Wolf[0/60]"
-    )
+    assert json.loads(payload["variables"])["participants"] == ("Команда 1: Hero[42/100] против Команда 2: Wolf[0/60]")
     encoded = str(redis.xadds[0])
     assert "chat.combat_message" not in encoded
     assert "chat.combat_log_message" not in encoded
@@ -5190,7 +5217,7 @@ async def test_executor_ticks_periodic_effects_before_exchange() -> None:
     assert ctx.actors["1"].meta.hp == 98
     assert any(
         entry["kind"] == "effect_tick"
-        and entry["template"]["key"] == "combat.effect.dot_bleed.tick.humanoid.hp"
+        and entry["template"]["key"] == "combat.fact.effect.dot_bleed.tick"
         and entry["result"]["resources"]
         == [
             {
@@ -6034,7 +6061,9 @@ def test_force_ranged_close_effect_commits_close_position_for_archer_target() ->
         }
     )
 
-    move = CombatMoveDTO(move_id="m1", char_id=1, strategy="exchange", payload=ExchangePayload(target_id=target.char_id))
+    move = CombatMoveDTO(
+        move_id="m1", char_id=1, strategy="exchange", payload=ExchangePayload(target_id=target.char_id)
+    )
 
     AbilityService().post_process(PipelineContextDTO(result=result), source, target, move)
 
@@ -6054,7 +6083,9 @@ def test_force_ranged_close_effect_ignores_non_ranged_target() -> None:
     result = InteractionResultDTO(source_id=source.char_id, target_id=target.char_id)
     result.applied_effects.append({"id": "force_ranged_close", "target_id": target.char_id})
 
-    move = CombatMoveDTO(move_id="m1", char_id=1, strategy="exchange", payload=ExchangePayload(target_id=target.char_id))
+    move = CombatMoveDTO(
+        move_id="m1", char_id=1, strategy="exchange", payload=ExchangePayload(target_id=target.char_id)
+    )
 
     AbilityService().post_process(PipelineContextDTO(result=result), source, target, move)
 
@@ -6625,7 +6656,9 @@ def test_armor_power_uses_type_cap_instead_of_flat_full_absorb(monkeypatch: pyte
 
 
 @pytest.mark.unit
-def test_magic_armor_remains_active_during_temporary_elemental_resistance_bypass(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_magic_armor_remains_active_during_temporary_elemental_resistance_bypass(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     monkeypatch.setattr(MathCore, "random_range", staticmethod(lambda min_d, max_d: min_d))
 
     ctx = PipelineContextDTO()

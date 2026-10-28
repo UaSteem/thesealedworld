@@ -5,14 +5,16 @@ from enum import StrEnum
 class EquippedSlot(StrEnum):
     """
     Слоты экипировки персонажа.
+
+    HEAD/CHEST/ARMS/LEGS_ARMOR — броня головы, корпуса, предплечий и ног.
+    GLOVES_GARMENT — перчатки на кистях; они не заменяют ARMS_ARMOR (наручи).
+    OUTER_GARMENT — плащ, FEETWEAR — обувь; это самостоятельные слоты.
     """
 
     HEAD_ARMOR = "head_armor"
     CHEST_ARMOR = "chest_armor"
     ARMS_ARMOR = "arms_armor"
     LEGS_ARMOR = "legs_armor"
-    CHEST_GARMENT = "chest_garment"
-    LEGS_GARMENT = "legs_garment"
     OUTER_GARMENT = "outer_garment"
     GLOVES_GARMENT = "gloves_garment"
     FEETWEAR = "feetwear"
@@ -24,7 +26,6 @@ class EquippedSlot(StrEnum):
     RING_1 = "ring_1"
     RING_2 = "ring_2"
     BELT_ACCESSORY = "belt_accessory"
-    QUIVER = "quiver"
 
 
 class QuickSlot(StrEnum):

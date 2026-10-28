@@ -52,7 +52,7 @@ def test_rat_natural_equipment_covers_current_tactical_styles() -> None:
         "rat_bone_growth": ("buckler", "off_hand", "shield"),
         "rat_spiked_growth": ("shield", "off_hand", "shield"),
         "rat_poison_spit": ("shortbow", "two_hand", "weapon"),
-        "rat_poison_glands": ("quiver_training", "quiver", "ammo"),
+        "rat_poison_glands": ("quiver_standard", "off_hand", "ammo"),
         "rat_crushing_bite": ("warhammer", "two_hand", "weapon"),
         "rat_plague_gland": ("amulet", "amulet", "accessory"),
     }

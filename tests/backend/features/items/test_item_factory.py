@@ -81,7 +81,7 @@ def test_item_factory_scales_power_and_affixes_with_material_tier_mult():
 def test_item_factory_heavy_armor_scales_class_penalties_for_sync_math():
     item = ItemFactory().generate(
         ItemGenerationRequestDTO(
-            base_id="plate_chest",
+            base_id="heavy_chest_armor",
             material_id="mat_iron_ingot",
             item_grade="no_grade",
         )
@@ -97,14 +97,14 @@ def test_item_factory_heavy_armor_scales_class_penalties_for_sync_math():
 def test_item_factory_light_chest_penalty_scales_by_material_tier():
     low = ItemFactory().generate(
         ItemGenerationRequestDTO(
-            base_id="leather_armor",
+            base_id="light_chest_armor",
             material_id="mat_cured_leather",
             item_grade="no_grade",
         )
     )
     high = ItemFactory().generate(
         ItemGenerationRequestDTO(
-            base_id="leather_armor",
+            base_id="light_chest_armor",
             material_id="mat_thick_leather",
             item_grade="no_grade",
         )
@@ -141,18 +141,18 @@ def test_item_factory_uses_material_prefix_for_generated_names():
             item_grade="no_grade",
         )
     )
-    breeches = factory.generate(
+    medium_leg_armor = factory.generate(
         ItemGenerationRequestDTO(
-            base_id="breeches",
+            base_id="medium_leg_armor",
             material_id="mat_cured_leather",
             item_grade="no_grade",
         )
     )
 
     assert buckler.name == "Дубовый баклер"
-    assert breeches.name == "Дубленые прочные штаны"
+    assert medium_leg_armor.name == "Дубленые средние поножи"
     assert ":" not in buckler.name
-    assert ":" not in breeches.name
+    assert ":" not in medium_leg_armor.name
 
 
 @pytest.mark.unit
@@ -170,7 +170,7 @@ def test_item_factory_generates_earring_accessory():
     assert item.slot == "earring"
     assert item.name == "Железная серьга"
     assert item.power == 1.0
-    assert item.implicit_bonuses == {"initiative": pytest.approx(0.5), "stamina_regen": pytest.approx(1.0)}
+    assert item.implicit_bonuses == {"initiative": pytest.approx(0.9)}
 
 
 @pytest.mark.unit
@@ -207,7 +207,7 @@ def test_item_factory_carries_quiver_ammo_contract_into_mechanics():
         )
     )
 
-    assert item.slot == "quiver"
+    assert item.slot == "off_hand"
     assert item.item_type == "ammo"
     assert item.power == pytest.approx(3.0)
     assert item.mechanics["ammo_charge_base"] == 12
@@ -229,27 +229,27 @@ def test_item_factory_carries_quiver_ammo_contract_into_mechanics():
 
 
 @pytest.mark.unit
-def test_item_factory_scales_travel_boots_concentration_regen_by_material_tier_mult():
+def test_item_factory_rounds_boots_regen_curve_without_retired_gravity():
     low = ItemFactory().generate(
         ItemGenerationRequestDTO(
-            base_id="travel_boots",
+            base_id="boots",
             material_id="mat_cured_leather",
             item_grade="no_grade",
         )
     )
     high = ItemFactory().generate(
         ItemGenerationRequestDTO(
-            base_id="travel_boots",
+            base_id="boots",
             material_id="mat_ancient_dragonhide",
             item_grade="no_grade",
         )
     )
 
-    assert low.implicit_bonuses["stamina_regen"] == pytest.approx(1.5)
-    assert low.implicit_bonuses["environment_gravity_resistance"] == pytest.approx(1.0)
-    assert low.mechanics["implicit_bonuses"]["stamina_regen"] == pytest.approx(1.5)
-    assert high.implicit_bonuses["stamina_regen"] == pytest.approx(10.2)
-    assert high.implicit_bonuses["environment_gravity_resistance"] == pytest.approx(6.8)
+    assert low.implicit_bonuses["stamina_regen"] == pytest.approx(1.6)
+    assert "environment_gravity_resistance" not in low.implicit_bonuses
+    assert low.mechanics["implicit_bonuses"]["stamina_regen"] == pytest.approx(1.6)
+    assert high.implicit_bonuses["stamina_regen"] == pytest.approx(10.9)
+    assert "environment_gravity_resistance" not in high.implicit_bonuses
 
 
 @pytest.mark.unit
@@ -415,7 +415,7 @@ def test_item_factory_rejects_material_from_wrong_category():
 def test_item_factory_rejects_bundle_when_affix_required_tags_do_not_match():
     item = ItemFactory().generate(
         ItemGenerationRequestDTO(
-            base_id="plate_chest",
+            base_id="heavy_chest_armor",
             material_id="mat_iron_ingot",
             item_grade="legendary",
             affix_bundle_ids=["bulwark_shield_4"],
@@ -431,7 +431,7 @@ def test_item_factory_rejects_bundle_when_affix_required_tags_do_not_match():
 def test_item_factory_accepts_type_specific_bundles():
     armor = ItemFactory().generate(
         ItemGenerationRequestDTO(
-            base_id="plate_chest",
+            base_id="heavy_chest_armor",
             material_id="mat_iron_ingot",
             item_grade="legendary",
             affix_bundle_ids=["bulwark_armor_4"],
@@ -470,8 +470,8 @@ def test_item_factory_forced_bundle_smoke_by_item_family():
     cases = [
         ("rapier", "mat_cobalt_ingot", "duelist_weapon_4", {"weapon_accuracy", "armor_penetration_pct_bonus"}),
         ("shield", "mat_iron_ingot", "bulwark_shield_4", {"shield_guard_power_bonus", "physical_resistance_bonus"}),
-        ("plate_chest", "mat_iron_ingot", "bulwark_armor_4", {"armor_flat", "thorns_damage_bonus"}),
-        ("winter_cloak", "mat_linen", "survival_garment_3", {"cold_resistance_bonus", "heat_resistance_bonus"}),
+        ("heavy_chest_armor", "mat_iron_ingot", "bulwark_armor_4", {"armor_flat", "thorns_damage_bonus"}),
+        ("cloak", "mat_linen", "survival_garment_3", {"cold_resistance_bonus", "heat_resistance_bonus"}),
     ]
 
     for base_id, material_id, bundle_id, expected_affixes in cases:
@@ -503,16 +503,16 @@ def test_item_factory_random_generation_smoke_preserves_item_identities():
         for base_id, material_id in [
             ("warhammer", "mat_iron_ingot"),
             ("shield", "mat_iron_ingot"),
-            ("plate_chest", "mat_iron_ingot"),
-            ("winter_cloak", "mat_linen"),
+            ("heavy_chest_armor", "mat_iron_ingot"),
+            ("cloak", "mat_linen"),
             ("belt", "mat_cured_leather"),
         ]
     }
 
     weapon_affixes = {affix["affix_id"] for affix in generated["warhammer"].mechanics["affixes"]}
     shield_affixes = {affix["affix_id"] for affix in generated["shield"].mechanics["affixes"]}
-    armor_affixes = {affix["affix_id"] for affix in generated["plate_chest"].mechanics["affixes"]}
-    garment_affixes = {affix["affix_id"] for affix in generated["winter_cloak"].mechanics["affixes"]}
+    armor_affixes = {affix["affix_id"] for affix in generated["heavy_chest_armor"].mechanics["affixes"]}
+    garment_affixes = {affix["affix_id"] for affix in generated["cloak"].mechanics["affixes"]}
     belt_affixes = {affix["affix_id"] for affix in generated["belt"].mechanics["affixes"]}
 
     assert {"hp_bonus", "en_bonus"}.isdisjoint(weapon_affixes)

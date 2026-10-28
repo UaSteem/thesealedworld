@@ -36,11 +36,10 @@ _ATTRIBUTE_LABELS = {
 _ROLE_LABELS = {"minion": "Миньон", "veteran": "Ветеран", "elite": "Элита", "boss": "Босс"}
 _SLOT_LABELS = {
     "main_hand": "Правая рука",
-    "off_hand": "Левая рука",
+    "off_hand": "Вторая рука",
     "two_hand": "Две руки",
     "chest_armor": "Броня",
     "amulet": "Амулет",
-    "quiver": "Боезапас",
 }
 
 
@@ -217,11 +216,20 @@ async def _encounter_profile_matrix(
                     bonus_max = value("gs_bonus_max")
                     reference = value("reference_gs") if mode == "relative_gs" else None
                     if mode == "relative_gs":
-                        cap_gs = math.nextafter(reference * (value("base_points") + bonus_max) / value("base_points"), math.inf)
+                        cap_gs = math.nextafter(
+                            reference * (value("base_points") + bonus_max) / value("base_points"), math.inf
+                        )
                     else:
                         cap_gs = threshold + step_size * math.ceil(bonus_max / points) if points else threshold
-                    pools[pool_name] = dict(mode=mode, reference_gs=reference, threshold=threshold, step_size=step_size, points=points,
-                                            bonus_max=bonus_max, cap_gs=cap_gs)
+                    pools[pool_name] = dict(
+                        mode=mode,
+                        reference_gs=reference,
+                        threshold=threshold,
+                        step_size=step_size,
+                        points=points,
+                        bonus_max=bonus_max,
+                        cap_gs=cap_gs,
+                    )
                     cap_scores.append(cap_gs)
                 cap_gs = max(cap_scores)
                 item.update(pools=pools, cap_gs=cap_gs)
@@ -310,8 +318,11 @@ class ContentOpsAdmin(CabinetAdmin):
                 if len(families) != 1:
                     raise ValueError("Choose exactly one family")
                 profile_matrix = await _encounter_profile_matrix(
-                    api, family_id=families[0], location_tier=int(fields["location_tier"]), seed=int(fields["seed"]),
-                    reference_gs=float(contract.reference_player_gs_by_tier.get(int(fields["location_tier"]), "nan"))
+                    api,
+                    family_id=families[0],
+                    location_tier=int(fields["location_tier"]),
+                    seed=int(fields["seed"]),
+                    reference_gs=float(contract.reference_player_gs_by_tier.get(int(fields["location_tier"]), "nan")),
                 )
             if params.get("run"):
                 if len(families) != 1:

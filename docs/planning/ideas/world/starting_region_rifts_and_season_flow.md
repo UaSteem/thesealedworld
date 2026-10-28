@@ -1,58 +1,44 @@
-# Starting Region Rifts And Season Flow
+# Regional Rifts And Season Flow
 
-## D4 Start Region
+Status: exploratory proposal, not approved mechanics or a description of current runtime.
+World direction: 12 factions in the full version; one faction in the first alpha.
+See [ADR-0002](../../../adr/0002-faction-city-district-progression.md).
 
-D4 is the ruined old capital around the protected hub. Safe status and tier are separate:
+## Starting Territories
 
-- Hub core, 5x5 nodes: `is_safe_zone=true`, tier 0, no monster population.
-- Main gate cross and ordinary ruined streets: `is_safe_zone=false`, family tier 1, standard starter encounters.
-- Corner pressure districts: tier 1, with stable context tags for hash separation.
-- Four city rift nodes: tier 2 pressure sources. They are not lairs; they are active spatial breaks that let local monsters leak into the city ruins.
-
-The four MVP D4 city rifts are:
-
-- `d4_rift_rat_king`: rat swarm pressure from the undercity seep.
-- `d4_rift_wolf_breach`: wolf pack pressure from overgrown kennels and park ruins.
-- `d4_rift_bandit_barricade`: bandit pressure around a controlled barricade node.
-- `d4_rift_goblin_scrapyard`: goblin pressure around collapsed workshops and scrap piles.
-
-The rifts are future gate-lock sources. Closing them should unlock or prepare the city gates and give players enough equipment and materials to survive outside the walls.
+The old D4 starter layout is not the mandatory geography for all factions.
+Starting population, settlements, routes and local threats need separate design.
+Current D4 ids and map behavior remain implementation facts until a dedicated
+migration; this documentation cleanup changes no catalogs or generated worlds.
 
 ## Monster Context Hash
 
-Monster clan context is based on:
-
-- biome id,
-- family/clan tier,
-- normalized context tags.
-
-D4 rift and starter-region tags must be preserved for hashing, not filtered out as only mutation tags. This lets tier 1 starter streets, tier 1 corner pressure, and tier 2 rift nodes generate separate clan contexts.
-
-Family selection can use stable context tags such as `rat_swarm`, `wolf_pack`, `bandit_gang`, and `goblin_tribe` for rift-biased contexts.
+Preserve stable context inputs used by existing consumers: biome id,
+family/clan tier and normalized context tags. Existing starter-region or rift
+tags must not be removed from runtime hashing merely because world lore changed.
+Tags such as `rat_swarm`, `wolf_pack`, `bandit_gang`, and `goblin_tribe` can
+express local encounter context without defining a single global capital.
 
 ## Family Tier Progression
 
-Clan tier is the scaling tier. Variant availability is broad:
+The earlier proposal for broad variant availability is retained as a proposal:
+family tier 1 can use variant tiers 0..2; family tier 2 can use variant tiers
+0..3. Selected members scale from family tier. Verify actual generation rules
+against the current Monsters implementation before relying on these ranges.
 
-- family tier 1 can use variant tiers 0..2,
-- family tier 2 can use variant tiers 0..3.
+## Regional Direction
 
-Selected members scale from the family tier. Higher-tier clans therefore become stronger and can include broader compositions while weak roles remain available.
+Possible regional content includes local rifts or ruptures, expedition routes,
+settlements and outposts. Survival, storage, repair and scouting can support
+regional activity. Concrete placement, access and threat rules remain open;
+there is no required single hub or four global sources of world danger.
 
-## Outer World Direction
+## Season Contribution — Proposal
 
-Outside D4, the hub portal should not globally flatten danger. Regional progression should come from pressure sources:
+Possible objective contributions include rift activity, settlement construction
+and defense, scouting and route discovery, boss or elite encounters, delivered
+resources and combat support. Scoring, rewards and season completion rules
+require separate approval. This list does not add working counters or rewards.
 
-- each region can have a central descriptive rift or rupture,
-- outposts can be built near these sources to simplify survival, storage, repair, routes, and regional tasks,
-- deeper zones approach true anchor influence,
-- the late season focuses on weakening or closing anchor cores.
-
-Season scoring should track objective contribution, not only kills:
-
-- rift and anchor closure progress,
-- outpost construction and defense,
-- scouting and route discovery,
-- boss and elite encounter contribution,
-- delivered resources and relics,
-- combat support such as damage, tanking, healing, and utility.
+The prior draft is preserved under
+`docs/archive/game-design/world-before-factions-2026-10-28/` for history only.

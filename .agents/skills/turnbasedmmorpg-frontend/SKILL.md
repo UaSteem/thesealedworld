@@ -5,21 +5,11 @@ description: Frontend routes, templates, design system, game UI, public site, an
 
 # TurnBasedMMORPG Frontend
 
-Frontend owns browser routes, page and fragment orchestration, view models, templates, static assets, and the site database (`tbmmorpg_site`: accounts, auth, news, surveys, site Alembic migrations).
-Frontend is strictly forbidden from directly accessing the game database (`tbmmorpg_game`), Redis game state, or Mongo game collections; all game interaction must go through typed Backend HTTP/WS API clients.
-Reuse shared design classes before creating new CSS; preserve the established shell and component ownership.
+Frontend owns browser routes, view models, templates, static assets and the site database (`tbmmorpg_site`). It must never access the game database, Redis game state, Mongo game collections or backend internals directly; game interaction uses typed Backend HTTP/WS API clients. Reuse shared CSS and preserve shell/component ownership.
 
-## Read the relevant reference
+## Choose the route
 
-| Task | Reference |
-| --- | --- |
-| Routes, view models, API clients | [references/feature-architecture.md](references/feature-architecture.md) |
-| Shared components and CSS tokens | [references/design-system.md](references/design-system.md) |
-| Game CSS shell | [references/game-css-shell.md](references/game-css-shell.md) |
-| Game screen or action panel | [references/game-interface-foundations.md](references/game-interface-foundations.md) |
-| Responsive layout and previews | [references/responsive-preview.md](references/responsive-preview.md) |
-| Public site | [references/site-design.md](references/site-design.md) |
-| Admin or studio cabinet UI | [references/cabinet-design.md](references/cabinet-design.md) |
-| Detailed layout and CSS references | [references/frontend-layout.md](references/frontend-layout.md) |
+- **Use this domain from a caller or adjacent domain:** read [Consumer contract](references/contract.md). Stay within supported entry points and handle documented limits/errors.
+- **Change this domain:** read [Properties and implementation guidance](references/properties.md), then only the relevant thematic references.
 
-Read the referenced details for the task at hand. Verify implementation claims against current code and tests.
+This stage separates existing guidance structurally. Verify implementation claims against current code, tests and configuration; missing contract details remain pending substantive refresh.

@@ -1,7 +1,7 @@
 .doll-section {
     flex-shrink: 0;
     padding: var(--sp-3);
-    border-bottom: 1px solid rgba(255, 170, 0, 0.1);
+    border-bottom: 1px solid rgb(var(--tone-accent-024-rgb) / 0.1);
 }
 
 .doll-wrap {
@@ -20,42 +20,42 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 170, 0, 0.03);
-    border: 1px solid rgba(255, 170, 0, 0.08);
+    background: rgb(var(--tone-accent-024-rgb) / 0.03);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.08);
     height: 100%;
     position: relative;
 }
 
 .doll-silhouette {
-    width: 36px;
+    width: var(--size-36);
     height: 90px;
     opacity: 0.25;
 }
 
 
 .eq-slot {
-    width: 40px;
-    height: 40px;
-    border: 1px solid rgba(255, 170, 0, 0.15);
-    background: rgba(255, 255, 255, 0.02);
+    width: var(--size-40);
+    height: var(--size-40);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.15);
+    background: rgb(var(--tone-text-064-rgb) / 0.02);
     clip-path: var(--clip-node-sm);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: var(--text-2xs);
-    color: rgba(255, 170, 0, 0.3);
+    color: rgb(var(--tone-accent-024-rgb) / 0.3);
     cursor: pointer;
     letter-spacing: 0.06em;
     transition: background 0.18s, border-color 0.18s;
 }
 
 .eq-slot:hover {
-    background: rgba(255, 170, 0, 0.07);
-    border-color: rgba(255, 170, 0, 0.35);
+    background: rgb(var(--tone-accent-024-rgb) / 0.07);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.35);
 }
 
 .eq-slot.occupied {
-    border-color: rgba(255, 170, 0, 0.4);
+    border-color: rgb(var(--tone-accent-024-rgb) / 0.4);
     color: var(--col-accent);
 }
 

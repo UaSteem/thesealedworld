@@ -1,18 +1,23 @@
 # Responsive Game Shell Reference
 
+Before sizing or redesigning any gameplay interface, read the owner's
+[game-viewport-contract.md](game-viewport-contract.md). Its 2026-10-25 target
+supersedes experimental prototype framing and historical mobile-first plans.
+Do not infer accepted dimensions from the current Lab implementation.
+
 ## CSS Source Layers
 
 Use these layers in order:
 
-1. `src/frontend/static/css/core/tokens.css`: global design tokens.
-2. `src/frontend/static/css/components/*.css`: shared components.
-3. `src/frontend/static/css/pages/game/layout.css`: base game shell.
-4. `src/frontend/static/css/pages/game/*`: domain/content CSS modules.
-5. `src/frontend/static/css/pages/game/layout_responsive.css`: shared responsive shell overrides.
+1. `src/frontend/static/css/theme_bundle.css`: shared game/core/scales.css plus the active game/themes/adventure.css, compiled to theme.css and loaded first. game/core/tokens.css is a standalone Lab compatibility entry, not runtime input.
+2. `src/frontend/static/css/game/components/*.css`: shared game components.
+3. `src/frontend/static/css/game/shell/layout/index.css`: base shell imports.
+4. `src/frontend/static/css/game/domains/*/index.css`: domain/content imports.
+5. `src/frontend/static/css/game/shell/responsive/index.css`: shared desktop responsive imports.
 6. `src/frontend/static/css/game_bundle.css`: source entry that imports game modules.
 7. `src/frontend/static/css/game.css`: compiled output, never direct-edit.
 
-`layout_responsive.css` is imported last so it can protect the shared shell from older domain-level duplication.
+Trace imports and selectors against current templates before choosing an owning file. Read [game-theme-tokens.md](game-theme-tokens.md) for the approved future theme/shell direction. The future shell is not yet migrated runtime behavior.
 
 ## Base Shell Files
 
@@ -27,8 +32,8 @@ Templates:
 
 CSS:
 
-- `src/frontend/static/css/pages/game/layout.css`
-- `src/frontend/static/css/pages/game/layout_responsive.css`
+- `src/frontend/static/css/game/shell/layout/index.css` and its imports
+- `src/frontend/static/css/game/shell/responsive/index.css` and its imports
 
 JS:
 
@@ -52,17 +57,11 @@ Feature CSS may introduce feature-local tokens, such as `--scenario-avatar-width
 
 ## Breakpoint Contract
 
-Shared shell behavior:
+Owner scope on 2026-10-24: desktop from 2560×1440 and larger down to 1366×768. Check 3840×2160, 2560×1440, 1920×1080 and 1366×768, including reduced browser content height. Preserve the 1280–1439 laptop tier: it applies at 1366.
 
-- `>=1600`: full desktop shell.
-- `1440-1599`: compact desktop width tuning.
-- `1280-1439`: right panel becomes overlay drawer.
-- `1025-1279`: side panels become narrower, center is protected.
-- `769-1024`: both panels use drawer mechanics.
-- `<=768`: mobile shell; both side panels are fixed overlay drawers.
-- `<=500`: narrow phone drawer and compact shell text.
+Mobile/tablet development and checks are deferred. Removed mobile-only rules and earlier guidance are preserved with original paths, ranges and hashes in `archive/game_mobile_legacy/2026-10-24/`. Shared desktop/touch components may retain mobile-prefixed names; do not remove them by name. Future landscape-phone design is separate work.
 
-If these thresholds feel wrong globally, change `layout_responsive.css`. If only one screen feels wrong, change that screen's internals.
+For shared threshold changes trace the active shell imports. For one screen's overflow fix its internals.
 
 ## Domain CSS Responsibilities
 
@@ -86,9 +85,9 @@ Domain CSS must not own:
 
 ## Common Workflow
 
-1. Read `GAME_LAYOUT_RESPONSIVE_PLAN.md`.
+1. Read the current dated task plan and game-theme-tokens.md; older layout plans are historical context.
 2. Identify whether the issue is shell behavior or feature content behavior.
-3. For shell behavior, edit `layout.css` or `layout_responsive.css`.
+3. For shell behavior, trace layout/index.css or responsive/index.css to the owning source.
 4. For feature content, edit only that feature CSS/template.
 5. Avoid editing `game.css`; compile it later from `game_bundle.css`.
 6. Verify with `git diff --check` and viewport checks.
@@ -98,13 +97,13 @@ Domain CSS must not own:
 Find shell selector duplication:
 
 ```powershell
-rg "\.game-header|\.game-footer|\.center-nav|\.cnav-btn|\.game-menu-icon|\.game-top-row|\.col-left|\.col-center|\.col-right" src\frontend\static\css\pages\game
+rg "\.game-header|\.game-footer|\.center-nav|\.cnav-btn|\.game-menu-icon|\.game-top-row|\.col-left|\.col-center|\.col-right" src\frontend\static\css\game
 ```
 
 Find breakpoints:
 
 ```powershell
-rg "@media" src\frontend\static\css\pages\game src\frontend\static\css\components src\frontend\static\css\layout
+rg "@media" src\frontend\static\css\game
 ```
 
 Find compiled/source entry references:

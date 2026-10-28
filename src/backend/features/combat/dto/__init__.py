@@ -43,6 +43,7 @@ from src.backend.features.combat.dto.pipeline import (
     PipelineStagesDTO,
     RestrictionFlagsDTO,
     StateFlagsDTO,
+    TacticalTransitionFactDTO,
 )
 from src.backend.features.combat.dto.session import (
     BattleContext,
@@ -113,6 +114,7 @@ __all__ = [
     "FormulaFlagsDTO",
     "InstantPayload",
     "InteractionResultDTO",
+    "TacticalTransitionFactDTO",
     "MasteryFlagsDTO",
     "MechanicsFlagsDTO",
     "MetaFlagsDTO",

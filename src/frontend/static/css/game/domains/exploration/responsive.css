@@ -1,8 +1,4 @@
-@media (max-width: 899px) {
-    .exploration-main-dock.mobile-rift--encounter .mobile-encounter-roster {
-        display: none;
-    }
-}
+
 
 @media (min-width: 900px) {
     .exploration-main-dock .mobile-screen.is-active {
@@ -27,13 +23,13 @@
     }
 
     .exploration-main-dock .exploration-action-panel {
-        border: 1px solid rgba(255, 170, 0, 0.16);
+        border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.16);
     }
 
     .exploration-main-dock .exploration-action-panel__body {
         grid-template-columns: minmax(220px, 0.4fr) minmax(0, 0.6fr);
         grid-template-rows: auto;
-        gap: 10px;
+        gap: var(--space-10);
         align-items: stretch;
     }
 
@@ -42,9 +38,9 @@
         grid-row: 1;
         align-self: stretch;
         align-content: start;
-        padding: 14px 12px;
-        border: 1px solid rgba(255, 170, 0, 0.16);
-        background: rgba(5, 5, 7, 0.18);
+        padding: var(--space-14) var(--sp-3);
+        border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.16);
+        background: rgb(var(--tone-surface-022-rgb) / 0.18);
     }
 
     .exploration-main-dock .mobile-service-grid {
@@ -65,7 +61,7 @@
         display: grid;
         grid-template-columns: 320px minmax(0, 1fr);
         grid-template-rows: minmax(0, 1fr) auto auto;
-        gap: 10px 14px;
+        gap: var(--space-10) var(--space-14);
     }
 
     .exploration-main-dock.mobile-rift--encounter .exploration-screen-content {
@@ -88,7 +84,7 @@
         display: grid;
         grid-template-columns: 320px minmax(0, 1fr);
         grid-template-rows: auto minmax(170px, 210px);
-        gap: 10px 14px;
+        gap: var(--space-10) var(--space-14);
         min-height: 0;
     }
 
@@ -98,9 +94,9 @@
         display: grid;
         grid-template-columns: minmax(220px, 0.34fr) minmax(0, 1fr);
         align-items: stretch;
-        gap: 14px;
-        min-height: 58px;
-        padding: 10px 14px;
+        gap: var(--space-14);
+        min-height: var(--size-58);
+        padding: var(--space-10) var(--space-14);
     }
 
     .exploration-main-dock.mobile-rift--encounter .mobile-encounter-interrupt p {
@@ -112,21 +108,21 @@
         grid-row: 2;
         align-self: stretch;
         align-content: start;
-        gap: 8px;
+        gap: var(--sp-2);
         min-height: 0;
-        padding: 12px;
-        border: 1px solid rgba(255, 170, 0, 0.14);
+        padding: var(--sp-3);
+        border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.14);
         background:
-            linear-gradient(180deg, rgba(255, 170, 0, 0.045), rgba(0, 0, 0, 0.22)),
-            rgba(5, 5, 7, 0.34);
+            linear-gradient(180deg, rgb(var(--tone-accent-024-rgb) / 0.045), rgb(var(--tone-surface-001-rgb) / 0.22)),
+            rgb(var(--tone-surface-022-rgb) / 0.34);
     }
 
     .exploration-main-dock.mobile-rift--encounter .mobile-encounter-roster header {
-        min-height: 14px;
+        min-height: var(--size-14);
     }
 
     .exploration-main-dock.mobile-rift--encounter .mobile-encounter-roster button {
-        min-height: 42px;
+        min-height: var(--size-42);
     }
 
     .exploration-main-dock.mobile-rift--encounter .mobile-encounter-target-card {
@@ -136,9 +132,9 @@
         display: grid;
         grid-template-columns: minmax(0, 1fr);
         grid-template-rows: auto minmax(0, 1fr);
-        gap: 12px;
+        gap: var(--sp-3);
         min-height: 0;
-        padding: 12px;
+        padding: var(--sp-3);
     }
 
     .exploration-main-dock.mobile-rift--encounter .mobile-encounter-target-card header {
@@ -157,13 +153,13 @@
 
     .exploration-main-dock.mobile-rift--encounter .mobile-encounter-target-main {
         grid-template-columns: 112px minmax(0, 1fr);
-        gap: 14px;
+        gap: var(--space-14);
         min-height: 0;
     }
 
     .exploration-main-dock.mobile-rift--encounter .mobile-encounter-target-art {
         min-height: 96px;
-        font-size: 38px;
+        font-size: var(--type-hero-small);
     }
 
     .exploration-main-dock.mobile-rift--encounter .mobile-encounter-target-stats {
@@ -176,7 +172,7 @@
         align-self: end;
         display: grid;
         margin-top: 0;
-        border: 1px solid rgba(255, 170, 0, 0.16);
+        border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.16);
         padding-top: 0;
     }
 
@@ -189,103 +185,9 @@
     }
 
     .exploration-main-dock.mobile-rift--encounter .mobile-encounter-action {
-        min-height: 54px;
+        min-height: var(--size-54);
         aspect-ratio: auto;
         justify-items: center;
         text-align: center;
-    }
-}
-
-
-
-@media (max-width: 760px) {
-    #center-screens {
-        padding: 0 10px 0;
-        justify-content: flex-start;
-        overflow-y: auto;
-    }
-
-    .exploration-center-screens {
-        padding-bottom: 0;
-    }
-
-    .exploration-screen-content.has-city-map-layout {
-        --city-map-copy-reserve: 124px;
-    }
-
-    .hud-strip {
-        flex-wrap: wrap;
-    }
-
-    .hud-cell {
-        flex: 1 1 calc(50% - 5px);
-    }
-
-    .service-card,
-    .service-card-body {
-        grid-template-columns: 1fr;
-    }
-
-    .service-card-icon {
-        min-height: 48px;
-        border-right: 0;
-        border-bottom: 1px solid color-mix(in srgb, var(--world-accent, var(--col-accent)) 22%, transparent);
-    }
-
-    .exploration-control-grid {
-        grid-template-columns: 1fr;
-        grid-template-areas:
-            "actions"
-            "movement"
-            "routes";
-    }
-
-    .exploration-encounter-body {
-        grid-template-columns: 1fr;
-    }
-
-    .exploration-encounter-roster {
-        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    }
-
-    .exploration-route-block,
-    .exploration-movement-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-}
-
-@media (max-width: 500px) {
-    #center-screens {
-        padding-inline: 8px;
-    }
-
-    .parchment {
-        padding: 14px 12px;
-    }
-
-    .dpad {
-        grid-template-columns: repeat(3, minmax(42px, 1fr));
-        grid-template-rows: repeat(3, 44px);
-        width: 100%;
-    }
-
-    .exploration-movement-grid .dp,
-    .dp {
-        min-height: 44px;
-        padding-inline: 5px;
-        font-size: var(--text-2xs);
-    }
-
-    .exploration-encounter-head,
-    .exploration-encounter-notice {
-        grid-template-columns: 1fr;
-    }
-
-    .exploration-encounter-state {
-        justify-content: flex-start;
-    }
-
-    .exploration-encounter-facts {
-        grid-template-columns: 1fr;
     }
 }

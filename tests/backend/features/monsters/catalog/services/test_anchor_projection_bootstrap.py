@@ -11,7 +11,7 @@ from src.backend.infrastructure.monsters.managers import ANCHOR_PROJECTION_REDIS
 
 class FakeItemGeneration:
     async def generate_runtime_projections(self, requests):
-        # natural_key → related_skill (player item transmog: rapier→skill_fencing, warhammer→skill_macing, plate_chest→skill_heavy_armor)
+        # natural_key → related_skill (player item transmog: rapier→skill_fencing, warhammer→skill_macing, heavy_chest_armor→skill_heavy_armor)
         _natural_key_skill = {
             "anchor_stasis_crown_blade": "skill_fencing",
             "anchor_entropy_cinder_maul": "skill_macing",

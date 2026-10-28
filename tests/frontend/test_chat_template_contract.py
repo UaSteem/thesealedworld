@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from tests.frontend.css_theme_assertions import resolve_geometry_and_classic_art
+
 CHAT_TEMPLATE = Path("src/frontend/templates/shared/chat/main.html")
 CHAT_FOOTER_TEMPLATE = Path("src/frontend/templates/game/includes/chat_footer.html")
 CHAT_OVERLAY_TEMPLATE = Path("src/frontend/templates/game/includes/chat_overlay.html")
@@ -372,7 +374,8 @@ def test_chat_shell_is_collapsible_footer() -> None:
     assert ".game-chat-footer .chat-step-0 #chat-input-form" in css
     assert "#chat-input-form" in css
     assert "flex: 0 0 auto;" in css
-    assert "min-height: 42px;" in css
+    assert "min-height: var(--size-42);" in css
+    assert "min-height: 42px;" in resolve_geometry_and_classic_art(css)
     assert "position: relative;" in css
     assert "z-index: 2;" in css
     assert "flex: 1 1 16rem;" in css
@@ -385,7 +388,9 @@ def test_chat_shell_is_collapsible_footer() -> None:
     assert "width: min(100%, var(--game-chat-width));" in css
     assert ".chat-tab-select-wrap" in css
     assert ".chat-tab-select" in css
-    assert "@media (max-width: 767px)" in css
+    assert "@media (max-width: 767px)" not in css
+    legacy_fixture = Path("tests/fixtures/legacy_css/chat/input.css")
+    assert "@media (max-width: 767px)" in legacy_fixture.read_text(encoding="utf-8")
     assert '@import url("shell.css");' in index
     assert '@import url("responsive_states.css");' in index
     assert "#game-chat-shell" not in css
@@ -417,7 +422,7 @@ def test_chat_shell_is_collapsible_footer() -> None:
     assert "chatRow.style.removeProperty('height')" in main_js
     assert "data-chat-minmax-label" in main_js
     assert "window.toggleChatMinMax" in main_js
-    assert "chatStep: chatWindowObj.open ? 2 : 0" in shell_js
+    assert "chatStep: docked ? 2 : (chatWindowObj.open ? 2 : 0)" in shell_js
     assert "chatStep: Alpine.$persist" not in shell_js
     assert "chatHeight: Alpine.$persist" not in shell_js
     assert 'class="chat-users"' not in template

@@ -27,6 +27,10 @@ MECHANICS_DIGESTS = {
 }
 
 
+# Historical literals stay frozen; only the current item base identity is renamed.
+ITEM_BASE_RENAMES = {'hood': 'light_hood', 'leather_armor': 'light_chest_armor', 'soft_bracers': 'light_bracers', 'scout_leggings': 'light_leg_armor', 'leather_cap': 'medium_helmet', 'jerkin': 'medium_chest_armor', 'reinforced_gloves': 'medium_bracers', 'breeches': 'medium_leg_armor', 'helmet': 'heavy_helmet', 'plate_chest': 'heavy_chest_armor', 'gauntlets': 'heavy_bracers', 'greaves': 'heavy_leg_armor', 'linen_shirt': 'shirt', 'wool_tunic': 'tunic', 'fur_pants': 'pants', 'travel_boots': 'boots', 'work_gloves': 'gloves', 'winter_cloak': 'cloak', 'quiver_training': 'quiver_standard'}
+
+
 def test_original_resources_and_retained_stats_are_preserved():
     from src.backend.features.monsters.catalog.contracts import MonsterFamilyDTO
     from src.backend.features.monsters.catalog.families.bandits import BANDITS_FAMILY
@@ -37,7 +41,7 @@ def test_original_resources_and_retained_stats_are_preserved():
 
     sources = [RATS_FAMILY, WOLVES_FAMILY, GOBLINS_FAMILY, BANDITS_FAMILY, ANCHOR_SOVEREIGNS_FAMILY]
     assert {
-        source["id"]: hashlib.sha256(json.dumps(MonsterFamilyDTO.model_validate(source).model_dump(), sort_keys=True).encode()).hexdigest()
+        source["id"]: hashlib.sha256(json.dumps(_historical_payload(source), sort_keys=True).encode()).hexdigest()
         for source in sources
     } == MECHANICS_DIGESTS
     aliases = {"pack_huntmaster": "winter_maw", "burrow_guard": "plague_rat", "ironfang": "rotfang", "heavy_rat": "blight_carrier"}
@@ -66,7 +70,14 @@ def test_original_resources_and_retained_stats_are_preserved():
                     "perception", "projection", "prediction",
                 ), CALIBRATED_RAT_ATTRIBUTES[variant_id], strict=True))
             assert member.base_stats.model_dump() == expected_stats
-            expected_loadout = original.fixed_loadout.model_dump()
+            expected_loadout = {
+                slot: ITEM_BASE_RENAMES.get(base_id, base_id)
+                for slot, base_id in original.fixed_loadout.model_dump().items()
+            }
+            historical_loadout = source["variants"][aliases.get(variant_id, variant_id)].get("fixed_loadout", {})
+            quiver = historical_loadout.get("quiver")
+            if quiver:
+                expected_loadout["off_hand"] = ITEM_BASE_RENAMES.get(quiver, quiver)
             expected_skills = list(original.skills)
             if source["id"] == "rat_swarm" and variant_id in {"sewer_rat", "scavenger_rat", "swarm_rat"}:
                 expected_loadout["off_hand"] = None
@@ -231,3 +242,13 @@ assert len(get_catalog().families) == 6
 """
     result = subprocess.run([sys.executable, "-c", script], capture_output=True, text=True, timeout=20)
     assert result.returncode == 0, result.stderr
+
+
+def _historical_payload(source):
+    from src.backend.features.monsters.catalog.contracts import MonsterFamilyDTO
+    payload = MonsterFamilyDTO.model_validate(source).model_dump()
+    for key, variant in payload["variants"].items():
+        historical = source["variants"][key].get("fixed_loadout", {})
+        for slot in ("chest_garment", "legs_garment", "quiver"):
+            variant["fixed_loadout"][slot] = historical.get(slot)
+    return payload

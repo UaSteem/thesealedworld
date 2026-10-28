@@ -1,0 +1,12 @@
+{% if places_client_payload %}
+<script type="application/json" data-game-client-places>{{ places_client_payload|tojson }}</script>
+<div hidden data-game-client-places-transport>
+{% for action in places_client_payload.actions if action.endpoint %}
+    <button type="button" data-game-client-places-action="{{ action.id }}"
+            hx-post="{{ action.endpoint }}" hx-vals='{{ action.params|tojson }}'
+            hx-target="#game-center" hx-swap="innerHTML"
+            hx-sync="closest [data-game-client-places-transport]:drop" hx-disabled-elt="this"
+            {% if not action.enabled %}disabled{% endif %}>{{ action.label }}</button>
+{% endfor %}
+</div>
+{% endif %}

@@ -1,14 +1,14 @@
 .arena-group-plans {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(240px, .82fr);
-    gap: 10px;
+    gap: var(--space-10);
     width: 100%;
     min-width: 0;
 }
 
 .arena-group-column {
     display: grid;
-    gap: 10px;
+    gap: var(--space-10);
 }
 
 .arena-plan-card {
@@ -16,13 +16,13 @@
     min-width: 0;
     display: grid;
     grid-template-rows: auto auto minmax(0, 1fr) auto;
-    gap: 7px;
-    padding: 13px 15px;
-    border: 1px solid color-mix(in srgb, var(--world-accent, var(--col-accent)) 28%, transparent);
+    gap: var(--space-7);
+    padding: var(--space-13) var(--space-15);
+    border: 1px solid color-mix(in srgb, var(--col-accent) 28%, transparent);
     background:
-        linear-gradient(90deg, rgba(255, 170, 0, .075), transparent 48%),
-        linear-gradient(rgba(1, 1, 1, .70), rgba(1, 1, 1, .88)),
-        url("/static/images/ui/textures/button-candidates/button-surface-01-dark-wood.webp");
+        linear-gradient(90deg, rgb(var(--tone-accent-024-rgb) / 0.075), transparent 48%),
+        linear-gradient(rgb(var(--tone-surface-002-rgb) / 0.7), rgb(var(--tone-surface-002-rgb) / 0.88)),
+        var(--texture-chrome-04);
     background-position: center;
     background-size: cover;
     color: var(--col-parchment);
@@ -30,33 +30,33 @@
     clip-path: var(--clip-node-sm);
     text-align: left;
     box-shadow:
-        inset 0 1px 0 rgba(255, 230, 150, .10),
-        inset 0 -16px 26px rgba(0, 0, 0, .34),
-        0 0 0 1px rgba(0, 0, 0, .64);
+        inset 0 1px 0 rgb(var(--tone-text-027-rgb) / 0.1),
+        inset 0 -16px 26px rgb(var(--tone-surface-001-rgb) / 0.34),
+        0 0 0 1px rgb(var(--tone-surface-001-rgb) / 0.64);
     transition: border-color .16s ease, box-shadow .16s ease, filter .16s ease, transform .16s ease;
 }
 
 .arena-plan-card--chaos {
     min-height: 100%;
     background:
-        linear-gradient(135deg, rgba(255, 170, 0, .08), transparent 44%),
-        radial-gradient(circle at 82% 20%, rgba(68, 170, 255, .12), transparent 34%),
-        linear-gradient(rgba(1, 1, 1, .62), rgba(1, 1, 1, .88)),
+        linear-gradient(135deg, rgb(var(--tone-accent-024-rgb) / 0.08), transparent 44%),
+        radial-gradient(circle at 82% 20%, rgb(var(--tone-energy-010-rgb) / 0.12), transparent 34%),
+        linear-gradient(rgb(var(--tone-surface-002-rgb) / 0.62), rgb(var(--tone-surface-002-rgb) / 0.88)),
         url("/static/images/game/arena/backgrounds/chaotic-battle-hall.webp"),
-        url("/static/images/ui/textures/button-candidates/button-surface-03-aged-bronze.webp");
+        var(--texture-chrome-05);
     background-position: center;
     background-size: cover;
 }
 
 .arena-plan-card:not(:disabled):hover {
-    border-color: color-mix(in srgb, var(--world-accent, var(--col-accent)) 62%, transparent);
+    border-color: color-mix(in srgb, var(--col-accent) 62%, transparent);
     filter: brightness(1.13) saturate(1.06);
     transform: translateY(-1px);
     box-shadow:
-        inset 0 1px 0 rgba(255, 230, 150, .18),
-        inset 0 -16px 24px rgba(0, 0, 0, .28),
-        0 0 18px var(--world-accent-soft, rgba(255, 170, 0, .22)),
-        0 0 0 1px rgba(0, 0, 0, .72);
+        inset 0 1px 0 rgb(var(--tone-text-027-rgb) / 0.18),
+        inset 0 -16px 24px rgb(var(--tone-surface-001-rgb) / 0.28),
+        0 0 18px var(--col-membrane),
+        0 0 0 1px rgb(var(--tone-surface-001-rgb) / 0.72);
 }
 
 .arena-plan-kicker,
@@ -69,15 +69,15 @@
 .arena-plan-kicker {
     color: var(--col-parchment-dim);
     font-size: var(--text-2xs);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: .24em;
 }
 
 .arena-plan-title {
-    color: color-mix(in srgb, var(--world-accent, var(--col-accent)) 86%, #fff);
+    color: color-mix(in srgb, var(--col-accent) 86%, rgb(var(--tone-text-064-rgb)));
     font-family: var(--font-ui);
     font-size: var(--text-md);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: .12em;
     line-height: 1.25;
     text-transform: uppercase;
@@ -91,8 +91,8 @@
 }
 
 .arena-plan-meta {
-    color: var(--world-accent, var(--col-accent));
+    color: var(--col-accent);
     font-size: var(--text-2xs);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: .16em;
 }

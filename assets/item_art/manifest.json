@@ -1,0 +1,237 @@
+{
+  "set": "medium_leather_set_01",
+  "status": "art_workbench_not_runtime",
+  "assets": [
+    {
+      "asset": "sword",
+      "label_ru": "Меч",
+      "source": "originals/sword.svg",
+      "sha256": "10a39c7ce9b7366bb556084c61b4083a87c6eaf9decc19a2d9a6612b9362b8b8",
+      "catalog_base_id": "sword",
+      "working": "svg/sword.svg",
+      "working_sha256": "9ee84d0b58525dfa1b07cf11d230f6b4055be2a6bf36bfcc0b121b607d0abfed",
+      "cleanup": {
+        "removed_elements": 20,
+        "transparent_background": true,
+        "orientation": "vertical"
+      },
+      "variant_set": "variants/sword/variants.json"
+    },
+    {
+      "asset": "round_shield",
+      "label_ru": "Круглый щит",
+      "source": "originals/round_shield.svg",
+      "sha256": "de4886e78cde4c34723a08e2cf2d458d05641089a09fdd59a0450ff3e9493992",
+      "catalog_base_id": null,
+      "working": "svg/round_shield.svg",
+      "working_sha256": "ada2f9a50b4edd96b74d883848880d997be87948ffe84abb8a38349d8b8be5db",
+      "cleanup": {
+        "removed_elements": 1,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "leather_chest",
+      "label_ru": "Кожаный нагрудник",
+      "source": "originals/leather_chest.svg",
+      "sha256": "2dcb8a32b539a793936f6e36d6e13b7420ff67a6fe476748e92589ce767cb48a",
+      "catalog_base_id": null,
+      "working": "svg/leather_chest.svg",
+      "working_sha256": "46e2c20c9d091bdb78dbb4ca0b947fc9f7a7385a0b055e84fd8638a62e00577a",
+      "cleanup": {
+        "removed_elements": 1,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "reinforced_gloves",
+      "label_ru": "Усиленные перчатки",
+      "source": "originals/reinforced_gloves.svg",
+      "sha256": "681a6a78884b1d7bffd4948128708848bae2939dd99da0e0d1b2ea3520ccfa8f",
+      "catalog_base_id": null,
+      "working": "svg/reinforced_gloves.svg",
+      "working_sha256": "270cc4d92bcaded3ac0c2f181cf20bdadc104b97cc6c01bec1673c8f7d380612",
+      "cleanup": {
+        "removed_elements": 1,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "leather_helmet",
+      "label_ru": "Кожаный шлем",
+      "source": "originals/leather_helmet.svg",
+      "sha256": "040b5535eea17156b9ac291e6eab342aec31968221ca06965798a1acbef029a1",
+      "catalog_base_id": null,
+      "working": "svg/leather_helmet.svg",
+      "working_sha256": "040b5535eea17156b9ac291e6eab342aec31968221ca06965798a1acbef029a1",
+      "cleanup": {
+        "removed_elements": 0,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "leather_pants",
+      "label_ru": "Кожаные штаны",
+      "source": "originals/leather_pants.svg",
+      "sha256": "fe302894d2d0cf22cbf4b66a69eb0c60678f7908c7c167d7b39cf196781038ef",
+      "catalog_base_id": null,
+      "working": "svg/leather_pants.svg",
+      "working_sha256": "fe302894d2d0cf22cbf4b66a69eb0c60678f7908c7c167d7b39cf196781038ef",
+      "cleanup": {
+        "removed_elements": 0,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "leather_boots",
+      "label_ru": "Кожаные сапоги",
+      "source": "originals/leather_boots.svg",
+      "sha256": "0e5618b18b48378f5436c7471cee6dce4b4aea64853d74b28d46eda5a3af58c1",
+      "catalog_base_id": null,
+      "working": "svg/leather_boots.svg",
+      "working_sha256": "5c819642a90d73644d65a73e056ee2b35f23076951b07ac4e27f0ed12fd99a31",
+      "cleanup": {
+        "removed_elements": 1,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "cloak",
+      "label_ru": "Плащ",
+      "source": "originals/cloak.svg",
+      "sha256": "80844b34b3476cea71d911c1cadf7b18ed30ae700487ed9ab04b01e1d810c562",
+      "catalog_base_id": null,
+      "working": "svg/cloak.svg",
+      "working_sha256": "80844b34b3476cea71d911c1cadf7b18ed30ae700487ed9ab04b01e1d810c562",
+      "cleanup": {
+        "removed_elements": 0,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "belt",
+      "label_ru": "Пояс",
+      "source": "originals/belt.svg",
+      "sha256": "f87be5e583783b46982ce853f935f5be2032280ba0afee24ec526f312e28b0ca",
+      "catalog_base_id": null,
+      "working": "svg/belt.svg",
+      "working_sha256": "f87be5e583783b46982ce853f935f5be2032280ba0afee24ec526f312e28b0ca",
+      "cleanup": {
+        "removed_elements": 0,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "apron",
+      "label_ru": "Фартук",
+      "source": "originals/apron.svg",
+      "sha256": "62c2bac2324cfa9ead65e3241b8c4824b534a14781f291a748f4d5de5f0e545d",
+      "catalog_base_id": null,
+      "working": "svg/apron.svg",
+      "working_sha256": "e562dbab8bd9787e9a45be1ea2b2776c5e590c7e6d043a852a1750e537a53bef",
+      "cleanup": {
+        "removed_elements": 1,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "linen_shirt",
+      "label_ru": "Льняная рубаха",
+      "source": "originals/linen_shirt.svg",
+      "sha256": "1b2d0536587a50f127e055431b6f827c7f5624fdb78ea0454d6f16862e933bd8",
+      "catalog_base_id": null,
+      "working": "svg/linen_shirt.svg",
+      "working_sha256": "1b2d0536587a50f127e055431b6f827c7f5624fdb78ea0454d6f16862e933bd8",
+      "cleanup": {
+        "removed_elements": 0,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "work_gloves",
+      "label_ru": "Простые перчатки — вариант на рассмотрении",
+      "source": "originals/work_gloves.svg",
+      "sha256": "a8d4a207f52aee4858bb376582f2018d249c92ca06fb84d657051302f6d10e4a",
+      "catalog_base_id": null,
+      "status": "unreviewed",
+      "working": "svg/work_gloves.svg",
+      "working_sha256": "3cdad4c401ed7865b0515623522416f03ed961e7a1db88432ef4df00e540f4ed",
+      "cleanup": {
+        "removed_elements": 0,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "ring",
+      "label_ru": "Кольцо",
+      "source": "originals/ring.svg",
+      "sha256": "b3080c1fe71bc1ab5612d6e3b2fb89f3c3a83fa7734c889c78c910187af8f23b",
+      "catalog_base_id": null,
+      "working": "svg/ring.svg",
+      "working_sha256": "0ce604caf175272caab81a040963a3e1715d975f5a4705aa24bdaac631eb18ef",
+      "cleanup": {
+        "removed_elements": 20,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "earring",
+      "label_ru": "Серьга",
+      "source": "originals/earring.svg",
+      "sha256": "9e48e6c3c4e787e73e1dbf49a2883840ff67e7d7c211c30902a0e1e7e88c99cc",
+      "catalog_base_id": null,
+      "working": "svg/earring.svg",
+      "working_sha256": "32b2066e84336e726af22ad75714278e85a664cb003c8ebedce85a2c6bace15e",
+      "cleanup": {
+        "removed_elements": 37,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "amulet",
+      "label_ru": "Амулет",
+      "source": "originals/amulet.svg",
+      "sha256": "e31c29fd465bf107ccb3345090ee8a5cab59120711e0e28a2e57ccf09f78666e",
+      "catalog_base_id": null,
+      "working": "svg/amulet.svg",
+      "working_sha256": "b8363415c38110fc16d76917551879793152e5db75155d38ed82bbc3dd316ca9",
+      "cleanup": {
+        "removed_elements": 6,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    },
+    {
+      "asset": "ring_ornate",
+      "label_ru": "Кольцо — дорогой вариант",
+      "source": "originals/ring_ornate.svg",
+      "sha256": "19f9a23492381a620aeb6bf40ba12016e0c89418f8f7a6ed9ed2c6cdcf036b33",
+      "catalog_base_id": null,
+      "variant_of": "ring",
+      "working": "svg/ring_ornate.svg",
+      "working_sha256": "154ac61358818503f6b1b6af285ac951f45d77a8360e6dc8c0633988d39583aa",
+      "cleanup": {
+        "removed_elements": 15,
+        "transparent_background": true,
+        "orientation": "original"
+      }
+    }
+  ],
+  "stage": "collect_and_clean_svg",
+  "source_directory": "originals",
+  "working_directory": "svg",
+  "preview": "preview.png"
+}

@@ -36,7 +36,7 @@ def test_reviewed_starting_profile_is_materialized_exactly(key, vector):
     assert all(len(set(vector[i : i + 3])) == 3 for i in (0, 3, 6))
     assert len(build.skill_xp) == 3
     assert tuple(build.skill_xp.values()) == (0.10, 0.075, 0.05)
-    assert build.item_base_ids[-4:] == ("linen_shirt", "fur_pants", "travel_boots", "belt")
+    assert build.item_base_ids[-4:] == ("shirt", "pants", "boots", "belt")
     assert "amulet" not in build.item_base_ids
     assert set(build.primary_stats).issubset(ATTRIBUTE_KEYS)
     assert "endurance" in build.primary_stats

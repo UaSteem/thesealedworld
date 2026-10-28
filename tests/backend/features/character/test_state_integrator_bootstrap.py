@@ -59,7 +59,7 @@ class FakeInventoryRepository:
         )
         armor = SimpleNamespace(
             id="item-armor",
-            base_id="plate_chest",
+            base_id="heavy_chest_armor",
             item_type="armor",
             mechanics={"slot": "chest_armor", "valid_slots": ["chest_armor"], "power": 8, "armor_class": "heavy"},
             metadata_={"armor_class": "heavy"},

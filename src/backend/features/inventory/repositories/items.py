@@ -8,7 +8,14 @@ from typing import Any
 from sqlalchemy import func, or_, select
 from sqlalchemy.dialects.postgresql import insert
 
-from src.backend.features.items.models import ItemInstance, ItemPlacement, ItemTransaction, ResourceBalance
+from src.backend.features.items.models import (
+    ItemGeneratedTemplate,
+    ItemInstance,
+    ItemPlacement,
+    ItemTransaction,
+    ResourceBalance,
+)
+from src.backend.features.items.services.visual_service import ItemVisualService
 from src.backend.infrastructure.inventory.models import DurabilityApplication, ResourceWallet
 from src.shared.schemas.inventory import InventoryRuntimeItemDTO, WalletDTO
 
@@ -41,13 +48,45 @@ class InventoryItemRepository:
             )
         holder_clause = or_(*holder_filters)
         result = await self.session.execute(
-            select(ItemInstance, ItemPlacement)
+            select(ItemInstance, ItemPlacement, ItemGeneratedTemplate)
             .join(ItemPlacement, ItemPlacement.item_id == ItemInstance.id)
+            .outerjoin(ItemGeneratedTemplate, ItemInstance.generated_template_id == ItemGeneratedTemplate.id)
             .where(holder_clause)
-            .order_by(ItemPlacement.position_index.nulls_last(), ItemInstance.name, ItemInstance.id)
+            .order_by(ItemPlacement.position_index.nulls_last(), ItemInstance.name.nulls_last(), ItemInstance.id)
             .execution_options(populate_existing=True)
         )
-        return list(result.all())
+        rows = []
+        for instance, placement, template in result.all():
+            instance._inventory_generated_template = template
+            rows.append((instance, placement))
+        return rows
+
+    async def identify_character_item(
+        self, char_id: int, item_id: str, *, expedition_run_id: str | None = None
+    ) -> bool:
+        holder_filters = [
+            (ItemPlacement.holder_type == "character") & (ItemPlacement.holder_id == str(char_id)),
+        ]
+        if expedition_run_id:
+            holder_filters.append(
+                (ItemPlacement.holder_type == "expedition") & (ItemPlacement.holder_id == expedition_run_id)
+            )
+        result = await self.session.execute(
+            select(ItemInstance, ItemPlacement)
+            .join(ItemPlacement, ItemPlacement.item_id == ItemInstance.id)
+            .where(ItemInstance.id == item_id, or_(*holder_filters))
+            .with_for_update(of=(ItemInstance, ItemPlacement))
+            .execution_options(populate_existing=True)
+        )
+        row = result.first()
+        if row is None:
+            return False
+        instance, placement = row
+        if placement.locked_by or placement.storage_type not in {"backpack", "equipped", "belt"}:
+            return False
+        instance.is_identified = True
+        await self.session.flush()
+        return True
 
     async def get_wallet(self, char_id: int) -> WalletDTO:
         wallet = await self.session.scalar(select(ResourceWallet).where(ResourceWallet.character_id == char_id))
@@ -281,6 +320,19 @@ def runtime_item_from_instance(instance: ItemInstance, placement: ItemPlacement)
     if not isinstance(valid_slots, list):
         valid_slots = [slot] if slot else []
 
+    generation = instance.generation or {}
+    material_id = generation.get("material_id")
+    visual_id = metadata.get("visual_variant_id")
+    visuals = ItemVisualService()
+    visual = visuals.get_public_variant(visual_id) if visual_id else None
+    is_identified = bool(getattr(instance, "is_identified", False))
+    template = getattr(instance, "_inventory_generated_template", None)
+    text_status = str(getattr(template, "text_status", None) or getattr(instance, "text_status", "not_requested"))
+    name, description = visuals.base_presentation(instance.base_id, material_id, visual_id)
+    if is_identified and text_status == "generated":
+        name = getattr(template, "name", None) or instance.name or name
+        description = getattr(template, "description", None) or instance.description or description
+    metadata = public_inventory_metadata(metadata, is_identified=is_identified and text_status == "generated")
     is_unsecured = getattr(placement, "holder_type", "character") == "expedition"
     return InventoryRuntimeItemDTO(
         item_id=str(instance.id),
@@ -289,8 +341,14 @@ def runtime_item_from_instance(instance: ItemInstance, placement: ItemPlacement)
         slot=str(slot) if slot else None,
         valid_slots=[str(value) for value in valid_slots if value],
         placement=placement.storage_type,
-        name=instance.name,
-        description=instance.description,
+        material_id=material_id,
+        visual_variant_id=visual_id,
+        thumbnail_url=visual.thumbnail_url if visual else None,
+        image_url=visual.image_url if visual else None,
+        is_identified=is_identified,
+        text_status=text_status,
+        name=name,
+        description=description,
         rarity=instance.rarity,
         rarity_tier=instance.rarity_tier,
         quantity=_quantity_from_item(metadata, mechanics),
@@ -326,3 +384,37 @@ def _optional_float(value: Any) -> float | None:
         return float(value)
     except (TypeError, ValueError):
         return None
+
+
+def public_inventory_metadata(metadata: dict[str, Any], *, is_identified: bool) -> dict[str, Any]:
+    """Project only inventory display/mechanical fields; never forward stored text payloads."""
+    keys = {
+        "quantity",
+        "stack_count",
+        "count",
+        "width_cells",
+        "height_cells",
+        "weight",
+        "weight_units",
+        "requirements",
+        "effects",
+        "source",
+        "visual_variant_id",
+        "visual_set_id",
+    }
+    if is_identified:
+        keys.update({"flavor", "flavor_text", "lore", "lore_text"})
+    projected = {key: value for key, value in metadata.items() if key in keys}
+    return projected if is_identified else _without_hidden_text(projected)
+
+
+def _without_hidden_text(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {
+            key: _without_hidden_text(part)
+            for key, part in value.items()
+            if key not in {"name", "description", "flavor", "flavor_text", "lore", "lore_text", "text_payload"}
+        }
+    if isinstance(value, list):
+        return [_without_hidden_text(part) for part in value]
+    return value

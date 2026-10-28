@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession  # noqa: TC002
 from src.backend.core.arq import ArqService
 from src.backend.core.database import get_db
 from src.backend.core.mongo import get_mongo_provider
+from src.backend.features.character.repositories import CharacterRepository
 from src.backend.features.combat.integrations import CombatSessionIntegration, CombatSystemIntegrator
 from src.backend.features.combat.integrations.analytics_dashboard import CombatAnalyticsDashboardIntegration
 from src.backend.features.combat.orchestrators import CombatRuntimeOrchestrator
@@ -48,6 +49,14 @@ def get_combat_runtime_orchestrator(service: CombatSessionServiceDep) -> CombatR
 
 
 CombatRuntimeOrchestratorDep = Annotated[CombatRuntimeOrchestrator, Depends(get_combat_runtime_orchestrator)]
+
+
+def get_combat_character_repository(db_session: Annotated[AsyncSession, Depends(get_db)]) -> CharacterRepository:
+    """Character ownership lookup for the combat API boundary."""
+    return CharacterRepository(db_session)
+
+
+CombatCharacterRepositoryDep = Annotated[CharacterRepository, Depends(get_combat_character_repository)]
 
 
 def get_combat_analytics_dashboard_service(

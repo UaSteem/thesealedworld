@@ -35,15 +35,25 @@ explicitly asks.
 
 ## Material And Scaling
 
-- Material `tier_mult` is the single mechanical grade-scale.
+- Material `tier_mult` is the default mechanical grade-scale. The selected support-equipment implicit bonuses below use the owner-approved exponential progression instead.
 - Material type and material tier define `tier_mult` in the material catalog.
-- Apply material `tier_mult` to:
+- Outside the selected support curves, apply material `tier_mult` to:
   - base power
   - durability
   - numeric internal/base parameters that are tier-scaled
   - affix step base
 - Do not multiply mechanical item power by rarity/default grade multipliers. Rarity/grade controls label, affix container rules, and generation constraints, not a second mechanical scale.
 - Do not add direct material stat bonuses for the MVP target. Material identity is multiplier, tags, name/prefix, color/description, and future sockets.
+
+### Support-equipment implicit progression
+
+- `src/backend/features/items/resources/support_progression.py` owns eight attribute-referenced base/property curves: belt HP; boots stamina and stamina regeneration; gloves anti-dodge; cloak HP regeneration; ring mental resistance; amulet energy regeneration; earring initiative. A separate ninth curve gives gloves an explicit T7 critical-trigger chance bonus of 0.20, with no attribute reference.
+- T0 anchors preserve the existing low-tier bonuses. The eight attribute-referenced T7 targets equal the full contribution of 20 corresponding player attribute points to that property, without equipment/support skills. Stamina regeneration excludes the universal regeneration base; energy regeneration uses the outside-combat attribute contribution. The separate glove critical-chance curve has the explicitly chosen 0.20 target instead.
+- Interpolate geometrically across material tiers T0–T7. ItemFactory generation and saved-item projection must call the same helper; do not additionally multiply a curved bonus by `tier_mult`.
+- Round the mechanical result once in that helper: HP/stamina to whole units, regeneration/initiative to one decimal, chance fractions to three decimals (0.1 percentage point). Attribute-reference targets are therefore approximate after rounding. Do not apply this precision policy to affixes or unrelated item properties.
+- Boots gravity resistance, gloves bio resistance, cloak cold resistance and amulet debuff avoidance are retired innate properties. Remove them from these bases and their saved-item intrinsic projection; independently rolled affixes remain unchanged.
+- The material remains authoritative for item tier. Do not use rarity or infer tier from a multiplier. Verify the helper's explicit partial-data behavior for saved items without tier provenance.
+- Other implicit bonuses, affixes, weapon/armor power, durability and capacities retain their own existing scaling. Attribute equivalence refers to one raw property, not an entire attribute bundle or a final probability after caps. Gloves' global critical chance is additive and is not multiplied by weapon mastery; only the weapon-source component receives that multiplier in CritStep.
 
 ## Affix Resources
 

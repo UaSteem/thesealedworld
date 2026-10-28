@@ -58,8 +58,16 @@ class FakeStore:
         self.created = None
         self.analytics = []
 
-    async def create_session_batch(self, session_id, data, *, ttl=3600):
+    async def create_session_batch(self, session_id, data, *, ttl=3600, analytics=None):
         self.created = (session_id, data, ttl)
+        self.analytics.extend((session_id, entry) for entry in analytics or [])
+        return True
+
+    async def load_existing_creation(self, session_id, fingerprint):
+        return None
+
+    async def get_meta(self, session_id):
+        return None
 
     async def append_analytics(self, session_id, entry):
         self.analytics.append((session_id, entry))
@@ -185,7 +193,10 @@ async def test_lifecycle_creates_arena_pvp_session():
     assert data.targets["1"] == ["2"]
     assert store.analytics[0][0] == session_id
     assert store.analytics[0][1]["k"] == "profile"
-    assert store.analytics[0][1]["_profile"]["actors"]["1"]["loadout"]["equipment_refs"]["main_hand"]["base_id"] == "short_sword"
+    assert (
+        store.analytics[0][1]["_profile"]["actors"]["1"]["loadout"]["equipment_refs"]["main_hand"]["base_id"]
+        == "short_sword"
+    )
     assert store.analytics[0][1]["_profile"]["actors"]["1"]["loadout"]["weapon_tiers"] == {"main_hand": 2}
     assert sessions.combat == {}
     assert sessions.states == {}

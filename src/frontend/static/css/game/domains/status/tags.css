@@ -1,7 +1,7 @@
-.tag { display: inline-block; padding: 2px 7px; font-size: var(--text-2xs); letter-spacing: .12em; text-transform: uppercase; border-radius: 2px; }
-.tag.burn   { background: rgba(255,100,0,.07); border: 1px solid rgba(255,100,0,.25); color: rgba(255,130,50,.85); }
-.tag.regen  { background: rgba(68,221,136,.06); border: 1px solid rgba(68,221,136,.20); color: rgba(68,221,136,.80); }
-.tag.sys    { background: rgba(255,170,0,.05); border: 1px solid rgba(255,170,0,.14); color: rgba(255,170,0,.60); }
+.tag { display: inline-block; padding: var(--space-2) var(--space-7); font-size: var(--text-2xs); letter-spacing: .12em; text-transform: uppercase; border-radius: var(--radius-sm); }
+.tag.burn   { background: rgb(var(--tone-accent-017-rgb) / 0.07); border: 1px solid rgb(var(--tone-accent-017-rgb) / 0.25); color: rgb(var(--tone-accent-027-rgb) / 0.85); }
+.tag.regen  { background: rgb(var(--tone-success-013-rgb) / 0.06); border: 1px solid rgb(var(--tone-success-013-rgb) / 0.2); color: rgb(var(--tone-success-013-rgb) / 0.8); }
+.tag.sys    { background: rgb(var(--tone-accent-024-rgb) / 0.05); border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.14); color: rgb(var(--tone-accent-024-rgb) / 0.6); }
 
 .status-sidebar-surface .service-card-list--sidebar,
 .status-sidebar-surface .arena-view-stat-grid,
@@ -34,11 +34,11 @@
     }
 
     .status-sidebar-surface .attribute-grid-widget {
-        gap: 3px;
+        gap: var(--space-3);
     }
 
     .status-sidebar-surface .attribute-grid-cards {
-        gap: 3px;
+        gap: var(--space-3);
         grid-template-rows: repeat(3, minmax(36px, auto));
     }
 
@@ -47,23 +47,7 @@
     }
 
     .status-sidebar-surface .av-corner {
-        padding: 2px 5px;
-        font-size: var(--text-2xs);
-    }
-}
-
-@media (max-width: 500px) {
-    .status-sidebar-surface {
-        --status-panel-padding: 10px;
-    }
-
-    .status-sidebar-surface .sec {
-        letter-spacing: .12em;
-    }
-
-    .status-sidebar-surface .attribute-grid-title,
-    .status-sidebar-surface .attribute-card-label,
-    .status-sidebar-surface .skill-group-title {
+        padding: var(--space-2) var(--space-5);
         font-size: var(--text-2xs);
     }
 }

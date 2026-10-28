@@ -1,25 +1,25 @@
 .arena-view-body {
     display: grid;
-    gap: 14px;
+    gap: var(--space-14);
 }
 
 .arena-live-battles {
     width: 100%;
     min-width: 0;
     display: grid;
-    gap: 10px;
-    padding: 14px 18px 18px;
-    border: 1px solid color-mix(in srgb, var(--world-accent, var(--col-accent)) 16%, transparent);
+    gap: var(--space-10);
+    padding: var(--space-14) var(--space-18) var(--space-18);
+    border: 1px solid color-mix(in srgb, var(--col-accent) 16%, transparent);
     background:
-        linear-gradient(180deg, rgba(255, 183, 55, .035), transparent 38%),
-        linear-gradient(115deg, rgba(4, 5, 7, .78), rgba(9, 12, 16, .92)),
-        url("/static/images/ui/textures/button-candidates/button-surface-04-charcoal-stone.webp");
+        linear-gradient(180deg, rgb(var(--tone-accent-038-rgb) / 0.035), transparent 38%),
+        linear-gradient(115deg, rgb(var(--tone-surface-019-rgb) / 0.78), rgb(var(--tone-surface-088-rgb) / 0.92)),
+        var(--texture-chrome-06);
     background-position: center;
     background-size: cover;
     box-shadow:
-        inset 0 1px 0 rgba(255, 225, 150, .07),
-        inset 0 -24px 38px rgba(0, 0, 0, .34),
-        0 0 0 1px rgba(0, 0, 0, .68);
+        inset 0 1px 0 rgb(var(--tone-text-025-rgb) / 0.07),
+        inset 0 -24px 38px rgb(var(--tone-surface-001-rgb) / 0.34),
+        0 0 0 1px rgb(var(--tone-surface-001-rgb) / 0.68);
     clip-path: var(--clip-node-md);
     overflow: hidden;
 }
@@ -28,40 +28,40 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    gap: 12px;
+    gap: var(--sp-3);
     align-items: center;
-    min-height: 24px;
-    border-bottom: 1px solid rgba(255, 170, 0, .12);
+    min-height: var(--size-24);
+    border-bottom: 1px solid rgb(var(--tone-accent-024-rgb) / 0.12);
     color: var(--col-parchment-dim);
     font-family: var(--font-ui);
     font-size: var(--text-2xs);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: .24em;
     text-transform: uppercase;
 }
 
 .arena-section-header strong {
-    color: var(--world-accent, var(--col-accent));
+    color: var(--col-accent);
     font-size: var(--text-xs);
     letter-spacing: .18em;
 }
 
 .arena-battle-list {
     display: grid;
-    gap: 7px;
+    gap: var(--space-7);
 }
 
 .arena-battle-row {
-    min-height: 46px;
+    min-height: var(--size-46);
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(118px, auto);
-    gap: 12px;
+    gap: var(--sp-3);
     align-items: center;
-    padding: 8px 10px;
-    border: 1px solid rgba(255, 170, 0, .12);
+    padding: var(--sp-2) var(--space-10);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.12);
     background:
-        linear-gradient(90deg, rgba(255, 170, 0, .035), transparent 46%),
-        rgba(0, 0, 0, .24);
+        linear-gradient(90deg, rgb(var(--tone-accent-024-rgb) / 0.035), transparent 46%),
+        rgb(var(--tone-surface-001-rgb) / 0.24);
 }
 
 .arena-battle-row--empty {
@@ -84,7 +84,7 @@
     max-width: 320px;
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
+    gap: var(--space-6);
     justify-content: flex-end;
 }
 
@@ -92,20 +92,20 @@
     flex: 0 1 auto;
     min-width: 92px;
     max-width: 100%;
-    min-height: 30px;
-    padding: 0 10px;
-    border: 1px solid color-mix(in srgb, var(--world-accent, var(--col-accent)) 24%, transparent);
+    min-height: var(--size-30);
+    padding: 0 var(--space-10);
+    border: 1px solid color-mix(in srgb, var(--col-accent) 24%, transparent);
     background:
-        linear-gradient(180deg, rgba(255, 214, 118, .06), transparent 34%),
-        linear-gradient(rgba(1, 1, 1, .72), rgba(1, 1, 1, .86)),
-        url("/static/images/ui/textures/button-candidates/button-surface-02-blackened-metal.webp");
+        linear-gradient(180deg, rgb(var(--tone-accent-074-rgb) / 0.06), transparent 34%),
+        linear-gradient(rgb(var(--tone-surface-002-rgb) / 0.72), rgb(var(--tone-surface-002-rgb) / 0.86)),
+        var(--texture-chrome-01);
     background-position: center;
     background-size: cover;
-    color: var(--world-accent, var(--col-accent));
+    color: var(--col-accent);
     clip-path: var(--clip-node-sm);
     font-family: var(--font-ui);
     font-size: var(--text-2xs);
-    font-weight: 800;
+    font-weight: var(--weight-heavy);
     letter-spacing: .12em;
     text-transform: uppercase;
 }

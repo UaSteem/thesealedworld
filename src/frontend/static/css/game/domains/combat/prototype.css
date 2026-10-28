@@ -3,27 +3,27 @@
 .combat-mobile-dock details {
     position: relative;
     overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--world-accent, var(--col-accent)) 20%, transparent);
+    border: 1px solid color-mix(in srgb, var(--col-accent) 20%, transparent);
     background:
-        linear-gradient(180deg, rgba(255, 183, 55, .055), transparent 34%),
-        linear-gradient(115deg, rgba(3, 3, 4, .80), rgba(9, 11, 14, .93)),
-        url("/static/images/ui/textures/button-candidates/button-surface-04-charcoal-stone.webp");
+        linear-gradient(180deg, rgb(var(--tone-accent-038-rgb) / 0.055), transparent 34%),
+        linear-gradient(115deg, rgb(var(--tone-surface-006-rgb) / 0.8), rgb(var(--tone-surface-079-rgb) / 0.93)),
+        var(--texture-chrome-06);
     background-position: center;
     background-size: cover;
     box-shadow:
-        inset 0 1px 0 rgba(255, 225, 150, .08),
-        inset 0 -24px 38px rgba(0, 0, 0, .34),
-        0 0 0 1px rgba(0, 0, 0, .68);
+        inset 0 1px 0 rgb(var(--tone-text-025-rgb) / 0.08),
+        inset 0 -24px 38px rgb(var(--tone-surface-001-rgb) / 0.34),
+        0 0 0 1px rgb(var(--tone-surface-001-rgb) / 0.68);
     clip-path: var(--clip-node-md);
 }
 
 .combat-statebar {
-    min-height: 34px;
+    min-height: var(--size-34);
     display: grid;
     grid-template-columns: minmax(128px, .28fr) minmax(0, 1fr);
-    gap: 8px;
+    gap: var(--sp-2);
     align-items: center;
-    padding: 6px 10px;
+    padding: var(--space-6) var(--space-10);
 }
 
 .combat-statebar__brand,
@@ -34,7 +34,7 @@
 }
 
 .combat-statebar__brand {
-    gap: 7px;
+    gap: var(--space-7);
 }
 
 .combat-statebar__brand strong,
@@ -50,59 +50,59 @@
 }
 
 .combat-statebar__brand strong {
-    color: var(--world-accent, var(--col-accent));
+    color: var(--col-accent);
     font-size: var(--text-base);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: .18em;
 }
 
 .combat-statebar__brand em {
-    color: rgba(210, 180, 140, .54);
+    color: rgb(var(--tone-text-002-rgb) / 0.54);
     font-size: var(--text-2xs);
     font-style: normal;
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: .14em;
 }
 
 .combat-statebar__metrics {
     justify-content: flex-end;
-    gap: 5px;
+    gap: var(--space-5);
 }
 
 .combat-statebar__metrics span {
     min-width: 0;
-    min-height: 22px;
+    min-height: var(--size-22);
     display: grid;
     grid-template-columns: auto minmax(0, 1fr);
     align-items: center;
-    gap: 5px;
-    padding: 0 7px;
-    border: 1px solid rgba(255, 170, 0, .10);
-    background: rgba(0, 0, 0, .30);
+    gap: var(--space-5);
+    padding: 0 var(--space-7);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.1);
+    background: rgb(var(--tone-surface-001-rgb) / 0.3);
 }
 
 .combat-statebar__metrics b {
-    color: rgba(210, 180, 140, .56);
+    color: rgb(var(--tone-text-002-rgb) / 0.56);
     font-size: var(--text-2xs);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: .12em;
 }
 
 .combat-statebar__metrics strong {
-    color: color-mix(in srgb, var(--world-accent, var(--col-accent)) 82%, #fff);
+    color: color-mix(in srgb, var(--col-accent) 82%, rgb(var(--tone-text-064-rgb)));
     font-size: var(--text-2xs);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: .08em;
 }
 
 .combat-action-panel {
     display: grid;
-    gap: 8px;
-    padding: 10px;
+    gap: var(--sp-2);
+    padding: var(--space-10);
     background:
-        linear-gradient(180deg, rgba(255, 183, 55, .07), transparent 34%),
-        linear-gradient(115deg, rgba(3, 3, 4, .84), rgba(8, 10, 12, .94)),
-        url("/static/images/ui/textures/button-candidates/button-surface-02-blackened-metal.webp");
+        linear-gradient(180deg, rgb(var(--tone-accent-038-rgb) / 0.07), transparent 34%),
+        linear-gradient(115deg, rgb(var(--tone-surface-006-rgb) / 0.84), rgb(var(--tone-surface-067-rgb) / 0.94)),
+        var(--texture-chrome-01);
     background-position: center;
     background-size: cover;
 }
@@ -111,7 +111,7 @@
     justify-self: stretch;
     width: 100%;
     box-sizing: border-box;
-    padding: 6px;
+    padding: var(--space-6);
 }
 
 .combat-action-panel .combat-ability-strip {
@@ -125,7 +125,7 @@
     grid-template-columns: minmax(0, 1fr);
     justify-self: stretch;
     width: 100%;
-    gap: 8px;
+    gap: var(--sp-2);
     min-width: 0;
 }
 
@@ -133,7 +133,7 @@
     display: grid;
     justify-self: stretch;
     align-content: start;
-    gap: 7px;
+    gap: var(--space-7);
     width: 100%;
     min-width: 0;
 }
@@ -141,23 +141,23 @@
 .combat-action-panel .combat-action-group {
     position: relative;
     min-width: 0;
-    padding: 18px 6px 6px;
-    border: 1px solid rgba(255, 185, 45, .18);
-    background: rgba(0, 0, 0, .28);
+    padding: var(--space-18) var(--space-6) var(--space-6);
+    border: 1px solid rgb(var(--tone-accent-036-rgb) / 0.18);
+    background: rgb(var(--tone-surface-001-rgb) / 0.28);
 }
 
 .combat-action-panel .combat-action-group summary,
 .combat-action-group__label,
 .combat-mobile-dock summary {
-    min-height: 16px;
+    min-height: var(--size-16);
     display: flex;
     align-items: center;
-    padding: 0 5px;
-    color: rgba(255, 218, 140, .74);
+    padding: 0 var(--space-5);
+    color: rgb(var(--tone-text-011-rgb) / 0.74);
     cursor: pointer;
     font-family: var(--font-ui);
     font-size: var(--text-2xs);
-    font-weight: 900;
+    font-weight: var(--weight-black);
     letter-spacing: .16em;
     text-transform: uppercase;
 }
@@ -170,7 +170,7 @@
     z-index: 2;
     max-width: calc(100% - 8px);
     overflow: hidden;
-    background: rgba(0, 0, 0, .42);
+    background: rgb(var(--tone-surface-001-rgb) / 0.42);
     text-overflow: ellipsis;
     white-space: nowrap;
 }
@@ -178,12 +178,12 @@
 .combat-belt-slots {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 4px;
+    gap: var(--sp-1);
 }
 
 .combat-belt-slot {
     min-width: 0;
-    min-height: 28px;
+    min-height: var(--size-28);
     display: grid;
     place-items: center;
     aspect-ratio: 1.1;
@@ -196,20 +196,20 @@
 .combat-belt-slot--empty,
 .combat-ability-option--empty {
     opacity: .36;
-    border-color: rgba(210, 180, 140, .12);
+    border-color: rgb(var(--tone-text-002-rgb) / 0.12);
     background:
-        linear-gradient(180deg, rgba(210, 180, 140, .025), rgba(0, 0, 0, .58)),
-        linear-gradient(rgba(7, 7, 8, .86), rgba(0, 0, 0, .95)),
-        url("/static/images/ui/textures/button-candidates/button-surface-02-blackened-metal.webp");
+        linear-gradient(180deg, rgb(var(--tone-text-002-rgb) / 0.025), rgb(var(--tone-surface-001-rgb) / 0.58)),
+        linear-gradient(rgb(var(--tone-surface-041-rgb) / 0.86), rgb(var(--tone-surface-001-rgb) / 0.95)),
+        var(--texture-chrome-01);
     background-position: center;
     background-size: cover;
 }
 
 .combat-belt-slot--empty img,
 .combat-ability-option--empty img {
-    width: 16px;
-    height: 16px;
-    filter: invert(74%) sepia(11%) saturate(646%) hue-rotate(357deg) brightness(87%) contrast(84%);
+    width: var(--size-16);
+    height: var(--size-16);
+    filter: var(--filter-prototype-01);
     opacity: .36;
 }
 
@@ -217,21 +217,21 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     justify-self: stretch;
-    gap: 6px;
+    gap: var(--space-6);
     width: 100%;
 }
 
 .combat-primary-row {
     display: grid;
     grid-template-columns: minmax(120px, .56fr) minmax(180px, 1fr);
-    gap: 7px;
+    gap: var(--space-7);
     align-items: stretch;
 }
 
 .combat-mobile-dock {
     display: none;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
+    gap: var(--space-6);
 }
 
 .combat-mobile-dock details {
@@ -240,25 +240,25 @@
 
 .combat-mobile-roster {
     display: grid;
-    gap: 5px;
-    padding: 0 7px 7px;
+    gap: var(--space-5);
+    padding: 0 var(--space-7) var(--space-7);
 }
 
 .combat-mobile-roster span {
     min-width: 0;
     display: grid;
     grid-template-columns: minmax(0, .9fr) minmax(46px, 1fr) auto;
-    gap: 6px;
+    gap: var(--space-6);
     align-items: center;
-    padding: 5px;
-    border: 1px solid rgba(255, 170, 0, .10);
-    background: rgba(0, 0, 0, .28);
+    padding: var(--space-5);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.1);
+    background: rgb(var(--tone-surface-001-rgb) / 0.28);
 }
 
 .combat-mobile-roster b,
 .combat-mobile-roster em {
     overflow: hidden;
-    color: rgba(255, 231, 190, .78);
+    color: rgb(var(--tone-text-046-rgb) / 0.78);
     font-family: var(--font-mono);
     font-size: var(--text-2xs);
     font-style: normal;
@@ -267,213 +267,6 @@
 }
 
 .combat-mobile-roster i {
-    height: 5px;
-    background: linear-gradient(90deg, rgba(255, 72, 56, .92) var(--value, 0%), rgba(255, 255, 255, .06) 0);
-}
-
-@media (max-width: 860px) {
-    .combat-statebar__metrics {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        justify-content: stretch;
-    }
-
-    .combat-command-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .combat-mobile-dock {
-        display: none;
-    }
-
-    .combat-mobile-dock details {
-        position: relative;
-    }
-
-    .combat-mobile-dock details[open] {
-        overflow: visible;
-        z-index: 9;
-    }
-
-    .combat-mobile-dock details[open] .combat-mobile-roster {
-        position: absolute;
-        top: calc(100% + 4px);
-        left: 0;
-        right: 0;
-        z-index: 10;
-        max-height: min(220px, 36dvh);
-        overflow-y: auto;
-        border: 1px solid rgba(255, 185, 45, .22);
-        background:
-            linear-gradient(180deg, rgba(255, 183, 55, .07), transparent 34%),
-            linear-gradient(115deg, rgba(3, 3, 4, .92), rgba(8, 10, 12, .98)),
-            url("/static/images/ui/textures/button-candidates/button-surface-02-blackened-metal.webp");
-        background-position: center;
-        background-size: cover;
-        box-shadow: 0 14px 28px rgba(0, 0, 0, .48);
-    }
-
-    .combat-action-panel {
-        max-height: min(44dvh, 320px);
-        overflow-y: auto;
-        overscroll-behavior: contain;
-    }
-
-    .combat-primary-row {
-        order: 3;
-        position: sticky;
-        bottom: 0;
-        z-index: 4;
-        padding-top: 5px;
-        background:
-            linear-gradient(180deg, rgba(8, 8, 10, 0), rgba(8, 8, 10, .92) 28%),
-            url("/static/images/ui/textures/button-candidates/button-surface-02-blackened-metal.webp");
-        background-position: center;
-        background-size: cover;
-    }
-}
-
-@media (max-width: 520px) {
-    .combat-statebar {
-        padding: 5px 7px;
-    }
-
-    .combat-statebar__metrics span {
-        min-height: 21px;
-        padding: 0 5px;
-    }
-
-    .combat-action-panel {
-        gap: 6px;
-        padding: 7px;
-    }
-
-    .combat-action-panel:has(.combat-ability-grid > :nth-child(9)) {
-        max-height: min(42dvh, 300px);
-    }
-
-    .combat-action-panel .combat-token-strip {
-        padding: 5px;
-    }
-
-    .combat-action-panel .combat-ability-strip {
-        padding: 5px;
-    }
-
-    .combat-action-panel .combat-ability-grid {
-        --combat-ability-gap: 4px;
-        --combat-ability-slot-size: 28px;
-        --combat-ability-icon-size: 14px;
-    }
-
-    .combat-action-panel .combat-ability-grid:has(> :nth-child(9)) {
-        --combat-ability-slot-size: 24px;
-        --combat-ability-icon-size: 13px;
-    }
-
-    .combat-action-panel .combat-token-bar {
-        justify-content: space-between;
-        gap: 4px;
-    }
-
-    .combat-action-panel .combat-token {
-        min-width: 32px;
-        height: 28px;
-    }
-
-    .combat-action-panel .combat-token img,
-    .combat-action-panel .combat-feint-option img {
-        width: 14px;
-        height: 14px;
-    }
-
-    .combat-decision-panel {
-        order: 1;
-        gap: 5px;
-        min-height: 0;
-    }
-
-    .combat-decision-panel .combat-action-list {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        gap: 5px;
-    }
-
-    .combat-primary-row {
-        grid-template-columns: minmax(86px, .42fr) minmax(0, 1fr);
-        gap: 5px;
-    }
-
-    .combat-action-panel .combat-action-group summary {
-        min-height: 16px;
-        padding: 0 7px;
-        font-size: var(--text-2xs);
-    }
-
-    .combat-belt-slots {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 4px;
-    }
-
-    .combat-belt-slot {
-        min-height: 28px;
-        aspect-ratio: auto;
-    }
-
-    .combat-primary-action {
-        min-height: 40px;
-    }
-
-    .combat-refresh-button {
-        min-height: 40px;
-        padding: 0 8px;
-    }
-
-    .combat-feint-option,
-    .combat-feint-option--debug {
-        min-height: 28px;
-        height: 28px;
-        gap: 5px;
-        padding: 0 7px;
-        font-size: var(--text-2xs);
-        letter-spacing: .08em;
-    }
-
-    .combat-feint-row--empty .combat-feint-option--debug {
-        width: 100%;
-    }
-
-    .combat-feint-row {
-        grid-template-columns: 26px minmax(0, 1fr);
-        gap: 3px;
-        max-height: 28px;
-    }
-
-    .combat-feint-row--empty {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .combat-feint-pin {
-        width: 26px;
-        min-height: 28px;
-        height: 28px;
-        aspect-ratio: auto;
-        font-size: var(--text-sm);
-    }
-
-    .combat-feint-option img,
-    .combat-feint-icon {
-        width: 12px;
-        height: 12px;
-    }
-
-    .combat-mobile-dock {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 860px) {
-    .combat-statebar {
-        display: none;
-    }
+    height: var(--size-5);
+    background: linear-gradient(90deg, rgb(var(--tone-danger-031-rgb) / 0.92) var(--value, 0%), rgb(var(--tone-text-064-rgb) / 0.06) 0);
 }

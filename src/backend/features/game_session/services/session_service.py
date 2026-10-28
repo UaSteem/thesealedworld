@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING, Any
 
 from loguru import logger
 
+from src.backend.features.rift.retirement import LegacyRiftRetiredError
 from src.shared.enums import CoreDomain
 from src.shared.schemas import CoreResponseDTO, GameStateHeader, ScenarioReturnContextDTO, StateTransitionDTO
 from src.shared.schemas.game_session import StartingImprintOptionDTO, StartingImprintOptionsDTO
@@ -129,26 +130,7 @@ class GameSessionService:
                 route_reason="respawn_not_required",
             )
 
-        starter_context = await self.integrator.resolve_starter_rift_death_context(session_doc)
         result = await self.integrator.respawn_character(character_id)
-        if starter_context is not None:
-            reset_result = await self.integrator.reset_starter_rift_character(
-                character_id,
-                user_id=user.id,
-                starter_context=starter_context,
-                respawn_result=result,
-            )
-            return CoreResponseDTO(
-                header=GameStateHeader(current_state=CoreDomain.SCENARIO, previous_state=CoreDomain.DEATH),
-                payload=self._starter_rift_reset_transition(
-                    character_id=character_id,
-                    respawn_result=result,
-                    reset_result=reset_result,
-                    starter_context=starter_context,
-                ),
-                payload_type="state_transition",
-            )
-
         post_respawn_transition = await self._post_respawn_dialogue_transition(character_id, result)
         if post_respawn_transition is not None:
             return CoreResponseDTO(
@@ -186,95 +168,7 @@ class GameSessionService:
         character_id: int,
         imprint_key: str,
     ) -> GameplayEntryResponse:
-        session_doc = await self.integrator.get_active_session(character_id, user.id)
-        if session_doc is None:
-            return self._lobby_response(char_id=character_id, reason="active_character_unavailable")
-        reset_result = await self.integrator.dev_reset_starter_rift_character(
-            character_id,
-            user_id=user.id,
-            imprint_key=imprint_key,
-        )
-        return CoreResponseDTO(
-            header=GameStateHeader(
-                current_state=CoreDomain.SCENARIO, previous_state=self._state_or_none(session_doc.state)
-            ),
-            payload=self._starter_rift_dev_reset_transition(
-                character_id=character_id,
-                reset_result=reset_result,
-            ),
-            payload_type="state_transition",
-        )
-
-    @staticmethod
-    def _starter_rift_reset_transition(
-        *,
-        character_id: int,
-        respawn_result: dict[str, Any],
-        reset_result: dict[str, Any],
-        starter_context: dict[str, Any],
-    ) -> StateTransitionDTO:
-        location_id = str(respawn_result.get("location_id") or "")
-        starting_imprint = reset_result.get("starting_imprint") or {}
-        return_context = ScenarioReturnContextDTO(
-            source_state=CoreDomain.EXPLORATION,
-            return_state=CoreDomain.SCENARIO,
-            location_id=location_id,
-            metadata={
-                "trigger_reason": "starter_rift_reset",
-                "original_source_state": CoreDomain.RIFT.value,
-                "initial_node_key": "rift_entry_01",
-                "attempt_index": reset_result.get("attempt_index"),
-                "starting_imprint_key": starting_imprint.get("imprint_key"),
-                "rift_session_id": starter_context.get("rift_session_id"),
-                "rift_instance_id": starter_context.get("rift_instance_id"),
-            },
-        )
-        return StateTransitionDTO(
-            char_id=character_id,
-            target_state=CoreDomain.SCENARIO,
-            reason="starter_rift_reset",
-            quest_key="awakening_rift",
-            location_id=location_id,
-            context={"return_context": return_context.model_dump(mode="json")},
-            metadata={
-                **respawn_result,
-                "trigger_reason": "starter_rift_reset",
-                "attempt_index": reset_result.get("attempt_index"),
-                "starting_imprint": starting_imprint,
-                "reset_seed": reset_result.get("reset_seed"),
-            },
-        )
-
-    @staticmethod
-    def _starter_rift_dev_reset_transition(
-        *,
-        character_id: int,
-        reset_result: dict[str, Any],
-    ) -> StateTransitionDTO:
-        starting_imprint = reset_result.get("starting_imprint") or {}
-        return_context = ScenarioReturnContextDTO(
-            source_state=CoreDomain.EXPLORATION,
-            return_state=CoreDomain.SCENARIO,
-            location_id="52_52",
-            metadata={
-                "trigger_reason": "dev_starter_rift_reset",
-                "initial_node_key": "rift_entry_01",
-                "starting_imprint_key": starting_imprint.get("imprint_key"),
-            },
-        )
-        return StateTransitionDTO(
-            char_id=character_id,
-            target_state=CoreDomain.SCENARIO,
-            reason="dev_starter_rift_reset",
-            quest_key="awakening_rift",
-            location_id="52_52",
-            context={"return_context": return_context.model_dump(mode="json")},
-            metadata={
-                "trigger_reason": "dev_starter_rift_reset",
-                "starting_imprint": starting_imprint,
-                "reset_seed": reset_result.get("reset_seed"),
-            },
-        )
+        raise LegacyRiftRetiredError("Legacy starter Rift reset is retired")
 
     async def _post_respawn_dialogue_transition(
         self,

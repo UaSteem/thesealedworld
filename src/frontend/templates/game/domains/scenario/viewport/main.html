@@ -29,6 +29,9 @@
 {% endif %}
 
 <section class="scenario-screen game-screen-area game-screen-area--vertical" id="scenario-panel-root">
+    {% if scenario_client_payload is defined and scenario_client_payload %}
+    <script type="application/json" data-game-client-scenario>{{ scenario_client_payload|tojson }}</script>
+    {% endif %}
     <header class="scenario-statebar">
         <strong>{{ 'СЦЕНАРИЙ // ФИНАЛ' if scenario.is_terminal else 'СЦЕНАРИЙ' }}</strong>
         <span>{{ subject_label }}</span>
@@ -91,6 +94,7 @@
                         {% endif %}
                         <button class="game-action-button scenario-choice {{ 'scenario-choice--primary' if loop.first else '' }} {{ 'scenario-choice--danger' if icon_key in ['risk', 'warning'] else '' }}"
                                 type="button"
+                                data-game-client-scenario-action="{{ btn.action_id }}"
                                 hx-post="/game/scenario/step"
                                 hx-sync="closest .scenario-action-panel:drop"
                                 hx-vals='{{ {"action_id": btn.action_id, "char_id": scenario_char_id}|tojson }}'

@@ -33,8 +33,8 @@
 .game-chat-footer .chat-step-0 .chat-panel {
     min-height: var(--game-footer-height, 30px);
     background:
-        linear-gradient(90deg, rgba(255, 170, 0, .08), transparent 42%, rgba(0, 0, 0, .20)),
-        rgba(8, 8, 10, .94) !important;
+        linear-gradient(90deg, rgb(var(--tone-accent-024-rgb) / 0.08), transparent 42%, rgb(var(--tone-surface-001-rgb) / 0.2)),
+        rgb(var(--tone-surface-053-rgb) / 0.94) !important;
     box-shadow: none;
 }
 
@@ -71,12 +71,12 @@
 
 .chat-mini-preview {
     flex-shrink: 0;
-    padding: 4px var(--sp-3);
+    padding: var(--sp-1) var(--sp-3);
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--space-2);
     overflow: hidden;
-    border-top: 1px solid rgba(255, 170, 0, 0.06);
+    border-top: 1px solid rgb(var(--tone-accent-024-rgb) / 0.06);
 }
 
 .chat-mini-preview .msg {
@@ -91,25 +91,25 @@
 
 
 .chat-tabs-mini {
-    padding: 6px var(--sp-3);
+    padding: var(--space-6) var(--sp-3);
     min-height: 0;
 }
 
 .chat-mini-channel {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: var(--space-5);
 }
 
 .mini-ch-dot {
-    width: 5px;
-    height: 5px;
-    background: rgba(255, 170, 0, 0.15);
-    border: 1px solid rgba(255, 170, 0, 0.25);
+    width: var(--size-5);
+    height: var(--size-5);
+    background: rgb(var(--tone-accent-024-rgb) / 0.15);
+    border: 1px solid rgb(var(--tone-accent-024-rgb) / 0.25);
     clip-path: var(--clip-node-sm);
     cursor: pointer;
     transition: all 0.15s;
 }
 
-.mini-ch-dot:hover   { background: rgba(255, 170, 0, 0.35); }
-.mini-ch-active      { background: var(--col-accent) !important; box-shadow: 0 0 5px rgba(255,170,0,0.4); }
+.mini-ch-dot:hover   { background: rgb(var(--tone-accent-024-rgb) / 0.35); }
+.mini-ch-active      { background: var(--col-accent) !important; box-shadow: 0 0 5px rgb(var(--tone-accent-024-rgb) / 0.4); }

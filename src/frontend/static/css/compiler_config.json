@@ -3,6 +3,7 @@
         "site_bundle.css": "site.css",
         "admin_bundle.css": "admin.css",
         "account_bundle.css": "account.css",
+        "theme_bundle.css": "theme.css",
         "game_bundle.css": "game.css",
         "vendor/nprogress.css": "vendor.css"
     },

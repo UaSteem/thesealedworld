@@ -41,7 +41,7 @@ def test_item_text_service_payload_ignores_affix_rolls_for_template_reuse():
     second = ItemFactory().generate(
         request.model_copy(
             update={
-                "forced_affix_ids": ["weapon_accuracy"],
+                "forced_affix_ids": ["armor_penetration_pct_bonus"],
                 "affix_count": 1,
             }
         )
@@ -50,13 +50,15 @@ def test_item_text_service_payload_ignores_affix_rolls_for_template_reuse():
     assert ItemTextService()._build_payload(first, request) == ItemTextService()._build_payload(second, request)
 
 
-def test_item_text_service_template_hash_uses_only_clan_base_tier_material():
+def test_item_text_service_template_hash_uses_material_tier_lore_and_visual_identity():
     service = ItemTextService()
     first_request = ItemGenerationRequestDTO(
         base_id="warhammer",
         material_id="mat_iron_ingot",
         rarity_tier=2,
         request_ai_text=True,
+        forced_affix_ids=["crit_chance"],
+        affix_count=1,
         source_context={
             "clan_id": "clan-1",
             "location_id": "52_53",
@@ -91,8 +93,10 @@ def test_item_text_service_template_hash_uses_only_clan_base_tier_material():
     assert first_hash_payload == {
         "clan_id": "clan-1",
         "base_id": "warhammer",
-        "item_tier": 2,
+        "item_tier": 1,
         "material_id": "mat_iron_ingot",
+        "lore_tags": ["ferocity"],
+        "visual_variant_id": None,
     }
     assert first_hash_payload == second_hash_payload
     assert service.build_text_visual_hash(first_hash_payload) == service.build_text_visual_hash(second_hash_payload)

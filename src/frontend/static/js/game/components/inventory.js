@@ -32,6 +32,7 @@
             move_to_belt: 'В ПОЯС',
             remove_from_belt: 'УБРАТЬ',
             use: 'ИСПОЛЬЗОВАТЬ',
+            identify: 'РАСКРЫТЬ',
             drop: 'ВЫБРОСИТЬ',
         }[action] || 'ДЕЙСТВИЕ';
     }

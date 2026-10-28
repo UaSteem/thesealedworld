@@ -1,10 +1,10 @@
 from src.backend.features.items.resources.schemas import BaseItemDTO
 
 HEAVY_ARMOR_DB = {
-    "helmet": BaseItemDTO(
-        id="helmet",
-        name_ru="Шлем",
-        narrative_description="Тяжелый шлем закрывает голову от скользящих ударов и помогает удержать контроль под давлением.",
+    "heavy_helmet": BaseItemDTO(
+        id="heavy_helmet",
+        name_ru="Тяжёлый шлем",
+        narrative_description="Тяжёлый шлем закрывает голову от прямых и скользящих ударов.",
         slot="head_armor",
         type="armor",
         defense_type="physical",
@@ -14,16 +14,16 @@ HEAVY_ARMOR_DB = {
         base_power=3,
         base_durability=60,
         damage_spread=0.0,
-        narrative_tags=["helmet", "heavy", "visor", "protection"],
+        narrative_tags=["heavy_helmet", "heavy", "visor", "protection"],
         implicit_bonuses={
             "anti_dodge_chance": -0.020,
             "main_hand_accuracy_penalty": 0.005,
         },
     ),
-    "plate_chest": BaseItemDTO(
-        id="plate_chest",
-        name_ru="Кираса",
-        narrative_description="Тяжелая металлическая кираса принимает основной удар корпусом и почти не прощает слабую стойку.",
+    "heavy_chest_armor": BaseItemDTO(
+        id="heavy_chest_armor",
+        name_ru="Тяжёлый нагрудник",
+        narrative_description="Тяжёлый нагрудник закрывает корпус массивными защитными элементами.",
         slot="chest_armor",
         type="armor",
         defense_type="physical",
@@ -33,17 +33,17 @@ HEAVY_ARMOR_DB = {
         base_power=9,
         base_durability=100,
         damage_spread=0.0,
-        narrative_tags=["plate", "heavy", "metal"],
+        narrative_tags=["plate", "heavy"],
         implicit_bonuses={
             "evasion_penalty": -0.070,
             "main_hand_accuracy_penalty": 0.015,
             "off_hand_accuracy_penalty": 0.015,
         },
     ),
-    "gauntlets": BaseItemDTO(
-        id="gauntlets",
-        name_ru="Латные рукавицы",
-        narrative_description="Жесткие рукавицы защищают кисти и превращают плотную оборону в болезненный контакт.",
+    "heavy_bracers": BaseItemDTO(
+        id="heavy_bracers",
+        name_ru="Тяжёлые наручи",
+        narrative_description="Тяжёлые наручи закрывают предплечья массивными защитными элементами.",
         slot="arms_armor",
         type="armor",
         defense_type="physical",
@@ -53,16 +53,16 @@ HEAVY_ARMOR_DB = {
         base_power=3,
         damage_spread=0.0,
         base_durability=70,
-        narrative_tags=["gauntlets", "heavy", "hands", "plate"],
+        narrative_tags=["bracers", "heavy", "forearms"],
         implicit_bonuses={
             "main_hand_accuracy_penalty": 0.015,
             "off_hand_accuracy_penalty": 0.015,
         },
     ),
-    "greaves": BaseItemDTO(
-        id="greaves",
-        name_ru="Поножи",
-        narrative_description="Тяжелые поножи прикрывают ноги и помогают удержать стойку после жесткого попадания.",
+    "heavy_leg_armor": BaseItemDTO(
+        id="heavy_leg_armor",
+        name_ru="Тяжёлые поножи",
+        narrative_description="Тяжёлые поножи прикрывают ноги и помогают удержать стойку после удара.",
         slot="legs_armor",
         type="armor",
         defense_type="physical",
@@ -72,7 +72,7 @@ HEAVY_ARMOR_DB = {
         base_power=5,
         damage_spread=0.0,
         base_durability=80,
-        narrative_tags=["greaves", "heavy", "legs", "plate"],
+        narrative_tags=["heavy_leg_armor", "heavy", "legs", "plate"],
         implicit_bonuses={
             "evasion_penalty": -0.025,
         },

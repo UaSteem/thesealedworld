@@ -12,16 +12,14 @@ from types import SimpleNamespace
 from .players import _live_player, _validate_payload
 
 _ARMOR = {
-    "light": ("hood", "leather_armor", "soft_bracers", "scout_leggings"),
-    "medium": ("leather_cap", "jerkin", "reinforced_gloves", "breeches"),
-    "heavy": ("helmet", "plate_chest", "gauntlets", "greaves"),
+    "light": ("light_hood", "light_chest_armor", "light_bracers", "light_leg_armor"),
+    "medium": ("medium_helmet", "medium_chest_armor", "medium_bracers", "medium_leg_armor"),
+    "heavy": ("heavy_helmet", "heavy_chest_armor", "heavy_bracers", "heavy_leg_armor"),
 }
 _ARMOR_SLOTS = ("head_armor", "chest_armor", "arms_armor", "legs_armor")
 _ADDITIONS = {
-    "chest_garment": "linen_shirt",
-    "legs_garment": "fur_pants",
-    "feetwear": "travel_boots",
-    "gloves_garment": "work_gloves",
+    "feetwear": "boots",
+    "gloves_garment": "gloves",
     "belt_accessory": "belt",
     "ring_1": "ring",
     "ring_2": "ring",

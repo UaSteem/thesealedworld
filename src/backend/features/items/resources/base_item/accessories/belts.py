@@ -4,7 +4,6 @@ BELTS_DB = {
         "name_ru": "Пояс",
         "slot": "belt_accessory",
         "type": "accessory",
-        "defense_type": "physical",
         "allowed_materials": ["leathers", "cloths"],
         "base_power": 2,
         "base_durability": 40,

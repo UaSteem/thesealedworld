@@ -60,7 +60,7 @@ MACING_DB = {
     ),
     "warhammer": BaseItemDTO(
         id="warhammer",
-        name_ru="Боевой Молот",
+        name_ru="Боевой молот",
         narrative_description="Двуручный молот, переносящий силу удара в сокрушительный импульс против брони и щитов.",
         slot="two_hand",
         type="weapon",

@@ -1,3 +1,4 @@
+import copy
 import json
 
 import pytest
@@ -21,6 +22,7 @@ class FakePipeline:
     def __init__(self, client):
         self.client = client
         self.commands = []
+        self.response_callbacks = {}
 
     async def __aenter__(self):
         return self
@@ -51,6 +53,10 @@ class FakePipeline:
 
     def get(self, key, path="$"):
         self.commands.append(("json_get", key, path))
+
+    def execute_command(self, command, key, path):
+        assert command == "JSON.GET"
+        self.commands.append(("raw_json_get", key, path))
 
     def lrange(self, key, start, stop):
         self.commands.append(("lrange", key, start, stop))
@@ -89,6 +95,9 @@ class FakePipeline:
                     results.append([value] if value is not None else None)
                 else:
                     results.append(None)
+            elif name == "raw_json_get":
+                value = self.client.json_store.get(key)
+                results.append(json.dumps([value]) if value is not None else None)
             elif name == "lrange":
                 start, stop = payload
                 values = self.client.lists.get(key, [])
@@ -172,6 +181,66 @@ class FakeRedisClient:
                 target[key] = new_value
 
     async def eval(self, script, numkeys, *args):
+        if "local values = raw and cjson.decode(raw) or {}" in script:
+            key, turn, additions = args
+            values = json.loads(self.hash_store.get(key, {}).get(turn, "[]"))
+            self.hash_store.setdefault(key, {})[turn] = json.dumps(values + json.loads(additions))
+            return 1
+        if "local request = cjson.decode(ARGV[1])" in script:
+            # Pure transformation double only. The disposable RedisJSON suite
+            # verifies the actual Lua, command-error isolation and fencing.
+            keys, request = args[:numkeys], json.loads(args[numkeys])
+            meta = self.hash_store.get(keys[0], {})
+            if request["mode"] == "create" and meta:
+                if meta.get("creation_fingerprint") != request["fingerprint"]:
+                    raise RuntimeError("creation conflict")
+                return 0
+            hashes, documents, lists = (
+                copy.deepcopy(value) for value in (self.hash_store, self.json_store, self.lists)
+            )
+            for op in request["operations"]:
+                key = keys[op["index"] - 1]
+                if op.get("kind") == "logs":
+                    for turn, additions in op["entries"].items():
+                        old = json.loads(hashes.get(key, {}).get(turn, "[]"))
+                        hashes.setdefault(key, {})[turn] = json.dumps(old + json.loads(additions))
+                elif op.get("kind") == "prune":
+                    dead = set(op["dead"])
+                    for actor, targets in documents.get(key, {}).items():
+                        documents[key][actor] = (
+                            [] if actor in dead else [target for target in targets if str(target) not in dead]
+                        )
+                else:
+                    command, values = op["command"], op["args"]
+                    if command == "HSET":
+                        hashes.setdefault(key, {}).update(dict(zip(values[::2], values[1::2], strict=True)))
+                    elif command == "DEL":
+                        hashes.pop(key, None)
+                        documents.pop(key, None)
+                        lists.pop(key, None)
+                    elif command == "LTRIM":
+                        lists[key] = lists.get(key, [])[values[0] :]
+                    elif command == "JSON.ARRAPPEND":
+                        member = values[0].removeprefix('$["').removesuffix('"]')
+                        documents[key].setdefault(member, []).append(json.loads(values[1]))
+                    elif command in {"JSON.SET", "JSON.MERGE"}:
+                        path, value = values[0], json.loads(values[1])
+                        if path == "$":
+                            documents[key] = value
+                        else:
+                            cursor = documents.setdefault(key, {})
+                            parts = path.removeprefix("$.").split(".")
+                            for part in parts[:-1]:
+                                cursor = cursor.setdefault(part, {})
+                            if command == "JSON.MERGE":
+                                self._deep_merge(cursor.setdefault(parts[-1], {}), value)
+                            else:
+                                cursor[parts[-1]] = value
+                    else:
+                        raise AssertionError(command)
+            self.hash_store, self.json_store, self.lists = hashes, documents, lists
+            self.ttls.update({key: request["ttl"] for key in keys})
+            return 1
         if "local dead = cjson.decode(ARGV[1])" in script:
             targets_key = args[0]
             dead_ids = {str(actor_id) for actor_id in json.loads(args[1])}
@@ -231,6 +300,21 @@ class FakeRedisService:
     def __init__(self):
         self.redis_client = FakeRedisClient()
         self.json_module = JsonProxy(self.redis_client)
+
+
+async def commit(store, session_id, updates, logs, processed_count, **kwargs):
+    """Supply explicit lease/snapshot contract to transformation-only tests."""
+    return await store.commit_battle_results(
+        session_id,
+        updates,
+        logs,
+        processed_count,
+        owner="unit-worker",
+        expected_revision=0,
+        exchange_id="unit-exchange",
+        expected_actions=["action"] * processed_count,
+        **kwargs,
+    )
 
 
 @pytest.mark.asyncio
@@ -294,13 +378,14 @@ async def test_commit_battle_results_groups_logs_by_global_turn():
     redis = FakeRedisService()
     store = CombatSessionManager(redis)
 
-    await store.commit_battle_results(
+    await commit(
+        store,
         "c1",
         {},
         [{"global_turn": 1, "text": "first"}, {"global_turn": 1, "text": "second"}],
         0,
     )
-    await store.commit_battle_results("c1", {}, [{"global_turn": 2, "text": "third"}], 0)
+    await commit(store, "c1", {}, [{"global_turn": 2, "text": "third"}], 0)
 
     assert await store.get_logs_by_turn("c1") == {
         "1": ['{"global_turn": 1, "text": "first"}', '{"global_turn": 1, "text": "second"}'],
@@ -318,8 +403,8 @@ async def test_commit_battle_results_appends_logs_to_existing_global_turn():
     redis = FakeRedisService()
     store = CombatSessionManager(redis)
 
-    await store.commit_battle_results("c1", {}, [{"global_turn": 1, "text": "first"}], 0)
-    await store.commit_battle_results("c1", {}, [{"global_turn": 1, "text": "second"}], 0)
+    await commit(store, "c1", {}, [{"global_turn": 1, "text": "first"}], 0)
+    await commit(store, "c1", {}, [{"global_turn": 1, "text": "second"}], 0)
 
     assert await store.get_logs_by_turn("c1") == {
         "1": ['{"global_turn": 1, "text": "first"}', '{"global_turn": 1, "text": "second"}']
@@ -331,7 +416,7 @@ async def test_commit_battle_results_persists_meta_updates():
     redis = FakeRedisService()
     store = CombatSessionManager(redis)
 
-    await store.commit_battle_results("c1", {}, [], 0, meta_update={"step_counter": 3})
+    await commit(store, "c1", {}, [], 0, meta_update={"step_counter": 3})
 
     assert redis.redis_client.hash_store["combat:rbc:c1:meta"]["step_counter"] == 3
 
@@ -352,7 +437,8 @@ async def test_commit_battle_results_replaces_feints_instead_of_merging_stale_ha
         }
     }
 
-    await store.commit_battle_results(
+    await commit(
+        store,
         "c1",
         {
             "1": {
@@ -388,7 +474,8 @@ async def test_commit_battle_results_prunes_dead_targets_from_all_queues():
         "3": ["2", "1"],
     }
 
-    await store.commit_battle_results(
+    await commit(
+        store,
         "c1",
         {},
         [],
@@ -448,7 +535,7 @@ async def test_commit_battle_results_refreshes_session_ttl():
         "teams": json.dumps({"team_1": ["1"], "team_2": ["-1"]}),
     }
 
-    await store.commit_battle_results("c1", {}, [{"global_turn": 1, "text": "first"}], 0)
+    await commit(store, "c1", {}, [{"global_turn": 1, "text": "first"}], 0)
 
     assert redis.redis_client.ttls["combat:rbc:c1:meta"] == store.DEFAULT_TTL_SECONDS
     assert redis.redis_client.ttls["combat:rbc:c1:actor:1:moves"] == store.DEFAULT_TTL_SECONDS

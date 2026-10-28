@@ -1,5 +1,5 @@
-"""Rift API package."""
+"""Rift API factory; caller supplies the dev-route setting."""
 
-from src.backend.features.rift.api.router import router
+from .router import build_rift_router
 
-__all__ = ["router"]
+__all__ = ["build_rift_router"]

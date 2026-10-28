@@ -50,18 +50,26 @@ class CritStep(ResolverStep):
                 is_magic = True
                 break
 
+        skill_multiplier = 1.0
+        weapon_crit_chance = None
+        global_crit_chance = None
+        source = ctx.flags.meta.source_type
         if is_magic:
             my_crit_chance = atk.mods.magical_crit_chance
+            final_chance = my_crit_chance
+        elif source in {"main_hand", "off_hand"}:
+            weapon_crit_chance = getattr(atk.mods, f"{source}_crit_chance")
+            global_crit_chance = atk.mods.crit_chance
+            my_crit_chance = weapon_crit_chance + global_crit_chance
+            if ctx.flags.meta.weapon_class:
+                skill_key = f"skill_{ctx.flags.meta.weapon_class}"
+                skill_multiplier = 1.0 + getattr(atk.skills, skill_key, 0.0)
+            final_chance = weapon_crit_chance * skill_multiplier + global_crit_chance
         else:
             my_crit_chance = offensive_lookup.get_offensive_val(atk, ctx, "crit_chance")
-
-        skill_multiplier = 1.0
-        if ctx.flags.meta.weapon_class:
-            skill_key = f"skill_{ctx.flags.meta.weapon_class}"
-            skill_val = getattr(atk.skills, skill_key, 0.0)
-            skill_multiplier = 1.0 + skill_val
-
-        final_chance = my_crit_chance * skill_multiplier
+            final_chance = my_crit_chance
+        if not is_magic and source in {"main_hand", "off_hand"}:
+            final_chance += ctx.mods.tactical_crit_bonus
         crit_cap = offensive_lookup.get_offensive_val(atk, ctx, "crit_cap")
         final_chance = min(final_chance, crit_cap)
 
@@ -75,6 +83,8 @@ class CritStep(ResolverStep):
             base=my_crit_chance,
             cap=crit_cap,
             skill_mult=skill_multiplier,
+            weapon_base=weapon_crit_chance,
+            global_bonus=global_crit_chance,
         )
 
         if passed:
