@@ -60,3 +60,5 @@
 `inventory_app.py`, `templates/inventory.html`, `static/game/scenes/inventory/boot.js` и `chat-layout.js` — старый отдельный технический стенд сетки. Общий интерфейс открывается через `app.py`; старый resize-чата не подключать к нему обратно.
 
 Тесты находятся в `tests/game_ui_lab` корневого проекта; часть проверяет исторические pure modules из experiments/history. Команды — в [README](README.md). Положительный результат таких тестов не подтверждает текущую визуальную приёмку.
+
+Граница frontend/backend: [проверка стенда](docs/frontend-boundary-check.md). Lab — самостоятельный прототип будущего фронтенда; повторять текущий frontend src не требуется. Backend-код и алгоритмы здесь не реализуются: их ответы имитируются моками.
