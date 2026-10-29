@@ -6,7 +6,6 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.storage.redis import RedisStorage
 from codex_bot.engine.factory.bot_builder import BotBuilder
-from codex_bot.engine.protocols import ContainerProtocol
 from loguru import logger as log
 from redis.asyncio import Redis
 
@@ -14,11 +13,10 @@ from tg_bot.core.settings import CUSTOM_MIDDLEWARES
 
 if TYPE_CHECKING:
     from tg_bot.core.config import BotSettings
+    from tg_bot.core.container import BotContainer
 
 
-def build_bot(
-    settings: BotSettings, redis_client: Redis | None, container: ContainerProtocol
-) -> tuple[Bot, Dispatcher]:
+def build_bot(settings: BotSettings, redis_client: Redis | None, container: BotContainer) -> tuple[Bot, Dispatcher]:
     """
     Builds and configures Bot and Dispatcher using BotBuilder.
     """

@@ -15,6 +15,7 @@ Full layer changelogs live in:
 ## [Unreleased]
 
 - Telegram development notifications now receive signed GitHub events and update pull request cards in dedicated topics.
+- CI now checks patched locked dependencies without advisory exclusions and pins the Markdown linter runtime.
 
 ## [v0.5.1] - Alpha 0.5.1
 

@@ -15,6 +15,7 @@
 | R3 | Принимать push-события GitHub, без периодического опроса репозитория | done | pass (исполнитель, локально) |
 | R4 | Существующая отправка через feature-механизм, сохранив news media/edit/unpublish и личный UI | done | pass (исполнитель, локально) |
 | R5 | PR по repo+number обновляет своё сообщение opened → merged; ID хранится в Redis | done | partial: HTTP/модель pass; реальный Redis unverified |
+| R6 | Исправить фактические ошибки полного CI и подтвердить полный gate и новый remote run | done | pending: итог полного gate и remote CI |
 
 ## Первоначальный план
 
@@ -154,3 +155,21 @@
 ## Подготовка коммита
 
 Pre-commit обнаружил B104 для локального default и три синтетических строки теста: default изменён на127.0.0.1 (compose явно сохраняет0.0.0.0), false positives помечены точечными allowlist-комментариями. Независимый ревизор подтвердил отсутствие регрессии и реальных секретов. Повторный прогон ведущего после изменения:43passed1skipped,5.08s. Pip-audit проверял собственный cacheenv: только его certifi/filelock обновлены до2026.10.19/4.2.1; зависимости и hooks репозитория не менялись. Проверки не отключались. GitHub connector при create-tree вернул403 Resource not accessible by integration; публикация проверяется через штатный Git Credential Manager без извлечения токенов.
+
+## Исправление CI PR #5
+
+Пользователь сообщил о падении Full Quality and Docs и потребовал проверить причину. Продолжение той же задачи с независимым ревизором. Просмотр защиты веток временно отложен, настройки GitHub не менялись.
+
+R6: исправить фактические ошибки CI, воспроизвести полный gate в чистом окружении выбранной ветки и подтвердить результат новым GitHub Actions запуском. Не отключать проверки и не маскировать advisories. Минимальные исправления зависимостей и окружения hooks входят в устранение этого падения.
+
+Исходный запуск: head fb7436571b99e99486551ff8a3426e141e0b78aa, run40962702681/job123759317008. Документация прошла;2757tests passed,77.93% coverage. Упали полный Mypy (factory.py:65 ContainerProtocol.get_feature отсутствует), pip-audit hook (pip26.0.1) и repository audit (194 advisories в21пакете). Локальная узкая проверка не включала factory.py, а изменение только cacheenv не воспроизводилось на чистом CI.
+
+План: ведущий исправляет тип фабрики и запускает полный gate; исполнитель обновляет минимальные подтверждённые dependency constraints/lock и fresh-hook зависимости; ревизор проверяет исправления. Перед изменением типа локальный mypy factory.py воспроизвёл точный attr-defined failure.
+
+### Результат исправления CI
+
+Тип build_bot привязан к фактическому BotContainer; повторный mypy той же фабрики прошёл. Обновлены уязвимые прямые зависимости и минимальные transitive constraints с uv.lock; advisory ignores удалены. Pip-audit hook задаёт pip>=26.2 и прошёл из нового PRE_COMMIT_HOME. Markdownlint закреплён на стабильном Node24.19.0: автоматический выбор Node27 alpha ломал создание hook environment.
+
+Полный повторный запуск `uv run python tools/dev/check.py --ci` в собственной Python3.13.6 .venv этой рабочей копии завершился exit0, ALL CHECKS PASSED. Лог: telegram-full-quality-final.log в артефактах чата. Все hooks, полный mypy (1544 файлов), аудит без исключений, fixtures и docs прошли;2757 passed,1 skipped,8 warnings,coverage77.92%,105s. Локальный hadolint helper пропускает Docker-проверку при недоступном daemon; Linux CI остаётся обязательным подтверждением. Реальные Redis/nginx/Telegram и deploy по-прежнему не проверены. Независимый ревизор проверяет итог; следующий шаг — commit/push и новый GitHub Actions запуск.
+
+Независимая приёмка correction-среза: telegram_review подтвердил pass для push и повторного Linux CI, новых существенных дефектов и bypass проверок нет. Ревизор самостоятельно прочитал финальный лог и подтвердил полный набор проверок, тип фабрики, constraints/lock и Node pin. Linux CI pending.
