@@ -4,6 +4,9 @@ Detailed milestone history for the `src/backend` game runtime layer.
 
 ## [Unreleased]
 
+- The existing game bot routes GitHub and deployment notifications through discovered features while preserving news delivery.
+- CI audits use patched locked dependencies and recreate the pip-audit hook with a safe pip version, without advisory ignores.
+
 ## [v0.5.1] - Alpha 0.5.1
 
 - Removed legacy combat chat events and channel managers, routing combat messages to world/zone channels and combat notices directly to the player.

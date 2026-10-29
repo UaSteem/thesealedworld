@@ -6,7 +6,6 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.fsm.storage.redis import RedisStorage
 from codex_bot.engine.factory.bot_builder import BotBuilder
-from codex_bot.engine.protocols import ContainerProtocol
 from loguru import logger as log
 from redis.asyncio import Redis
 
@@ -14,11 +13,10 @@ from tg_bot.core.settings import CUSTOM_MIDDLEWARES
 
 if TYPE_CHECKING:
     from tg_bot.core.config import BotSettings
+    from tg_bot.core.container import BotContainer
 
 
-def build_bot(
-    settings: BotSettings, redis_client: Redis | None, container: ContainerProtocol
-) -> tuple[Bot, Dispatcher]:
+def build_bot(settings: BotSettings, redis_client: Redis | None, container: BotContainer) -> tuple[Bot, Dispatcher]:
     """
     Builds and configures Bot and Dispatcher using BotBuilder.
     """
@@ -59,5 +57,11 @@ def build_bot(
         for router in discovery.collect_aiogram_routers():
             dp.include_router(router)
             log.bind(router_name=router.name).info("BotFactoryAiogramRouterIncluded")
+
+    # This feature shares the runner's event loop and the existing Bot instance.
+    # Container shutdown also calls shutdown (which is idempotent).
+    notifications = container.get_feature("github_notifications")
+    dp.startup.register(notifications.startup)
+    dp.shutdown.register(notifications.shutdown)
 
     return bot, dp

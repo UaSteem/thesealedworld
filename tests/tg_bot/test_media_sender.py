@@ -6,7 +6,7 @@ from typing import Any
 import pytest
 from aiogram.exceptions import TelegramBadRequest
 
-from src.tg_bot.sender.media_sender import TelegramMediaSender
+from src.tg_bot.features.telegram.delivery.media_sender import TelegramMediaSender
 
 
 @dataclass
@@ -23,9 +23,7 @@ class FakeManager:
     async def get_coords(self, session_key: int | str, is_channel: bool = False) -> dict[str, int]:
         return dict(self.coords)
 
-    async def update_coords(
-        self, session_key: int | str, coords: dict[str, int], is_channel: bool = False
-    ) -> None:
+    async def update_coords(self, session_key: int | str, coords: dict[str, int], is_channel: bool = False) -> None:
         self.updates.append((session_key, dict(coords), is_channel))
         self.coords.update(coords)
 
