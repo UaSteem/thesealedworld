@@ -1,0 +1,108 @@
+/* Independent two-column layout, using the shared runtime theme contract. */
+* { box-sizing:border-box; }
+html,body { margin:0;height:100%; }
+body { color:var(--col-text-primary);background:var(--col-bg-base);font:14px/1.5 var(--font-ui); }
+button,input { font:inherit;color:inherit; }
+button { cursor:pointer; }
+button:focus-visible,input:focus-visible,summary:focus-visible,.chat-divider:focus-visible { outline:2px solid var(--col-accent);outline-offset:3px; }
+.page-header { height:64px;margin:0 24px;display:flex;align-items:center;gap:32px;border-bottom:1px solid var(--col-border); }
+.wordmark { color:var(--col-text-world);font:28px var(--font-world);text-decoration:none;white-space:nowrap; }
+.wordmark span { color:var(--col-accent); }
+.wordmark small { font:9px var(--font-ui);letter-spacing:2px;margin-left:12px;color:var(--col-accent); }
+.page-header p { font-size:13px;margin:0; }
+.page-header p span,.local-mark { color:var(--col-text-dim); }
+.local-mark { margin-left:auto;font-size:11px; }
+.demo-controls { display:flex;align-items:center;gap:8px;margin-left:auto;white-space:nowrap;font-size:11px; }
+.demo-controls select,.demo-controls button { background:var(--col-bg-darker);border:1px solid var(--col-border);color:var(--col-text-primary);border-radius:4px;padding:7px 9px; }
+.demo-controls button { color:var(--col-accent); }
+.demo-controls button:disabled { opacity:.5;cursor:wait; }
+.demo-controls + .local-mark { margin-left:0; }
+.workspace { padding:16px 24px 24px;height:calc(100dvh - 64px);min-height:0; }
+.game-frame { height:100%;display:grid;grid-template-columns:clamp(320px,23vw,420px) minmax(0,1fr);border:1px solid var(--col-border-strong);overflow:hidden; }
+.character-panel { min-height:0;scrollbar-width:thin; }
+.play-column { min-width:0;min-height:0;display:flex;flex-direction:column;border-left:1px solid var(--col-border); }
+.stage-heading { height:32px;flex:none;padding:4px 16px;display:flex;align-items:center;justify-content:space-between;background:var(--col-bg-surface);border-bottom:1px solid var(--col-border-strong); }
+.stage-heading p { color:var(--col-accent);font-size:9px;letter-spacing:1px;margin:0; }
+.stage-heading h2 { font:17px/1.2 var(--font-world);margin:0; }
+.stage-heading p { display:none; }
+.stage-heading>span { color:var(--col-text-dim);font-size:10px;letter-spacing:2px; }
+.scene-split { flex:1;min-height:0;display:grid;grid-template-rows:minmax(0,1fr) 8px var(--chat-height,17.5%); }
+.stage-shell { grid-row:1;grid-column:1;min-width:0;min-height:0;position:relative;overflow:hidden;background:#111824 url('/static/images/rift/void_interworld_bg_v3.webp') center/cover no-repeat; }
+.actor-details { position:absolute;left:16px;top:14px;width:clamp(160px,10vw,196px);max-height:calc(100% - 28px);overflow:auto;padding:12px;color:var(--col-text-world);background:var(--col-bg-darker);border:1px solid var(--col-border-strong);box-shadow:0 8px 24px #0008;pointer-events:auto; }
+.actor-details small { display:block;color:var(--col-accent);font-size:10px;letter-spacing:1px; }
+.actor-details h3 { font:22px/1.2 var(--font-world);margin:8px 0 12px; }
+.actor-details dl { margin:0;padding:10px 0;border-top:1px solid var(--col-border); }
+.actor-details dl div { display:flex;justify-content:space-between;gap:8px;font-size:12px;margin:6px 0; }
+.actor-details dd { margin:0;color:var(--col-accent); }
+.actor-details p { font-size:12px;color:var(--col-text-dim); }
+.actor-details button { width:100%;padding:7px;background:var(--col-bg-surface);border:1px solid var(--col-border);font-size:11px;color:var(--col-accent); }
+#combat-stage { position:absolute;inset:0; }
+#combat-stage canvas { display:block; }
+.game-client-error { position:absolute;inset:20px auto auto 20px;max-width:420px;padding:16px;color:var(--col-text-primary);background:var(--col-bg-surface);border:1px solid var(--col-border-strong); }
+.game-client-loading { position:absolute;inset:0;z-index:3;display:grid;place-content:center;background:var(--col-bg-surface);color:var(--col-text-world);font:22px var(--font-world); }
+.game-client-loading[hidden],.projection-switch[hidden] { display:none; }
+#game-viewport #inventory-close { width:24px;height:24px;font-size:20px; }
+.chat-divider { grid-row:2;grid-column:1;cursor:row-resize;touch-action:none;background:var(--col-bg-base);position:relative; }
+.chat-divider::after { content:'';position:absolute;width:50px;height:2px;left:calc(50% - 25px);top:3px;background:var(--col-border-strong); }
+.chat-divider:hover { background:var(--col-bg-surface-light); }
+.is-chat-resizing { cursor:row-resize;user-select:none; }
+.chat { grid-row:3;grid-column:1;min-height:0;display:flex;flex-direction:column;background:var(--col-bg-surface);overflow:hidden; }
+.chat-heading { height:40px;min-height:40px;display:flex;align-items:center;gap:16px;padding:0 20px;border-bottom:1px solid var(--col-border); }
+.chat-tabs { display:flex;align-items:stretch;gap:20px;align-self:stretch; }
+.chat-heading button { border:0;background:none;font-size:11px;padding:0;white-space:nowrap; }
+.chat-tabs button { position:relative; }
+.chat-tabs button.is-active { color:var(--col-accent); }
+.chat-tabs button.is-active::after { content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--col-accent); }
+.chat-mock-label { font-size:10px;color:var(--col-text-dim);margin-left:auto; }
+.chat-content { display:flex;flex-direction:column;min-height:0;flex:1;padding:8px 20px 12px; }
+.chat-messages { min-height:0;flex:1;overflow:auto;font-size:13px; }
+.chat-messages p { margin:4px 0;display:flex;gap:12px;overflow-wrap:anywhere; }
+.chat-messages time { color:var(--col-text-dim);font-size:10px;flex:none;padding-top:4px; }
+.chat-messages b { color:var(--col-accent);font-weight:500;flex:none; }
+.chat form { display:flex;gap:12px;margin-top:8px; }
+.chat input { flex:1;min-width:0;background:var(--col-bg-darker);border:1px solid var(--col-border);padding:8px 10px;border-radius:4px; }
+.chat form button { background:var(--col-bg-darker);border:1px solid var(--col-border);padding:0 12px;border-radius:4px;color:rgb(var(--theme-action-rgb)); }
+.chat.is-collapsed .chat-content { display:none; }
+.scene-split.is-chat-collapsed { grid-template-rows:minmax(0,1fr) 0 40px; }
+.sr-only { position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0; }
+
+.actor-details[hidden] { display:none; }
+
+.projection-switch { display:flex;gap:4px; }
+.projection-switch button,.projection-switch a { background:var(--col-bg-darker);border:1px solid var(--col-border);padding:2px 9px;font-size:11px; }
+.projection-switch button[aria-pressed="true"],.projection-switch a[aria-current="page"] { color:var(--col-accent);border-color:var(--col-accent); }
+
+/* Compact inspection card keeps the upper-left corner clear of the field. */
+.actor-details h3 { font-size:20px;margin:6px 0 8px; }
+.actor-details dl { padding:6px 0; }
+.actor-details dl div { margin:4px 0; }
+.actor-details p { font-size:11px;line-height:1.4;margin:8px 0 0; }
+
+/* Width is constrained; height always follows the available browser viewport. */
+:root { --game-chrome-height:60px;--game-header-height:40px; }
+body { display:block;overflow:hidden; }
+.page-header { width:100%;height:var(--game-header-height);margin:0;padding:0 24px; }
+.game-viewport { width:1920px;height:var(--game-logical-height,calc(100dvh - 60px));margin-inline:auto;zoom:var(--game-ui-scale,1); }
+.workspace { height:100%;padding:0; }
+.game-frame { grid-template-columns:320px minmax(0,1fr); }
+.actor-details { width:196px; }
+
+.actor-details { max-height:min(380px,calc(100% - 28px));scrollbar-width:thin; }
+.actor-details .actor-damage { color:var(--col-text-world);font-weight:600; }
+.actor-details .actor-damage dd { color:#ffb28c; }
+.actor-details details { margin-top:8px;border-top:1px solid var(--col-border); }
+.actor-details summary { padding:7px 0 0;cursor:pointer;font-size:12px;color:var(--col-accent); }
+.actor-details details dl { border-top:0; }
+
+/* Scrollable inspection card, without a native scrollbar in the game UI. */
+.actor-details { scrollbar-width:none; }
+.actor-details::-webkit-scrollbar { display:none;width:0;height:0; }
+
+.projection-switch a { text-decoration:none;line-height:normal;display:inline-flex;align-items:center; }
+
+/* Lab-only scene navigation uses the existing heading, without extra shell rows. */
+.draft-nav { display:flex;gap:5px;margin-left:auto;margin-right:12px; }
+.draft-nav button { font-size:12px;padding:1px 8px;background:var(--col-bg-darker);border:1px solid var(--col-border); }
+.draft-nav button[aria-pressed="true"] { color:var(--col-accent);border-color:var(--col-accent); }
+body:not([data-game-screen="combat"]) .stage-shell { background:var(--col-bg-base); }
+body:not([data-game-screen="combat"]) .stage-shell>div:not(#combat-stage) { visibility:hidden; }

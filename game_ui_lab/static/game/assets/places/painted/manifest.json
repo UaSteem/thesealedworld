@@ -1,0 +1,58 @@
+{
+  "style": "painted-medieval-fantasy",
+  "runtime_width": 1920,
+  "webp_quality": 86,
+  "webp_method": 6,
+  "images": [
+    {
+      "file": "administrative-quarter.webp",
+      "width": 1920,
+      "height": 1071,
+      "bytes": 336418,
+      "sha256": "e85c8dce8f7b63a2b367c91beb7b508305234a5a323cf8ec14a2d0d7f594abf0",
+      "source_master": "administrative-quarter.jpg",
+      "source_sha256": "92557ab9b0a13c12acce39a791105a420c0d4b44373a77abfd5e0306054095a0",
+      "source_bytes": 4880413
+    },
+    {
+      "file": "arena-hall.webp",
+      "width": 1920,
+      "height": 1071,
+      "bytes": 233424,
+      "sha256": "6593c01488c6fa7e3ea40b8e4f93b5348a28a210f5a2b84632a7e5b47b452ab3",
+      "source_master": "arena-hall.jpg",
+      "source_sha256": "db739f5c27c5e8b789e5caeaab11f85656235415e3b42467b789b1e5c9c32f00",
+      "source_bytes": 3941587
+    },
+    {
+      "file": "trading-quarter.webp",
+      "width": 1920,
+      "height": 1071,
+      "bytes": 316690,
+      "sha256": "5d0fc5b9049dc4cbcd70178f5ea73b490abb395808885331c1d1589e1f2d8f26",
+      "source_master": "trading-quarter.jpg",
+      "source_sha256": "cb367d989825a674f6d775ec1ed916dece60022da77484a9a00aede04cf116d2",
+      "source_bytes": 4684884
+    },
+    {
+      "file": "crafting-quarter.webp",
+      "width": 1920,
+      "height": 1071,
+      "bytes": 379174,
+      "sha256": "6c502404db81767b04495f098a929dd59df6d2be36e9fcd1669caac315ceec0c",
+      "source_master": "crafting-quarter.jpg",
+      "source_sha256": "93b62f8612be4f70c5a6f21928140d43f0b0d5ef6c00f446ba8eb4134bccddff",
+      "source_bytes": 5034021
+    },
+    {
+      "file": "residential-quarter.webp",
+      "width": 1920,
+      "height": 1071,
+      "bytes": 316462,
+      "sha256": "4248409b86eb66951cc4181f9018478a0c3042c5cbc18fe49070e6a4fa427f11",
+      "source_master": "residential-quarter.jpg",
+      "source_sha256": "3645f6adde4605799366f63e01ae33b04b3e1dcc2271a9045a0db962b0f745cf",
+      "source_bytes": 4695881
+    }
+  ]
+}

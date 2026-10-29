@@ -1,0 +1,22 @@
+/* Inventory-specific geometry; shared character/chat CSS remains the shell owner. */
+#inventory-stage { position:absolute;inset:0; }
+#inventory-stage canvas { display:block; }
+#inventory-stage canvas[hidden] { display:none; }
+#inventory-stage canvas:focus,#inventory-stage canvas:focus-visible { outline:none; }
+.inventory-heading { height:50px;padding:8px 24px; }
+.inventory-heading h2 { font-size:26px; }
+#inventory-close { width:32px;height:32px;padding:0;border:1px solid var(--col-border);border-radius:4px;background:var(--col-bg-darker);color:var(--col-text-dim);font-size:24px;line-height:1; }
+#inventory-close:hover { color:var(--col-accent);border-color:var(--col-accent); }
+.inventory-closed-note { position:absolute;inset:0;display:grid;place-content:center;color:var(--col-text-dim);font-size:14px; }
+.inventory-closed-note[hidden] { display:none; }
+body[data-game-screen="inventory"] .stage-shell { background:var(--col-bg-base); }
+.inventory-character-belt { margin:12px 0 8px; }
+.inventory-belt-label { display:block;margin-bottom:6px;font-size:11px;color:var(--col-text-dim); }
+.inventory-belt-slots { display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:4px; }
+.inventory-belt-slots button { aspect-ratio:1;min-width:0;padding:4px;display:flex;align-items:flex-start;justify-content:flex-start;border:1px solid var(--col-border);border-radius:4px;background:var(--col-bg-darker);color:var(--col-text-dim);font-size:9px;cursor:default;opacity:1; }
+/* The last canvas frame stays intact behind an inventory-only resize state. */
+.inventory-resize-overlay { pointer-events:none;display:none;position:absolute;inset:0;z-index:2;place-content:center;justify-items:center;gap:12px;text-align:center;padding:24px;background:radial-gradient(ellipse at 50% 38%,var(--col-bg-surface-light),transparent 60%),linear-gradient(145deg,var(--col-bg-surface),var(--col-bg-base));color:var(--col-text-primary); }
+.inventory-resize-overlay img { width:64px;height:64px;margin-bottom:8px;padding:12px;box-sizing:content-box;border:1px solid var(--col-accent-dim);border-radius:50%;background:var(--col-membrane);box-shadow:var(--shadow-accent); }
+.inventory-resize-overlay strong { font:28px/1.2 var(--font-world);color:var(--col-accent);font-weight:500; }
+.inventory-resize-overlay span { font:12px/1.5 var(--font-ui);color:var(--col-text-dim); }
+body.is-chat-resizing [data-inventory-open="true"] .inventory-resize-overlay { display:grid; }

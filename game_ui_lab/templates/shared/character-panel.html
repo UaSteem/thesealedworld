@@ -1,0 +1,32 @@
+<aside class="character-rail character-panel" aria-label="Персонаж" data-character-name="{{ character.name }}">
+  <header class="cp-heading"><span>Персонаж</span><span class="cp-badge" title="Локальная сборка стартового слепка, без игровой базы">Слепок T0</span></header>
+  <div class="cp-identity"><h1>{{ character.name }}</h1><span id="character-floor">Макет</span></div>
+  <p class="cp-build">{{ character.title }}</p>
+  <div class="cp-vitals" aria-label="Ресурсы стартового персонажа">
+    {% for label, key, variant in [('HP', 'hp', 'hp'), ('EN', 'energy', 'energy'), ('CONC', 'stamina', 'stamina')] %}
+    <div class="cp-vital cp-vital--{{ variant }}"><span>{{ label }}</span><meter min="0" max="{{ character['max_' ~ key] }}" value="{{ character[key] }}" aria-label="{{ label }}">{{ character[key] }} / {{ character['max_' ~ key] }}</meter><b>{{ character[key] }} / {{ character['max_' ~ key] }}</b></div>
+    {% endfor %}
+  </div>
+  <section class="cp-loadout" aria-label="Надетые предметы">
+    <figure class="cp-avatar"><img src="{{ character.avatar_url }}" alt="{{ character.name }} — демонстрационный аватар" width="1024" height="1024"></figure>
+    {% for slot in character.equipment %}
+    <button type="button" class="cp-slot{% if slot['items'] %} is-equipped{% endif %}" data-slot="{{ slot.slot_id }}" style="--slot-column:{{ slot.column }};--slot-row:{{ slot.row }}" aria-label="{{ slot.label }}: {{ slot['items'] | join(' / ') if slot['items'] else 'Пусто' }}" title="{{ slot.label }}: {{ slot['items'] | join(' / ') if slot['items'] else 'Пусто' }}">
+      <img src="/static/images/ui/inventory-gear/{{ slot.icon }}.svg" alt="" width="26" height="26"><span>{{ slot.label }}</span>
+    </button>
+    {% endfor %}
+  </section>
+  <section class="cp-power" aria-label="Сила персонажа"><span>Сила персонажа</span><strong title="Рейтинг GS стартового слепка">{{ character.gear_score | round(1) }} <small>GS</small></strong></section>
+  <div class="cp-bag"><span>Инвентарь</span><button type="button" disabled title="Макет — окно инвентаря пока не подключено">Инвентарь ↗</button></div>
+  <details class="cp-section"><summary>Атрибуты</summary><div class="cp-attributes">
+    {% for group, entries in [('Тело', [('strength','СИЛ'),('agility','ЛОВ'),('endurance','ВЫН')]), ('Разум', [('intellect','ИНТ'),('memory','ПАМ'),('mental','МЕН')]), ('Чувства', [('perception','ВОС'),('projection','ПРО'),('prediction','ПРД')])] %}
+    <div><h2>{{ group }}</h2><dl>{% for key,label in entries %}<div><dt>{{ label }}</dt><dd>{{ character.attributes[key] }}</dd></div>{% endfor %}</dl></div>
+    {% endfor %}
+  </div></details>
+  <details class="cp-section"><summary>Навыки</summary><dl class="cp-skills">
+    {% for key, label in [('skill_swords','Мечи'), ('skill_shield_mastery','Владение щитом'), ('skill_medium_armor','Средняя броня')] %}
+    {% if key in character.skills %}<div><dt>{{ label }}</dt><dd>{{ (character.skills[key].xp * 100) | round(1) }}%</dd></div>{% endif %}
+    {% endfor %}
+  </dl></details>
+  <details class="cp-section"><summary>Модификаторы</summary><p>В этом превью активные модификаторы не заданы.</p></details>
+  <p class="cp-note">{{ character.imprint_key }}<br>Стартовые данные локальны. Аватар демонстрационный.</p>
+</aside>

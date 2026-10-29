@@ -1,0 +1,166 @@
+{
+  "purpose": "Active frozen-map renderer assets; no Rift Lab dependency at runtime",
+  "files": [
+    {
+      "path": "concepts/forest-colormatched/forest-a.png",
+      "source": "rift_lab/static/concepts/forest-colormatched/forest-a.png",
+      "sha256": "571b211d6ef856ade8983c724b29f6f5a777792aedabfb3b7bd72d93025c5133",
+      "source_sha256": "7a328520fe798af37952bf0734b0feb3466e1217700a080e201631994c6d85c0",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-colormatched/forest-b.png",
+      "source": "rift_lab/static/concepts/forest-colormatched/forest-b.png",
+      "sha256": "88fa57992644a0f45b7ac1abe98ffe9a03a24e6913df8882f867f1d38a9293c0",
+      "source_sha256": "6c0354e802919ebda58aa98157ec3f5511172af52bf6a7fd218568e4f079a237",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-colormatched/forest-c.png",
+      "source": "rift_lab/static/concepts/forest-colormatched/forest-c.png",
+      "sha256": "667aa89855971f5f978134a9da902b59a31fe1e0168e99c2a1c600cacd2fec35",
+      "source_sha256": "1c56f1845e25af395a49ffc78e72a7c41587ab327f3b89edac5dfd980d2e90d8",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-colormatched/forest-d.png",
+      "source": "rift_lab/static/concepts/forest-colormatched/forest-d.png",
+      "sha256": "80056ac48b4345b4bc094360dda7cd59d55338acd552748e37a366ce19d3e0de",
+      "source_sha256": "9ece5d8c2178fa73b872acfd45d54646d214659629f19900e7af59885c668257",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-colormatched/forest-e.png",
+      "source": "rift_lab/static/concepts/forest-colormatched/forest-e.png",
+      "sha256": "fbd13556da8416ae8381210dd915d7a709a6a3c99cb3dbd08daa839d89b2b46b",
+      "source_sha256": "273777bdce14376144f6c2d48711ae521533086c14315fc87b2f6417b76ecbf1",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-colormatched/forest-f.png",
+      "source": "rift_lab/static/concepts/forest-colormatched/forest-f.png",
+      "sha256": "bdf89f1485cf648d0f6246084f5dfd94d5afbf65eb54dfba2f255e92172de67e",
+      "source_sha256": "08af884780c0c499d0c2b4bd973204bd77717d6c0c03599670706466a6b3ed69",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-colormatched/forest-g.png",
+      "source": "rift_lab/static/concepts/forest-colormatched/forest-g.png",
+      "sha256": "a0ff46952e1d4058fd1a09b0c54275e1cab0e15028f47ddce34a86b9b8843c82",
+      "source_sha256": "c0fdee1092cb534867511c03e315468203acc70d14566031523fc7e14fede13b",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-colormatched/forest-h.png",
+      "source": "rift_lab/static/concepts/forest-colormatched/forest-h.png",
+      "sha256": "22ff4e004b4da8aeb0ac61c3404b89a3bd55fda0391e13431a2df6609e52943d",
+      "source_sha256": "ffa1ff2228a2634f8611523eb15b95bdcfb32c35741c0fd295892495fcc079b7",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-colormatched/forest-i.png",
+      "source": "rift_lab/static/concepts/forest-colormatched/forest-i.png",
+      "sha256": "8a4cfa8c0dce2d23d14c06006e88ccc2a465109620d3edffd33ddc6d57f58665",
+      "source_sha256": "d4b7b7381825a294d31e97fc97d56ae26330a2e2612caee1bb746c8c553ba5ab",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-colormatched/forest-j.png",
+      "source": "rift_lab/static/concepts/forest-colormatched/forest-j.png",
+      "sha256": "e13d8b5993f32b09022b2a18a716794bccc77c27ca941f59c05f4a6f069c3b97",
+      "source_sha256": "fe7bc226cd0878aeac3c8855943c0e98c7cf144d778f78f4da219494983bd3c8",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-ground-four/ground-00-empty.png",
+      "source": "rift_lab/static/concepts/forest-ground-four/ground-00-empty.png",
+      "sha256": "38a964ba48c68d398a7b1d7f336801e202e49c440ed572480d609730c2ab4ec9",
+      "source_sha256": "1a49e055e35880eee1453468a547cc34a63dc571ea36bb3a2fded2caeaf7d362",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-ground-four/ground-01-scatter.png",
+      "source": "rift_lab/static/concepts/forest-ground-four/ground-01-scatter.png",
+      "sha256": "43f2fe75840347ca850d3a6507860e6440ce7427535bba8d99c03d6c3fab7dc8",
+      "source_sha256": "9a7d4d2a5b3a47605dc4320b6de78681992c76a8f60ab25f851306306f7b532b",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-ground-four/ground-02-scatter.png",
+      "source": "rift_lab/static/concepts/forest-ground-four/ground-02-scatter.png",
+      "sha256": "a93306b962e264d760d2d8ff7fdf8ae5eef6116afac85e6b1c6aac8a57d239f3",
+      "source_sha256": "96b76f56f00978012bae2daf618b1bc9d947e63c55f89dd1156e01ec10f7aab1",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-ground-four/ground-03-scatter.png",
+      "source": "rift_lab/static/concepts/forest-ground-four/ground-03-scatter.png",
+      "sha256": "a1a8611739e3cbf14554327489dafc7d3b5232141dbe0c230928c604103cd97c",
+      "source_sha256": "2fd43461bc202efb8533e2cc8ebcc57c21367734f4d9848ddcca92545db62837",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-landscape/cave-rock-soft.png",
+      "source": "rift_lab/static/concepts/forest-landscape/cave-rock-soft.png",
+      "sha256": "dcdc109f417abcf479d07f33feade80365a2d8e9b912dd6a08dd38495cd5142f",
+      "source_sha256": "369fc2147118fb92574fae5b78a2897a56bbb5149aa36b13ea93864a0ab4c0b7",
+      "dimensions": [
+        1024,
+        1024
+      ]
+    },
+    {
+      "path": "concepts/forest-poisson/working-512/tree_11.png",
+      "source": "rift_lab/static/concepts/forest-poisson/working-512/tree_11.png",
+      "sha256": "007f50343eb070dcbe7d86af88fe932a21194255c6d4172ad335775a54df89b6",
+      "source_sha256": "007f50343eb070dcbe7d86af88fe932a21194255c6d4172ad335775a54df89b6",
+      "dimensions": [
+        512,
+        512
+      ]
+    }
+  ],
+  "processing": "Proportional Lanczos downscale to maximum 1024px; textures below limit unchanged. Renderer placement uses original reference coordinates."
+}

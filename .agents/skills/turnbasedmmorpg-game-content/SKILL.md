@@ -7,6 +7,8 @@ description: Item, monster, character skill catalog, generation, and lore contra
 
 Keep item, monster and character skill definitions in their owning catalogs/resources and preserve IDs and runtime/API/UI surfaces. Lore, balance and visual intent require project creative guidance when unresolved. Monsters owns encounter orders/readiness/instance orchestration; Combat owns battle execution.
 
+Before adding or retaining a workaround as the chosen design, follow [the workaround decision rule](../turnbasedmmorpg-project/references/compatibility-decisions.md); it also covers assets, rendering, prototypes and labs. Discuss an unresolved bypass before implementing it; do not re-approve an already explicit owner choice.
+
 ## Choose the route
 
 - **Use this domain from a caller or adjacent domain:** read [Consumer contract](references/contract.md). Stay within supported entry points and handle documented limits/errors.

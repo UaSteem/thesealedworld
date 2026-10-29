@@ -1,0 +1,13 @@
+<button type="button" class="player-hud" data-character-tab="inventory" aria-label="Открыть персонажа" aria-expanded="false" aria-controls="character-window">
+  <img class="player-hud-avatar" src="{{ character.avatar_url }}" alt="">
+  <span class="player-hud-info"><strong>{{ character.name }}</strong>
+    {% for label, key, variant in [('HP','hp','hp'),('EN','energy','energy'),('STA','stamina','stamina')] %}
+    <span class="player-hud-resource cp-vital--{{ variant }}"><span>{{ label }}</span><span class="player-hud-track"><span style="width:{{ (character[key] / character['max_' ~ key] * 100) | round }}%"></span></span><b>{{ character[key] }}/{{ character['max_' ~ key] }}</b></span>
+    {% endfor %}
+  </span>
+</button>
+<nav class="player-menu" aria-label="Игровое меню">
+  <button type="button" data-character-tab="inventory">Персонаж</button>
+  <button type="button" data-character-tab="Квесты">Квесты</button>
+  <button type="button" data-character-tab="Настройки">Настройки</button>
+</nav>

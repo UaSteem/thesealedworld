@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "revision": "lab-working-v1",
+  "quality": "original-masters-currently-used-at-runtime",
+  "assets": [
+    {
+      "key": "duel-circle-rune-cutout",
+      "group": "combat-core",
+      "type": "image",
+      "url": "/ui-static/game/assets/combat/circle/duel-circle-v3.png",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 565095,
+      "sha256": "b33e8ce73ca5a61a61f5297e47b75fff7028509876d6a7526e0658898d090556"
+    },
+    {
+      "key": "broken-hexes",
+      "group": "combat-core",
+      "type": "image",
+      "url": "/ui-static/game/assets/combat/terrain/broken-hexes-v1.png",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 1316225,
+      "sha256": "40adbc719be485a419066a2d678aa279655de70f80f870e743af678e0473200d"
+    },
+    {
+      "key": "hex-three-frames",
+      "group": "combat-core",
+      "type": "image",
+      "url": "/ui-static/game/assets/combat/frames/character-frames-v1.png",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 2324988,
+      "sha256": "cb10cbd3c788087e43963e26f8dbd6abcde3b4693c3dfc10c8c1b813293ae2d4"
+    },
+    {
+      "key": "control-zone-low-wide-v3",
+      "group": "combat-controls",
+      "type": "image",
+      "url": "/ui-static/game/assets/combat/ui/control-zone-v3.png",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 856149,
+      "sha256": "dbe6a65e6eac268149700a88a71a4ffbf119b41a571fc89722bf089b988af86a"
+    },
+    {
+      "key": "target-inspector-v1",
+      "group": "combat-inspector",
+      "type": "image",
+      "url": "/ui-static/game/assets/combat/ui/target-inspector-v1.png",
+      "width": 2048,
+      "height": 2048,
+      "bytes": 2315950,
+      "sha256": "53cdb10ad6454f31d7a62503695e7dee3ac9593ba7b57a882ace6a7c20d16756"
+    }
+  ]
+}

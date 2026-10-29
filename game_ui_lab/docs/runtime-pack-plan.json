@@ -1,0 +1,285 @@
+{
+  "status": "proposal-not-applied",
+  "masters_preserved": true,
+  "groups": [
+    {
+      "id": "battle-terrain",
+      "source": "game_ui_lab/static/game/assets/combat/terrain/broken-hexes-v1.png",
+      "frames": [
+        {
+          "name": "two-thirds",
+          "source_rect": [
+            0,
+            0,
+            1024,
+            1024
+          ],
+          "target_size": [
+            512,
+            512
+          ],
+          "source_pivot": [
+            512,
+            512
+          ],
+          "source_hex_radius": 450,
+          "target_hex_radius": 225
+        },
+        {
+          "name": "half",
+          "source_rect": [
+            1024,
+            0,
+            1024,
+            1024
+          ],
+          "target_size": [
+            512,
+            512
+          ],
+          "source_pivot": [
+            512,
+            512
+          ],
+          "source_hex_radius": 450,
+          "target_hex_radius": 225
+        },
+        {
+          "name": "third",
+          "source_rect": [
+            0,
+            1024,
+            1024,
+            1024
+          ],
+          "target_size": [
+            512,
+            512
+          ],
+          "source_pivot": [
+            512,
+            512
+          ],
+          "source_hex_radius": 450,
+          "target_hex_radius": 225
+        },
+        {
+          "name": "whole",
+          "source_rect": [
+            1024,
+            1024,
+            1024,
+            1024
+          ],
+          "target_size": [
+            512,
+            512
+          ],
+          "source_pivot": [
+            512,
+            512
+          ],
+          "source_hex_radius": 450,
+          "target_hex_radius": 225
+        }
+      ],
+      "candidate_atlas_size": [
+        1024,
+        1024
+      ],
+      "rgba_bytes_before": 16777216,
+      "rgba_bytes_after": 4194304
+    },
+    {
+      "id": "battle-frames",
+      "source": "game_ui_lab/static/game/assets/combat/frames/character-frames-v1.png",
+      "frames": [
+        {
+          "name": "player",
+          "source_rect": [
+            94,
+            148,
+            836,
+            729
+          ],
+          "target_width": 512
+        },
+        {
+          "name": "monster",
+          "source_rect": [
+            1110,
+            124,
+            852,
+            772
+          ],
+          "target_width": 512
+        },
+        {
+          "name": "boss",
+          "source_rect": [
+            39,
+            1121,
+            946,
+            822
+          ],
+          "target_width": 640
+        }
+      ],
+      "atlas_size": "determine by packer with extrusion",
+      "geometry": "normalize resourceProfiles relative to original frame before repacking"
+    },
+    {
+      "id": "battle-controls",
+      "source": "game_ui_lab/static/game/assets/combat/ui/control-zone-v3.png",
+      "frames": [
+        {
+          "name": "frame",
+          "source_rect": [
+            52,
+            330,
+            920,
+            350
+          ],
+          "target_width": 920
+        },
+        {
+          "name": "plate",
+          "source_rect": [
+            1076,
+            394,
+            920,
+            286
+          ],
+          "target_width": 920
+        },
+        {
+          "name": "feint",
+          "source_rect": [
+            92,
+            1290,
+            840,
+            106
+          ],
+          "target_width": 640
+        },
+        {
+          "name": "attack",
+          "source_rect": [
+            92,
+            1580,
+            840,
+            116
+          ],
+          "target_width": 640
+        },
+        {
+          "name": "slot",
+          "source_rect": [
+            1216,
+            1216,
+            640,
+            640
+          ],
+          "target_width": 128
+        }
+      ]
+    },
+    {
+      "id": "battle-inspector",
+      "source": "game_ui_lab/static/game/assets/combat/ui/target-inspector-v1.png",
+      "frames": [
+        {
+          "name": "panel",
+          "source_rect": [
+            1219,
+            25,
+            553,
+            975
+          ],
+          "target_width": 553
+        },
+        {
+          "name": "row",
+          "source_rect": [
+            22,
+            1228,
+            980,
+            125
+          ],
+          "target_width": 512
+        },
+        {
+          "name": "attack",
+          "source_rect": [
+            26,
+            1702,
+            302,
+            304
+          ],
+          "target_width": 128
+        },
+        {
+          "name": "wait",
+          "source_rect": [
+            361,
+            1702,
+            303,
+            304
+          ],
+          "target_width": 128
+        },
+        {
+          "name": "defend",
+          "source_rect": [
+            696,
+            1702,
+            302,
+            304
+          ],
+          "target_width": 128
+        }
+      ]
+    },
+    {
+      "id": "battle-circle",
+      "source": "game_ui_lab/static/game/assets/combat/circle/duel-circle-v3.png",
+      "target_width": 1024,
+      "note": "Do not downscale; higher-resolution master desirable for DPR2"
+    },
+    {
+      "id": "battle-background",
+      "source": "src/frontend/static/images/rift/void_interworld_bg_v3.webp",
+      "candidate_widths": [
+        2048,
+        3072,
+        5376
+      ],
+      "selection": "physical composited layer dimensions including overscan; choose one tier"
+    },
+    {
+      "id": "portraits",
+      "status": "future assets",
+      "selection": "visible participants and nearest queue only"
+    }
+  ],
+  "cache": {
+    "assets": "content-hash URLs + immutable HTTP cache",
+    "manifest": "versioned group lists; revalidate independently",
+    "memory": "reuse Phaser textures between scenes; budgeted LRU for backgrounds and portraits",
+    "offline": "optional later; no duplicate IndexedDB cache by default"
+  },
+  "acceptance": [
+    "RGBA and alpha edge visual comparison at actual display sizes",
+    "all calibrated frame origins and resource channels preserved",
+    "DPR1 and DPR2",
+    "attack swap and inspector independent",
+    "no extra load for repeated scene entry",
+    "compact roster is separate unimplemented layout profile"
+  ],
+  "interface": "game_ui_lab: shared game shell and gameplay scenes",
+  "completed": [
+    "Central asset catalog and reusable group preload",
+    "Old hex-sheet removed from active preload",
+    "Active assets moved without changing PNG bytes"
+  ]
+}

@@ -1,0 +1,10 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><title>Inventory Lab · viewport check</title>
+<style>body{margin:0;background:#202a32;color:white;font:12px sans-serif}iframe{border:0;transform-origin:top left}pre{position:fixed;bottom:0;left:0;max-height:80px;overflow:auto;background:#202a32}</style>
+<iframe id="screen" title="Inventory viewport"></iframe><pre id="report"></pre>
+<script>
+const query=new URLSearchParams(location.search),width=Number(query.get('w'))||1366,height=Number(query.get('h'))||768;
+const frame=document.getElementById('screen'); frame.width=width;frame.height=height;frame.style.transform=`scale(${Math.min(innerWidth/width,(innerHeight-85)/height)})`;frame.src=query.has('copies')?'/?copies='+encodeURIComponent(query.get('copies')):'/';
+// Explicit QA-only still preview of the divider-drag overlay; no game state writes.
+if(query.has('resize-preview'))frame.addEventListener('load',()=>frame.contentDocument.body.classList.add('is-chat-resizing'));
+setInterval(()=>{const win=frame.contentWindow,doc=frame.contentDocument,canvas=doc?.querySelector('canvas');if(!canvas)return;const r=canvas.getBoundingClientRect();document.getElementById('report').textContent=JSON.stringify({viewport:[width,height],canvas:{x:r.x,y:r.y,width:r.width,height:r.height},state:win.inventoryLabState,overflow:doc.documentElement.scrollWidth>width,chat:doc.querySelector('#chat-divider').getAttribute('aria-valuenow')});},200);
+</script></html>

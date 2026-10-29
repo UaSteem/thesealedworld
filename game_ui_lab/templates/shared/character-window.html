@@ -1,0 +1,12 @@
+<section id="character-window" class="character-window" role="region" aria-labelledby="character-window-title" hidden>
+  <header class="character-window-heading"><h2 id="character-window-title">Персонаж</h2><button id="character-window-close" type="button" aria-label="Вернуться в игру">×</button></header>
+  <nav class="character-window-tabs" aria-label="Разделы персонажа">
+    {% for tab, label in [('inventory','Снаряжение'),('Характеристики','Характеристики'),('Билды','Билды')] %}
+    <button type="button" data-character-tab="{{ tab }}">{{ label }}</button>
+    {% endfor %}
+  </nav>
+  <div class="character-window-body">
+    {% include "shared/character-panel.html" %}
+    <div id="character-window-content" class="character-window-content"></div>
+  </div>
+</section>

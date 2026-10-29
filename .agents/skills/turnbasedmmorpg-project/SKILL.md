@@ -12,6 +12,8 @@ Treat planning notes as proposals unless a current owner decision approves them.
 For server catalogs, bootstrap payloads and visual-reference registries, inspect existing project patterns before proposing a new layout or data source; read the catalog conventions reference below.
 For agent-skill edits, follow the global project-skills-maintainer workflow. Character skills are a game catalog owned by game-content. Domain skills must route callers to `references/contract.md` and domain changes to `references/properties.md`; keep essential ownership constraints in the short entrypoint. Process skills retain task-based routing; see the maintenance reference for inventory and migration limits.
 
+Before adding or retaining a workaround as the chosen design, follow [the workaround decision rule](references/compatibility-decisions.md); it also covers assets, rendering, prototypes and labs. Discuss an unresolved bypass before implementing it; do not re-approve an already explicit owner choice.
+
 ## Read the relevant reference
 
 | Task | Reference |

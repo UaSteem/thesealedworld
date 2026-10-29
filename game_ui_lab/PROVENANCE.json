@@ -1,0 +1,78 @@
+{
+  "purpose": "Independent UI shell copy; original Rift Lab unchanged",
+  "copies": [
+    {
+      "source": "rift_lab/data/starter_guard_01.json",
+      "source_sha256": "3bf6388f0b8488da7d24b4292315fa63a14e8e7d3725ebce028ce67cd2454af9",
+      "copy": "data/starter_guard_01.json",
+      "changes": "Frozen fixture unchanged; explicit local mock.",
+      "copy_sha256": "3bf6388f0b8488da7d24b4292315fa63a14e8e7d3725ebce028ce67cd2454af9"
+    },
+    {
+      "source": "rift_lab/templates/character-panel.html",
+      "source_sha256": "98de673bfceac7034d39543c34cadb4501b945b472baf4f13fdf805b8f99d8ac",
+      "copy": "templates/character-panel.html",
+      "changes": "Floor label changed to prototype; backpack remains disabled.",
+      "copy_sha256": "c1e65ae2ca0d0c9777b037e22184caa06c5e43fdbc8a563b8259f62893bc7e5e"
+    },
+    {
+      "source": "rift_lab/static/character.css",
+      "source_sha256": "79987ecc5c7221c8c3f292ad0922fdad89257984ec7bf137b99384a878f24102",
+      "copy": "static/character.css",
+      "changes": "Desktop-only copy; removed lab grid override/mobile branch; font/action aliases use shared Adventure tokens.",
+      "copy_sha256": "2341a6fd62020c6a11f04cfed66ca6df30bb262a719a832728ea30d3d7ec997d"
+    },
+    {
+      "source": "rift_lab/static/chat-layout.js",
+      "source_sha256": "fdf116a01d0a72be927dfcb2363cc1deebd3dad5c378ce54b725f63425789787",
+      "copy": "static/chat-layout.js",
+      "changes": "Own storage key; viewport-based stage min240/chat min120, no rift behavior.",
+      "copy_sha256": "c3296a27cfca83def011ca095e21e12ed6831a65f667aa0744eaedfcc3e2626e"
+    },
+    {
+      "source": "rift_lab/art_sources/surface_fills/grass.png",
+      "source_sha256": "ac7a7c98581ddb98662c57a120adb590926537b71896c76cab6de6c855f948c7",
+      "copy": "static/assets/grass.png",
+      "changes": "Unmodified forest-ground texture for stationary demo battlefield; no rift generator imported.",
+      "copy_sha256": "ac7a7c98581ddb98662c57a120adb590926537b71896c76cab6de6c855f948c7"
+    },
+    {
+      "source": "rift_lab/static/terrain-projection.js",
+      "source_sha256": "78573debc051952e0ec1b954511e980778841c0d151fe79982bab50470b21430",
+      "copy": "static/terrain-projection.js",
+      "changes": "Unmodified pure Rift Lab material/hex geometry helper; no generator/runtime import. Used to draw native-resolution grass hexes from source.",
+      "copy_sha256": "78573debc051952e0ec1b954511e980778841c0d151fe79982bab50470b21430"
+    }
+  ],
+  "shared_assets": [
+    "src/frontend/static/css/theme.css",
+    "src/frontend/static/css/fonts.css",
+    "src/frontend/static/js/vendor/phaser.min.js",
+    "src/frontend/static/images/"
+  ],
+  "generated_assets": [
+    {
+      "file": "static/assets/combat-controls-v1.png",
+      "native_size": [
+        1942,
+        809
+      ],
+      "sha256": "7d0f450b8873958c8ee8a11e62ca209a6fb53bf603c0c2834b92a3d810f15f96",
+      "source": "Built-in image generation, exec-c98295dd-8e1d-44b8-9409-16ba06af48d9.png",
+      "purpose": "User-requested text-free combat HUD skin concept; dynamic overlays in Phaser",
+      "changes": "Copied unchanged; alpha preserved"
+    },
+    {
+      "file": "static/assets/combat-attack-v1.png",
+      "sha256": "af54a817818b2668739e0582db599b19bc330c8e8f5a34afa61c87c1a9e57d50",
+      "source": "Built-in generation exec-df616051-ca82-4c69-a46d-757619d37b2e.png",
+      "changes": "Copied unchanged with transparency preserved"
+    },
+    {
+      "file": "static/assets/combat-wait-v1.png",
+      "sha256": "6e41f4fac49389adf4da1952e02705806e3a7ce28a03841281171f4690d0c07a",
+      "source": "Built-in generation exec-d0a63583-9d97-4b44-80ea-8e1e4fab957b.png",
+      "changes": "Copied unchanged with transparency preserved"
+    }
+  ]
+}

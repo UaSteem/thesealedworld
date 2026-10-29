@@ -1,0 +1,38 @@
+{% set page_label = "отдельная лаборатория" %}
+<!doctype html>
+<html lang="ru" data-game-theme="adventure">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="icon" href="data:,">
+  <title>Инвентарь · лаборатория Sealed World</title>
+  <link rel="stylesheet" href="/static/css/fonts.css">
+  <link rel="stylesheet" href="/static/css/theme.css">
+  <link rel="stylesheet" href="/ui-static/game/shell/obsidian-bronze.css">
+  <link rel="stylesheet" href="/ui-static/game/shell/shell.css">
+  <link rel="stylesheet" href="/ui-static/game/shell/character.css">
+  <link rel="stylesheet" href="/ui-static/game/scenes/inventory/inventory.css">
+  <script defer src="/static/js/vendor/phaser.min.js"></script>
+  <script type="module" src="/ui-static/game/scenes/inventory/boot.js"></script>
+  <script defer src="/ui-static/game/shell/chat-layout.js"></script>
+  <script defer src="/ui-static/game/shell/chat.js"></script>
+</head>
+<body data-game-screen="inventory">
+  {% include "shared/header.html" %}
+  <main class="workspace">
+    <section class="game-frame" aria-label="Прототип игрового интерфейса">
+      {% include "shared/character-panel.html" %}
+      <div class="play-column">
+        <header class="stage-heading inventory-heading"><h2>Инвентарь</h2><button id="inventory-close" type="button" aria-label="Закрыть инвентарь" title="Закрыть инвентарь">×</button></header>
+        <div id="scene-split" class="scene-split">
+          <section class="stage-shell" aria-label="Инвентарь Phaser"><div id="inventory-stage"></div></section>
+          <div id="chat-divider" class="chat-divider" role="separator" tabindex="0" aria-label="Размер чата" aria-orientation="horizontal" aria-controls="chat" aria-valuemin="0" aria-valuemax="40" aria-valuenow="30"></div>
+          {% include "shared/chat.html" %}
+        </div>
+      </div>
+    </section>
+  </main>
+<script id="inventory-data" type="application/json">{{ inventory | tojson }}</script>
+</body>
+</html>

@@ -222,9 +222,7 @@ pytest_output.txt
 /tmp_standee_demo/
 
 # Local prototype applications and their standalone test suites.
-/game_ui_lab/
 /rift_lab/
-/tests/game_ui_lab/
 /tests/rift_lab/
 
 # Local one-off preview.

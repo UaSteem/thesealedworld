@@ -1,0 +1,3351 @@
+{
+  "profiles": [
+    {
+      "viewport": [
+        1366,
+        768
+      ],
+      "dpr": 1,
+      "cssScale": 0.7113682644110275,
+      "host": [
+        1596,
+        786
+      ],
+      "canvas": [
+        1596,
+        786
+      ],
+      "cards": [
+        {
+          "id": "boss",
+          "number": 29,
+          "width": 260.544,
+          "height": 226.392355179704
+        },
+        {
+          "id": "player",
+          "number": 38,
+          "width": 220.79999999999998,
+          "height": 192.53971291866026
+        },
+        {
+          "id": "enemy-8",
+          "number": 8,
+          "width": 172.95999999999998,
+          "height": 156.71962441314554
+        },
+        {
+          "id": "enemy-9",
+          "number": 9,
+          "width": 172.95999999999998,
+          "height": 156.71962441314554
+        },
+        {
+          "id": "enemy-10",
+          "number": 10,
+          "width": 172.95999999999998,
+          "height": 156.71962441314554
+        },
+        {
+          "id": "enemy-31",
+          "number": 31,
+          "width": 172.95999999999998,
+          "height": 156.71962441314554
+        },
+        {
+          "id": "enemy-21",
+          "number": 21,
+          "width": 172.95999999999998,
+          "height": 156.71962441314554
+        },
+        {
+          "id": "ally-48",
+          "number": 48,
+          "width": 172.95999999999998,
+          "height": 150.8227751196172
+        },
+        {
+          "id": "ally-57",
+          "number": 57,
+          "width": 172.95999999999998,
+          "height": 150.8227751196172
+        },
+        {
+          "id": "ally-46",
+          "number": 46,
+          "width": 172.95999999999998,
+          "height": 150.8227751196172
+        },
+        {
+          "id": "ally-36",
+          "number": 36,
+          "width": 172.95999999999998,
+          "height": 150.8227751196172
+        },
+        {
+          "id": "ally-35",
+          "number": 35,
+          "width": 172.95999999999998,
+          "height": 150.8227751196172
+        }
+      ],
+      "textures": [
+        {
+          "key": "cz-token-hit",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-tempo",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-crit",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-parry",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-dodge",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "frame",
+            "plate",
+            "feint",
+            "attack",
+            "slot"
+          ]
+        },
+        {
+          "key": "cz-token-block",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-pressure",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-gift",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-blood",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-0",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-1",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-6",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-2",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-3",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-5",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-4",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-7",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "duel-circle-rune-cutout",
+          "width": 1024,
+          "height": 1024,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "broken-hexes",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "two-thirds",
+            "half",
+            "third",
+            "whole"
+          ]
+        },
+        {
+          "key": "target-inspector-v1",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "panel",
+            "row",
+            "bar",
+            "attack",
+            "wait",
+            "defend"
+          ]
+        },
+        {
+          "key": "hex-three-frames",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "player",
+            "monster",
+            "boss",
+            "tile"
+          ]
+        }
+      ],
+      "usage": [
+        {
+          "key": "broken-hexes",
+          "frame": "whole",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.35110473632812,
+          "logicalHeight": 209.35110473632812,
+          "physicalWidth": 148.92573202881297,
+          "physicalHeight": 148.92573202881297
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "third",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.35110493737048,
+          "logicalHeight": 209.35110493737048,
+          "physicalWidth": 148.92573217182814,
+          "physicalHeight": 148.92573217182814
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "two-thirds",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.35110493737048,
+          "logicalHeight": 209.35110493737048,
+          "physicalWidth": 148.92573217182814,
+          "physicalHeight": 148.92573217182814
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "half",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.35110473632812,
+          "logicalHeight": 209.35110473632812,
+          "physicalWidth": 148.92573202881297,
+          "physicalHeight": 148.92573202881297
+        },
+        {
+          "key": "duel-circle-rune-cutout",
+          "frame": "__BASE",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 828,
+          "logicalHeight": 828,
+          "physicalWidth": 589.0129229323308,
+          "physicalHeight": 589.0129229323308
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "boss",
+          "source": [
+            946,
+            822
+          ],
+          "logicalWidth": 260.54400277137756,
+          "logicalHeight": 226.39235758781433,
+          "physicalWidth": 185.3427350541768,
+          "physicalHeight": 161.0483384931642
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "attack",
+          "source": [
+            302,
+            304
+          ],
+          "logicalWidth": 31.999999970197678,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 22.763784439952452,
+          "physicalHeight": 22.76378463075629
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "player",
+          "source": [
+            836,
+            729
+          ],
+          "logicalWidth": 220.799995303154,
+          "logicalHeight": 192.53970882296562,
+          "physicalWidth": 157.07010944076768,
+          "physicalHeight": 136.96663849559766
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "monster",
+          "source": [
+            852,
+            772
+          ],
+          "logicalWidth": 172.95999419689178,
+          "logicalHeight": 156.71961915493011,
+          "physicalWidth": 123.0382508843843,
+          "physicalHeight": 111.48536347739986
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "defend",
+          "source": [
+            302,
+            304
+          ],
+          "logicalWidth": 31.999999970197678,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 22.763784439952452,
+          "physicalHeight": 22.76378463075629
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "wait",
+          "source": [
+            303,
+            304
+          ],
+          "logicalWidth": 32.0000009983778,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 22.763785171367164,
+          "physicalHeight": 22.76378463075629
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "panel",
+          "source": [
+            553,
+            975
+          ],
+          "logicalWidth": 229.99999651312828,
+          "logicalHeight": 470.0000010430813,
+          "physicalWidth": 163.61469833408646,
+          "physicalHeight": 334.34308501519786
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "slot",
+          "source": [
+            640,
+            640
+          ],
+          "logicalWidth": 54.000000953674316,
+          "logicalHeight": 54.000000953674316,
+          "physicalWidth": 38.413886956609126,
+          "physicalHeight": 38.413886956609126
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "row",
+          "source": [
+            980,
+            125
+          ],
+          "logicalWidth": 189.99999701976776,
+          "logicalHeight": 27.000000700354576,
+          "physicalWidth": 135.1599681180526,
+          "physicalHeight": 19.206943637307763
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "plate",
+          "source": [
+            920,
+            286
+          ],
+          "logicalWidth": 551.6472601890564,
+          "logicalHeight": 171.4903439283371,
+          "physicalWidth": 392.4243540477876,
+          "physicalHeight": 121.99278832355135
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "feint",
+          "source": [
+            840,
+            106
+          ],
+          "logicalWidth": 269.8274624347687,
+          "logicalHeight": 34.049655973911285,
+          "physicalWidth": 191.94669364265312,
+          "physicalHeight": 24.221844673953846
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "attack",
+          "source": [
+            840,
+            116
+          ],
+          "logicalWidth": 269.8274624347687,
+          "logicalHeight": 37.26188766956329,
+          "physicalWidth": 191.94669364265312,
+          "physicalHeight": 26.50692436017591
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "frame",
+          "source": [
+            920,
+            350
+          ],
+          "logicalWidth": 551.6472601890564,
+          "logicalHeight": 209.86580550670624,
+          "physicalWidth": 392.4243540477876,
+          "physicalHeight": 149.2918738225279
+        },
+        {
+          "key": "cz-token-tempo",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 11.09025373836433,
+          "physicalHeight": 11.09025373836433
+        },
+        {
+          "key": "cz-token-hit",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 11.09025373836433,
+          "physicalHeight": 11.09025373836433
+        },
+        {
+          "key": "cz-token-crit",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 11.09025373836433,
+          "physicalHeight": 11.09025373836433
+        },
+        {
+          "key": "cz-token-dodge",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 11.09025373836433,
+          "physicalHeight": 11.09025373836433
+        },
+        {
+          "key": "cz-token-parry",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 11.09025373836433,
+          "physicalHeight": 11.09025373836433
+        },
+        {
+          "key": "cz-token-block",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 11.09025373836433,
+          "physicalHeight": 11.09025373836433
+        },
+        {
+          "key": "cz-token-pressure",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 11.09025373836433,
+          "physicalHeight": 11.09025373836433
+        },
+        {
+          "key": "cz-token-blood",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 11.09025373836433,
+          "physicalHeight": 11.09025373836433
+        },
+        {
+          "key": "cz-token-gift",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 11.09025373836433,
+          "physicalHeight": 11.09025373836433
+        }
+      ]
+    },
+    {
+      "viewport": [
+        1600,
+        900
+      ],
+      "dpr": 1,
+      "cssScale": 0.8335487155388471,
+      "host": [
+        1596,
+        797
+      ],
+      "canvas": [
+        1596,
+        797
+      ],
+      "cards": [
+        {
+          "id": "boss",
+          "number": 29,
+          "width": 260.544,
+          "height": 226.392355179704
+        },
+        {
+          "id": "player",
+          "number": 38,
+          "width": 220.79999999999998,
+          "height": 192.53971291866026
+        },
+        {
+          "id": "enemy-8",
+          "number": 8,
+          "width": 172.95999999999998,
+          "height": 156.71962441314554
+        },
+        {
+          "id": "enemy-9",
+          "number": 9,
+          "width": 172.95999999999998,
+          "height": 156.71962441314554
+        },
+        {
+          "id": "enemy-10",
+          "number": 10,
+          "width": 172.95999999999998,
+          "height": 156.71962441314554
+        },
+        {
+          "id": "enemy-31",
+          "number": 31,
+          "width": 172.95999999999998,
+          "height": 156.71962441314554
+        },
+        {
+          "id": "enemy-21",
+          "number": 21,
+          "width": 172.95999999999998,
+          "height": 156.71962441314554
+        },
+        {
+          "id": "ally-48",
+          "number": 48,
+          "width": 172.95999999999998,
+          "height": 150.8227751196172
+        },
+        {
+          "id": "ally-57",
+          "number": 57,
+          "width": 172.95999999999998,
+          "height": 150.8227751196172
+        },
+        {
+          "id": "ally-46",
+          "number": 46,
+          "width": 172.95999999999998,
+          "height": 150.8227751196172
+        },
+        {
+          "id": "ally-36",
+          "number": 36,
+          "width": 172.95999999999998,
+          "height": 150.8227751196172
+        },
+        {
+          "id": "ally-35",
+          "number": 35,
+          "width": 172.95999999999998,
+          "height": 150.8227751196172
+        }
+      ],
+      "textures": [
+        {
+          "key": "cz-token-tempo",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-hit",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-crit",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-dodge",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-parry",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-pressure",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-block",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-blood",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-0",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "frame",
+            "plate",
+            "feint",
+            "attack",
+            "slot"
+          ]
+        },
+        {
+          "key": "cz-token-gift",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-1",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-3",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-4",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-2",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-5",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-7",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-6",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "duel-circle-rune-cutout",
+          "width": 1024,
+          "height": 1024,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "broken-hexes",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "two-thirds",
+            "half",
+            "third",
+            "whole"
+          ]
+        },
+        {
+          "key": "hex-three-frames",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "player",
+            "monster",
+            "boss",
+            "tile"
+          ]
+        },
+        {
+          "key": "target-inspector-v1",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "panel",
+            "row",
+            "bar",
+            "attack",
+            "wait",
+            "defend"
+          ]
+        }
+      ],
+      "usage": [
+        {
+          "key": "broken-hexes",
+          "frame": "whole",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.35110473632812,
+          "logicalHeight": 209.35110473632812,
+          "physicalWidth": 174.50434444960496,
+          "physicalHeight": 174.50434444960496
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "third",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.35110493737048,
+          "logicalHeight": 209.35110493737048,
+          "physicalWidth": 174.50434461718356,
+          "physicalHeight": 174.50434461718356
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "two-thirds",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.35110493737048,
+          "logicalHeight": 209.35110493737048,
+          "physicalWidth": 174.50434461718356,
+          "physicalHeight": 174.50434461718356
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "half",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.35110473632812,
+          "logicalHeight": 209.35110473632812,
+          "physicalWidth": 174.50434444960496,
+          "physicalHeight": 174.50434444960496
+        },
+        {
+          "key": "duel-circle-rune-cutout",
+          "frame": "__BASE",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 828,
+          "logicalHeight": 828,
+          "physicalWidth": 690.1783364661654,
+          "physicalHeight": 690.1783364661654
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "boss",
+          "source": [
+            946,
+            822
+          ],
+          "logicalWidth": 260.54400277137756,
+          "logicalHeight": 226.39235758781433,
+          "physicalWidth": 217.1761188514316,
+          "physicalHeight": 188.70905887513402
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "attack",
+          "source": [
+            302,
+            304
+          ],
+          "logicalWidth": 31.999999970197678,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 26.673558872401422,
+          "physicalHeight": 26.673559095976607
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "player",
+          "source": [
+            836,
+            729
+          ],
+          "logicalWidth": 220.799995303154,
+          "logicalHeight": 192.53970882296562,
+          "physicalWidth": 184.0475524759275,
+          "physicalHeight": 160.49122697960664
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "monster",
+          "source": [
+            852,
+            772
+          ],
+          "logicalWidth": 172.95999419689178,
+          "logicalHeight": 156.71961915493011,
+          "physicalWidth": 144.1705810024256,
+          "physicalHeight": 130.6334372463293
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "defend",
+          "source": [
+            302,
+            304
+          ],
+          "logicalWidth": 31.999999970197678,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 26.673558872401422,
+          "physicalHeight": 26.673559095976607
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "wait",
+          "source": [
+            303,
+            304
+          ],
+          "logicalWidth": 32.0000009983778,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 26.673559729439642,
+          "physicalHeight": 26.673559095976607
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "panel",
+          "source": [
+            553,
+            975
+          ],
+          "logicalWidth": 229.99999651312828,
+          "logicalHeight": 470.0000010430813,
+          "physicalWidth": 191.7162016674574,
+          "physicalHeight": 391.7678971727172
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "slot",
+          "source": [
+            640,
+            640
+          ],
+          "logicalWidth": 54.000000953674316,
+          "logicalHeight": 54.000000953674316,
+          "physicalWidth": 45.01163143403175,
+          "physicalHeight": 45.01163143403175
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "row",
+          "source": [
+            980,
+            125
+          ],
+          "logicalWidth": 189.99999701976776,
+          "logicalHeight": 27.000000700354576,
+          "physicalWidth": 158.3742534682122,
+          "physicalHeight": 22.50581590332853
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "plate",
+          "source": [
+            920,
+            286
+          ],
+          "logicalWidth": 551.6472601890564,
+          "logicalHeight": 171.4903439283371,
+          "physicalWidth": 459.82486516111214,
+          "physicalHeight": 142.9455559087805
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "feint",
+          "source": [
+            840,
+            106
+          ],
+          "logicalWidth": 269.8274624347687,
+          "logicalHeight": 34.049655973911285,
+          "physicalWidth": 224.91433472960796,
+          "physicalHeight": 28.382047001593385
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "attack",
+          "source": [
+            840,
+            116
+          ],
+          "logicalWidth": 269.8274624347687,
+          "logicalHeight": 37.26188766956329,
+          "physicalWidth": 224.91433472960796,
+          "physicalHeight": 31.05959860551729
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "frame",
+          "source": [
+            920,
+            350
+          ],
+          "logicalWidth": 551.6472601890564,
+          "logicalHeight": 209.86580550670624,
+          "physicalWidth": 459.82486516111214,
+          "physicalHeight": 174.9333726156405
+        },
+        {
+          "key": "cz-token-tempo",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 12.995050835262116,
+          "physicalHeight": 12.995050835262116
+        },
+        {
+          "key": "cz-token-hit",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 12.995050835262116,
+          "physicalHeight": 12.995050835262116
+        },
+        {
+          "key": "cz-token-crit",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 12.995050835262116,
+          "physicalHeight": 12.995050835262116
+        },
+        {
+          "key": "cz-token-dodge",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 12.995050835262116,
+          "physicalHeight": 12.995050835262116
+        },
+        {
+          "key": "cz-token-parry",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 12.995050835262116,
+          "physicalHeight": 12.995050835262116
+        },
+        {
+          "key": "cz-token-block",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 12.995050835262116,
+          "physicalHeight": 12.995050835262116
+        },
+        {
+          "key": "cz-token-pressure",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 12.995050835262116,
+          "physicalHeight": 12.995050835262116
+        },
+        {
+          "key": "cz-token-blood",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 12.995050835262116,
+          "physicalHeight": 12.995050835262116
+        },
+        {
+          "key": "cz-token-gift",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.590031623840332,
+          "logicalHeight": 15.590031623840332,
+          "physicalWidth": 12.995050835262116,
+          "physicalHeight": 12.995050835262116
+        }
+      ]
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "dpr": 1,
+      "cssScale": 1,
+      "host": [
+        1597,
+        807
+      ],
+      "canvas": [
+        1597,
+        807
+      ],
+      "cards": [
+        {
+          "id": "boss",
+          "number": 29,
+          "width": 260.7105882352941,
+          "height": 226.53710732495955
+        },
+        {
+          "id": "player",
+          "number": 38,
+          "width": 220.94117647058823,
+          "height": 192.66282015198425
+        },
+        {
+          "id": "enemy-8",
+          "number": 8,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "enemy-9",
+          "number": 9,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "enemy-10",
+          "number": 10,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "enemy-31",
+          "number": 31,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "enemy-21",
+          "number": 21,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "ally-48",
+          "number": 48,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        },
+        {
+          "id": "ally-57",
+          "number": 57,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        },
+        {
+          "id": "ally-46",
+          "number": 46,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        },
+        {
+          "id": "ally-36",
+          "number": 36,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        },
+        {
+          "id": "ally-35",
+          "number": 35,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        }
+      ],
+      "textures": [
+        {
+          "key": "cz-token-dodge",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-hit",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-tempo",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-crit",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-parry",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "frame",
+            "plate",
+            "feint",
+            "attack",
+            "slot"
+          ]
+        },
+        {
+          "key": "cz-token-gift",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-block",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-blood",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-pressure",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-0",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-1",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-4",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-2",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-6",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-3",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-7",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-5",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "duel-circle-rune-cutout",
+          "width": 1024,
+          "height": 1024,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "broken-hexes",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "two-thirds",
+            "half",
+            "third",
+            "whole"
+          ]
+        },
+        {
+          "key": "target-inspector-v1",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "panel",
+            "row",
+            "bar",
+            "attack",
+            "wait",
+            "defend"
+          ]
+        },
+        {
+          "key": "hex-three-frames",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "player",
+            "monster",
+            "boss",
+            "tile"
+          ]
+        }
+      ],
+      "usage": [
+        {
+          "key": "broken-hexes",
+          "frame": "whole",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.48497009277344,
+          "logicalHeight": 209.48497009277344,
+          "physicalWidth": 209.48497009277344,
+          "physicalHeight": 209.48497009277344
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "third",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.48497009277344,
+          "logicalHeight": 209.48497009277344,
+          "physicalWidth": 209.48497009277344,
+          "physicalHeight": 209.48497009277344
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "two-thirds",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.48497009277344,
+          "logicalHeight": 209.48497009277344,
+          "physicalWidth": 209.48497009277344,
+          "physicalHeight": 209.48497009277344
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "half",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.48497009277344,
+          "logicalHeight": 209.48497009277344,
+          "physicalWidth": 209.48497009277344,
+          "physicalHeight": 209.48497009277344
+        },
+        {
+          "key": "duel-circle-rune-cutout",
+          "frame": "__BASE",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 828.5294189453125,
+          "logicalHeight": 828.5294189453125,
+          "physicalWidth": 828.5294189453125,
+          "physicalHeight": 828.5294189453125
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "boss",
+          "source": [
+            946,
+            822
+          ],
+          "logicalWidth": 260.71059519052505,
+          "logicalHeight": 226.5371133685112,
+          "physicalWidth": 260.71059519052505,
+          "physicalHeight": 226.5371133685112
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "attack",
+          "source": [
+            302,
+            304
+          ],
+          "logicalWidth": 31.999999970197678,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 31.999999970197678,
+          "physicalHeight": 32.00000023841858
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "player",
+          "source": [
+            836,
+            729
+          ],
+          "logicalWidth": 220.9411871433258,
+          "logicalHeight": 192.66282945871353,
+          "physicalWidth": 220.9411871433258,
+          "physicalHeight": 192.66282945871353
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "monster",
+          "source": [
+            852,
+            772
+          ],
+          "logicalWidth": 173.07058721780777,
+          "logicalHeight": 156.81982785463333,
+          "physicalWidth": 173.07058721780777,
+          "physicalHeight": 156.81982785463333
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "defend",
+          "source": [
+            302,
+            304
+          ],
+          "logicalWidth": 31.999999970197678,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 31.999999970197678,
+          "physicalHeight": 32.00000023841858
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "wait",
+          "source": [
+            303,
+            304
+          ],
+          "logicalWidth": 32.0000009983778,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 32.0000009983778,
+          "physicalHeight": 32.00000023841858
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "panel",
+          "source": [
+            553,
+            975
+          ],
+          "logicalWidth": 229.99999651312828,
+          "logicalHeight": 470.0000010430813,
+          "physicalWidth": 229.99999651312828,
+          "physicalHeight": 470.0000010430813
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "slot",
+          "source": [
+            640,
+            640
+          ],
+          "logicalWidth": 54.000000953674316,
+          "logicalHeight": 54.000000953674316,
+          "physicalWidth": 54.000000953674316,
+          "physicalHeight": 54.000000953674316
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "row",
+          "source": [
+            980,
+            125
+          ],
+          "logicalWidth": 189.99999701976776,
+          "logicalHeight": 27.000000700354576,
+          "physicalWidth": 189.99999701976776,
+          "physicalHeight": 27.000000700354576
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "plate",
+          "source": [
+            920,
+            286
+          ],
+          "logicalWidth": 552.0000219345093,
+          "logicalHeight": 171.60000681877136,
+          "physicalWidth": 552.0000219345093,
+          "physicalHeight": 171.60000681877136
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "feint",
+          "source": [
+            840,
+            106
+          ],
+          "logicalWidth": 269.9999964237213,
+          "logicalHeight": 34.07142812013626,
+          "physicalWidth": 269.9999964237213,
+          "physicalHeight": 34.07142812013626
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "attack",
+          "source": [
+            840,
+            116
+          ],
+          "logicalWidth": 269.9999964237213,
+          "logicalHeight": 37.28571379184723,
+          "physicalWidth": 269.9999964237213,
+          "physicalHeight": 37.28571379184723
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "frame",
+          "source": [
+            920,
+            350
+          ],
+          "logicalWidth": 552.0000219345093,
+          "logicalHeight": 210.00000834465027,
+          "physicalWidth": 552.0000219345093,
+          "physicalHeight": 210.00000834465027
+        },
+        {
+          "key": "cz-token-tempo",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-hit",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-crit",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-dodge",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-parry",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-block",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-pressure",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-blood",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-gift",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        }
+      ]
+    },
+    {
+      "viewport": [
+        2560,
+        1440
+      ],
+      "dpr": 1,
+      "cssScale": 1,
+      "host": [
+        1597,
+        1104
+      ],
+      "canvas": [
+        1597,
+        1104
+      ],
+      "cards": [
+        {
+          "id": "boss",
+          "number": 29,
+          "width": 260.7105882352941,
+          "height": 226.53710732495955
+        },
+        {
+          "id": "player",
+          "number": 38,
+          "width": 220.94117647058823,
+          "height": 192.66282015198425
+        },
+        {
+          "id": "enemy-8",
+          "number": 8,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "enemy-9",
+          "number": 9,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "enemy-10",
+          "number": 10,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "enemy-31",
+          "number": 31,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "enemy-21",
+          "number": 21,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "ally-48",
+          "number": 48,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        },
+        {
+          "id": "ally-57",
+          "number": 57,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        },
+        {
+          "id": "ally-46",
+          "number": 46,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        },
+        {
+          "id": "ally-36",
+          "number": 36,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        },
+        {
+          "id": "ally-35",
+          "number": 35,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        }
+      ],
+      "textures": [
+        {
+          "key": "cz-token-crit",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-hit",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-tempo",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-parry",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-dodge",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "frame",
+            "plate",
+            "feint",
+            "attack",
+            "slot"
+          ]
+        },
+        {
+          "key": "cz-ability-0",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-gift",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-block",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-pressure",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-blood",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-1",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-2",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-7",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-3",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-5",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-6",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-4",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "duel-circle-rune-cutout",
+          "width": 1024,
+          "height": 1024,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "broken-hexes",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "two-thirds",
+            "half",
+            "third",
+            "whole"
+          ]
+        },
+        {
+          "key": "hex-three-frames",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "player",
+            "monster",
+            "boss",
+            "tile"
+          ]
+        },
+        {
+          "key": "target-inspector-v1",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "panel",
+            "row",
+            "bar",
+            "attack",
+            "wait",
+            "defend"
+          ]
+        }
+      ],
+      "usage": [
+        {
+          "key": "broken-hexes",
+          "frame": "whole",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.48497009277344,
+          "logicalHeight": 209.48497009277344,
+          "physicalWidth": 209.48497009277344,
+          "physicalHeight": 209.48497009277344
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "third",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.48497009277344,
+          "logicalHeight": 209.48497009277344,
+          "physicalWidth": 209.48497009277344,
+          "physicalHeight": 209.48497009277344
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "two-thirds",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.48497009277344,
+          "logicalHeight": 209.48497009277344,
+          "physicalWidth": 209.48497009277344,
+          "physicalHeight": 209.48497009277344
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "half",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.48497009277344,
+          "logicalHeight": 209.48497009277344,
+          "physicalWidth": 209.48497009277344,
+          "physicalHeight": 209.48497009277344
+        },
+        {
+          "key": "duel-circle-rune-cutout",
+          "frame": "__BASE",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 828.5294189453125,
+          "logicalHeight": 828.5294189453125,
+          "physicalWidth": 828.5294189453125,
+          "physicalHeight": 828.5294189453125
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "boss",
+          "source": [
+            946,
+            822
+          ],
+          "logicalWidth": 260.71059519052505,
+          "logicalHeight": 226.5371133685112,
+          "physicalWidth": 260.71059519052505,
+          "physicalHeight": 226.5371133685112
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "attack",
+          "source": [
+            302,
+            304
+          ],
+          "logicalWidth": 31.999999970197678,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 31.999999970197678,
+          "physicalHeight": 32.00000023841858
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "player",
+          "source": [
+            836,
+            729
+          ],
+          "logicalWidth": 220.9411871433258,
+          "logicalHeight": 192.66282945871353,
+          "physicalWidth": 220.9411871433258,
+          "physicalHeight": 192.66282945871353
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "monster",
+          "source": [
+            852,
+            772
+          ],
+          "logicalWidth": 173.07058721780777,
+          "logicalHeight": 156.81982785463333,
+          "physicalWidth": 173.07058721780777,
+          "physicalHeight": 156.81982785463333
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "defend",
+          "source": [
+            302,
+            304
+          ],
+          "logicalWidth": 31.999999970197678,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 31.999999970197678,
+          "physicalHeight": 32.00000023841858
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "wait",
+          "source": [
+            303,
+            304
+          ],
+          "logicalWidth": 32.0000009983778,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 32.0000009983778,
+          "physicalHeight": 32.00000023841858
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "panel",
+          "source": [
+            553,
+            975
+          ],
+          "logicalWidth": 229.99999651312828,
+          "logicalHeight": 470.0000010430813,
+          "physicalWidth": 229.99999651312828,
+          "physicalHeight": 470.0000010430813
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "slot",
+          "source": [
+            640,
+            640
+          ],
+          "logicalWidth": 54.000000953674316,
+          "logicalHeight": 54.000000953674316,
+          "physicalWidth": 54.000000953674316,
+          "physicalHeight": 54.000000953674316
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "row",
+          "source": [
+            980,
+            125
+          ],
+          "logicalWidth": 189.99999701976776,
+          "logicalHeight": 27.000000700354576,
+          "physicalWidth": 189.99999701976776,
+          "physicalHeight": 27.000000700354576
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "plate",
+          "source": [
+            920,
+            286
+          ],
+          "logicalWidth": 552.0000219345093,
+          "logicalHeight": 171.60000681877136,
+          "physicalWidth": 552.0000219345093,
+          "physicalHeight": 171.60000681877136
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "feint",
+          "source": [
+            840,
+            106
+          ],
+          "logicalWidth": 269.9999964237213,
+          "logicalHeight": 34.07142812013626,
+          "physicalWidth": 269.9999964237213,
+          "physicalHeight": 34.07142812013626
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "attack",
+          "source": [
+            840,
+            116
+          ],
+          "logicalWidth": 269.9999964237213,
+          "logicalHeight": 37.28571379184723,
+          "physicalWidth": 269.9999964237213,
+          "physicalHeight": 37.28571379184723
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "frame",
+          "source": [
+            920,
+            350
+          ],
+          "logicalWidth": 552.0000219345093,
+          "logicalHeight": 210.00000834465027,
+          "physicalWidth": 552.0000219345093,
+          "physicalHeight": 210.00000834465027
+        },
+        {
+          "key": "cz-token-tempo",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-hit",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-crit",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-dodge",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-parry",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-block",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-pressure",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-blood",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        },
+        {
+          "key": "cz-token-gift",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 15.600000858306885,
+          "physicalHeight": 15.600000858306885
+        }
+      ]
+    },
+    {
+      "viewport": [
+        1920,
+        1080
+      ],
+      "dpr": 2,
+      "cssScale": 1,
+      "host": [
+        1597,
+        807
+      ],
+      "canvas": [
+        3194,
+        1614
+      ],
+      "cards": [
+        {
+          "id": "boss",
+          "number": 29,
+          "width": 260.7105882352941,
+          "height": 226.53710732495955
+        },
+        {
+          "id": "player",
+          "number": 38,
+          "width": 220.94117647058823,
+          "height": 192.66282015198425
+        },
+        {
+          "id": "enemy-8",
+          "number": 8,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "enemy-9",
+          "number": 9,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "enemy-10",
+          "number": 10,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "enemy-31",
+          "number": 31,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "enemy-21",
+          "number": 21,
+          "width": 173.0705882352941,
+          "height": 156.81982877658106
+        },
+        {
+          "id": "ally-48",
+          "number": 48,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        },
+        {
+          "id": "ally-57",
+          "number": 57,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        },
+        {
+          "id": "ally-46",
+          "number": 46,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        },
+        {
+          "id": "ally-36",
+          "number": 36,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        },
+        {
+          "id": "ally-35",
+          "number": 35,
+          "width": 173.0705882352941,
+          "height": 150.9192091190543
+        }
+      ],
+      "textures": [
+        {
+          "key": "cz-token-tempo",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-crit",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-hit",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-dodge",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-parry",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "frame",
+            "plate",
+            "feint",
+            "attack",
+            "slot"
+          ]
+        },
+        {
+          "key": "cz-token-blood",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-block",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-0",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-gift",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-token-pressure",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-1",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-6",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-7",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-4",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-5",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-3",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "cz-ability-2",
+          "width": 96,
+          "height": 96,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "duel-circle-rune-cutout",
+          "width": 1024,
+          "height": 1024,
+          "frames": [
+            "__BASE"
+          ]
+        },
+        {
+          "key": "broken-hexes",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "two-thirds",
+            "half",
+            "third",
+            "whole"
+          ]
+        },
+        {
+          "key": "target-inspector-v1",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "panel",
+            "row",
+            "bar",
+            "attack",
+            "wait",
+            "defend"
+          ]
+        },
+        {
+          "key": "hex-three-frames",
+          "width": 2048,
+          "height": 2048,
+          "frames": [
+            "__BASE",
+            "player",
+            "monster",
+            "boss",
+            "tile"
+          ]
+        }
+      ],
+      "usage": [
+        {
+          "key": "broken-hexes",
+          "frame": "whole",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.48497009277344,
+          "logicalHeight": 209.48497009277344,
+          "physicalWidth": 418.9699401855469,
+          "physicalHeight": 418.9699401855469
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "third",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.48497009277344,
+          "logicalHeight": 209.48497009277344,
+          "physicalWidth": 418.9699401855469,
+          "physicalHeight": 418.9699401855469
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "two-thirds",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.48497009277344,
+          "logicalHeight": 209.48497009277344,
+          "physicalWidth": 418.9699401855469,
+          "physicalHeight": 418.9699401855469
+        },
+        {
+          "key": "broken-hexes",
+          "frame": "half",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 209.48497009277344,
+          "logicalHeight": 209.48497009277344,
+          "physicalWidth": 418.9699401855469,
+          "physicalHeight": 418.9699401855469
+        },
+        {
+          "key": "duel-circle-rune-cutout",
+          "frame": "__BASE",
+          "source": [
+            1024,
+            1024
+          ],
+          "logicalWidth": 828.5294189453125,
+          "logicalHeight": 828.5294189453125,
+          "physicalWidth": 1657.058837890625,
+          "physicalHeight": 1657.058837890625
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "boss",
+          "source": [
+            946,
+            822
+          ],
+          "logicalWidth": 260.71059519052505,
+          "logicalHeight": 226.5371133685112,
+          "physicalWidth": 521.4211903810501,
+          "physicalHeight": 453.0742267370224
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "attack",
+          "source": [
+            302,
+            304
+          ],
+          "logicalWidth": 31.999999970197678,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 63.999999940395355,
+          "physicalHeight": 64.00000047683716
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "player",
+          "source": [
+            836,
+            729
+          ],
+          "logicalWidth": 220.9411871433258,
+          "logicalHeight": 192.66282945871353,
+          "physicalWidth": 441.8823742866516,
+          "physicalHeight": 385.32565891742706
+        },
+        {
+          "key": "hex-three-frames",
+          "frame": "monster",
+          "source": [
+            852,
+            772
+          ],
+          "logicalWidth": 173.07058721780777,
+          "logicalHeight": 156.81982785463333,
+          "physicalWidth": 346.14117443561554,
+          "physicalHeight": 313.63965570926666
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "defend",
+          "source": [
+            302,
+            304
+          ],
+          "logicalWidth": 31.999999970197678,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 63.999999940395355,
+          "physicalHeight": 64.00000047683716
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "wait",
+          "source": [
+            303,
+            304
+          ],
+          "logicalWidth": 32.0000009983778,
+          "logicalHeight": 32.00000023841858,
+          "physicalWidth": 64.0000019967556,
+          "physicalHeight": 64.00000047683716
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "panel",
+          "source": [
+            553,
+            975
+          ],
+          "logicalWidth": 229.99999651312828,
+          "logicalHeight": 470.0000010430813,
+          "physicalWidth": 459.99999302625656,
+          "physicalHeight": 940.0000020861626
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "slot",
+          "source": [
+            640,
+            640
+          ],
+          "logicalWidth": 54.000000953674316,
+          "logicalHeight": 54.000000953674316,
+          "physicalWidth": 108.00000190734863,
+          "physicalHeight": 108.00000190734863
+        },
+        {
+          "key": "target-inspector-v1",
+          "frame": "row",
+          "source": [
+            980,
+            125
+          ],
+          "logicalWidth": 189.99999701976776,
+          "logicalHeight": 27.000000700354576,
+          "physicalWidth": 379.9999940395355,
+          "physicalHeight": 54.00000140070915
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "plate",
+          "source": [
+            920,
+            286
+          ],
+          "logicalWidth": 552.0000219345093,
+          "logicalHeight": 171.60000681877136,
+          "physicalWidth": 1104.0000438690186,
+          "physicalHeight": 343.2000136375427
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "feint",
+          "source": [
+            840,
+            106
+          ],
+          "logicalWidth": 269.9999964237213,
+          "logicalHeight": 34.07142812013626,
+          "physicalWidth": 539.9999928474426,
+          "physicalHeight": 68.14285624027252
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "attack",
+          "source": [
+            840,
+            116
+          ],
+          "logicalWidth": 269.9999964237213,
+          "logicalHeight": 37.28571379184723,
+          "physicalWidth": 539.9999928474426,
+          "physicalHeight": 74.57142758369446
+        },
+        {
+          "key": "control-zone-low-wide-v3",
+          "frame": "frame",
+          "source": [
+            920,
+            350
+          ],
+          "logicalWidth": 552.0000219345093,
+          "logicalHeight": 210.00000834465027,
+          "physicalWidth": 1104.0000438690186,
+          "physicalHeight": 420.00001668930054
+        },
+        {
+          "key": "cz-token-tempo",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 31.20000171661377,
+          "physicalHeight": 31.20000171661377
+        },
+        {
+          "key": "cz-token-hit",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 31.20000171661377,
+          "physicalHeight": 31.20000171661377
+        },
+        {
+          "key": "cz-token-crit",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 31.20000171661377,
+          "physicalHeight": 31.20000171661377
+        },
+        {
+          "key": "cz-token-dodge",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 31.20000171661377,
+          "physicalHeight": 31.20000171661377
+        },
+        {
+          "key": "cz-token-parry",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 31.20000171661377,
+          "physicalHeight": 31.20000171661377
+        },
+        {
+          "key": "cz-token-block",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 31.20000171661377,
+          "physicalHeight": 31.20000171661377
+        },
+        {
+          "key": "cz-token-pressure",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 31.20000171661377,
+          "physicalHeight": 31.20000171661377
+        },
+        {
+          "key": "cz-token-blood",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 31.20000171661377,
+          "physicalHeight": 31.20000171661377
+        },
+        {
+          "key": "cz-token-gift",
+          "frame": "__BASE",
+          "source": [
+            96,
+            96
+          ],
+          "logicalWidth": 15.600000858306885,
+          "logicalHeight": 15.600000858306885,
+          "physicalWidth": 31.20000171661377,
+          "physicalHeight": 31.20000171661377
+        }
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "url": "/static/css/fonts.css",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "url": "/static/css/theme.css",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR1SDk.woff2",
+      "status": 200,
+      "contentType": "font/woff2"
+    },
+    {
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GRxSDktYw.woff2",
+      "status": 200,
+      "contentType": "font/woff2"
+    },
+    {
+      "url": "/static/images/avatars/rook7.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "url": "/static/images/rift/void_interworld_bg_v3.webp",
+      "status": 200,
+      "contentType": "image/webp"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_blood_hunger.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_break_stance.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_cleave_gift.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_expose_weakness.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_last_push.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_slip_pain.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_splinter_strike.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_wipe_blood.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-block.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-blood.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-crit.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-dodge.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-gift.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-hit.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-parry.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-pressure.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-tempo.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/amulet.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/arms.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/belt.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/cloak.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/earrings.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/feetwear.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/head.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/legwear.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/ring.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/shield.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/torso.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/weapon_sword.svg",
+      "status": 200,
+      "contentType": "image/svg+xml"
+    },
+    {
+      "url": "/static/js/vendor/phaser.min.js",
+      "status": 200,
+      "contentType": "text/javascript"
+    },
+    {
+      "url": "/ui-static/game/assets/catalog.json",
+      "status": 200,
+      "contentType": "application/json"
+    },
+    {
+      "url": "/ui-static/game/assets/combat/circle/duel-circle-v3.png",
+      "status": 200,
+      "contentType": "image/png"
+    },
+    {
+      "url": "/ui-static/game/assets/combat/frames/character-frames-v1.png",
+      "status": 200,
+      "contentType": "image/png"
+    },
+    {
+      "url": "/ui-static/game/assets/combat/terrain/broken-hexes-v1.png",
+      "status": 200,
+      "contentType": "image/png"
+    },
+    {
+      "url": "/ui-static/game/assets/combat/ui/control-zone-v3.png",
+      "status": 200,
+      "contentType": "image/png"
+    },
+    {
+      "url": "/ui-static/game/assets/combat/ui/target-inspector-v1.png",
+      "status": 200,
+      "contentType": "image/png"
+    },
+    {
+      "url": "/ui-static/game/core/assets.js",
+      "status": 200,
+      "contentType": "text/javascript"
+    },
+    {
+      "url": "/ui-static/game/core/boot.js",
+      "status": 200,
+      "contentType": "text/javascript"
+    },
+    {
+      "url": "/ui-static/game/scenes/combat/scene.js",
+      "status": 200,
+      "contentType": "text/javascript"
+    },
+    {
+      "url": "/ui-static/game/scenes/inventory/inventory.css",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "url": "/ui-static/game/shared/hex-layout.js",
+      "status": 200,
+      "contentType": "text/javascript"
+    },
+    {
+      "url": "/ui-static/game/shared/resize.js",
+      "status": 200,
+      "contentType": "text/javascript"
+    },
+    {
+      "url": "/ui-static/game/shell/character.css",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "url": "/ui-static/game/shell/chat-layout.js",
+      "status": 200,
+      "contentType": "text/javascript"
+    },
+    {
+      "url": "/ui-static/game/shell/chat.js",
+      "status": 200,
+      "contentType": "text/javascript"
+    },
+    {
+      "url": "/ui-static/game/shell/obsidian-bronze.css",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "url": "/ui-static/game/shell/shell.css",
+      "status": 200,
+      "contentType": "text/css"
+    },
+    {
+      "url": "/ui-static/game/shell/viewport.js",
+      "status": 200,
+      "contentType": "text/javascript"
+    },
+    {
+      "url": "/ui-static/game/ui/combat-controls.js",
+      "status": 200,
+      "contentType": "text/javascript"
+    },
+    {
+      "url": "/ui-static/game/ui/target-inspector.js",
+      "status": 200,
+      "contentType": "text/javascript"
+    }
+  ]
+}

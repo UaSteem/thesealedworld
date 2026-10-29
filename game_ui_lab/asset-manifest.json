@@ -1,0 +1,754 @@
+{
+  "interface": "game_ui_lab",
+  "status": "development-inventory-not-production-loader",
+  "entry_url": "http://127.0.0.1:8879/",
+  "measured_file_requests": 56,
+  "measured_file_bytes": 9082889,
+  "observed_lazy_file_requests": 14,
+  "observed_lazy_file_bytes": 167675,
+  "files": [
+    {
+      "path": "assets/item_art/renders/items/sword/sword.basic.adamantite.t4/5057a0ef2c2d986b80a915e21ef0f04aeab8ffc7891051d6bcf6bdf1dc23955b.image.webp",
+      "url": "/inventory-art/sword.basic.adamantite.t4/image",
+      "bytes": 21888,
+      "sha256": "5057a0ef2c2d986b80a915e21ef0f04aeab8ffc7891051d6bcf6bdf1dc23955b",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true,
+      "width": 256,
+      "height": 768,
+      "decoded_rgba_bytes": 786432
+    },
+    {
+      "path": "assets/item_art/renders/items/sword/sword.basic.cobalt.t2/5e838f05e29975bfcd56a71cfac17b88fb80e0675de43b2909e62a0879950bd5.image.webp",
+      "url": "/inventory-art/sword.basic.cobalt.t2/image",
+      "bytes": 23228,
+      "sha256": "5e838f05e29975bfcd56a71cfac17b88fb80e0675de43b2909e62a0879950bd5",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true,
+      "width": 256,
+      "height": 768,
+      "decoded_rgba_bytes": 786432
+    },
+    {
+      "path": "assets/item_art/renders/items/sword/sword.basic.iron.t1/9b788d6811e91f372efc6963db23c385aa0a71c6467281c5a56cd9f57e21a5d5.image.webp",
+      "url": "/inventory-art/sword.basic.iron.t1/image",
+      "bytes": 22662,
+      "sha256": "9b788d6811e91f372efc6963db23c385aa0a71c6467281c5a56cd9f57e21a5d5",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true,
+      "width": 256,
+      "height": 768,
+      "decoded_rgba_bytes": 786432
+    },
+    {
+      "path": "assets/item_art/renders/items/sword/sword.basic.mithril.t3/7861a8967490d5fb874c6cab414c82a8e56afa2c79da1fd866ecd739ead3d282.image.webp",
+      "url": "/inventory-art/sword.basic.mithril.t3/image",
+      "bytes": 23108,
+      "sha256": "7861a8967490d5fb874c6cab414c82a8e56afa2c79da1fd866ecd739ead3d282",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true,
+      "width": 256,
+      "height": 768,
+      "decoded_rgba_bytes": 786432
+    },
+    {
+      "path": "assets/item_art/renders/items/sword/sword.basic.scrap_metal.t0/badeb31d5e2d1856c90bff1645b8634ae85ed53171f92ef3027835348980491f.image.webp",
+      "url": "/inventory-art/sword.basic.scrap_metal.t0/image",
+      "bytes": 24060,
+      "sha256": "badeb31d5e2d1856c90bff1645b8634ae85ed53171f92ef3027835348980491f",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true,
+      "width": 256,
+      "height": 768,
+      "decoded_rgba_bytes": 786432
+    },
+    {
+      "path": "assets/item_art/renders/items/sword/sword.basic.thorium.t5/63f412d733d83b5f44a6f0b6594224038e05b5665cc47e7b65e35167811dfa18.image.webp",
+      "url": "/inventory-art/sword.basic.thorium.t5/image",
+      "bytes": 22750,
+      "sha256": "63f412d733d83b5f44a6f0b6594224038e05b5665cc47e7b65e35167811dfa18",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true,
+      "width": 256,
+      "height": 768,
+      "decoded_rgba_bytes": 786432
+    },
+    {
+      "path": "src/frontend/static/css/fonts.css",
+      "url": "/static/css/fonts.css",
+      "bytes": 7151,
+      "sha256": "0b0b547cbca8204b3d92526c7f8aeafa516d5b219e399d48dc189fa12b8a6596",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/css/theme.css",
+      "url": "/static/css/theme.css",
+      "bytes": 33216,
+      "sha256": "781c4723ffd5bcc125b0223ab2447e4c001a888f1aab382bbd1b3bcae601630a",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR1SDk.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR1SDk.woff2",
+      "bytes": 41316,
+      "sha256": "3f8ca84f05bced330495146be20610b04bcccbe7c4f7d03a786804881f694e8f",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR2SDktYw.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR2SDktYw.woff2",
+      "bytes": 19968,
+      "sha256": "374b48bbdc7e2c04836df8e698fec2101e9b1f1bcef91ab44d36d60ef644e64b",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR4SDktYw.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR4SDktYw.woff2",
+      "bytes": 33880,
+      "sha256": "215f3569a9df9695e7146cc50e2e343d4255f91806d2f5a0eba288998a83fe22",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR5SDktYw.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR5SDktYw.woff2",
+      "bytes": 15324,
+      "sha256": "cabd81902227fc98da883f52cd189b5bd8dbf7f1ae33c89edc1b5821731e6c07",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR6SDktYw.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR6SDktYw.woff2",
+      "bytes": 13128,
+      "sha256": "a8d60cd424e868a240db5abd7b2e6355e95fb7e5bd77036ebc04c7a623dde3f3",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR7SDktYw.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR7SDktYw.woff2",
+      "bytes": 116316,
+      "sha256": "15754d0efd6ca82bdb8ac0a0670ed0c26c6f1e5dbb6d08f83f0ae497eb5b9588",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GRxSDktYw.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GRxSDktYw.woff2",
+      "bytes": 26264,
+      "sha256": "55ad36cf3213856f2129ad6d1d55556862a704dd3c526c982720b54b040e7a78",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweD81ZzPJ.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweD81ZzPJ.woff2",
+      "bytes": 26636,
+      "sha256": "d56594721af413cc0b5c2de7bb271b9fecdc5c033f7c9b26e1b02758ebd8252f",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweDQ1ZzPJ.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweDQ1ZzPJ.woff2",
+      "bytes": 12848,
+      "sha256": "98ae6b7cfb010c8feee417996f418c63f82ddf3b25ba8b0df0f772065964aade",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweDU1ZzPJ.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweDU1ZzPJ.woff2",
+      "bytes": 91200,
+      "sha256": "1a0cc9def6e10ce327bece0049548d317017969165493f2dbc8b7cffec3f2c3d",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweDY1ZzPJ.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweDY1ZzPJ.woff2",
+      "bytes": 35520,
+      "sha256": "b8e0520a5eb6132fdf25e2b1a8a7123ae962a4c4c084957ac74dff1bbed21c0a",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweDc1ZzPJ.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweDc1ZzPJ.woff2",
+      "bytes": 12364,
+      "sha256": "a5a1a576655b880d47983025b1363c9640c03fc4c843a8b95af69b543003453e",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweDg1ZzPJ.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweDg1ZzPJ.woff2",
+      "bytes": 19792,
+      "sha256": "fd0bb7d97e190b5612a71c0040cd1976caf618a195d341ccfdf55f286d173545",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweDs1Zw.woff2",
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGWmQSNjdsmc35JDF1K5GRweDs1Zw.woff2",
+      "bytes": 42400,
+      "sha256": "ba958a191633f8f16f842a8c00555c16953ff2156c706f80f1f61a8a577a85a6",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD0OwG_TA.woff2",
+      "url": "/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD0OwG_TA.woff2",
+      "bytes": 7504,
+      "sha256": "2288795da89dd97e648954b96e22b4501bd85dfc453264460b252f888b582ca2",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD1OwG_TA.woff2",
+      "url": "/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD1OwG_TA.woff2",
+      "bytes": 15196,
+      "sha256": "79bfdab9ba467e26eea4122e6f2567e188dd8a09a8c730d501fc487c4ab99c6e",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD2OwG_TA.woff2",
+      "url": "/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD2OwG_TA.woff2",
+      "bytes": 2028,
+      "sha256": "593ccd6fe36e299e151aeae4521be9bfe83ac487d96d7cdb44f50be4a04041c7",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD4OwG_TA.woff2",
+      "url": "/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD4OwG_TA.woff2",
+      "bytes": 9004,
+      "sha256": "ee863198077f3093ffa81c072581cc4bd608a04e60a8a9c0b846396ce4f14109",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2",
+      "url": "/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD7OwE.woff2",
+      "bytes": 40404,
+      "sha256": "18be452724bfdc236c074ca94a249a7f41a86752c7d04ab258ce9ed5651f6a7e",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2",
+      "url": "/static/fonts/google/s_jetbrainsmono_v24_tDbV2o-flEEny0FZhsfKu5WU4xD_OwG_TA.woff2",
+      "bytes": 12108,
+      "sha256": "d274604c40757f98f07df623a8b8fb5194508a6fa4f5413a7a107f09e3b7452a",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/avatars/rook7.webp",
+      "url": "/static/images/avatars/rook7.webp",
+      "bytes": 168416,
+      "sha256": "a19016b576f117e6c5efd33896375b277de5beb6f6f0e18f3e98a2e11517fe53",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false,
+      "width": 1024,
+      "height": 1024,
+      "decoded_rgba_bytes": 4194304
+    },
+    {
+      "path": "src/frontend/static/images/rift/void_interworld_bg_v3.webp",
+      "url": "/static/images/rift/void_interworld_bg_v3.webp",
+      "bytes": 156224,
+      "sha256": "651074faba5ffa5b4963669be1f40d1be9932913a607ee5e6cb9b0334d216c43",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false,
+      "width": 5376,
+      "height": 3072,
+      "decoded_rgba_bytes": 66060288
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/abilities/basic_blood_hunger.svg",
+      "url": "/static/images/ui/combat-icons/abilities/basic_blood_hunger.svg",
+      "bytes": 1912,
+      "sha256": "8acd390dbbc39cec282dbcc7c683b2a4fe5a5acfd006d35aabebcf2fa91f2875",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/abilities/basic_break_stance.svg",
+      "url": "/static/images/ui/combat-icons/abilities/basic_break_stance.svg",
+      "bytes": 297,
+      "sha256": "19e5152d06ad47910fa7a36b9d1661da949434b9bf33947f964cbe5dc44644d3",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/abilities/basic_cleave_gift.svg",
+      "url": "/static/images/ui/combat-icons/abilities/basic_cleave_gift.svg",
+      "bytes": 503,
+      "sha256": "27da0fdfdefcb4e7152835dbfe62f2b3d808f245cf7266d15a0bc9ef99d780af",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/abilities/basic_expose_weakness.svg",
+      "url": "/static/images/ui/combat-icons/abilities/basic_expose_weakness.svg",
+      "bytes": 936,
+      "sha256": "b1c1043778e18a018e47d3497ede88dce54a06a3a8152cb0e02fd5361b9b6422",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/abilities/basic_last_push.svg",
+      "url": "/static/images/ui/combat-icons/abilities/basic_last_push.svg",
+      "bytes": 515,
+      "sha256": "95467961b422d8bd142935c86018bd8c78465e0d40766eb980309a9ed02232bf",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/abilities/basic_slip_pain.svg",
+      "url": "/static/images/ui/combat-icons/abilities/basic_slip_pain.svg",
+      "bytes": 288,
+      "sha256": "19c9edb526f17cc251ce34ef097970615112e2c925434703a21d576733f2fabf",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/abilities/basic_splinter_strike.svg",
+      "url": "/static/images/ui/combat-icons/abilities/basic_splinter_strike.svg",
+      "bytes": 521,
+      "sha256": "9f968a5beb5f3dd7e146a1397e4d3c5b09ff13025490457d85c07be73148d67c",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/abilities/basic_wipe_blood.svg",
+      "url": "/static/images/ui/combat-icons/abilities/basic_wipe_blood.svg",
+      "bytes": 1907,
+      "sha256": "eb73fd0e13bc23606317cdff0a95ac914cf04d4a0d5d2431b47c599b2d871dcc",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/token-block.svg",
+      "url": "/static/images/ui/combat-icons/token-block.svg",
+      "bytes": 188,
+      "sha256": "ad2a55c41691c2ff46569bf2937e3cdaae248b89fa885af36759fdadd780e073",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/token-blood.svg",
+      "url": "/static/images/ui/combat-icons/token-blood.svg",
+      "bytes": 2068,
+      "sha256": "0cc822602db96d71df9887c1ab62cfcc88a14fb3797846194c328b1d9954e89d",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/token-crit.svg",
+      "url": "/static/images/ui/combat-icons/token-crit.svg",
+      "bytes": 1181,
+      "sha256": "b94d1ef157032f48b18dfc3ac870329860790fb78a2fe4f873206f3fc026230d",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/token-dodge.svg",
+      "url": "/static/images/ui/combat-icons/token-dodge.svg",
+      "bytes": 288,
+      "sha256": "19c9edb526f17cc251ce34ef097970615112e2c925434703a21d576733f2fabf",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/token-gift.svg",
+      "url": "/static/images/ui/combat-icons/token-gift.svg",
+      "bytes": 1787,
+      "sha256": "d58dc4d52d40f77b2fe1b00eb6628cfc803b0e2a5fcbf4409e97b4578a416b50",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/token-hit.svg",
+      "url": "/static/images/ui/combat-icons/token-hit.svg",
+      "bytes": 2065,
+      "sha256": "cbb40fe6f82e4686745c89beff02098ac77966133893f7c0530803cd9e82590a",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/token-parry.svg",
+      "url": "/static/images/ui/combat-icons/token-parry.svg",
+      "bytes": 1340,
+      "sha256": "111125b7978f016466d5835437afc99fce8e46f812d31e806c38e15f58555aea",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/token-pressure.svg",
+      "url": "/static/images/ui/combat-icons/token-pressure.svg",
+      "bytes": 154,
+      "sha256": "d17f699ff919fc75054f1b4846d9fffb3fd39f4ba06a494c1ca878d2aa559cde",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/combat-icons/token-tempo.svg",
+      "url": "/static/images/ui/combat-icons/token-tempo.svg",
+      "bytes": 628,
+      "sha256": "d72d9281cbbfc7b49f017cc0716099f0ab5c52b4a4b3523b203d4ad8eabb4bd3",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/amulet.svg",
+      "url": "/static/images/ui/inventory-gear/amulet.svg",
+      "bytes": 4181,
+      "sha256": "d54472b085fd452168eb9c47d4f2a50ee461c0f0add6f33cb447c4cab363f3ef",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/arms.svg",
+      "url": "/static/images/ui/inventory-gear/arms.svg",
+      "bytes": 3359,
+      "sha256": "55eb1614f5820492aa2d13c275c9cf58c2699b58bca80c882c6de66f00cc5112",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/belt.svg",
+      "url": "/static/images/ui/inventory-gear/belt.svg",
+      "bytes": 563,
+      "sha256": "d0bc0e9146a9d7104d8d15125d963acb3c664f0ef98991d4bda9438a25c6b09a",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/cloak.svg",
+      "url": "/static/images/ui/inventory-gear/cloak.svg",
+      "bytes": 1204,
+      "sha256": "a1e85d2c8a8ad5cc01e4fe84c4e8b4af61b56a2b507d94a4e7f819d22cfc881f",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/consumable.svg",
+      "url": "/static/images/ui/inventory-gear/consumable.svg",
+      "bytes": 1062,
+      "sha256": "f743be7b947d8ef1ec6f20437b1a50645bae5c2d7e4a8194037d70fca7a8b45c",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/earrings.svg",
+      "url": "/static/images/ui/inventory-gear/earrings.svg",
+      "bytes": 2777,
+      "sha256": "a959f745306840a6387e6bf14f4b10f14cd99807de6ece15ac79ddd68ef447fe",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/feetwear.svg",
+      "url": "/static/images/ui/inventory-gear/feetwear.svg",
+      "bytes": 1274,
+      "sha256": "7be5b1c6183b11832e09f5f6ade10de80f955d9c5bcf724d8bf199fd7907e901",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/head.svg",
+      "url": "/static/images/ui/inventory-gear/head.svg",
+      "bytes": 1635,
+      "sha256": "e2c09b9a01689d88f652622ece8b0281eedf124e515692dee78d4c1e7a0c9226",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/legwear.svg",
+      "url": "/static/images/ui/inventory-gear/legwear.svg",
+      "bytes": 336,
+      "sha256": "ebd18e4087c89534543c08252baf341b6f82b0c4c36863d81bc2c7d5bc7d2e00",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/quest.svg",
+      "url": "/static/images/ui/inventory-gear/quest.svg",
+      "bytes": 1933,
+      "sha256": "ce8fbd97720baeaf47b1b4ad4712f8b2e47430b9605b817af0cf05a82eb4d923",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/resource.svg",
+      "url": "/static/images/ui/inventory-gear/resource.svg",
+      "bytes": 1203,
+      "sha256": "00cb65fa4fdac1b1a347bce838ba0bf1e479c17feb4ca93d184d6ab540541e89",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/ring.svg",
+      "url": "/static/images/ui/inventory-gear/ring.svg",
+      "bytes": 744,
+      "sha256": "8fb803f4b1e7c353362423bf6ade13c0fe3148ad6d0c0a715a9634d34f4891fc",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/shield.svg",
+      "url": "/static/images/ui/inventory-gear/shield.svg",
+      "bytes": 188,
+      "sha256": "ad2a55c41691c2ff46569bf2937e3cdaae248b89fa885af36759fdadd780e073",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/torso.svg",
+      "url": "/static/images/ui/inventory-gear/torso.svg",
+      "bytes": 951,
+      "sha256": "b8d1a41c594a182f5c65b03ec5aa1228d202bf2cc22a609dc08bb07a39a49d05",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-gear/weapon_sword.svg",
+      "url": "/static/images/ui/inventory-gear/weapon_sword.svg",
+      "bytes": 1255,
+      "sha256": "0df45061c6680077983d373a037809f9c0438d2b3f26a9559c2bd68aa7737fc2",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "src/frontend/static/images/ui/inventory-icons/items.svg",
+      "url": "/static/images/ui/inventory-icons/items.svg",
+      "bytes": 3660,
+      "sha256": "0a0af7612820470a471f0d5400ecd04b290b70b842595b2785e409949f7a4ec8",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true
+    },
+    {
+      "path": "src/frontend/static/js/vendor/phaser.min.js",
+      "url": "/static/js/vendor/phaser.min.js",
+      "bytes": 1158770,
+      "sha256": "970b7aafa7eb7394939fd1f44717346d514d7374ccc74a28bb15b0c6a87b16fc",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/assets/catalog.json",
+      "url": "/ui-static/game/assets/catalog.json",
+      "bytes": 1821,
+      "sha256": "5f85a940febd88756d0cdaddcd392a245cbec69f4fc094cf50a024ba2c990a0c",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/assets/combat/circle/duel-circle-v3.png",
+      "url": "/ui-static/game/assets/combat/circle/duel-circle-v3.png",
+      "bytes": 565095,
+      "sha256": "b33e8ce73ca5a61a61f5297e47b75fff7028509876d6a7526e0658898d090556",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false,
+      "width": 1024,
+      "height": 1024,
+      "decoded_rgba_bytes": 4194304
+    },
+    {
+      "path": "game_ui_lab/static/game/assets/combat/frames/character-frames-v1.png",
+      "url": "/ui-static/game/assets/combat/frames/character-frames-v1.png",
+      "bytes": 2324988,
+      "sha256": "cb10cbd3c788087e43963e26f8dbd6abcde3b4693c3dfc10c8c1b813293ae2d4",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false,
+      "width": 2048,
+      "height": 2048,
+      "decoded_rgba_bytes": 16777216
+    },
+    {
+      "path": "game_ui_lab/static/game/assets/combat/terrain/broken-hexes-v1.png",
+      "url": "/ui-static/game/assets/combat/terrain/broken-hexes-v1.png",
+      "bytes": 1316225,
+      "sha256": "40adbc719be485a419066a2d678aa279655de70f80f870e743af678e0473200d",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false,
+      "width": 2048,
+      "height": 2048,
+      "decoded_rgba_bytes": 16777216
+    },
+    {
+      "path": "game_ui_lab/static/game/assets/combat/ui/control-zone-v3.png",
+      "url": "/ui-static/game/assets/combat/ui/control-zone-v3.png",
+      "bytes": 856149,
+      "sha256": "dbe6a65e6eac268149700a88a71a4ffbf119b41a571fc89722bf089b988af86a",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false,
+      "width": 2048,
+      "height": 2048,
+      "decoded_rgba_bytes": 16777216
+    },
+    {
+      "path": "game_ui_lab/static/game/assets/combat/ui/target-inspector-v1.png",
+      "url": "/ui-static/game/assets/combat/ui/target-inspector-v1.png",
+      "bytes": 2315950,
+      "sha256": "53cdb10ad6454f31d7a62503695e7dee3ac9593ba7b57a882ace6a7c20d16756",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false,
+      "width": 2048,
+      "height": 2048,
+      "decoded_rgba_bytes": 16777216
+    },
+    {
+      "path": "game_ui_lab/static/game/core/assets.js",
+      "url": "/ui-static/game/core/assets.js",
+      "bytes": 1149,
+      "sha256": "db0b05cd12b1d3521aed64749b49cbc1bd136f4ce4080cd76bbc7d0ed0c21ef6",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/core/boot.js",
+      "url": "/ui-static/game/core/boot.js",
+      "bytes": 6283,
+      "sha256": "aedf5fad6e103c4e142ac15d0ab798c0988efa47ce8c9922cf5f5264bf943021",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/scenes/combat/scene.js",
+      "url": "/ui-static/game/scenes/combat/scene.js",
+      "bytes": 22052,
+      "sha256": "c2c988372b0338beace99ab28ad3ec25ebc55fce7ed198b4e41d6593948583c5",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/scenes/inventory/client.js",
+      "url": "/ui-static/game/scenes/inventory/client.js",
+      "bytes": 645,
+      "sha256": "6d95328289b36615a35a305aa9fc64c0122c0ec2f8e44daae9ef5edf09e3aaaa",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true
+    },
+    {
+      "path": "game_ui_lab/static/game/scenes/inventory/data.js",
+      "url": "/ui-static/game/scenes/inventory/data.js",
+      "bytes": 3005,
+      "sha256": "fae58311f3dbc6104ccdb0718def963b469149c6eebbbeafdb868039aa7b6807",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true
+    },
+    {
+      "path": "game_ui_lab/static/game/scenes/inventory/inventory.css",
+      "url": "/ui-static/game/scenes/inventory/inventory.css",
+      "bytes": 2474,
+      "sha256": "fd48ce5a5066a7e73f415192035a0f22e83851eb4c42bae691f343a0a552cb47",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/scenes/inventory/scene.js",
+      "url": "/ui-static/game/scenes/inventory/scene.js",
+      "bytes": 17461,
+      "sha256": "c7ec193c8e1fbe695e79d3a7e65797d9ee5a7c9c2faedd3fef5e636d796a73cf",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true
+    },
+    {
+      "path": "game_ui_lab/static/game/scenes/inventory/theme.js",
+      "url": "/ui-static/game/scenes/inventory/theme.js",
+      "bytes": 1010,
+      "sha256": "c44670a7366f718151069830d942794844198fbddcb77f5dbec66579c4f1a124",
+      "observed_on_initial_load": false,
+      "observed_on_inventory_open": true
+    },
+    {
+      "path": "game_ui_lab/static/game/shared/hex-layout.js",
+      "url": "/ui-static/game/shared/hex-layout.js",
+      "bytes": 1488,
+      "sha256": "52e19c16a7c791912d6215c1028e19ee1a594e6edcbd12afdb3f9c6d38825a13",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/shared/resize.js",
+      "url": "/ui-static/game/shared/resize.js",
+      "bytes": 675,
+      "sha256": "67a8c4a5597cc5990420d6bc75b905f26f743a7b7f283159301015af061ebb96",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/shell/character.css",
+      "url": "/ui-static/game/shell/character.css",
+      "bytes": 5271,
+      "sha256": "cb90b5731d0290f6cd74815c618ece8024bdd04ce73492eb793c0f656455715b",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/shell/chat-layout.js",
+      "url": "/ui-static/game/shell/chat-layout.js",
+      "bytes": 3835,
+      "sha256": "19f9c8908778b12bc58da940f7e8921c583b9843228c8e1ebb41dabf72e22f0d",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/shell/chat.js",
+      "url": "/ui-static/game/shell/chat.js",
+      "bytes": 1639,
+      "sha256": "8f8b93d88d7d4db64e0a9870435137b39a9883a8e00fbd5d67d2728fa37a99a3",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/shell/obsidian-bronze.css",
+      "url": "/ui-static/game/shell/obsidian-bronze.css",
+      "bytes": 1053,
+      "sha256": "bf8df0d842f99ac5445afc324899f0f9ebab29a131807b0d42ded4de5fc2fb89",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/shell/shell.css",
+      "url": "/ui-static/game/shell/shell.css",
+      "bytes": 8417,
+      "sha256": "4a7f0f2717bac431aaecd5ab92430e955bc3cc127c7a45ac66ac0ee0b07250fb",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/shell/viewport.js",
+      "url": "/ui-static/game/shell/viewport.js",
+      "bytes": 576,
+      "sha256": "9bc0b6b564b9fc7884f266120a6bc7f8734d4196d513cd198b6ffcde6c318777",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/ui/combat-controls.js",
+      "url": "/ui-static/game/ui/combat-controls.js",
+      "bytes": 14659,
+      "sha256": "c8d4e774980cad439ff31c0ace7bff2244fdbc33e3790c4e0b548196712ed9f2",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    },
+    {
+      "path": "game_ui_lab/static/game/ui/target-inspector.js",
+      "url": "/ui-static/game/ui/target-inspector.js",
+      "bytes": 6688,
+      "sha256": "ee7dc9dabe8bbde7a7718a6c705d83bf025d41ad792bbfcd192767f8df7db5d9",
+      "observed_on_initial_load": true,
+      "observed_on_inventory_open": false
+    }
+  ]
+}

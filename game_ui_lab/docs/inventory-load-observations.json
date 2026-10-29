@@ -1,0 +1,394 @@
+{
+  "requests": [
+    {
+      "url": "/static/css/fonts.css",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/shell/obsidian-bronze.css",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/css/theme.css",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/shell/shell.css",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/shell/character.css",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/avatars/rook7.webp",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/scenes/inventory/inventory.css",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/amulet.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/head.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/earrings.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/cloak.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/arms.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/weapon_sword.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/torso.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/shield.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/legwear.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/ring.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/belt.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/feetwear.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/core/boot.js",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/core/assets.js",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/shell/chat.js",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/shell/viewport.js",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/shared/hex-layout.js",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/scenes/combat/scene.js",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/shell/chat-layout.js",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/ui/combat-controls.js",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/ui/target-inspector.js",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/rift/void_interworld_bg_v3.webp",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/js/vendor/phaser.min.js",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/assets/catalog.json",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GR1SDk.woff2",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/fonts/google/s_ebgaramond_v32_SlGUmQSNjdsmc35JDF1K5GRxSDktYw.woff2",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/shared/resize.js",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/assets/combat/ui/control-zone-v3.png",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-hit.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-tempo.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-crit.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-dodge.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-parry.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-pressure.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-block.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-gift.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/token-blood.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_blood_hunger.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_break_stance.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_expose_weakness.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_cleave_gift.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_last_push.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_splinter_strike.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_slip_pain.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/combat-icons/abilities/basic_wipe_blood.svg",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/assets/combat/terrain/broken-hexes-v1.png",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/assets/combat/circle/duel-circle-v3.png",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/assets/combat/frames/character-frames-v1.png",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/assets/combat/ui/target-inspector-v1.png",
+      "phase": "battle",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/scenes/inventory/client.js",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/scenes/inventory/theme.js",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/scenes/inventory/data.js",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/ui-static/game/scenes/inventory/scene.js",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/inventory-art/sword.basic.scrap_metal.t0/image",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/inventory-art/sword.basic.iron.t1/image",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/inventory-art/sword.basic.cobalt.t2/image",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/inventory-art/sword.basic.adamantite.t4/image",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/inventory-art/sword.basic.mithril.t3/image",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/inventory-art/sword.basic.thorium.t5/image",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-icons/items.svg",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/consumable.svg",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/resource.svg",
+      "phase": "inventory-first-open",
+      "status": 200
+    },
+    {
+      "url": "/static/images/ui/inventory-gear/quest.svg",
+      "phase": "inventory-first-open",
+      "status": 200
+    }
+  ],
+  "secondOpenNewUrls": [],
+  "canvasCount": 1,
+  "inventory": {
+    "filter": "all",
+    "visibleCount": 6,
+    "weight": {
+      "value": 16,
+      "limit": 30,
+      "worn": 4,
+      "mock": true
+    },
+    "notice": null,
+    "action": null,
+    "footerBounds": {
+      "x": 31,
+      "y": 738,
+      "width": 1534,
+      "height": 49
+    },
+    "selectedId": null,
+    "pinned": false,
+    "width": 1597,
+    "height": 807,
+    "textures": 6,
+    "cardScroll": 0,
+    "bagScroll": 0,
+    "bagRows": 12,
+    "columns": 27,
+    "popupBounds": null,
+    "itemCount": 6,
+    "cellSize": 52,
+    "maxBagScroll": 0,
+    "bagBounds": {
+      "x": 31,
+      "y": 103,
+      "width": 1534,
+      "height": 625
+    },
+    "textResolution": 2
+  }
+}

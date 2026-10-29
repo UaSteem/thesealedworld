@@ -1,0 +1,8 @@
+# Local artwork masters and unselected experiments.
+/sources/
+/experiments/visuals/
+/experiments/prototypes/
+/experiments/history/static/assets/
+/experiments/history/static/alpha/
+/experiments/history/static/versions/
+# Historical JavaScript remains available to the existing tests.

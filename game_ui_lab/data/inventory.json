@@ -1,0 +1,357 @@
+{
+  "items": [
+    {
+      "item_id": "layout-sword-0",
+      "visual_variant_id": "sword.basic.scrap_metal.t0",
+      "name": "Ржавый меч",
+      "tier": 0,
+      "rarity_label": "Без грейда",
+      "image_url": "/static/generated-assets/items/sword/sword.basic.scrap_metal.t0/badeb31d5e2d1856c90bff1645b8634ae85ed53171f92ef3027835348980491f.image.webp",
+      "thumbnail_url": "/static/generated-assets/items/sword/sword.basic.scrap_metal.t0/c72213c4407f05c86d5275379cb226f2f089620b10ea619db942b2f5f2574a67.thumbnail.webp",
+      "texture_url": "/preview/item-textures/sword.basic.scrap_metal.t0/image?v=badeb31d5e2d1856c90bff1645b8634ae85ed53171f92ef3027835348980491f.image.webp",
+      "grid_w": 1,
+      "grid_h": 3,
+      "description": "Потёртый одноручный меч. Клинок, гарда и навершие покрыты ржавчиной, обмотка рукояти изношена.",
+      "details": [
+        {
+          "label": "Урон",
+          "value": "5.6",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Штраф владения основной рукой",
+          "value": "3.2%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Шанс крита",
+          "value": "2.4%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Парирование",
+          "value": "3.2%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Прочность",
+          "value": "48/48",
+          "tone": "neutral",
+          "delta": null
+        }
+      ],
+      "affixes": [],
+      "is_identified": false
+    },
+    {
+      "item_id": "layout-sword-1",
+      "visual_variant_id": "sword.basic.iron.t1",
+      "name": "Железный меч",
+      "tier": 1,
+      "rarity_label": "Обычный",
+      "image_url": "/static/generated-assets/items/sword/sword.basic.iron.t1/9b788d6811e91f372efc6963db23c385aa0a71c6467281c5a56cd9f57e21a5d5.image.webp",
+      "thumbnail_url": "/static/generated-assets/items/sword/sword.basic.iron.t1/8c64fa2b952da6fe705993e1870fb3684088fb2898221c6bdd82a17bb963aecf.thumbnail.webp",
+      "texture_url": "/preview/item-textures/sword.basic.iron.t1/image?v=9b788d6811e91f372efc6963db23c385aa0a71c6467281c5a56cd9f57e21a5d5.image.webp",
+      "grid_w": 1,
+      "grid_h": 3,
+      "description": "Одноручный меч с прямым железным клинком, простой гардой и коричневой обмоткой рукояти.",
+      "details": [
+        {
+          "label": "Урон",
+          "value": "7",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Штраф владения основной рукой",
+          "value": "4%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Шанс крита",
+          "value": "3%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Парирование",
+          "value": "4%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Прочность",
+          "value": "60/60",
+          "tone": "neutral",
+          "delta": null
+        }
+      ],
+      "affixes": [],
+      "is_identified": false
+    },
+    {
+      "item_id": "layout-sword-2",
+      "visual_variant_id": "sword.basic.cobalt.t2",
+      "name": "Кобальтовый меч",
+      "tier": 2,
+      "rarity_label": "Необычный",
+      "image_url": "/static/generated-assets/items/sword/sword.basic.cobalt.t2/5e838f05e29975bfcd56a71cfac17b88fb80e0675de43b2909e62a0879950bd5.image.webp",
+      "thumbnail_url": "/static/generated-assets/items/sword/sword.basic.cobalt.t2/757e94bc056cdeed65235b50575c6e16c3401a68a5ad06e6b0f0c5be4607d6b9.thumbnail.webp",
+      "texture_url": "/preview/item-textures/sword.basic.cobalt.t2/image?v=5e838f05e29975bfcd56a71cfac17b88fb80e0675de43b2909e62a0879950bd5.image.webp",
+      "grid_w": 1,
+      "grid_h": 3,
+      "description": "Одноручный меч с холодным синим отливом кобальтового клинка и коричневой обмоткой рукояти.",
+      "details": [
+        {
+          "label": "Урон",
+          "value": "10.5",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Штраф владения основной рукой",
+          "value": "6%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Шанс крита",
+          "value": "4.5%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Парирование",
+          "value": "6%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Прочность",
+          "value": "90/90",
+          "tone": "neutral",
+          "delta": null
+        }
+      ],
+      "affixes": [
+        {
+          "affix_id": "weapon_accuracy",
+          "label": "Точность оружия",
+          "value": "+2.28%",
+          "tier": 2,
+          "source": "forced",
+          "tone": "neutral"
+        },
+        {
+          "affix_id": "crit_chance",
+          "label": "Шанс крита",
+          "value": "+1.48%",
+          "tier": 2,
+          "source": "forced",
+          "tone": "neutral"
+        }
+      ],
+      "is_identified": false
+    },
+    {
+      "item_id": "layout-sword-3",
+      "visual_variant_id": "sword.basic.mithril.t3",
+      "name": "Мифриловый меч",
+      "tier": 3,
+      "rarity_label": "Редкий",
+      "image_url": "/static/generated-assets/items/sword/sword.basic.mithril.t3/7861a8967490d5fb874c6cab414c82a8e56afa2c79da1fd866ecd739ead3d282.image.webp",
+      "thumbnail_url": "/static/generated-assets/items/sword/sword.basic.mithril.t3/28e8bcab2c7bdf4c40d34c6bbe17eebb0f9d3fa81dc619e01ecd40692959e3e0.thumbnail.webp",
+      "texture_url": "/preview/item-textures/sword.basic.mithril.t3/image?v=7861a8967490d5fb874c6cab414c82a8e56afa2c79da1fd866ecd739ead3d282.image.webp",
+      "grid_w": 1,
+      "grid_h": 3,
+      "description": "Одноручный меч со светлым серебристым мифриловым клинком, простой гардой и обмотанной рукоятью.",
+      "details": [
+        {
+          "label": "Урон",
+          "value": "15.4",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Штраф владения основной рукой",
+          "value": "8.8%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Шанс крита",
+          "value": "6.6%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Парирование",
+          "value": "8.8%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Прочность",
+          "value": "132/132",
+          "tone": "neutral",
+          "delta": null
+        }
+      ],
+      "affixes": [
+        {
+          "affix_id": "weapon_accuracy",
+          "label": "Точность оружия",
+          "value": "+3.26%",
+          "tier": 3,
+          "source": "forced",
+          "tone": "neutral"
+        },
+        {
+          "affix_id": "crit_chance",
+          "label": "Шанс крита",
+          "value": "+2.23%",
+          "tier": 3,
+          "source": "forced",
+          "tone": "neutral"
+        }
+      ],
+      "is_identified": false
+    },
+    {
+      "item_id": "layout-sword-4",
+      "visual_variant_id": "sword.basic.adamantite.t4",
+      "name": "Адамантитовый меч",
+      "tier": 4,
+      "rarity_label": "Эпический",
+      "image_url": "/static/generated-assets/items/sword/sword.basic.adamantite.t4/5057a0ef2c2d986b80a915e21ef0f04aeab8ffc7891051d6bcf6bdf1dc23955b.image.webp",
+      "thumbnail_url": "/static/generated-assets/items/sword/sword.basic.adamantite.t4/cf2e5f947e54679537a4f5b0ede832bf2069e28620e84abede58cbe9b3aded6d.thumbnail.webp",
+      "texture_url": "/preview/item-textures/sword.basic.adamantite.t4/image?v=5057a0ef2c2d986b80a915e21ef0f04aeab8ffc7891051d6bcf6bdf1dc23955b.image.webp",
+      "grid_w": 1,
+      "grid_h": 3,
+      "description": "Одноручный меч с зеленоватым адамантитовым клинком и тёмными гранями металла. Рукоять обмотана кожей.",
+      "details": [
+        {
+          "label": "Урон",
+          "value": "21",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Штраф владения основной рукой",
+          "value": "12%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Шанс крита",
+          "value": "9%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Парирование",
+          "value": "12%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Прочность",
+          "value": "180/180",
+          "tone": "neutral",
+          "delta": null
+        }
+      ],
+      "affixes": [
+        {
+          "affix_id": "weapon_accuracy",
+          "label": "Точность оружия",
+          "value": "+4.52%",
+          "tier": 4,
+          "source": "forced",
+          "tone": "neutral"
+        },
+        {
+          "affix_id": "crit_chance",
+          "label": "Шанс крита",
+          "value": "+2.96%",
+          "tier": 4,
+          "source": "forced",
+          "tone": "neutral"
+        }
+      ],
+      "is_identified": false
+    },
+    {
+      "item_id": "layout-sword-5",
+      "visual_variant_id": "sword.basic.thorium.t5",
+      "name": "Ториевый меч",
+      "tier": 5,
+      "rarity_label": "Мифический",
+      "image_url": "/static/generated-assets/items/sword/sword.basic.thorium.t5/63f412d733d83b5f44a6f0b6594224038e05b5665cc47e7b65e35167811dfa18.image.webp",
+      "thumbnail_url": "/static/generated-assets/items/sword/sword.basic.thorium.t5/091e4e618fbef17bf2e2cfbb8c91b60a1c60d1de777def0a44cb646f23dc9c4a.thumbnail.webp",
+      "texture_url": "/preview/item-textures/sword.basic.thorium.t5/image?v=63f412d733d83b5f44a6f0b6594224038e05b5665cc47e7b65e35167811dfa18.image.webp",
+      "grid_w": 1,
+      "grid_h": 3,
+      "description": "Одноручный меч с бледным зеленовато-серебристым ториевым клинком и коричневой обмоткой рукояти.",
+      "details": [
+        {
+          "label": "Урон",
+          "value": "28",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Штраф владения основной рукой",
+          "value": "16%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Шанс крита",
+          "value": "12%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Парирование",
+          "value": "16%",
+          "tone": "neutral",
+          "delta": null
+        },
+        {
+          "label": "Прочность",
+          "value": "240/240",
+          "tone": "neutral",
+          "delta": null
+        }
+      ],
+      "affixes": [
+        {
+          "affix_id": "weapon_accuracy",
+          "label": "Точность оружия",
+          "value": "+5.94%",
+          "tier": 5,
+          "source": "forced",
+          "tone": "neutral"
+        },
+        {
+          "affix_id": "crit_chance",
+          "label": "Шанс крита",
+          "value": "+4.05%",
+          "tier": 5,
+          "source": "forced",
+          "tone": "neutral"
+        }
+      ],
+      "is_identified": false
+    }
+  ],
+  "columns": 8,
+  "rows": 5,
+  "selected_id": null
+}
