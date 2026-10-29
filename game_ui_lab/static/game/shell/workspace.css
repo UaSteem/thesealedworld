@@ -62,17 +62,21 @@ body:is([data-game-screen="death"],[data-game-screen="loot"],[data-game-screen="
 .game-lab-workspace .scene-split { grid-template-rows:minmax(0,1fr); }
 .game-lab-workspace #chat { position:absolute;left:14px;bottom:14px;width:580px;max-width:calc(100% - 28px);height:300px;max-height:45%;z-index:5;grid-row:auto;background:transparent;border:1px solid transparent;border-radius:5px;transition:background .15s,border-color .15s; }
 .game-lab-workspace #chat:hover,.game-lab-workspace #chat:focus-within { background:color-mix(in srgb,var(--col-bg-surface) 88%,transparent);border-color:var(--col-border); }
-.game-lab-workspace .chat-heading { height:28px;min-height:28px;padding:0 10px;gap:8px;border:0; }
-.game-lab-workspace .chat-tabs { gap:14px; }
+.game-lab-workspace .chat-heading { order:2;height:30px;min-height:30px;padding:0 10px;gap:8px;border:0;align-items:flex-start;opacity:.45;transition:opacity .15s; }
+.game-lab-workspace #chat:hover .chat-heading,.game-lab-workspace #chat:focus-within .chat-heading { opacity:1; }
+.game-lab-workspace .chat-tabs { gap:3px;align-self:auto;align-items:flex-start; }
+.game-lab-workspace .chat-tabs button { min-width:74px;height:26px;margin-top:3px;padding:0 13px;border:1px solid var(--col-border);border-top:0;border-radius:0 0 6px 6px;background:color-mix(in srgb,var(--col-bg-darker) 75%,transparent); }
+.game-lab-workspace .chat-tabs button.is-active { height:30px;margin-top:-1px;padding-top:1px;border-color:var(--col-accent);background:var(--col-bg-darker);z-index:1; }
+.game-lab-workspace .chat-tabs button.is-active::after { left:9px;right:9px;bottom:1px;height:2px; }
 .game-lab-workspace .chat-mock-label,.game-lab-workspace #chat-reset { display:none; }
-.game-lab-workspace #chat-toggle { margin-left:auto; }
-.game-lab-workspace .chat-content { padding:4px 10px 8px; }
+.game-lab-workspace #chat-toggle { margin-left:auto;width:28px;height:26px;border:1px solid var(--col-border);border-top:0;border-radius:0 0 5px 5px;background:color-mix(in srgb,var(--col-bg-darker) 75%,transparent);font-size:16px; }
+.game-lab-workspace .chat-content { padding:4px 10px 0; }
 .game-lab-workspace .chat-messages { font-size:15px;line-height:20px;text-shadow:0 1px 3px #000;mask-image:linear-gradient(to bottom,transparent,black 95%); }
 .game-lab-workspace #chat:hover .chat-messages,.game-lab-workspace #chat:focus-within .chat-messages { mask-image:none; }
 .game-lab-workspace .chat-messages p { margin:2px 0; }
 .game-lab-workspace .chat form { margin-top:5px;gap:5px; }
-.game-lab-workspace .chat input { padding:6px 8px;background:color-mix(in srgb,var(--col-bg-darker) 65%,transparent); }
-.game-lab-workspace #chat.is-collapsed { height:28px; }
+.game-lab-workspace .chat input { padding:6px 8px;border-radius:4px 4px 0 0;background:color-mix(in srgb,var(--col-bg-darker) 65%,transparent); }
+.game-lab-workspace #chat.is-collapsed { height:32px; }
 .game-lab-workspace:not([data-game-screen="rift"]):not([data-game-screen="combat"]):not([data-game-screen="arena"]):not([data-game-screen="districts"]) #chat { display:none; }
 
 .rift-debug-window { position:absolute;right:14px;top:76px;z-index:5;color:var(--col-text-world);background:var(--col-bg-surface);border:1px solid var(--col-border);border-radius:4px;font-size:13px; }
@@ -85,3 +89,9 @@ body:not([data-game-screen="rift"]) .rift-debug-window { display:none; }
 .rift-debug-window .rift-zoom-unlock { display:flex;align-items:center;gap:6px; }
 .rift-debug-window .rift-zoom-unlock input { width:auto; }
 .rift-debug-window small { grid-column:1 / -1;color:var(--col-text-dim); }
+
+/* A shared tab strip does not merge battle journal and chat ownership. */
+.game-lab-workspace .chat-tabs { min-width:0;max-width:calc(100% - 36px);overflow-x:auto;scrollbar-width:thin; }
+.game-lab-workspace .chat-tabs button { flex:none;min-width:0;padding-left:10px;padding-right:10px; }
+.game-lab-workspace .chat-tabs button[hidden],.game-lab-workspace .chat-content > [hidden] { display:none; }
+.game-lab-workspace .combat-log b { min-width:65px; }

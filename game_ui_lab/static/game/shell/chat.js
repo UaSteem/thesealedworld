@@ -8,7 +8,9 @@
     world: [
       ...Array.from({length:9},(_,i)=>({author:['Лиора','Страж','Путник'][i%3],text:['Кто идёт к арене?','Встречаемся у входа.','Проверка читаемости чата на игровом поле.'][i%3]})),
       {author:'Лиора',text:'Куда отправимся дальше?'}],
-    local: [{author:'Система',text:'Это локальный макет канала «Рядом».'}],
+    local: [{author:'Система',text:'Сообщения текущей локации: моковый экземпляр рифта.'}],
+    party: [{author:'Страж',text:'Группа: собираемся у входа в рифт.'}],
+    trade: [{author:'Торговец',text:'Торговля: обменяю железную руду на травы. Макет.'}],
     system: [{author:'Система',text:'Лаборатория интерфейса. Игровые сервисы не подключены.'}],
   };
   function render() {
@@ -32,7 +34,7 @@
   }));
   document.getElementById('chat-form').addEventListener('submit', event => {
     event.preventDefault();
-    if (!input.value.trim()) return;
+    if (document.getElementById('chat-form').hidden || !input.value.trim()) return;
     messages[active].push({author:'Вы',text:input.value.trim()});input.value='';render();
   });
   render();
