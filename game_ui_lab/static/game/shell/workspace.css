@@ -1,7 +1,7 @@
 /* Current Lab composition. Palette: obsidian-bronze.css; equipment: character.css. */
-.game-viewport { width:1920px;margin-inline:auto; }
-.game-frame { grid-template-columns:minmax(0,1fr); }
-.play-column { border-left:0; }
+.game-viewport { width:100%;max-width:1920px;height:100dvh;margin-inline:auto;display:flex;flex-direction:column;position:relative; }
+.game-frame { grid-template-columns:minmax(0,1fr);height:100%;min-height:0; }
+.play-column { border-left:0;min-height:0;display:flex;flex-direction:column;flex:1; }
 .stage-heading { height:30px; }
 .stage-heading h2 { font-size:14px; }
 .stage-shell { isolation:isolate; }
@@ -37,14 +37,15 @@ body[data-game-screen="combat"] .actor-details { top:130px; }
 
 /* The only header is a technical Lab control, not game branding/navigation. */
 :root:has(.game-lab-workspace) { --game-chrome-height:0px; }
-.lab-debug-header { height:28px;flex:none;display:flex;align-items:center;gap:12px;padding:0 10px;border-bottom:1px solid var(--col-border);background:var(--col-bg-base);font-size:11px;color:var(--col-text-dim); }
-#lab-debug { display:flex;align-items:center;gap:12px;min-width:0; }
-#lab-debug>strong { color:var(--col-accent); }
-#lab-debug>nav { display:flex;gap:5px;align-items:center; }
+.lab-debug-header { height:28px;flex:none;display:flex;align-items:center;gap:12px;padding:0 10px;border-bottom:1px solid var(--col-border);background:var(--col-bg-base);font-size:11px;color:var(--col-text-dim);overflow-x:auto;scrollbar-width:none; }
+.lab-debug-header::-webkit-scrollbar { display:none; }
+#lab-debug { display:flex;align-items:center;gap:12px;min-width:0;flex-shrink:0; }
+#lab-debug>strong { color:var(--col-accent);flex-shrink:0; }
+#lab-debug>nav { display:flex;gap:5px;align-items:center;flex-shrink:0; }
 #lab-debug nav button { background:var(--col-bg-darker);border:1px solid var(--col-border);padding:2px 8px;font-size:12px;white-space:nowrap; }
 #lab-debug nav button[aria-pressed="true"] { color:var(--col-accent);border-color:var(--col-accent); }
 #lab-debug nav button:disabled { opacity:.45;cursor:default; }
-#lab-debug .projection-switch { display:flex;gap:8px;white-space:nowrap; }
+#lab-debug .projection-switch { display:flex;gap:8px;white-space:nowrap;flex-shrink:0; }
 #lab-debug .projection-switch[hidden] { display:none; }
 body[data-game-screen="combat"] .player-menu { display:none; }
 .player-hud:disabled { cursor:default;opacity:1; }
@@ -85,3 +86,44 @@ body:not([data-game-screen="rift"]) .rift-debug-window { display:none; }
 .rift-debug-window .rift-zoom-unlock { display:flex;align-items:center;gap:6px; }
 .rift-debug-window .rift-zoom-unlock input { width:auto; }
 .rift-debug-window small { grid-column:1 / -1;color:var(--col-text-dim); }
+
+/* Responsive adaptations for displays: ultra-wide, laptops, tablets, smartphones */
+@media (max-width: 1200px) {
+  .player-hud { top:10px;left:10px;width:250px;padding:8px;gap:8px; }
+  .player-hud-avatar { width:52px;height:60px; }
+  .player-hud-info>strong { font-size:15px; }
+  .player-menu { top:10px;right:10px;padding:4px;gap:4px; }
+  .player-menu button { padding:6px 10px;font-size:12px; }
+  .game-lab-workspace #chat { width:440px;height:240px; }
+  body[data-game-screen="combat"] .actor-details { top:105px;width:170px; }
+}
+
+@media (max-width: 768px) {
+  .player-hud { top:6px;left:6px;width:auto;max-width:calc(100% - 150px);padding:5px 8px;gap:6px;border-radius:4px; }
+  .player-hud-avatar { width:38px;height:44px; }
+  .player-hud-info>strong { font-size:13px; }
+  .player-hud-resource { grid-template-columns:18px minmax(0,1fr) 40px;gap:3px;font-size:9px; }
+  .player-hud-track { height:4px; }
+  .player-menu { top:6px;right:6px;padding:3px;gap:3px; }
+  .player-menu button { padding:5px 8px;font-size:11px; }
+  .game-lab-workspace #chat { left:6px;right:6px;bottom:6px;width:auto;max-width:none;height:190px;max-height:35%; }
+  .game-lab-workspace .chat-messages { font-size:13px;line-height:18px; }
+  .game-lab-workspace .chat form { margin-top:4px;gap:4px; }
+  .game-lab-workspace .chat input { padding:5px 6px;font-size:12px; }
+  body[data-game-screen="combat"] .actor-details { top:80px;left:6px;width:150px;font-size:11px;padding:8px;max-height:calc(100% - 95px); }
+  .character-window-heading { height:38px;padding:0 10px; }
+  .character-window-heading h2 { font-size:17px; }
+  .character-window-tabs { padding:5px 6px;gap:3px;overflow-x:auto; }
+  .character-window-tabs button { padding:5px 7px;font-size:11px;white-space:nowrap; }
+  .character-window-body { grid-template-columns:1fr;overflow-y:auto; }
+  .character-window .character-panel { border-right:0;border-bottom:1px solid var(--col-border);max-height:45vh; }
+  .rift-debug-window { right:6px;top:60px;max-width:calc(100% - 12px);font-size:11px; }
+  .rift-debug-window>div { width:auto;max-width:260px;padding:8px; }
+}
+
+@media (max-width: 480px) {
+  .player-hud { max-width:calc(100% - 120px);padding:4px 6px;gap:5px; }
+  .player-hud-avatar { width:32px;height:38px; }
+  .player-menu button { padding:4px 6px;font-size:10px; }
+  #lab-debug nav button { padding:2px 6px;font-size:11px; }
+}
