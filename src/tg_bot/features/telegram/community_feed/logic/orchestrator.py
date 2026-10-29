@@ -25,6 +25,8 @@ class CommunityFeedOrchestrator(BaseBotOrchestrator[Any]):
 
     async def process_group_message(self, message: Any, container: Any) -> None:
         """Moderates the group message and publishes approved ones to the Redis Stream."""
+        if container and message.chat.id == container.settings.telegram_dev_chat_id:
+            return
         # 1. Extract content
         text = message.text or message.caption or ""
         text = text.strip()

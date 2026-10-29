@@ -60,4 +60,10 @@ def build_bot(
             dp.include_router(router)
             log.bind(router_name=router.name).info("BotFactoryAiogramRouterIncluded")
 
+    # This feature shares the runner's event loop and the existing Bot instance.
+    # Container shutdown also calls shutdown (which is idempotent).
+    notifications = container.get_feature("github_notifications")
+    dp.startup.register(notifications.startup)
+    dp.shutdown.register(notifications.shutdown)
+
     return bot, dp

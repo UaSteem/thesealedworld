@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Self
 
-from pydantic import AliasChoices, Field, model_validator
+from pydantic import AliasChoices, Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -56,8 +56,32 @@ class BotSettings(BaseSettings):
     backend_api_key: str | None = Field(default=None, alias="BACKEND_API_KEY")
     backend_api_timeout: float = Field(default=10.0, alias="BACKEND_API_TIMEOUT")
 
+    # Explicit addresses only; no automatic classification of arbitrary messages.
+    telegram_dev_chat_id: int = Field(default=-1004387822347, alias="TELEGRAM_DEV_CHAT_ID")
+    github_webhook_enabled: bool = Field(default=False, alias="GITHUB_WEBHOOK_ENABLED")
+    github_webhook_secret: SecretStr = Field(default=SecretStr(""), alias="GITHUB_WEBHOOK_SECRET")
+    github_webhook_host: str = Field(default="127.0.0.1", alias="GITHUB_WEBHOOK_HOST")
+    github_webhook_port: int = Field(default=8091, ge=1, le=65535, alias="GITHUB_WEBHOOK_PORT")
+    github_webhook_repositories: str = Field(default="CodexDLC/thesealedworld", alias="GITHUB_WEBHOOK_REPOSITORIES")
+    github_webhook_branches: str = Field(default="develop,main", alias="GITHUB_WEBHOOK_BRANCHES")
+
+    @property
+    def github_repositories(self) -> set[str]:
+        return {value.strip().casefold() for value in self.github_webhook_repositories.split(",") if value.strip()}
+
+    @property
+    def github_branches(self) -> set[str]:
+        return {value.strip() for value in self.github_webhook_branches.split(",") if value.strip()}
+
     @model_validator(mode="after")
     def set_default_log_level(self) -> Self:
+        if self.github_webhook_enabled and (
+            not self.github_webhook_secret.get_secret_value().strip()
+            or not self.use_redis
+            or not self.github_repositories
+            or not self.github_branches
+        ):
+            raise ValueError("GitHub webhook requires secret, Redis and nonempty repository/branch allowlists")
         if not self.log_level_console:
             self.log_level_console = "DEBUG" if self.debug else "INFO"
         return self

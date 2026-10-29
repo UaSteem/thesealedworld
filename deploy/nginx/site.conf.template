@@ -56,6 +56,7 @@ server {
     set $frontend_upstream http://frontend:8000;
     set $backend_upstream http://backend:8001;
     set $chat_upstream http://chat:8002;
+    set $tg_bot_upstream http://tg-bot:8091;
 
     ssl_certificate ${TLS_CERTIFICATE_PATH};
     ssl_certificate_key ${TLS_CERTIFICATE_KEY_PATH};
@@ -71,6 +72,21 @@ server {
     add_header Referrer-Policy "strict-origin-when-cross-origin" always;
 
     client_max_body_size 10m;
+
+    # Signed GitHub events are handled by the existing bot service.
+    location = /webhooks/github {
+        client_max_body_size 1m;
+        proxy_pass $tg_bot_upstream;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_connect_timeout 3s;
+        proxy_send_timeout 15s;
+        proxy_read_timeout 15s;
+        proxy_next_upstream off;
+    }
 
     location ~ /\.(?!well-known) {
         deny all;
@@ -196,6 +212,10 @@ server {
     set $play_upstream http://frontend-play:8000;
     set $backend_upstream http://backend:8001;
     set $chat_upstream http://chat:8002;
+
+    location = /webhooks/github {
+        return 404;
+    }
 
     ssl_certificate ${PLAY_TLS_CERTIFICATE_PATH};
     ssl_certificate_key ${PLAY_TLS_CERTIFICATE_KEY_PATH};

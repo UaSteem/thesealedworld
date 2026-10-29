@@ -34,7 +34,7 @@ class AnnouncementsOrchestrator:
         slug = payload.get("slug", "")
         cover_image = payload.get("cover_image", "")
 
-        sender = self.container.media_sender
+        sender = self.container.get_feature("delivery")
         domain = self.container.settings.domain_name
         link = build_public_absolute_url(domain_name=domain, path_or_url=f"/news/{slug}")
         photo_url = build_public_absolute_url(domain_name=domain, path_or_url=cover_image)
@@ -42,7 +42,7 @@ class AnnouncementsOrchestrator:
 
         try:
             log.bind(article_id=article_id, chat_id=chat_id).info("AnnouncementPublishStarted")
-            await sender.send_or_replace_html(
+            await sender.publish_news(
                 session_key=self._news_session_key(article_id),
                 chat_id=chat_id,
                 text=text,
@@ -65,7 +65,9 @@ class AnnouncementsOrchestrator:
             log.warning("AnnouncementDeleteSkipped")
             return
 
-        await self.container.media_sender.delete(session_key=self._news_session_key(article_id), chat_id=chat_id)
+        await self.container.get_feature("delivery").unpublish_news(
+            session_key=self._news_session_key(article_id), chat_id=chat_id
+        )
 
     async def render_content(
         self, director: Director | None = None, payload: Any = None

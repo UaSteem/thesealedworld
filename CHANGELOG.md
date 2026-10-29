@@ -14,6 +14,8 @@ Full layer changelogs live in:
 
 ## [Unreleased]
 
+- Telegram development notifications now receive signed GitHub events and update pull request cards in dedicated topics.
+
 ## [v0.5.1] - Alpha 0.5.1
 
 ### Fixed

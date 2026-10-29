@@ -11,6 +11,8 @@ INSTALLED_FEATURES: list[str] = [
     "commands",
     "bot_menu",
     "community_feed",
+    "delivery",
+    "github_notifications",
 ]
 
 # --- Background Features (Redis Stream Listeners) ---
