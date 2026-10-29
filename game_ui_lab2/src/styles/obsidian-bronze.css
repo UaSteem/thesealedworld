@@ -1,0 +1,32 @@
+/* Lab-only palette trial. Geometry and runtime Adventure remain unchanged. */
+:root[data-game-theme="adventure"] {
+  --theme-surface-rgb: 16 20 26;
+  --theme-panel-rgb: 26 32 40;
+  --theme-raised-rgb: 37 44 53;
+  --theme-inset-rgb: 19 25 32;
+  --theme-text-rgb: 227 232 237;
+  --theme-muted-rgb: 167 178 190;
+  --theme-accent-rgb: 210 178 115;
+  --theme-action-rgb: 210 178 115;
+  --col-bg: #10141a;
+  --col-surface: #1a2028;
+  --col-bg-base: #10141a;
+  --col-bg-surface: #1a2028;
+  --col-bg-surface-light: #252c35;
+  --col-bg-darker: #131920;
+  --col-accent: #d2b273;
+  --col-accent-dim: rgb(210 178 115 / .4);
+  --col-parchment: #d2b273;
+  --col-parchment-dim: rgb(210 178 115 / .6);
+  --col-text-primary: #e3e8ed;
+  --col-text-secondary: #c3cbd3;
+  --col-text-world: #eee5d4;
+  --col-text-dim: #a7b2be;
+  --col-border: #81704f;
+  --col-border-strong: #ab8c59;
+  --col-membrane: rgb(210 178 115 / .06);
+  --game-shell-surface: #1a2028;
+  --game-drawer-surface: #171d25;
+  --game-panel-surface: #1a2028;
+  --game-scene-surface: rgb(16 20 26 / .72);
+}

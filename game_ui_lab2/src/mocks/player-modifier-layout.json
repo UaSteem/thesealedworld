@@ -1,0 +1,195 @@
+[
+  {
+    "key": "attack",
+    "label": "Атака",
+    "category": "combat",
+    "items": [
+      {
+        "key": "crit_chance",
+        "label": "Бонус к шансу критического удара",
+        "unit": "percent"
+      },
+      {
+        "key": "physical_damage_bonus",
+        "label": "Бонус физического урона",
+        "unit": "raw"
+      },
+      {
+        "key": "armor_penetration_pct",
+        "label": "Пробитие брони",
+        "unit": "percent"
+      }
+    ]
+  },
+  {
+    "key": "defense",
+    "label": "Защита",
+    "category": "combat",
+    "items": [
+      {
+        "key": "armor",
+        "label": "Броня",
+        "unit": "raw"
+      },
+      {
+        "key": "magic_armor",
+        "label": "Защита от магического урона",
+        "unit": "raw"
+      },
+      {
+        "key": "evasion",
+        "label": "Уворот",
+        "unit": "percent"
+      },
+      {
+        "key": "parry",
+        "label": "Парирование",
+        "unit": "percent"
+      }
+    ]
+  },
+  {
+    "key": "control",
+    "label": "Состояния и контроль",
+    "category": "combat",
+    "items": [
+      {
+        "key": "control_chance_bonus",
+        "label": "Шанс наложения состояний",
+        "unit": "percent"
+      },
+      {
+        "key": "control_resistance",
+        "label": "Сопротивление контролю",
+        "unit": "percent"
+      },
+      {
+        "key": "fire_resistance",
+        "label": "Сопротивление огню при наложении эффектов",
+        "unit": "percent"
+      }
+    ]
+  },
+  {
+    "key": "recovery",
+    "label": "Ресурсы и восстановление",
+    "category": "combat",
+    "items": [
+      {
+        "key": "hp",
+        "label": "Здоровье",
+        "unit": "raw"
+      },
+      {
+        "key": "en",
+        "label": "Энергия",
+        "unit": "raw"
+      },
+      {
+        "key": "stamina",
+        "label": "Выносливость",
+        "unit": "raw"
+      },
+      {
+        "key": "combat_hp_regen",
+        "label": "Восстановление здоровья в бою",
+        "unit": "raw"
+      },
+      {
+        "key": "combat_en_regen",
+        "label": "Восстановление энергии в бою",
+        "unit": "raw"
+      },
+      {
+        "key": "combat_stamina_regen",
+        "label": "Восстановление выносливости в бою",
+        "unit": "raw"
+      }
+    ]
+  },
+  {
+    "key": "special",
+    "label": "Особые свойства",
+    "category": "combat",
+    "items": [
+      {
+        "key": "vampiric_power",
+        "label": "Вампиризм",
+        "unit": "percent"
+      },
+      {
+        "key": "vampiric_trigger_chance",
+        "label": "Шанс вампиризма",
+        "unit": "percent"
+      }
+    ]
+  },
+  {
+    "key": "crafting",
+    "label": "Ремесло и сбор",
+    "category": "world",
+    "items": [
+      {
+        "key": "crafting_speed",
+        "label": "Скорость изготовления",
+        "unit": "percent"
+      },
+      {
+        "key": "resource_find_chance",
+        "label": "Шанс найти ресурсы",
+        "unit": "percent"
+      }
+    ]
+  },
+  {
+    "key": "trade",
+    "label": "Торговля",
+    "category": "world",
+    "items": [
+      {
+        "key": "trade_bonus",
+        "label": "Бонус торговли",
+        "unit": "percent"
+      }
+    ]
+  },
+  {
+    "key": "travel",
+    "label": "Путешествия и среда",
+    "category": "world",
+    "items": [
+      {
+        "key": "travel_speed",
+        "label": "Скорость путешествия",
+        "unit": "percent"
+      },
+      {
+        "key": "environment_cold_resistance",
+        "label": "Защита от холода",
+        "unit": "percent"
+      },
+      {
+        "key": "environment_heat_resistance",
+        "label": "Защита от жары",
+        "unit": "percent"
+      },
+      {
+        "key": "environment_bio_resistance",
+        "label": "Защита от биологической среды",
+        "unit": "percent"
+      }
+    ]
+  },
+  {
+    "key": "fortune",
+    "label": "Удача",
+    "category": "world",
+    "items": [
+      {
+        "key": "luck",
+        "label": "Удача",
+        "unit": "percent"
+      }
+    ]
+  }
+]

@@ -2,6 +2,8 @@
 
 Project-owned skills live in `.agents/skills/`. Load the domain skill for the affected task, then only its relevant references. Verify implementation claims against current code, tests, and configuration.
 
+For the new Vue/Vite game-client prototype in `game_ui_lab2`, first read [its entrypoint](game_ui_lab2/AGENTS.md) and local skill. For the previous UI reference in `game_ui_lab`, read [its entrypoint](game_ui_lab/AGENTS.md). Do not confuse either prototype with the current frontend in src or import backend code into a client.
+
 | Task | Skill |
 | --- | --- |
 | Repository structure, cross-domain decisions, agent-skill upkeep | [project](.agents/skills/turnbasedmmorpg-project/SKILL.md) |

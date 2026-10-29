@@ -1,0 +1,27 @@
+#app { height:100dvh; }
+.game-lab-workspace .workspace {height:100%;padding:0;flex:1;min-height:0;}
+.game-lab-workspace .scene-split {display:flex;flex:1;min-height:0;}
+.game-lab-workspace .stage-shell {flex:1;min-height:0;}
+#combat-stage {position:absolute;inset:0;width:100%;height:100%;}
+#combat-stage canvas {display:block;}
+.client-page {position:absolute;inset:0;z-index:6;background:var(--col-bg-base);overflow:auto;}
+.brief-page {padding:32px;}
+.brief-page h1 {font:30px var(--font-world);color:var(--col-accent);}
+.brief-purpose {font-size:21px;}
+.brief-columns {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;}
+.brief-columns article {padding:24px;border:1px solid var(--col-border);background:var(--col-bg-surface);}
+.brief-columns h2 {font:22px var(--font-world);color:var(--col-accent);}
+.brief-columns p {font-size:17px;line-height:1.6;}
+.page-close {float:right;background:var(--col-bg-surface);border:1px solid var(--col-border);padding:4px 12px;font-size:22px;}
+.player-hud-track i {display:block;height:100%;background:#cc7464;}
+.player-hud-resource:nth-of-type(2) i{background:#65b3c3;}.player-hud-resource:nth-of-type(3) i{background:#a6c476;}
+@media(max-width:768px){.brief-columns{grid-template-columns:1fr;}.brief-page{padding:16px;}}
+.client-place {position:absolute;inset:0;z-index:2;}
+.stage-shell>.player-hud,.stage-shell>.player-menu {z-index:4;}
+.client-error {position:absolute;inset:20px;z-index:20;padding:24px;background:var(--col-bg-surface);color:#ffb6a4;}
+/* Reserve the existing corner HUD/menu areas for place navigation. */
+.client-place .place-header {padding-left:330px;padding-right:330px;}
+.client-place .place-district-nav {top:128px;}
+.stage-shell:has(.place-modal-backdrop)>.client-place {z-index:8;}
+@media(max-width:1200px){.client-place .place-header{padding-left:285px;padding-right:280px;}.client-place .place-district-nav{top:112px;}}
+@media(max-width:768px){.client-place .place-header{top:70px;padding:6px 12px;}.client-place .place-header h1{font-size:18px;}.client-place .place-district-nav{top:140px;}}
