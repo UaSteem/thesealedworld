@@ -8,12 +8,44 @@
     {% endfor %}
   </div>
   <section class="cp-loadout" aria-label="Надетые предметы">
-    <figure class="cp-avatar"><img src="{{ character.avatar_url }}" alt="{{ character.name }} — демонстрационный аватар" width="1024" height="1024"></figure>
+    {% set eq = {} %}
     {% for slot in character.equipment %}
-    <button type="button" class="cp-slot{% if slot['items'] %} is-equipped{% endif %}" data-slot="{{ slot.slot_id }}" style="--slot-column:{{ slot.column }};--slot-row:{{ slot.row }}" aria-label="{{ slot.label }}: {{ slot['items'] | join(' / ') if slot['items'] else 'Пусто' }}" title="{{ slot.label }}: {{ slot['items'] | join(' / ') if slot['items'] else 'Пусто' }}">
-      <img src="/static/images/ui/inventory-gear/{{ slot.icon }}.svg" alt="" width="26" height="26"><span>{{ slot.label }}</span>
-    </button>
+      {% set _ = eq.update({slot.slot_id: slot}) %}
     {% endfor %}
+    {% macro render_slot(s) %}
+    {% if s %}
+    <button type="button" class="cp-slot{% if s['items'] %} is-equipped{% endif %}" data-slot="{{ s.slot_id }}" aria-label="{{ s.label }}: {{ s['items'] | join(' / ') if s['items'] else 'Пусто' }}" title="{{ s.label }}: {{ s['items'] | join(' / ') if s['items'] else 'Пусто' }}">
+      <img src="/static/images/ui/inventory-gear/{{ s.icon }}.svg" alt="" width="26" height="26"><span>{{ s.label }}</span>
+    </button>
+    {% endif %}
+    {% endmacro %}
+    <div class="cp-col-left">
+      {{ render_slot(eq.get('head_armor')) }}
+      {{ render_slot(eq.get('main_hand')) }}
+      {{ render_slot(eq.get('chest_armor')) }}
+      {{ render_slot(eq.get('belt_accessory')) }}
+      {{ render_slot(eq.get('legs_armor')) }}
+    </div>
+    <div class="cp-col-center">
+      <div class="cp-subgrid-2">
+        {{ render_slot(eq.get('amulet')) }}
+        {{ render_slot(eq.get('earring')) }}
+      </div>
+      <figure class="cp-avatar">
+        <img src="{{ character.avatar_url }}" alt="{{ character.name }} ? ПустоПустоПусто? Пусто?" width="1024" height="1024">
+      </figure>
+      <div class="cp-subgrid-2">
+        {{ render_slot(eq.get('ring_1')) }}
+        {{ render_slot(eq.get('ring_2')) }}
+      </div>
+    </div>
+    <div class="cp-col-right">
+      {{ render_slot(eq.get('outer_garment')) }}
+      {{ render_slot(eq.get('arms_armor')) }}
+      {{ render_slot(eq.get('gloves_garment')) }}
+      {{ render_slot(eq.get('off_hand')) }}
+      {{ render_slot(eq.get('feetwear')) }}
+    </div>
   </section>
   <section class="cp-power" aria-label="Сила персонажа"><span>Сила персонажа</span><strong title="Рейтинг GS стартового слепка">{{ character.gear_score | round(1) }} <small>GS</small></strong></section>
   <div class="cp-bag"><span>Инвентарь</span><button type="button" disabled title="Макет — окно инвентаря пока не подключено">Инвентарь ↗</button></div>

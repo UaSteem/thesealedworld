@@ -82,7 +82,7 @@ button:focus-visible,input:focus-visible,summary:focus-visible,.chat-divider:foc
 :root { --game-chrome-height:60px;--game-header-height:40px; }
 body { display:block;overflow:hidden; }
 .page-header { width:100%;height:var(--game-header-height);margin:0;padding:0 24px; }
-.game-viewport { width:1920px;height:var(--game-logical-height,calc(100dvh - 60px));margin-inline:auto;zoom:var(--game-ui-scale,1); }
+.game-viewport { width:100%;max-width:1920px;height:var(--game-logical-height,100dvh);margin-inline:auto; }
 .workspace { height:100%;padding:0; }
 .game-frame { grid-template-columns:320px minmax(0,1fr); }
 .actor-details { width:196px; }
