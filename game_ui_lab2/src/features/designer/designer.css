@@ -1,0 +1,351 @@
+/* ========================================================
+   THE SEALED WORLD — VISUAL CONSTRUCTOR (DESIGNER STYLES)
+   ======================================================== */
+
+.designable-block {
+  position: absolute;
+  box-sizing: border-box;
+  visibility: visible !important;
+  transition: box-shadow 0.15s ease, outline-color 0.15s ease;
+}
+
+/* Edit Mode Outline & Glow */
+.designable-block.is-edit-mode {
+  outline: 1.5px dashed rgba(197, 160, 89, 0.5) !important;
+  outline-offset: 2px;
+}
+
+.designable-block.is-edit-mode:hover {
+  outline: 2px dashed var(--col-accent) !important;
+  box-shadow: 0 0 18px rgba(197, 160, 89, 0.3) !important;
+}
+
+.designable-block.is-selected {
+  outline: 2.5px solid var(--col-accent) !important;
+  box-shadow: 0 0 24px rgba(197, 160, 89, 0.5) !important;
+}
+
+/* Drag Handle Badge */
+.designable-header-badge {
+  position: absolute;
+  top: -24px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding: 0 8px;
+  background: var(--col-bg-surface);
+  border: 1px solid var(--col-accent);
+  border-bottom: 0;
+  border-radius: 4px 4px 0 0;
+  color: var(--col-accent);
+  font: 11px/1 var(--font-ui);
+  font-weight: 600;
+  cursor: grab;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 1000;
+  box-shadow: 0 -2px 8px #000a;
+}
+
+.designable-header-badge:active,
+.designable-block.is-dragging .designable-header-badge {
+  cursor: grabbing;
+  background: var(--col-accent);
+  color: var(--col-bg-darker);
+}
+
+.designable-header-badge .drag-icon {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.designable-header-badge .block-coords {
+  font-size: 10px;
+  color: var(--col-text-dim);
+  font-family: var(--font-mono);
+}
+
+/* 8 RESIZE HANDLES */
+.resize-handle {
+  position: absolute;
+  z-index: 1001 !important;
+  box-sizing: border-box;
+}
+
+/* Corner Handles: large 22x22 hit-box with visible 10x10 grip square */
+.corner-handle {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.handle-grip {
+  display: block;
+  width: 10px;
+  height: 10px;
+  background: var(--col-accent);
+  border: 1.5px solid #0c1017;
+  border-radius: 2px;
+  box-shadow: 0 0 6px rgba(197, 160, 89, 0.9);
+  pointer-events: none;
+  transition: transform 0.1s ease;
+}
+
+.corner-handle:hover .handle-grip {
+  transform: scale(1.3);
+  background: #fff;
+}
+
+.handle-se { right: -11px; bottom: -11px; cursor: nwse-resize; }
+.handle-sw { left: -11px; bottom: -11px; cursor: nesw-resize; }
+.handle-ne { right: -11px; top: -11px; cursor: nesw-resize; }
+.handle-nw { left: -11px; top: -11px; cursor: nwse-resize; }
+
+/* Edge Handles: 10px wide/tall strips along the perimeter */
+.edge-handle {
+  background: transparent;
+  transition: background 0.15s ease;
+}
+.edge-handle:hover {
+  background: rgba(197, 160, 89, 0.35);
+}
+
+.handle-e { right: -5px; top: 12px; bottom: 12px; width: 10px; cursor: ew-resize; }
+.handle-w { left: -5px; top: 12px; bottom: 12px; width: 10px; cursor: ew-resize; }
+.handle-s { bottom: -5px; left: 12px; right: 12px; height: 10px; cursor: ns-resize; }
+.handle-n { top: -5px; left: 12px; right: 12px; height: 10px; cursor: ns-resize; }
+
+/* NORMALIZATION OF INNER ELEMENTS IN DESIGNABLE BLOCKS */
+.designable-block > .player-hud,
+.designable-block > .player-menu,
+.designable-block > #chat,
+.designable-block > .chat,
+.designable-block > .rift-debug-window {
+  position: static !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: none !important;
+  max-height: none !important;
+  margin: 0 !important;
+  inset: auto !important;
+  visibility: visible !important;
+  box-sizing: border-box !important;
+}
+
+/* Specific styling for player-menu when inside designable block */
+.designable-block > .player-menu {
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 5px 8px !important;
+}
+
+.designable-block > .player-menu button {
+  flex: 1 !important;
+  height: 100% !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+}
+
+/* Specific styling for chat when inside designable block */
+.designable-block > #chat,
+.designable-block > .chat {
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+
+.designable-block > #chat .chat-content,
+.designable-block > .chat .chat-content {
+  flex: 1 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.designable-block > #chat .chat-messages,
+.designable-block > .chat .chat-messages {
+  flex: 1 !important;
+  min-height: 0 !important;
+  height: auto !important;
+}
+
+/* Specific styling for rift-debug-window */
+.designable-block > .rift-debug-window {
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.designable-block > .rift-debug-window>div {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  flex: 1 !important;
+}
+
+/* Background Grid Overlay in Edit Mode */
+.designer-grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background-image: 
+    radial-gradient(circle, rgba(197, 160, 89, 0.15) 1.5px, transparent 1.5px);
+  background-size: 16px 16px;
+}
+
+/* Floating Designer Toolbar (Centered to avoid blocking combat deck and chat) */
+.designer-toolbar {
+  position: fixed;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px;
+  background: color-mix(in srgb, var(--col-bg-surface) 96%, transparent);
+  border: 1px solid var(--col-accent);
+  border-radius: 6px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  color: var(--col-text-world);
+  font: 12px/1.3 var(--font-ui);
+  pointer-events: auto;
+}
+
+.designer-toolbar strong {
+  color: var(--col-accent);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.designer-toolbar button {
+  background: var(--col-bg-darker);
+  color: var(--col-text-world);
+  border: 1px solid var(--col-border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 11px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.15s ease;
+}
+
+.designer-toolbar button:hover {
+  border-color: var(--col-accent);
+  color: var(--col-accent);
+}
+
+.designer-toolbar button.is-active {
+  background: var(--col-accent);
+  color: var(--col-bg-darker);
+  border-color: var(--col-accent);
+  font-weight: 700;
+}
+
+.designer-toolbar .toolbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--col-border);
+}
+
+.designer-toolbar .inspector-inputs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.designer-toolbar .inspector-inputs label {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  color: var(--col-text-dim);
+}
+
+.designer-toolbar .inspector-inputs input {
+  width: 50px;
+  padding: 2px 4px;
+  background: var(--col-bg-base);
+  border: 1px solid var(--col-border);
+  border-radius: 3px;
+  color: var(--col-accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-align: right;
+}
+
+.designer-toolbar .inspector-inputs input:focus {
+  border-color: var(--col-accent);
+  outline: none;
+}
+
+/* Modal Dialog for Export / Import */
+.designer-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.designer-modal {
+  width: 540px;
+  max-width: 95vw;
+  background: var(--col-bg-surface);
+  border: 1px solid var(--col-accent);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 16px 40px #000c;
+  color: var(--col-text-world);
+}
+
+.designer-modal h3 {
+  margin: 0 0 12px;
+  font: 18px var(--font-world);
+  color: var(--col-accent);
+}
+
+.designer-modal textarea {
+  width: 100%;
+  height: 220px;
+  background: var(--col-bg-base);
+  border: 1px solid var(--col-border);
+  border-radius: 4px;
+  color: var(--col-text-primary);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 8px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.designer-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.designer-modal-actions button {
+  padding: 6px 14px;
+  font-size: 12px;
+}
