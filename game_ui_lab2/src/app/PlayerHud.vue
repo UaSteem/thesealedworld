@@ -203,11 +203,6 @@ function onClick() {
   transform: translate(-50%, -6%);
   object-fit: cover;
   pointer-events: none;
-  transition: transform 0.25s ease;
-}
-
-.player-hud:hover:not(.is-disabled) .player-hud-avatar {
-  transform: translate(-50%, -6%) scale(1.04);
 }
 
 .avatar-glass-overlay {
@@ -325,18 +320,14 @@ function onClick() {
 .player-hud-status-zone {
   display: flex;
   align-items: center;
-  gap: 5px;
-  overflow-x: auto;
-  scrollbar-width: none;
+  gap: 6px;
+  overflow: visible;
   flex: 0 0 auto;
-  padding-top: 1px;
-}
-
-.player-hud-status-zone::-webkit-scrollbar {
-  display: none;
+  padding: 4px 2px;
 }
 
 .status-chip {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -346,13 +337,15 @@ function onClick() {
   background: rgba(16, 20, 26, 0.7);
   border-radius: 4px;
   cursor: help;
-  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
   flex-shrink: 0;
+  z-index: 1;
 }
 
 .status-chip:hover {
   background: rgba(26, 32, 40, 0.95);
-  transform: scale(1.1);
+  transform: translateY(-1px);
+  z-index: 10;
 }
 
 /* 1. Позитивные эффекты (is-buff): золотая рамка + золотое свечение */

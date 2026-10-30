@@ -36,6 +36,8 @@ export function createDefaultLayout() {
       minHeight: 38,
       zIndex: 10,
       visible: true,
+      anchor: 'right',
+      rightMargin: 14,
     },
     chat: {
       id: 'chat',
@@ -48,6 +50,8 @@ export function createDefaultLayout() {
       minHeight: 140,
       zIndex: 10,
       visible: true,
+      anchor: 'bottom-left',
+      bottomMargin: 14,
     },
     riftDebug: {
       id: 'riftDebug',
@@ -60,6 +64,8 @@ export function createDefaultLayout() {
       minHeight: 40,
       zIndex: 10,
       visible: true,
+      anchor: 'right',
+      rightMargin: 14,
     },
     inspector: {
       id: 'inspector',
@@ -97,11 +103,14 @@ export function createLayoutStore(storage = typeof localStorage !== 'undefined' 
       for (const [key, val] of Object.entries(parsed)) {
         if (defaults[key]) {
           Object.assign(defaults[key], val);
-          // Safety: clamp positions so they are never outside visible screen
-          if (defaults[key].x + defaults[key].width > sw) {
+          if (defaults[key].anchor === 'right') {
+            defaults[key].x = Math.max(14, sw - defaults[key].width - (defaults[key].rightMargin ?? 14));
+          } else if (defaults[key].x + defaults[key].width > sw) {
             defaults[key].x = Math.max(14, sw - defaults[key].width - 14);
           }
-          if (defaults[key].y + defaults[key].height > sh) {
+          if (defaults[key].anchor === 'bottom-left' || defaults[key].anchor === 'bottom') {
+            defaults[key].y = Math.max(14, sh - defaults[key].height - (defaults[key].bottomMargin ?? 14));
+          } else if (defaults[key].y + defaults[key].height > sh) {
             defaults[key].y = Math.max(14, sh - defaults[key].height - 14);
           }
         } else {
@@ -147,6 +156,14 @@ export function createLayoutStore(storage = typeof localStorage !== 'undefined' 
     if (patch.x !== undefined) {
       const rawX = snap(patch.x);
       b.x = Math.max(0, Math.min(rawX, sw - 40));
+      if (patch.anchor !== undefined) {
+        b.anchor = patch.anchor;
+      } else if (rawX >= sw - (b.width || 200) - 50) {
+        b.anchor = 'right';
+        b.rightMargin = Math.max(0, sw - (b.x + b.width));
+      } else {
+        b.anchor = 'custom';
+      }
     }
     if (patch.y !== undefined) {
       const rawY = snap(patch.y);
@@ -203,10 +220,16 @@ export function createLayoutStore(storage = typeof localStorage !== 'undefined' 
   function adaptToViewport(viewportWidth, viewportHeight) {
     if (!viewportWidth || !viewportHeight) return;
     for (const b of Object.values(blocks)) {
-      if (b.x + b.width > viewportWidth) {
+      if (b.anchor === 'right') {
+        const margin = b.rightMargin ?? 14;
+        b.x = Math.max(14, viewportWidth - b.width - margin);
+      } else if (b.x + b.width > viewportWidth) {
         b.x = Math.max(0, viewportWidth - b.width - 14);
       }
-      if (b.y + b.height > viewportHeight) {
+      if (b.anchor === 'bottom' || b.anchor === 'bottom-left') {
+        const margin = b.bottomMargin ?? 14;
+        b.y = Math.max(14, viewportHeight - b.height - margin);
+      } else if (b.y + b.height > viewportHeight) {
         b.y = Math.max(0, viewportHeight - b.height - 14);
       }
     }

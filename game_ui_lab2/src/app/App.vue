@@ -14,7 +14,7 @@ import MessagePanel from '../features/messages/MessagePanel.vue';
 import PlacePage from '../features/places/PlacePage.vue';
 import DesignableBlock from '../features/designer/DesignableBlock.vue';
 import LayoutToolbar from '../features/designer/LayoutToolbar.vue';
-import { globalLayoutStore } from '../features/designer/layoutStore.js';
+import { globalLayoutStore, getStageDimensions } from '../features/designer/layoutStore.js';
 import '../features/designer/designer.css';
 
 const fieldGateway=createMockFieldGateway();
@@ -44,12 +44,15 @@ function onKeyDown(event){
 }
 
 function onWindowResize(){
-  layoutStore.adaptToViewport(window.innerWidth, window.innerHeight);
+  const { width, height } = getStageDimensions();
+  layoutStore.adaptToViewport(width, height);
 }
 
 onMounted(async()=>{
   window.addEventListener('keydown',onKeyDown);
   window.addEventListener('resize',onWindowResize);
+  const { width, height } = getStageDimensions();
+  layoutStore.adaptToViewport(width, height);
   try{model.value=await client.load();}catch(e){error.value=e.message;}
 });
 onBeforeUnmount(()=>{
@@ -81,7 +84,7 @@ onBeforeUnmount(()=>{
 <GameField v-if="model" :screen="fieldScreen" :gateway="fieldGateway" :visible="['rift','combat'].includes(screen)" @error="error=$event"/>
 
 <DesignableBlock id="riftDebug" title="Отладка зума" :autoHeight="true" v-show="screen==='rift'">
-  <details class="rift-debug-window" open><summary>Debug · зум</summary><div><label for="rift-min-zoom">Предел отдаления · минимальный масштаб</label><input id="rift-min-zoom" type="range" min="0.01" max="2" step="0.01" value="1"><output id="rift-min-zoom-value">1.00×</output><label class="rift-zoom-unlock"><input id="rift-unlock-zoom-out" type="checkbox">Убрать ограничение отдаления</label><span>Текущий масштаб</span><output id="rift-current-zoom">—</output><small>Масштаб по умолчанию — 1.00×.</small></div></details>
+  <details class="rift-debug-window" open><summary>Debug · зум</summary><div><label for="rift-min-zoom">Предел отдаления · минимальный масштаб</label><input id="rift-min-zoom" type="range" min="0.01" max="2" step="0.01" value="0.7"><output id="rift-min-zoom-value">0.70×</output><label class="rift-zoom-unlock"><input id="rift-unlock-zoom-out" type="checkbox">Убрать ограничение отдаления</label><span>Текущий масштаб</span><output id="rift-current-zoom">—</output><small>Масштаб по умолчанию — 0.70×.</small></div></details>
 </DesignableBlock>
 
 <template v-if="model">
