@@ -53,8 +53,8 @@ const vitalBars = computed(() => {
 
 const defaultEffects = [
   { id: 'eff_shield', name: 'Каменная стойка', type: 'buff', icon: '🛡️', duration: '3х', desc: '+10 броня' },
+  { id: 'eff_regen', name: 'Регенерация', type: 'buff', category: 'heal', icon: '🌿', duration: '4х', desc: '+8 HP / ход' },
   { id: 'eff_focus', name: 'Концентрация', type: 'buff', icon: '✨', duration: '5х', desc: '+15% шанс крита' },
-  { id: 'eff_swift', name: 'Ускорение', type: 'buff', icon: '⚡', duration: '2х', desc: '+1 действие' },
   { id: 'eff_bleed', name: 'Кровотечение', type: 'debuff', icon: '🩸', duration: '2х', desc: '-6 HP / ход' }
 ];
 
@@ -64,6 +64,13 @@ const activeEffects = computed(() => {
   }
   return defaultEffects;
 });
+
+function isHealEffect(eff) {
+  if (!eff) return false;
+  if (eff.category === 'heal' || eff.is_heal || eff.subtype === 'heal' || eff.type === 'heal') return true;
+  const text = `${eff.name || ''} ${eff.id || ''}`.toLowerCase();
+  return /лечен|реген|heal|regen/.test(text);
+}
 
 function onClick() {
   if (!props.disabled) {
@@ -123,13 +130,16 @@ function onClick() {
         </div>
       </div>
 
-      <!-- Слой 3 (ffff00): Зона статусбара (только иконки эффектов со свечением) -->
+      <!-- Слой 3 (ffff00): Зона статусбара (иконки эффектов со свечением) -->
       <div class="player-hud-status-zone" aria-label="Статусбар: эффекты, бонусы и дебафы">
         <div
           v-for="eff in activeEffects"
           :key="eff.id"
           class="status-chip"
-          :class="`is-${eff.type}`"
+          :class="[
+            `is-${eff.type}`,
+            isHealEffect(eff) ? 'is-heal' : ''
+          ]"
           :title="`${eff.name}${eff.duration ? ' (' + eff.duration + ')' : ''}${eff.desc ? '\n' + eff.desc : ''}`"
           @click.stop
         >
@@ -345,18 +355,29 @@ function onClick() {
   transform: scale(1.1);
 }
 
-/* Позитивные эффекты: золотая обводка + легкое зеленое свечение */
+/* 1. Позитивные эффекты (is-buff): золотая рамка + золотое свечение */
 .status-chip.is-buff {
   border: 1px solid var(--col-accent, #d2b273);
-  box-shadow: 0 0 6px rgba(78, 196, 102, 0.45);
+  box-shadow: 0 0 6px rgba(210, 178, 115, 0.5);
 }
 
 .status-chip.is-buff:hover {
   border-color: #f3d492;
-  box-shadow: 0 0 9px rgba(78, 196, 102, 0.75);
+  box-shadow: 0 0 9px rgba(210, 178, 115, 0.85);
 }
 
-/* Негативные эффекты: красная обводка + легкое красное свечение */
+/* 2. Лечение или регенерация (is-heal): зеленая рамка + зеленое свечение */
+.status-chip.is-heal {
+  border: 1px solid #46b25a !important;
+  box-shadow: 0 0 6px rgba(70, 180, 90, 0.6) !important;
+}
+
+.status-chip.is-heal:hover {
+  border-color: #60d878 !important;
+  box-shadow: 0 0 9px rgba(70, 180, 90, 0.9) !important;
+}
+
+/* 3. Негативные эффекты (is-debuff): красная рамка + красное свечение */
 .status-chip.is-debuff {
   border: 1px solid #d64537;
   box-shadow: 0 0 6px rgba(214, 69, 55, 0.55);
