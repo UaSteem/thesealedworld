@@ -95,13 +95,12 @@ function onClick() {
 
     <!-- 2. RIGHT BODY: 3 горизонтальных слоя -->
     <div class="player-hud-body">
-      <!-- Слой 1 (00ff00): Зона отображения имени игрока -->
+      <!-- Слой 1 (00ff00): Зона имени игрока (выровнена по центру) -->
       <div class="player-hud-name-zone">
         <strong class="player-hud-name">{{ character?.name || 'Ada Guard' }}</strong>
-        <span v-if="character?.title" class="player-hud-title" :title="character.title">{{ character.title }}</span>
       </div>
 
-      <!-- Слой 2 (000000): Зона vital статусов (HP, EN, CN) -->
+      <!-- Слой 2 (000000): Зона vital статусов (цвет фона совпадает с div.player-hud) -->
       <div class="player-hud-vitals-zone">
         <div
           v-for="bar in vitalBars"
@@ -123,7 +122,7 @@ function onClick() {
         </div>
       </div>
 
-      <!-- Слой 3 (ffff00): Зона статусбара (эффекты, бонусы/дебафы) -->
+      <!-- Слой 3 (ffff00): Зона статусбара (только иконки эффектов) -->
       <div class="player-hud-status-zone" aria-label="Статусбар: эффекты, бонусы и дебафы">
         <div
           v-for="eff in activeEffects"
@@ -134,8 +133,6 @@ function onClick() {
           @click.stop
         >
           <span class="status-chip-icon">{{ eff.icon }}</span>
-          <span class="status-chip-name">{{ eff.name }}</span>
-          <span v-if="eff.duration" class="status-chip-duration">{{ eff.duration }}</span>
         </div>
       </div>
     </div>
@@ -221,12 +218,12 @@ function onClick() {
   gap: 4px;
 }
 
-/* СЛОЙ 1 (00ff00) — Зона отображения имени игрока */
+/* СЛОЙ 1 (00ff00) — Зона имени игрока (выровнена по центру) */
 .player-hud-name-zone {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   min-width: 0;
   flex: 0 0 auto;
 }
@@ -238,30 +235,20 @@ function onClick() {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.4px;
+  text-align: center;
 }
 
-.player-hud-title {
-  font: 10px/1.2 var(--font-ui, system-ui, sans-serif);
-  color: var(--col-accent, #d2b273);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 140px;
-  opacity: 0.85;
-}
-
-/* СЛОЙ 2 (000000) — Зона vital статусов (HP, EN, CN) */
+/* СЛОЙ 2 (000000) — Зона vital статусов (цвет фона совпадает с div.player-hud) */
 .player-hud-vitals-zone {
-  background: #000000;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--col-bg-surface, #1a2028);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 4px;
   padding: 4px 6px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   gap: 3px;
-  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.85);
   flex: 1;
   min-height: 0;
 }
@@ -284,7 +271,8 @@ function onClick() {
 
 .vital-track {
   height: 6px;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: 2px;
   overflow: hidden;
   position: relative;
@@ -322,11 +310,11 @@ function onClick() {
   font-size: 8.5px;
 }
 
-/* СЛОЙ 3 (ffff00) — Зона статусбара (эффекты, бонусы/дебафы) */
+/* СЛОЙ 3 (ffff00) — Зона статусбара (только иконки эффектов) */
 .player-hud-status-zone {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   overflow-x: auto;
   scrollbar-width: none;
   flex: 0 0 auto;
@@ -340,49 +328,35 @@ function onClick() {
 .status-chip {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
-  padding: 2px 5px;
-  background: rgba(19, 25, 32, 0.85);
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  box-sizing: border-box;
+  background: rgba(16, 20, 26, 0.7);
   border: 1px solid var(--col-border, #81704f);
-  border-radius: 3px;
-  font-size: 10px;
-  line-height: 1;
-  white-space: nowrap;
+  border-radius: 4px;
   cursor: help;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease;
+  flex-shrink: 0;
 }
 
 .status-chip:hover {
   background: rgba(26, 32, 40, 0.95);
   border-color: var(--col-accent, #d2b273);
+  transform: scale(1.1);
 }
 
 .status-chip.is-buff {
   border-color: rgba(210, 178, 115, 0.45);
-  color: var(--col-text-primary, #e3e8ed);
 }
 
 .status-chip.is-debuff {
-  border-color: rgba(204, 76, 61, 0.5);
-  color: #f28b82;
+  border-color: rgba(204, 76, 61, 0.55);
 }
 
 .status-chip-icon {
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1;
-}
-
-.status-chip-name {
-  font-size: 9.5px;
-  color: var(--col-text-secondary, #c3cbd3);
-  max-width: 90px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.status-chip-duration {
-  font: 8.5px var(--font-mono, 'JetBrains Mono', monospace);
-  color: var(--col-accent, #d2b273);
-  opacity: 0.9;
+  display: block;
 }
 </style>
