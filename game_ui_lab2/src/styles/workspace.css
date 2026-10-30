@@ -5,14 +5,9 @@
 .stage-heading { height:30px; }
 .stage-heading h2 { font-size:14px; }
 .stage-shell { isolation:isolate; }
-.player-hud { position:absolute;top:14px;left:14px;z-index:4;display:flex;gap:12px;width:300px;padding:10px;text-align:left;background:var(--col-bg-surface);border:1px solid var(--col-border);border-radius:6px;box-shadow:0 4px 20px #0006; }
-.player-hud-avatar { width:66px;height:76px;object-fit:cover;border:1px solid var(--col-border);border-radius:4px; }
-.player-hud-info { flex:1;min-width:0;display:grid;gap:5px; }
-.player-hud-info>strong { font:17px var(--font-world);color:var(--col-text-world); }
-.player-hud-resource { display:grid;grid-template-columns:24px minmax(0,1fr) 52px;gap:5px;align-items:center;font-size:10px; }
-.player-hud-resource b { font-size:10px;text-align:right;font-variant-numeric:tabular-nums;font-weight:normal; }
-.player-hud-track { height:6px;background:var(--col-bg-darker);overflow:hidden; }
-.player-hud-track>span { display:block;height:100%;background:var(--meter-color); }
+.player-hud { position:absolute;top:14px;left:14px;z-index:4;width:320px;height:104px;text-align:left; }
+
+
 .player-menu { position:absolute;right:14px;top:14px;z-index:4;display:flex;gap:6px; }
 .player-menu button,.character-window button { background:var(--col-bg-darker);color:var(--col-text-world);border:1px solid var(--col-border);border-radius:4px;padding:8px 12px; }
 .player-menu button:hover,.character-window button:hover { border-color:var(--col-accent);color:var(--col-accent); }
@@ -99,8 +94,6 @@ body:not([data-game-screen="rift"]) .rift-debug-window { display:none; }
 /* Responsive adaptations for displays: ultra-wide, laptops, tablets, smartphones */
 @media (max-width: 1200px) {
   .player-hud { top:10px;left:10px;width:250px;padding:8px;gap:8px; }
-  .player-hud-avatar { width:52px;height:60px; }
-  .player-hud-info>strong { font-size:15px; }
   .player-menu { top:10px;right:10px;padding:4px;gap:4px; }
   .player-menu button { padding:6px 10px;font-size:12px; }
   .game-lab-workspace #chat { width:440px;height:240px; }
@@ -109,10 +102,6 @@ body:not([data-game-screen="rift"]) .rift-debug-window { display:none; }
 
 @media (max-width: 768px) {
   .player-hud { top:6px;left:6px;width:auto;max-width:calc(100% - 150px);padding:5px 8px;gap:6px;border-radius:4px; }
-  .player-hud-avatar { width:38px;height:44px; }
-  .player-hud-info>strong { font-size:13px; }
-  .player-hud-resource { grid-template-columns:18px minmax(0,1fr) 40px;gap:3px;font-size:9px; }
-  .player-hud-track { height:4px; }
   .player-menu { top:6px;right:6px;padding:3px;gap:3px; }
   .player-menu button { padding:5px 8px;font-size:11px; }
   .game-lab-workspace #chat { left:6px;right:6px;bottom:6px;width:auto;max-width:none;height:190px;max-height:35%; }
@@ -132,7 +121,6 @@ body:not([data-game-screen="rift"]) .rift-debug-window { display:none; }
 
 @media (max-width: 480px) {
   .player-hud { max-width:calc(100% - 120px);padding:4px 6px;gap:5px; }
-  .player-hud-avatar { width:32px;height:38px; }
   .player-menu button { padding:4px 6px;font-size:10px; }
   #lab-debug nav button { padding:2px 6px;font-size:11px; }
 }

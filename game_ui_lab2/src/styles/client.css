@@ -13,8 +13,6 @@
 .brief-columns h2 {font:22px var(--font-world);color:var(--col-accent);}
 .brief-columns p {font-size:17px;line-height:1.6;}
 .page-close {float:right;background:var(--col-bg-surface);border:1px solid var(--col-border);padding:4px 12px;font-size:22px;}
-.player-hud-track i {display:block;height:100%;background:#cc7464;}
-.player-hud-resource:nth-of-type(2) i{background:#65b3c3;}.player-hud-resource:nth-of-type(3) i{background:#a6c476;}
 @media(max-width:768px){.brief-columns{grid-template-columns:1fr;}.brief-page{padding:16px;}}
 .client-place {position:absolute;inset:0;z-index:2;}
 .stage-shell>.player-hud,.stage-shell>.player-menu {z-index:4;}
