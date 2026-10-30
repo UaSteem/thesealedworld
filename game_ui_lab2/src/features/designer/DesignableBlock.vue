@@ -29,6 +29,7 @@ const blockStyle = computed(() => {
     top: `${block.value.y}px`,
     width: `${block.value.width}px`,
     zIndex: isSelected.value ? 200 : (block.value.zIndex || 10),
+    '--block-height': `${block.value.height}px`,
   };
   if (props.autoHeight) {
     s.minHeight = `${block.value.minHeight || 40}px`;

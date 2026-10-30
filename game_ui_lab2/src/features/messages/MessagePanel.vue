@@ -106,7 +106,7 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.chat { position:absolute;left:14px;bottom:14px;width:580px;max-width:calc(100% - 28px);height:300px;max-height:45%;z-index:5;display:flex;flex-direction:column;min-height:0;overflow:hidden;color:var(--col-text-world);background:transparent;border:1px solid transparent;border-radius:5px;transition:background .15s,border-color .15s; }
+.chat { position:absolute;left:14px;bottom:14px;width:580px;max-width:calc(100% - 28px);height:300px;max-height:45%;z-index:5;display:flex;flex-direction:column;justify-content:flex-end;min-height:0;overflow:hidden;color:var(--col-text-world);background:transparent;border:1px solid transparent;border-radius:5px;transition:background .15s,border-color .15s; }
 .chat:hover,.chat:focus-within { background:color-mix(in srgb,var(--col-bg-surface) 88%,transparent);border-color:var(--col-border); }
 .chat-heading { order:2;display:flex;align-items:flex-start;gap:8px;height:30px;min-height:30px;padding:0 10px;opacity:.45;transition:opacity .15s; }
 .chat:hover .chat-heading,.chat:focus-within .chat-heading { opacity:1; }
@@ -120,7 +120,7 @@ onUnmounted(() => {
 .chat-messages { flex:1;min-height:0;overflow:auto;font-size:15px;line-height:20px;text-shadow:0 1px 3px #000;mask-image:linear-gradient(to bottom,transparent,black 95%); }
 .chat:hover .chat-messages,.chat:focus-within .chat-messages { mask-image:none; }
 .chat-messages p { display:flex;gap:12px;margin:2px 0;overflow-wrap:anywhere; }
-.chat-messages time { flex:none;padding-top:4px;color:var(--col-text-dim);font-size:10px; }
+.chat-messages time { flex:none;padding-top:2px;color:var(--col-text-dim);font-size:12px; }
 .chat-messages b { flex:none;color:var(--col-accent);font-weight:500; }
 .combat-log b { min-width:65px; }
 form { display:flex;gap:5px;margin-top:5px; }

@@ -56,7 +56,7 @@ function onReset(e) {
 </script>
 
 <template>
-  <div @pointerdown.stop @mousedown.stop @click.stop>
+  <div class="designer-toolbar-root" @pointerdown.stop @mousedown.stop @click.stop>
     <!-- Background Grid Overlay when editing and enabled -->
     <div
       v-if="store.isEditMode.value && store.snapToGrid.value"

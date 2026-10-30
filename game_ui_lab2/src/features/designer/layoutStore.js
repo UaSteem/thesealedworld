@@ -102,14 +102,22 @@ export function createLayoutStore(storage = typeof localStorage !== 'undefined' 
 
       for (const [key, val] of Object.entries(parsed)) {
         if (defaults[key]) {
+          const defaultAnchor = defaults[key].anchor;
           Object.assign(defaults[key], val);
-          if (defaults[key].anchor === 'right') {
-            defaults[key].x = Math.max(14, sw - defaults[key].width - (defaults[key].rightMargin ?? 14));
+          if (!val.anchor) {
+            defaults[key].anchor = defaultAnchor;
+          }
+          if (defaults[key].id === 'menu' || defaults[key].id === 'riftDebug' || defaults[key].anchor === 'right') {
+            if (defaults[key].anchor !== 'custom') {
+              defaults[key].x = Math.max(14, sw - defaults[key].width - (defaults[key].rightMargin ?? 14));
+            }
           } else if (defaults[key].x + defaults[key].width > sw) {
             defaults[key].x = Math.max(14, sw - defaults[key].width - 14);
           }
-          if (defaults[key].anchor === 'bottom-left' || defaults[key].anchor === 'bottom') {
-            defaults[key].y = Math.max(14, sh - defaults[key].height - (defaults[key].bottomMargin ?? 14));
+          if (defaults[key].id === 'chat' || defaults[key].anchor === 'bottom-left' || defaults[key].anchor === 'bottom') {
+            if (defaults[key].anchor !== 'custom') {
+              defaults[key].y = Math.max(14, sh - defaults[key].height - (defaults[key].bottomMargin ?? 14));
+            }
           } else if (defaults[key].y + defaults[key].height > sh) {
             defaults[key].y = Math.max(14, sh - defaults[key].height - 14);
           }
@@ -168,6 +176,14 @@ export function createLayoutStore(storage = typeof localStorage !== 'undefined' 
     if (patch.y !== undefined) {
       const rawY = snap(patch.y);
       b.y = Math.max(0, Math.min(rawY, sh - 30));
+      if (patch.anchor !== undefined) {
+        b.anchor = patch.anchor;
+      } else if (rawY >= sh - (b.height || 100) - 50) {
+        b.anchor = 'bottom-left';
+        b.bottomMargin = Math.max(0, sh - (b.y + b.height));
+      } else if (b.anchor === 'bottom-left' || b.anchor === 'bottom') {
+        b.anchor = 'custom';
+      }
     }
     if (patch.width !== undefined) {
       const rawW = snap(patch.width);
@@ -220,15 +236,21 @@ export function createLayoutStore(storage = typeof localStorage !== 'undefined' 
   function adaptToViewport(viewportWidth, viewportHeight) {
     if (!viewportWidth || !viewportHeight) return;
     for (const b of Object.values(blocks)) {
-      if (b.anchor === 'right') {
-        const margin = b.rightMargin ?? 14;
-        b.x = Math.max(14, viewportWidth - b.width - margin);
+      if (b.id === 'menu' || b.id === 'riftDebug' || b.anchor === 'right') {
+        if (b.anchor !== 'custom') {
+          const margin = b.rightMargin ?? 14;
+          b.x = Math.max(14, viewportWidth - b.width - margin);
+        }
       } else if (b.x + b.width > viewportWidth) {
         b.x = Math.max(0, viewportWidth - b.width - 14);
       }
-      if (b.anchor === 'bottom' || b.anchor === 'bottom-left') {
-        const margin = b.bottomMargin ?? 14;
-        b.y = Math.max(14, viewportHeight - b.height - margin);
+
+      if (b.id === 'chat' || b.anchor === 'bottom-left' || b.anchor === 'bottom') {
+        if (b.anchor !== 'custom') {
+          const margin = b.bottomMargin ?? 14;
+          b.y = Math.max(14, viewportHeight - b.height - margin);
+          b.x = 14;
+        }
       } else if (b.y + b.height > viewportHeight) {
         b.y = Math.max(0, viewportHeight - b.height - 14);
       }

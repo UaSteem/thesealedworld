@@ -158,7 +158,34 @@
 .designable-block > .chat {
   display: flex !important;
   flex-direction: column !important;
+  justify-content: flex-end !important;
   overflow: hidden !important;
+}
+
+/* When chat inside designable block is collapsed, fold the block down to the bottom */
+.designable-block:has(#chat.is-collapsed),
+.designable-block:has(.chat.is-collapsed) {
+  height: 32px !important;
+  transform: translateY(calc(var(--block-height, 300px) - 32px)) !important;
+  transition: transform 0.18s ease, height 0.18s ease;
+}
+
+.designable-block:has(#chat.is-collapsed) .resize-handle,
+.designable-block:has(.chat.is-collapsed) .resize-handle {
+  display: none !important;
+}
+
+.designable-block > #chat.is-collapsed,
+.designable-block > .chat.is-collapsed {
+  height: 32px !important;
+  min-height: 32px !important;
+  justify-content: flex-end !important;
+}
+
+.designable-block > #chat.is-collapsed .chat-heading,
+.designable-block > .chat.is-collapsed .chat-heading {
+  opacity: 1 !important;
+  height: 30px !important;
 }
 
 .designable-block > #chat .chat-content,
@@ -199,6 +226,12 @@
   background-image: 
     radial-gradient(circle, rgba(197, 160, 89, 0.15) 1.5px, transparent 1.5px);
   background-size: 16px 16px;
+}
+
+.designer-toolbar-root,
+.designer-toolbar-root > *,
+.designer-toolbar {
+  visibility: visible !important;
 }
 
 /* Floating Designer Toolbar (Centered to avoid blocking combat deck and chat) */
