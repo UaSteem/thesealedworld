@@ -117,7 +117,12 @@ onUnmounted(() => {
 .chat-tabs button.is-active::after { content:'';position:absolute;left:9px;right:9px;bottom:1px;height:2px;background:var(--col-accent); }
 #chat-toggle { margin-left:auto;width:28px;height:26px;border:1px solid var(--col-border);border-top:0;border-radius:0 0 5px 5px;background:color-mix(in srgb,var(--col-bg-darker) 75%,transparent);font-size:16px; }
 .chat-content { display:flex;flex:1;flex-direction:column;min-height:0;padding:4px 10px 0; }
-.chat-messages { flex:1;min-height:0;overflow:auto;font-size:12px;line-height:12px;text-shadow:0 1px 3px #000;mask-image:linear-gradient(to bottom,transparent,black 95%); }
+.chat-messages { flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;font-size:12px;line-height:12px;text-shadow:0 1px 3px #000;mask-image:linear-gradient(to bottom,transparent,black 95%);scrollbar-width:thin;scrollbar-color:rgba(210,178,115,0.4) transparent; }
+.chat-messages::-webkit-scrollbar { width:5px; }
+.chat-messages::-webkit-scrollbar-track { background:transparent; }
+.chat-messages::-webkit-scrollbar-thumb { background:rgba(210,178,115,0.35);border-radius:4px; }
+.chat-messages::-webkit-scrollbar-thumb:hover { background:var(--col-accent,#d2b273); }
+.chat-messages::-webkit-scrollbar-button { display:none;width:0;height:0; }
 .chat:hover .chat-messages,.chat:focus-within .chat-messages { mask-image:none; }
 .chat-messages p { display:flex;gap:12px;margin:2px 0;overflow-wrap:anywhere; }
 .chat-messages time { flex:none;padding-top:2px;color:var(--col-text-dim);font-size:12px; }
