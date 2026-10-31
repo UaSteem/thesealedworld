@@ -253,7 +253,7 @@ function onClick() {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 4px;
+  gap: 1px;
   flex: 1;
   min-height: 0;
 }
@@ -323,7 +323,7 @@ function onClick() {
   gap: 6px;
   overflow: visible;
   flex: 0 0 auto;
-  padding: 4px 2px;
+  padding: 0px 2px;
 }
 
 .status-chip {

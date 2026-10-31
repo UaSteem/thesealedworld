@@ -67,7 +67,7 @@ body:is([data-game-screen="death"],[data-game-screen="loot"],[data-game-screen="
 .game-lab-workspace .chat-mock-label,.game-lab-workspace #chat-reset { display:none; }
 .game-lab-workspace #chat-toggle { margin-left:auto;width:28px;height:26px;border:1px solid var(--col-border);border-top:0;border-radius:0 0 5px 5px;background:color-mix(in srgb,var(--col-bg-darker) 75%,transparent);font-size:16px; }
 .game-lab-workspace .chat-content { padding:4px 10px 0; }
-.game-lab-workspace .chat-messages { font-size:15px;line-height:20px;text-shadow:0 1px 3px #000;mask-image:linear-gradient(to bottom,transparent,black 95%); }
+.game-lab-workspace .chat-messages { font-size:12px;line-height:12px;text-shadow:0 1px 3px #000;mask-image:linear-gradient(to bottom,transparent,black 95%); }
 .game-lab-workspace #chat:hover .chat-messages,.game-lab-workspace #chat:focus-within .chat-messages { mask-image:none; }
 .game-lab-workspace .chat-messages p { margin:2px 0; }
 .game-lab-workspace .chat form { margin-top:5px;gap:5px; }
